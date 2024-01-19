@@ -1,22 +1,27 @@
-const express = require("express");
 
-const dotenv = require("dotenv");
-const logger = require('morgan');
-const cors = require("cors");
+function createApp(database) {
+    const express = require("express");
 
-const usersRouter = require("./routes/users");
+    const dotenv = require("dotenv");
+    const logger = require('morgan');
+    const cors = require("cors");
 
-const app = express();
-dotenv.config();
+    const usersRouter = require("./routes/users");
 
-app.use(logger("dev"));
-app.use(cors());
-app.use(express.json());
+    const app = express();
+    dotenv.config();
 
-app.get("/", (req, res, next) => {
-    res.json("Hello World");
-});
+    app.use(logger("dev"));
+    app.use(cors());
+    app.use(express.json());
 
-app.use("/users", usersRouter);
+    app.get("/", (req, res, next) => {
+        res.json("Hello World");
+    });
 
-module.exports = app;
+    app.use("/users", usersRouter);
+
+    return app;
+}
+
+module.exports = createApp;

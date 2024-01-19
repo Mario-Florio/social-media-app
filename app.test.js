@@ -1,5 +1,7 @@
-const app = require("./app");
+const createApp = require("./app");
 const request = require("supertest");
+
+const app = createApp();
 
 describe("/", () => {
     it("should return Hello World", async () => {
