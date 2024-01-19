@@ -6,7 +6,7 @@ function createApp(database) {
     const logger = require('morgan');
     const cors = require("cors");
 
-    const usersRouter = require("./routes/users");
+    const usersRouter = require("./routes/users/users");
 
     const app = express();
     dotenv.config();
