@@ -2,8 +2,12 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-    res.json("Hello from /auth")
+router.post("/", (req, res, next) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.sendStatus(400);
+    }
+    res.json({ user: 0 });
 });
 
 module.exports = router;
