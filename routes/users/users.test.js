@@ -2,7 +2,7 @@ const app = require("../../app");
 const request = require("supertest");
 
 describe("/users", () => {
-    it("should return 200 status code", async () => {
+    test("should return 200 status code", async () => {
         const response = await request(app).get("/api/users");
 
         expect(response.statusCode).toBe(200);

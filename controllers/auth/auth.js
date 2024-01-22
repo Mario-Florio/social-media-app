@@ -1,3 +1,4 @@
+const { authorizeUser } = require("../../database/methods");
 
 async function post(req, res, next) {
     const { username, password } = req.body;
@@ -5,15 +6,13 @@ async function post(req, res, next) {
         return res.sendStatus(400);
     }
 
-    res.json({ user: 0 });
-
-    // const responseBody = authorizeUser(req.body);
-    // if (!responseBody.user) {
-    //     const { status, message, user } = responseBody;
-    //     return res.status(status).json({ message, user });
-    // } else {
-    //     return res.json(responseBody);
-    // }
+    const responseBody = await authorizeUser(req.body);
+    if (!responseBody.user) {
+        const { status, message, user } = responseBody;
+        return res.status(status).json({ message, user });
+    } else {
+        return res.json(responseBody);
+    }
 
 }
 
