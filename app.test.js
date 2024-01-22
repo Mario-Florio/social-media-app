@@ -1,11 +1,11 @@
-const createApp = require("./app");
+// const initializeMongoServer = require("./test_database");
+const app = require("./app");
 const request = require("supertest");
 
-const app = createApp();
-
 describe("/", () => {
+
     it("should return Hello World", async () => {
-        const response = await request(app).get("/");
+        const response = await request(app).get("/api");
 
         expect(response.body).toBe("Hello World");
     });

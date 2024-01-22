@@ -1,11 +1,9 @@
-const createApp = require("../../app");
+const app = require("../../app");
 const request = require("supertest");
-
-const app = createApp();
 
 describe("/auth", () => {
     describe("given username and password", () => {
-        it("should return 200 status code", async () => {
+        test("should return 200 status code", async () => {
             const response = await request(app).post("/api/auth/login").send({
                 username: "username",
                 password: "password",

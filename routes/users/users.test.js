@@ -1,7 +1,5 @@
-const createApp = require("../../app");
+const app = require("../../app");
 const request = require("supertest");
-
-const app = createApp();
 
 describe("/users", () => {
     it("should return 200 status code", async () => {
