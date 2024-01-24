@@ -34,6 +34,27 @@ describe("/users", () => {
             expect(response.body.success).toBeDefined();
             expect(response.body.message).toBeDefined();
         });
+
+        describe("username already exists", () => {
+            beforeEach(async () => await populateUsers());
+            afterEach(async () => await database.dropCollections());
+
+            test("should return 404 status code", async () => {
+                const response = await request(app).post("/api/users").send({
+                    username: "username1",
+                    password: "password"
+                });
+                expect(response.statusCode).toBe(404);
+            });
+            test("response body has success and message field defined", async () => {
+                const response = await request(app).post("/api/users").send({
+                    username: "username1",
+                    password: "password"
+                });
+                expect(response.body.success).toBeDefined();
+                expect(response.body.message).toBeDefined();
+            });
+        });
     });
 });
 
