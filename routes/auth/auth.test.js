@@ -36,6 +36,60 @@ describe("/auth", () => {
             expect(response.body.message).toBeDefined();
             expect(response.body.token).toBeDefined();
         });
+        
+        describe("user doesn't exist", () => {
+            beforeEach(async () => await populateUsers());
+            afterEach(async () => await database.dropCollections());
+
+            test("should return 400 status code", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username5",
+                    password: "password"
+                });
+                expect(response.statusCode).toBe(400);
+            });
+            test("user returned should be falsy", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username5",
+                    password: "password"
+                });
+                expect(response.body.user).toBeFalsy();
+            });
+            test("token should be undefined", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username5",
+                    password: "password"
+                });
+                expect(response.body.token).toBeUndefined();
+            });
+        });
+
+        describe("wrong password", () => {
+            beforeEach(async () => await populateUsers());
+            afterEach(async () => await database.dropCollections());
+
+            test("should return 404 status code", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username",
+                    password: "wrongpassword"
+                });
+                expect(response.statusCode).toBe(404);
+            });
+            test("user returned should be falsy", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username",
+                    password: "wrongpassword"
+                });
+                expect(response.body.user).toBeFalsy();
+            });
+            test("token should be undefined", async () => {
+                const response = await request(app).post("/api/auth/login").send({
+                    username: "username",
+                    password: "wrongpassword"
+                });
+                expect(response.body.token).toBeUndefined();
+            });
+        });
     });
 
     describe("missing username and/or password", () => {
