@@ -1,15 +1,48 @@
 const app = require("../../app");
 const request = require("supertest");
+const database = require("../../testDb");
+const User = require("../../models/User");
+const bcrypt = require("bcryptjs");
+
+beforeAll(async () => await database.connect());
+afterAll(async () => await database.disconnect());
 
 describe("/users", () => {
-    test("should return 200 status code", async () => {
-        const response = await request(app).get("/api/users");
+    describe("given username and password", () => {
+        beforeEach(async () => await populateUsers());
+        afterEach(async () => await database.dropCollections());
 
-        expect(response.statusCode).toBe(200);
-    });
-    test("should specify json in the content type header", async () => {
-        const response = await request(app).get("/api/users");
-
-        expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        test("should return 200 status code", async () => {
+            const response = await request(app).post("/api/users").send({
+                username: "username",
+                password: "password"
+            });
+            expect(response.statusCode).toBe(200);
+        });
+        test("should specify json in the content type header", async () => {
+            const response = await request(app).post("/api/users").send({
+                username: "username",
+                password: "password"
+            });
+            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        });
+        test("response body has success and message fields defined", async () => {
+            const response = await request(app).post("/api/users").send({
+                username: "username",
+                password: "password"
+            });
+            expect(response.body.success).toBeDefined();
+            expect(response.body.message).toBeDefined();
+        });
     });
 });
+
+// UTILS
+async function populateUsers() {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash("password", salt);
+    await new User({ username: "username1", password: hashedPassword }).save();
+    await new User({ username: "username2", password: hashedPassword }).save();
+    await new User({ username: "username3", password: hashedPassword }).save();
+    await new User({ username: "username4", password: hashedPassword }).save();
+}

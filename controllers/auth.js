@@ -1,4 +1,4 @@
-const { authorizeUser } = require("../../database/methods");
+const { authorizeUser } = require("../database/methods");
 
 async function post(req, res, next) {
     const { username, password } = req.body;
@@ -13,7 +13,6 @@ async function post(req, res, next) {
     } else {
         return res.json(responseBody);
     }
-
 }
 
 module.exports = {
