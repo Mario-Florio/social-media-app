@@ -56,6 +56,21 @@ describe("/users", () => {
             });
         });
     });
+
+    describe("missing username and/or password", () => {
+        test("should respond with status code 400", async () => {
+            const bodyData = [
+                { username: "username" },
+                { password: "password" },
+                {}
+            ];
+
+            for (const data of bodyData) {
+                const response = await request(app).post("/api/users").send(data);
+                expect(response.statusCode).toBe(400);
+            }
+        });
+    });
 });
 
 // UTILS
