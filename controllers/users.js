@@ -1,9 +1,14 @@
-const { registerUser, getUsers } = require("../database/methods");
+const { registerUser, getUsers, getUserById } = require("../database/methods");
 
 async function get_all(req, res, next) {
     const users = await getUsers();
     res.json({ users });
 } 
+
+async function get_one(req, res, next) {
+    const user = await getUserById(req.params.id);
+    res.json({ user });
+}
 
 async function post(req, res, next) {
     const { username, password } = req.body;
@@ -44,5 +49,6 @@ function validateInput(input) {
 
 module.exports = {
     get_all,
+    get_one,
     post
 }
