@@ -1,13 +1,13 @@
-const app = require("../../app");
+const app = require("../../../app");
 const request = require("supertest");
-const database = require("../../testDb");
-const User = require("../../models/User");
+const database = require("../../../testDb");
+const User = require("../../../models/User");
 const bcrypt = require("bcryptjs");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users", () => {
+describe("/users POST", () => {
     describe("given username and password", () => {
         beforeEach(async () => await populateUsers());
         afterEach(async () => await database.dropCollections());

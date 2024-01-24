@@ -5,9 +5,7 @@
   "main": "app.js",
   "scripts": {
     "devstart": "nodemon server.js",
-    "test": "jest --forceExit",
-    "auth-test": "npx jest ./routes/auth/auth.test.js --forceExit",
-    "users-test": "npx jest ./routes/users/users.test.js --forceExit"
+    "test": "npx jest --forceExit --watch"
   },
   "repository": {
     "type": "git",

@@ -49,7 +49,13 @@ async function authorizeUser(credentials) {
     }
 }
 
+async function getUsers() {
+    const users = await User.find().exec();
+    return users;
+}
+
 module.exports = {
     registerUser,
-    authorizeUser
+    authorizeUser,
+    getUsers
 }
