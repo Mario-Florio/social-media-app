@@ -1,6 +1,7 @@
 const app = require("./app");
-const mongoose = require("./database/connection");
+const connectDB = require("./database/connection");
 
 app.listen(process.env.PORT, () => {
+    connectDB();
     console.log("Listening on port "+process.env.PORT);
 });
