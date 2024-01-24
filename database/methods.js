@@ -56,7 +56,7 @@ async function getUsers() {
 
 async function getUserById(id) {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(id).exec();
         return user;
     } catch(err) {
         return null;
