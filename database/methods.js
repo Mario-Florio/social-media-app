@@ -69,6 +69,7 @@ async function updateUser(id, update) {
         const res = { status: 400, message: "User does not exist", user: null };
         return res;
     }
+    
     await User.findByIdAndUpdate(id, update).exec();
     const user = await getUserById(id);
 
@@ -79,10 +80,27 @@ async function updateUser(id, update) {
     return res;
 }
 
+async function deleteUser(id) {
+    const userExists = await getUserById(id);
+    if (!userExists) {
+        const res = { status: 400, message: "User does not exist", user: null };
+        return res;
+    }
+
+    await User.findByIdAndDelete(id).exec();
+
+    const res = {
+        success: true,
+        message: "Deletion was successful"
+    }
+    return res;
+}
+
 module.exports = {
     registerUser,
     authorizeUser,
     getUsers,
     getUserById,
-    updateUser
+    updateUser,
+    deleteUser
 }

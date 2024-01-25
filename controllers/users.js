@@ -1,4 +1,4 @@
-const { registerUser, getUsers, getUserById, updateUser } = require("../database/methods");
+const { registerUser, getUsers, getUserById, updateUser, deleteUser } = require("../database/methods");
 const { authenticate } = require("../verifyToken");
 
 async function get_all(req, res, next) {
@@ -60,7 +60,19 @@ async function put(req, res, next) {
 }
 
 async function remove(req, res, next) {
+    const authenticationResBody = authenticate(req);
+    if (!authenticationResBody.success) {
+        const { status, message, authData } = authenticationResBody;
+        return res.status(status).json({ message, authData });
+    }
 
+    const responseBody = await deleteUser(req.params.id);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    } else {
+        return res.json(responseBody);
+    }
 }
 
 // UTILS

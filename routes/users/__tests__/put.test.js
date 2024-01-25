@@ -3,7 +3,6 @@ const request = require("supertest");
 const database = require("../../../testDb");
 const User = require("../../../models/User");
 const bcrypt = require("bcryptjs");
-const Test = require("supertest/lib/test");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());

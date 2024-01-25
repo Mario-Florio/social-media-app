@@ -12,6 +12,6 @@ router.post("/", users_controller.post);
 
 router.put("/:id", verifyToken, users_controller.put);
 
-router.delete("/", users_controller.remove);
+router.delete("/:id", verifyToken, users_controller.remove);
 
 module.exports = router;
