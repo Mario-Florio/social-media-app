@@ -1,4 +1,4 @@
-const { registerUser, getUsers, getUserById, updateUser, deleteUser } = require("../database/methods");
+const { registerUser, getUsers, getUserById, updateUser, deleteUser, getProfile } = require("../database/methods/users");
 const { authenticate } = require("../verifyToken");
 
 async function get_all(req, res, next) {
@@ -9,6 +9,16 @@ async function get_all(req, res, next) {
 async function get_one(req, res, next) {
     const user = await getUserById(req.params.id);
     res.json({ user });
+}
+
+async function get_profile(req, res, next) {
+    const responseBody = await getProfile(req.params.id);
+    if (!responseBody.profile) {
+        const { status, message, profile } = responseBody;
+        return res.status(status).json({ message, profile });
+    } else {
+        return res.json(responseBody);
+    }
 }
 
 async function post(req, res, next) {
@@ -94,6 +104,7 @@ function validateInput(input) {
 module.exports = {
     get_all,
     get_one,
+    get_profile,
     post,
     put,
     remove

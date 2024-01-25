@@ -1,4 +1,4 @@
-const { authorizeUser } = require("../database/methods");
+const { authorizeUser } = require("../database/methods/users");
 
 async function post(req, res, next) {
     const { username, password } = req.body;

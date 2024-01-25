@@ -8,6 +8,8 @@ router.get("/", users_controller.get_all);
 
 router.get("/:id", users_controller.get_one);
 
+router.get("/:id/profile", users_controller.get_profile);
+
 router.post("/", users_controller.post);
 
 router.put("/:id", verifyToken, users_controller.put);

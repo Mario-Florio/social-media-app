@@ -1,4 +1,5 @@
-const User = require("../models/User");
+const User = require("../../models/User");
+const Profile = require("../../models/Profile");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -69,7 +70,7 @@ async function updateUser(id, update) {
         const res = { status: 400, message: "User does not exist", user: null };
         return res;
     }
-    
+
     await User.findByIdAndUpdate(id, update).exec();
     const user = await getUserById(id);
 
@@ -96,11 +97,30 @@ async function deleteUser(id) {
     return res;
 }
 
+async function getProfile(userId) {
+    const profile = await Profile.find({ user: userId }).exec();
+    if (!profile) {
+        const res = {
+            status: 400,
+            message: "User does not exist",
+            profile: false
+        }
+        return res;
+    } else {
+        const res = {
+            message: "Profile found successfully",
+            profile: profile
+        }
+        return res;
+    }
+}
+
 module.exports = {
     registerUser,
     authorizeUser,
     getUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getProfile
 }
