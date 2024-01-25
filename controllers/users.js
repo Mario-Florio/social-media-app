@@ -1,4 +1,5 @@
-const { registerUser, getUsers, getUserById } = require("../database/methods");
+const { registerUser, getUsers, getUserById, updateUser } = require("../database/methods");
+const { authenticate } = require("../verifyToken");
 
 async function get_all(req, res, next) {
     const users = await getUsers();
@@ -31,6 +32,37 @@ async function post(req, res, next) {
     }
 }
 
+async function put(req, res, next) {
+    const authenticationResBody = authenticate(req);
+    if (!authenticationResBody.success) {
+        const { status, message, authData } = authenticationResBody;
+        return res.status(status).json({ message, authData });
+    }
+
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.sendStatus(400);
+    }
+
+    const sanitizedInput = sanitizeInput(req.body);
+    const isValid = validateInput(sanitizedInput);
+    if (!isValid) {
+        return res.status(422).json({ message: "Invalid input", success: false });
+    }
+
+    const responseBody = await updateUser(req.params.id, sanitizedInput);
+    if (!responseBody.user) {
+        const { status, message, user } = responseBody;
+        return res.status(status).json({ message, user });
+    } else {
+        return res.json(responseBody);
+    }
+}
+
+async function remove(req, res, next) {
+
+}
+
 // UTILS
 function sanitizeInput(input) {
     const sanitizedInput = {};
@@ -50,5 +82,7 @@ function validateInput(input) {
 module.exports = {
     get_all,
     get_one,
-    post
+    post,
+    put,
+    remove
 }

@@ -63,9 +63,26 @@ async function getUserById(id) {
     }
 }
 
+async function updateUser(id, update) {
+    const userExists = await getUserById(id);
+    if (!userExists) {
+        const res = { status: 400, message: "User does not exist", user: null };
+        return res;
+    }
+    await User.findByIdAndUpdate(id, update).exec();
+    const user = await getUserById(id);
+
+    const res = {
+        user,
+        message: "Update was successful"
+    }
+    return res;
+}
+
 module.exports = {
     registerUser,
     authorizeUser,
     getUsers,
-    getUserById
+    getUserById,
+    updateUser
 }
