@@ -1,8 +1,7 @@
 const app = require("../../../app");
 const request = require("supertest");
 const database = require("../../../testDb");
-const User = require("../../../models/User");
-const bcrypt = require("bcryptjs");
+const populateUsers = require("../../__utils__/populateUsers");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -72,13 +71,3 @@ describe("/users POST", () => {
         });
     });
 });
-
-// UTILS
-async function populateUsers() {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash("password", salt);
-    await new User({ username: "username1", password: hashedPassword }).save();
-    await new User({ username: "username2", password: hashedPassword }).save();
-    await new User({ username: "username3", password: hashedPassword }).save();
-    await new User({ username: "username4", password: hashedPassword }).save();
-}
