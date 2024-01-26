@@ -4,18 +4,18 @@ const { verifyToken } = require("../../verifyToken");
 
 const router = express.Router();
 
-router.get("/", users_controller.get_all);
+router.get("/", users_controller.read_all);
 
-router.get("/:id", users_controller.get_one);
+router.get("/:id", users_controller.read_one);
 
-router.post("/", users_controller.post);
+router.post("/", users_controller.create);
 
-router.put("/:id", verifyToken, users_controller.put);
+router.put("/:id", verifyToken, users_controller.update);
 
 router.delete("/:id", verifyToken, users_controller.remove);
 
-router.get("/:id/profile", users_controller.get_profile);
+router.get("/:id/profile", users_controller.read_profile);
 
-router.put("/:id/profile", verifyToken, users_controller.put_profile);
+router.put("/:id/profile", verifyToken, users_controller.update_profile);
 
 module.exports = router;

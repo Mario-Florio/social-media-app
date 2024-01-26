@@ -1,17 +1,17 @@
-const { registerUser, getUsers, getUserById, updateUser, deleteUser, getProfile, updateProfile } = require("../database/methods/users");
+const users_dbMethods = require("../database/methods/users");
 const { authenticate } = require("../verifyToken");
 
-async function get_all(req, res, next) {
-    const users = await getUsers();
+async function read_all(req, res, next) {
+    const users = await users_dbMethods.getUsers();
     res.json({ users });
 } 
 
-async function get_one(req, res, next) {
-    const user = await getUserById(req.params.id);
+async function read_one(req, res, next) {
+    const user = await users_dbMethods.getUserById(req.params.id);
     res.json({ user });
 }
 
-async function post(req, res, next) {
+async function create(req, res, next) {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.sendStatus(400);
@@ -23,7 +23,7 @@ async function post(req, res, next) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
 
-    const responseBody = await registerUser(sanitizedInput);
+    const responseBody = await users_dbMethods.registerUser(sanitizedInput);
     if (!responseBody.success) {
         const { status, message, success } = responseBody;
         return res.status(status).json({ message, success });
@@ -32,7 +32,7 @@ async function post(req, res, next) {
     }
 }
 
-async function put(req, res, next) {
+async function update(req, res, next) {
     const authenticationResBody = authenticate(req);
     if (!authenticationResBody.success) {
         const { status, message, authData } = authenticationResBody;
@@ -50,7 +50,8 @@ async function put(req, res, next) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
 
-    const responseBody = await updateUser(req.params.id, sanitizedInput);
+    const userId = req.params.id;
+    const responseBody = await users_dbMethods.updateUser(userId, sanitizedInput);
     if (!responseBody.user) {
         const { status, message, user } = responseBody;
         return res.status(status).json({ message, user });
@@ -66,7 +67,7 @@ async function remove(req, res, next) {
         return res.status(status).json({ message, authData });
     }
 
-    const responseBody = await deleteUser(req.params.id);
+    const responseBody = await users_dbMethods.deleteUser(req.params.id);
     if (!responseBody.success) {
         const { status, message, success } = responseBody;
         return res.status(status).json({ message, success });
@@ -75,9 +76,9 @@ async function remove(req, res, next) {
     }
 }
 
-async function get_profile(req, res, next) {
+async function read_profile(req, res, next) {
     const userId = req.params.id;
-    const responseBody = await getProfile(userId);
+    const responseBody = await users_dbMethods.getProfile(userId);
     if (!responseBody.profile) {
         const { status, message, profile } = responseBody;
         return res.status(status).json({ message, profile });
@@ -86,7 +87,7 @@ async function get_profile(req, res, next) {
     }
 }
 
-async function put_profile(req, res, next) {
+async function update_profile(req, res, next) {
     const authenticationResBody = authenticate(req);
     if (!authenticationResBody.success) {
         const { status, message, authData } = authenticationResBody;
@@ -100,7 +101,8 @@ async function put_profile(req, res, next) {
 
     const sanitizedInput = sanitizeInput(req.body);
 
-    const responseBody = await updateProfile(req.params.id, sanitizedInput);
+    const userId = req.params.id;
+    const responseBody = await users_dbMethods.updateProfile(userId, sanitizedInput);
     if (!responseBody.profile) {
         const { status, message, profile } = responseBody;
         return res.status(status).json({ message, profile });
@@ -126,11 +128,11 @@ function validateInput(input) {
 }
 
 module.exports = {
-    get_all,
-    get_one,
-    post,
-    put,
+    read_all,
+    read_one,
+    create,
+    update,
     remove,
-    get_profile,
-    put_profile
+    read_profile,
+    update_profile
 }

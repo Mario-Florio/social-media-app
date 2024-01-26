@@ -1,12 +1,12 @@
-const { authorizeUser } = require("../database/methods/users");
+const users_dbMethods = require("../database/methods/users");
 
-async function post(req, res, next) {
+async function login(req, res, next) {
     const { username, password } = req.body;
     if (!username || !password) {
         return res.sendStatus(400);
     }
 
-    const responseBody = await authorizeUser(req.body);
+    const responseBody = await users_dbMethods.authorizeUser(req.body);
     if (!responseBody.user) {
         const { status, message, user } = responseBody;
         return res.status(status).json({ message, user });
@@ -16,5 +16,5 @@ async function post(req, res, next) {
 }
 
 module.exports = {
-    post
+    login
 }
