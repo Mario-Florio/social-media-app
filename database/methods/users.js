@@ -17,6 +17,7 @@ async function registerUser(credentials) {
             username,
             password: hashedPassword
         });
+        await new Profile({ user }).save();
         await user.save();
 
         const res = {
