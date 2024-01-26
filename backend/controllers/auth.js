@@ -1,4 +1,11 @@
 const users_dbMethods = require("../database/methods/users");
+const { authenticate } = require("../verifyToken");
+
+async function read_authData(req, res, next) {
+    const responseBody = authenticate(req);
+    const { message, authData, success } = responseBody;
+    res.json({ message, authData, success });
+}
 
 async function login(req, res, next) {
     const { username, password } = req.body;
@@ -16,5 +23,6 @@ async function login(req, res, next) {
 }
 
 module.exports = {
+    read_authData,
     login
 }

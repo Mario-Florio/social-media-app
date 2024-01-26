@@ -18,7 +18,7 @@ function authenticate(req) {
             if (authData.user._id !== id) {
                 const res = {
                     status: 404,
-                    message: "You are not authorized to update this user",
+                    message: "You are not authorized to further act",
                     authData,
                     success: false
                 }
