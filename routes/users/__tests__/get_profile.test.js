@@ -30,11 +30,11 @@ describe("/users GET_PROFILE", () => {
         test("response body has accurate profile", async () => {
             const users = await User.find().exec();
             const userId = users[0]._id.toString();
-            const profile = await Profile.find({ user: userId }).exec();
+            const profile = await Profile.findOne({ user: userId }).exec();
             const response = await request(app).get(`/api/users/${userId}/profile`);
 
             expect(response.body.profile).toBeDefined();
-            expect(response.body.profile._id).toEqual(profile._id);
+            expect(response.body.profile._id).toEqual(profile._id.toString());
         });
     });
 });

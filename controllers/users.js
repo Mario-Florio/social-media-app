@@ -1,4 +1,4 @@
-const { registerUser, getUsers, getUserById, updateUser, deleteUser, getProfile } = require("../database/methods/users");
+const { registerUser, getUsers, getUserById, updateUser, deleteUser, getProfile, updateProfile } = require("../database/methods/users");
 const { authenticate } = require("../verifyToken");
 
 async function get_all(req, res, next) {
@@ -9,16 +9,6 @@ async function get_all(req, res, next) {
 async function get_one(req, res, next) {
     const user = await getUserById(req.params.id);
     res.json({ user });
-}
-
-async function get_profile(req, res, next) {
-    const responseBody = await getProfile(req.params.id);
-    if (!responseBody.profile) {
-        const { status, message, profile } = responseBody;
-        return res.status(status).json({ message, profile });
-    } else {
-        return res.json(responseBody);
-    }
 }
 
 async function post(req, res, next) {
@@ -85,6 +75,40 @@ async function remove(req, res, next) {
     }
 }
 
+async function get_profile(req, res, next) {
+    const userId = req.params.id;
+    const responseBody = await getProfile(userId);
+    if (!responseBody.profile) {
+        const { status, message, profile } = responseBody;
+        return res.status(status).json({ message, profile });
+    } else {
+        return res.json(responseBody);
+    }
+}
+
+async function put_profile(req, res, next) {
+    const authenticationResBody = authenticate(req);
+    if (!authenticationResBody.success) {
+        const { status, message, authData } = authenticationResBody;
+        return res.status(status).json({ message, authData });
+    }
+
+    const { bio, picture } = req.body;
+    if (!bio || !picture) {
+        return res.sendStatus(400);
+    }
+
+    const sanitizedInput = sanitizeInput(req.body);
+
+    const responseBody = await updateProfile(req.params.id, sanitizedInput);
+    if (!responseBody.profile) {
+        const { status, message, profile } = responseBody;
+        return res.status(status).json({ message, profile });
+    } else {
+        return res.json(responseBody);
+    }
+}
+
 // UTILS
 function sanitizeInput(input) {
     const sanitizedInput = {};
@@ -104,8 +128,9 @@ function validateInput(input) {
 module.exports = {
     get_all,
     get_one,
-    get_profile,
     post,
     put,
-    remove
+    remove,
+    get_profile,
+    put_profile
 }

@@ -42,7 +42,7 @@ function verifyToken(req, res, next) {
         req.token = bearerToken;
         next();
     } else {
-        res.status(404).json('Action is forbidden');
+        res.status(404).json({ message: 'Action is forbidden' });
     }
 }
 

@@ -66,14 +66,14 @@ async function getUserById(id) {
 }
 
 async function updateUser(id, update) {
-    const userExists = await getUserById(id);
+    const userExists = await User.findById(id).exec();
     if (!userExists) {
         const res = { status: 400, message: "User does not exist", user: null };
         return res;
     }
 
     await User.findByIdAndUpdate(id, update).exec();
-    const user = await getUserById(id);
+    const user = await User.findById(id).exec();
 
     const res = {
         user,
@@ -99,11 +99,11 @@ async function deleteUser(id) {
 }
 
 async function getProfile(userId) {
-    const profile = await Profile.find({ user: userId }).exec();
+    const profile = await Profile.findOne({ user: userId }).exec();
     if (!profile) {
         const res = {
             status: 400,
-            message: "User does not exist",
+            message: "User profile does not exist",
             profile: false
         }
         return res;
@@ -116,6 +116,27 @@ async function getProfile(userId) {
     }
 }
 
+async function updateProfile(userId, update) {
+    const profileExists = await Profile.findOne({ user: userId }).exec();
+    if (!profileExists) {
+        const res = {
+            status: 400,
+            message: "User profile does not exist",
+            profile: false
+        }
+        return res;
+    }
+
+    await Profile.findByIdAndUpdate(profileExists._id, update).exec();
+    const profile = await Profile.findById(profileExists._id).exec();
+
+    const res = {
+        profile,
+        message: "Update was successful"
+    }
+    return res;
+}
+
 module.exports = {
     registerUser,
     authorizeUser,
@@ -123,5 +144,6 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    getProfile
+    getProfile,
+    updateProfile
 }
