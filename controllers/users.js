@@ -119,7 +119,7 @@ function sanitizeInput(input) {
 }
 
 function validateInput(input) {
-    if (input.password.length < 8) {
+    if (input.password.length < 8 || input.password.length > 25) {
         return false;
     }
     return true;
