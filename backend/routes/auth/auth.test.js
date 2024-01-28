@@ -1,7 +1,7 @@
 const app = require("../../app");
 const request = require("supertest");
 const database = require("../../testDb");
-const populateUsers = require("../__utils__/populateUsers");
+const populate = require("../__utils__/populate");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -9,7 +9,7 @@ afterAll(async () => await database.disconnect());
 describe("/auth", () => {
 
     describe("given username and password", () => {
-        beforeEach(async () => await populateUsers());
+        beforeEach(async () => await populate.users());
         afterEach(async () => await database.dropCollections());
 
         test("should return 200 status code", async () => {
@@ -37,7 +37,7 @@ describe("/auth", () => {
         });
         
         describe("user doesn't exist", () => {
-            beforeEach(async () => await populateUsers());
+            beforeEach(async () => await populate.users());
             afterEach(async () => await database.dropCollections());
 
             test("should return 400 status code", async () => {
@@ -64,7 +64,7 @@ describe("/auth", () => {
         });
 
         describe("wrong password", () => {
-            beforeEach(async () => await populateUsers());
+            beforeEach(async () => await populate.users());
             afterEach(async () => await database.dropCollections());
 
             test("should return 404 status code", async () => {

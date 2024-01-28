@@ -1,7 +1,7 @@
 const app = require("../../../app");
 const request = require("supertest");
 const database = require("../../../testDb");
-const populateUsers = require("../../__utils__/populateUsers");
+const populate = require("../../__utils__/populate");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -11,7 +11,7 @@ describe("/users PUT_PROFILE", () => {
         let token = null;
         let user = null;
         beforeEach(async () => {
-            await populateUsers();
+            await populate.users();
             const loginRes = await request(app).post("/api/auth/login").send({
                 username: "username1",
                 password: "password"
@@ -64,7 +64,7 @@ describe("/users PUT_PROFILE", () => {
     describe("client not authenticated", () => {
         let user = null;
         beforeEach(async () => {
-            await populateUsers();
+            await populate.users();
             const loginRes = await request(app).post("/api/auth/login").send({
                 username: "username1",
                 password: "password"

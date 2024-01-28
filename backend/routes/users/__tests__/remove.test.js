@@ -1,7 +1,7 @@
 const app = require("../../../app");
 const request = require("supertest");
 const database = require("../../../testDb");
-const populateUsers = require("../../__utils__/populateUsers");
+const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
 
 beforeAll(async () => await database.connect());
@@ -12,7 +12,7 @@ describe("/users REMOVE", () => {
         let token = null;
         let user = null;
         beforeEach(async () => {
-            await populateUsers();
+            await populate.users();
             const loginRes = await request(app).post("/api/auth/login").send({
                 username: "username1",
                 password: "password"

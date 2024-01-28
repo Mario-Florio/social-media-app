@@ -1,14 +1,14 @@
 const app = require("../../../app");
 const request = require("supertest");
 const database = require("../../../testDb");
-const populateUsers = require("../../__utils__/populateUsers");
+const populate = require("../../__utils__/populate");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
 describe("/users READ_ALL", () => {
     describe("database has users", () => {
-        beforeAll(async () => await populateUsers());
+        beforeAll(async () => await populate.users());
         afterAll(async () => await database.dropCollections());
 
         test("should return 200 status code", async () => {
