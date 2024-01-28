@@ -21,10 +21,7 @@ async function registerUser(credentials) {
         const forum = await new Forum().save();
         await new Profile({ user, forum }).save();
 
-        const res = {
-            message: "Success: user has been created",
-            success: true
-        };
+        const res = { message: "Success: user has been created", success: true };
         return res;
     }
 }
@@ -39,11 +36,7 @@ async function authorizeUser(credentials) {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             const token = jwt.sign({ user }, process.env.SECRET, {expiresIn: "1h"});
-            const res = {
-                message: "Login was successful",
-                user,
-                token
-            }
+            const res = { message: "Login was successful", user, token };
             return res;
         } else {
             const res = { status: 404, message: "Password does not match", user: false };
@@ -73,13 +66,16 @@ async function updateUser(id, update) {
         return res;
     }
 
+    if (update.password) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(update.password, salt);
+        update.password = hashedPassword;
+    }
+
     await User.findByIdAndUpdate(id, update).exec();
     const user = await User.findById(id).exec();
 
-    const res = {
-        user,
-        message: "Update was successful"
-    }
+    const res = { user, message: "Update was successful" };
     return res;
 }
 
@@ -92,27 +88,17 @@ async function deleteUser(id) {
 
     await User.findByIdAndDelete(id).exec();
 
-    const res = {
-        success: true,
-        message: "Deletion was successful"
-    }
+    const res = { success: true, message: "Deletion was successful" };
     return res;
 }
 
 async function getProfile(userId) {
     const profile = await Profile.findOne({ user: userId }).exec();
     if (!profile) {
-        const res = {
-            status: 400,
-            message: "User profile does not exist",
-            profile: false
-        }
+        const res = { status: 400, message: "User profile does not exist", profile: false };
         return res;
     } else {
-        const res = {
-            message: "Profile found successfully",
-            profile: profile
-        }
+        const res = { message: "Profile found successfully", profile: profile }
         return res;
     }
 }
@@ -120,21 +106,14 @@ async function getProfile(userId) {
 async function updateProfile(userId, update) {
     const profileExists = await Profile.findOne({ user: userId }).exec();
     if (!profileExists) {
-        const res = {
-            status: 400,
-            message: "User profile does not exist",
-            profile: false
-        }
+        const res = { status: 400, message: "User profile does not exist", profile: false };
         return res;
     }
 
     await Profile.findByIdAndUpdate(profileExists._id, update).exec();
     const profile = await Profile.findById(profileExists._id).exec();
 
-    const res = {
-        profile,
-        message: "Update was successful"
-    }
+    const res = { profile, message: "Update was successful" };
     return res;
 }
 

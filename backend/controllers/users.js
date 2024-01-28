@@ -39,11 +39,6 @@ async function update(req, res, next) {
         return res.status(status).json({ message, authData });
     }
 
-    const { username, password } = req.body;
-    if (!username || !password) {
-        return res.sendStatus(400);
-    }
-
     const sanitizedInput = sanitizeInput(req.body);
     const isValid = validateInput(sanitizedInput);
     if (!isValid) {
@@ -94,11 +89,6 @@ async function update_profile(req, res, next) {
         return res.status(status).json({ message, authData });
     }
 
-    const { bio, picture } = req.body;
-    if (!bio || !picture) {
-        return res.sendStatus(400);
-    }
-
     const sanitizedInput = sanitizeInput(req.body);
 
     const userId = req.params.id;
@@ -121,7 +111,8 @@ function sanitizeInput(input) {
 }
 
 function validateInput(input) {
-    if (input.password.length < 8 || input.password.length > 25) {
+    if (input.password &&
+        (input.password.length < 8 || input.password.length > 25)) {
         return false;
     }
     return true;
