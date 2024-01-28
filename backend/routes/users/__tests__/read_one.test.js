@@ -7,7 +7,7 @@ const User = require("../../../models/User");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users GET_ONE", () => {
+describe("/users READ_ONE", () => {
     describe("database has users", () => {
         beforeAll(async () => await populateUsers());
         afterAll(async () => await database.dropCollections());

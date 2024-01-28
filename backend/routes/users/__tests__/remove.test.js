@@ -7,7 +7,7 @@ const User = require("../../../models/User");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users DELETE", () => {
+describe("/users REMOVE", () => {
     describe("client authenticated", () => {
         let token = null;
         let user = null;

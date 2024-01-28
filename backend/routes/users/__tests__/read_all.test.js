@@ -6,7 +6,7 @@ const populateUsers = require("../../__utils__/populateUsers");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users GET_ALL", () => {
+describe("/users READ_ALL", () => {
     describe("database has users", () => {
         beforeAll(async () => await populateUsers());
         afterAll(async () => await database.dropCollections());

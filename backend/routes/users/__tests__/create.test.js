@@ -6,7 +6,7 @@ const populateUsers = require("../../__utils__/populateUsers");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users POST", () => {
+describe("/users CREATE", () => {
     describe("given username and password", () => {
         beforeEach(async () => await populateUsers());
         afterEach(async () => await database.dropCollections());

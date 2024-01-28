@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users PUT", () => {
+describe("/users UPDATE", () => {
     describe("client authenticated", () => {
         let token = null;
         let user = null;

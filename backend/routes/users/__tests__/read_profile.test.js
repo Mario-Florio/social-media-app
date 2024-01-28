@@ -8,7 +8,7 @@ const Profile = require("../../../models/Profile");
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users GET_PROFILE", () => {
+describe("/users READ_PROFILE", () => {
     describe("", () => {
         beforeAll(async () => await populateUsers());
         afterAll(async () => await database.dropCollections());
