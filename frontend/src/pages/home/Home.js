@@ -5,7 +5,7 @@ import Footer from "../../components/footer/Footer";
 import axios from "axios";
 
 function Home({ user, setUser }) {
-    const [formInput, setFormInput] = useState({ username: "" });
+    const [formInput, setFormInput] = useState({ username: "", password: "" });
 
     function logout() {
         localStorage.removeItem("token");
@@ -21,12 +21,19 @@ function Home({ user, setUser }) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        updateUser(formInput)
+        const requestBody = {};
+        let isEdited = false;
+        for (const key in formInput) {
+            if (formInput[key] !== "") {
+                requestBody[key] = formInput[key];
+                isEdited = true;
+            }
+        }
+        isEdited && updateUser(requestBody)
             .then(data => {
-                const { user } = data.authData;
+                const { user } = data;
                 setUser(user);
-                console.log(data.message);
-                setFormInput({ username: "" });
+                setFormInput({ username: "", password: "" });
             })
             .catch(err => console.log(err));
     }
@@ -36,7 +43,7 @@ function Home({ user, setUser }) {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`
             }
-        }
+        };
         const res = await axios.put(`/users/${user._id}`,
             input,
             config);
@@ -70,7 +77,9 @@ function Home({ user, setUser }) {
                 <section>
                     <form onSubmit={handleSubmit} action={`/users/${user._id}`} method="PUT">
                         <label htmlFor="username">Edit Username</label><br/>
-                        <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange} required/><br/>
+                        <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/><br/>
+                        <label htmlFor="username">Edit Password</label><br/>
+                        <input type="text" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>
                         <button>Submit</button>
                     </form>
                 </section>

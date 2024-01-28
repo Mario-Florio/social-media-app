@@ -27,7 +27,7 @@ function App() {
         return session.data;
     }
 
-  return (user ?
+    return(user ?
         <Home user={user} setUser={setUser}/> :
         <EntryForm setUser={setUser}/>
     );

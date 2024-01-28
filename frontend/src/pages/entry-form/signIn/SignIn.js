@@ -27,7 +27,6 @@ function SignIn({ setUser, isSignIn, setIsSignIn }) {
         getUser(formInput)
             .then(data => {
                 setIsLoading(false);
-                console.log(data.message);
                 localStorage.setItem("token", data.token);
                 if (data.user) {
                     setUser(data.user);
@@ -40,7 +39,6 @@ function SignIn({ setUser, isSignIn, setIsSignIn }) {
             .catch(err => {
                 setIsLoading(false);
                 console.error(err);
-                alert(err);
             });
     }
 

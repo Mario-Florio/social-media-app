@@ -62,7 +62,6 @@ function SignUp({ isSignIn, setIsSignIn }) {
         postUser(formInput)
             .then(res => {
                 setIsLoading(false);
-                alert(res.message);
                 if (res.success) {
                     setIsSignIn(true);
                     setFormInput({
@@ -75,7 +74,6 @@ function SignUp({ isSignIn, setIsSignIn }) {
             .catch(async err => {
                 setIsLoading(false);
                 console.error(err);
-                alert('Error occured, please try again');
             });
     }
 
