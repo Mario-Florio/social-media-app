@@ -1,6 +1,6 @@
 const app = require("../../../app");
 const request = require("supertest");
-const database = require("../../../testDb");
+const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
 const Profile = require("../../../models/Profile");
