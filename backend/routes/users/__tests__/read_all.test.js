@@ -8,8 +8,8 @@ afterAll(async () => await database.disconnect());
 
 describe("/users READ_ALL", () => {
     describe("database has users", () => {
-        beforeAll(async () => await populate.users());
-        afterAll(async () => await database.dropCollections());
+        beforeEach(async () => await populate.users());
+        afterEach(async () => await database.dropCollections());
 
         test("should return 200 status code", async () => {
             const response = await request(app).get("/api/users");
