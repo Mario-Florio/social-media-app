@@ -6,6 +6,7 @@ const cors = require("cors");
 
 const authRouter = require("./routes/auth/auth");
 const usersRouter = require("./routes/users/users");
+const postsRouter = require("./routes/posts/posts");
 
 const app = express();
 dotenv.config();
@@ -22,5 +23,7 @@ app.get("/api", (req, res, next) => {
 app.use("/api/auth", authRouter);
 
 app.use("/api/users", usersRouter);
+
+app.use("/api/posts", postsRouter);
 
 module.exports = app;
