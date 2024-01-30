@@ -11,18 +11,12 @@ describe("/users CREATE", () => {
         beforeEach(async () => await populate.users());
         afterEach(async () => await database.dropCollections());
 
-        test("should return 200 status code", async () => {
+        test("should return 200 status code and json content type header", async () => {
             const response = await request(app).post("/api/users").send({
                 username: "username",
                 password: "password"
             });
             expect(response.statusCode).toBe(200);
-        });
-        test("should specify json in the content type header", async () => {
-            const response = await request(app).post("/api/users").send({
-                username: "username",
-                password: "password"
-            });
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
         test("response body has success and message fields defined", async () => {
@@ -38,12 +32,13 @@ describe("/users CREATE", () => {
             beforeEach(async () => await populate.users());
             afterEach(async () => await database.dropCollections());
 
-            test("should return 404 status code", async () => {
+            test("should return 404 status code and json content type header", async () => {
                 const response = await request(app).post("/api/users").send({
                     username: "username1",
                     password: "password"
                 });
                 expect(response.statusCode).toBe(404);
+                expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
             });
             test("response body has success and message field defined", async () => {
                 const response = await request(app).post("/api/users").send({

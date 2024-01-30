@@ -1,6 +1,6 @@
 const express = require("express");
 const users_controller = require("../../controllers/users");
-const { verifyToken } = require("../../verifyToken");
+const { getToken } = require("../../authenticate");
 
 const router = express.Router();
 
@@ -10,12 +10,12 @@ router.get("/:id", users_controller.read_one);
 
 router.post("/", users_controller.create);
 
-router.put("/:id", verifyToken, users_controller.update);
+router.put("/:id", getToken, users_controller.update);
 
-router.delete("/:id", verifyToken, users_controller.remove);
+router.delete("/:id", getToken, users_controller.remove);
 
 router.get("/:id/profile", users_controller.read_profile);
 
-router.put("/:id/profile", verifyToken, users_controller.update_profile);
+router.put("/:id/profile", getToken, users_controller.update_profile);
 
 module.exports = router;

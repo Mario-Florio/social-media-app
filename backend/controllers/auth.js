@@ -1,8 +1,8 @@
 const users_dbMethods = require("../database/methods/users");
-const { authenticate } = require("../verifyToken");
+const { verifyToken } = require("../authenticate");
 
 async function read_authData(req, res, next) {
-    const responseBody = authenticate(req);
+    const responseBody = verifyToken(req.token);
     const { message, authData, success } = responseBody;
     res.json({ message, authData, success });
 }
