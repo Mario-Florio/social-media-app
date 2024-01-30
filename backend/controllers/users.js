@@ -80,17 +80,6 @@ async function remove(req, res, next) {
     }
 }
 
-async function read_profile(req, res, next) {
-    const userId = req.params.id;
-    const responseBody = await users_dbMethods.getProfile(userId);
-    if (!responseBody.profile) {
-        const { status, message, profile } = responseBody;
-        return res.status(status).json({ message, profile });
-    } else {
-        return res.json(responseBody);
-    }
-}
-
 async function update_profile(req, res, next) {
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
@@ -105,7 +94,9 @@ async function update_profile(req, res, next) {
 
     const sanitizedInput = sanitizeInput(req.body);
 
-    const responseBody = await users_dbMethods.updateProfile(userId, sanitizedInput);
+    const user = await users_dbMethods.getUserById(userId);
+    const { profile } = user;
+    const responseBody = await users_dbMethods.updateProfile(profile._id, sanitizedInput);
     if (!responseBody.profile) {
         const { status, message, profile } = responseBody;
         return res.status(status).json({ message, profile });
@@ -137,6 +128,5 @@ module.exports = {
     create,
     update,
     remove,
-    read_profile,
     update_profile
 }

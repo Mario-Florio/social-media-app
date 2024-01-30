@@ -14,8 +14,6 @@ router.put("/:id", getToken, users_controller.update);
 
 router.delete("/:id", getToken, users_controller.remove);
 
-router.get("/:id/profile", users_controller.read_profile);
-
 router.put("/:id/profile", getToken, users_controller.update_profile);
 
 module.exports = router;

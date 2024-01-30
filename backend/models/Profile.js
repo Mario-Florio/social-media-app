@@ -3,10 +3,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    forum: { type: Schema.Types.ObjectId, ref: "Forum", required: true },
     bio: { type: String, maxLength: 250 },
-    picture: { type: String }
+    picture: { type: String },
+    posts: { type: [Schema.Types.ObjectId], ref: "Post", default: [] },
+    followers: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] },
+    following: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] }
 }, { timestamps: true, virtuals: true });
 
 ProfileSchema.virtual("url").get(function() {
