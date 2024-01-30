@@ -91,6 +91,7 @@ describe("/users UPDATE", () => {
     });
 
     describe("client not authenticated (token unverified)", () => {
+        let token = null;
         let user = null;
         beforeEach(async () => {
             await populate.users();
@@ -98,10 +99,11 @@ describe("/users UPDATE", () => {
                 username: "username1",
                 password: "password"
             });
-            token = "";
+            token = loginRes.body.token;
             user = loginRes.body.user;
         });
         afterEach(async () => {
+            token = null;
             user = null;
             await database.dropCollections();
         });
@@ -127,7 +129,7 @@ describe("/users UPDATE", () => {
                 username: "username1",
                 password: "password"
             });
-            token = "";
+            token = loginRes.body.token;
             user = loginRes.body.user;
         });
         afterEach(async () => {
@@ -136,7 +138,20 @@ describe("/users UPDATE", () => {
             await database.dropCollections();
         });
 
-        test("should return 404 status code and json content type header", async () => {
+        test("should return 400 status code and json content type header", async () => {
+            token = "";
+            const response = await request(app)
+                .put(`/api/users/${user._id}`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    username: "updated-username",
+                    password: "password"
+                });
+            expect(response.statusCode).toBe(400);
+            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        });
+        test("should return 400 status code and json content type header", async () => {
+            token += "tamper";
             const response = await request(app)
                 .put(`/api/users/${user._id}`)
                 .set("Authorization", `Bearer ${token}`)

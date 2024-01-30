@@ -118,7 +118,7 @@ describe("/users UPDATE_PROFILE", () => {
                 username: "username1",
                 password: "password"
             });
-            token = "";
+            token = loginRes.body.token;
             user = loginRes.body.user;
         });
         afterEach(async () => {
@@ -128,6 +128,16 @@ describe("/users UPDATE_PROFILE", () => {
         });
 
         test("should return 404 status code and json content type header", async () => {
+            token = "";
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile`)
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.statusCode).toBe(400);
+            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        });
+        test("should return 404 status code and json content type header", async () => {
+            token += "tamper";
             const response = await request(app)
                 .put(`/api/users/${user._id}/profile`)
                 .set("Authorization", `Bearer ${token}`);
