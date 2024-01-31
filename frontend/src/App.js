@@ -18,13 +18,14 @@ function App() {
     }, []);
 
     async function getSession() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        }
-        const session = await axios.get("/auth/session", config);
-        return session.data;
+        // const config = {
+        //     headers: {
+        //         Authorization: `Bearer ${localStorage.getItem("token")}`
+        //     }
+        // }
+        // const session = await axios.get("/auth/session", config);
+        // return session.data;
+        return { success: true, authData: { user: { username: "moflow47", password: "password" } } }
     }
 
     return(user ?
