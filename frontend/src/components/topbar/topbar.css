@@ -1,0 +1,66 @@
+
+.topbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: rgb(200, 170, 175);
+    padding: 1rem;
+    width: 100%;
+}
+
+.topbar .hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.topbar .hamburger-menu>div {
+    background-color: rgb(184, 154, 159);
+    height: 5px;
+    width: 35px;
+    border-radius: 1px;
+    box-shadow: inset rgb(86, 86, 86) 0px 0px 20px -12px;
+    transition-duration: .2s;
+}
+
+.topbar .hamburger-menu.active>div {
+    background-color: rgb(236, 226, 228);
+    box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
+    transition-duration: .2s;
+}
+
+.topbar form {
+    display: flex;
+    align-items: center;
+    background-color: rgb(184, 154, 159);
+    padding: .25rem;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: inset rgb(86, 86, 86) 0px 0px 20px -12px;
+    transition-duration: .2s;
+}
+
+.topbar form.focused {
+    background-color: rgb(236, 226, 228);
+    box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
+    transition-duration: .2s;
+}
+
+.topbar form button {
+    background-color: transparent;
+    height: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.topbar form img {
+    height: 100%;
+}
+
+.topbar form input {
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    outline: none;
+}

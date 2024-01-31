@@ -1,0 +1,65 @@
+
+.sidemenu {
+    position: fixed;
+    left: -100%;
+    background-color: rgb(213, 213, 213);
+    height: 100%;
+    width: 100%;
+    transition-duration: .2s;
+}
+
+.sidemenu.active {
+    left: 0;
+    transition-duration: .2s;
+}
+
+.sidemenu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidemenu a {
+    text-decoration: none;
+    color: black;
+}
+
+.sidemenu p {
+    margin: 0;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+}
+
+.sidemenu p:hover {
+    background-color: rgb(174, 174, 174);
+}
+
+.sidemenu li {
+    margin: .5rem 1rem;
+}
+
+.sidemenu h2 {
+    margin-left: 1rem;
+}
+
+.sidemenu article {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+}
+
+.sidemenu article:hover {
+    background-color: rgb(174, 174, 174);
+}
+
+.sidemenu article h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.sidemenu article img {
+    height: 60px;
+    border-radius: 50%;
+}

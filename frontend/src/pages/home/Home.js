@@ -1,38 +1,55 @@
+import { useState } from "react";
 import "./home.css";
-import Navbar from "../../components/navbar/Navbar";
-import Footer from "../../components/footer/Footer";
+import Topbar from "../../components/topbar/Topbar";
+import SideMenu from "../../components/sidemenu/SideMenu";
 import jesus from "../../assets/imgs/jesus.jpg"
 import profilePic from "../../assets/imgs/profile-pic.jpg";
 
 function Home({ user, setUser }) {
+    const [sideMenuIsActive, setSideMenuIsActive] = useState(false);
 
     return(
         <>
             <header style={{ position: "sticky", top: "0" }}>
-                <Navbar/>
+                <Topbar setSideMenuIsActive={setSideMenuIsActive}/>
             </header>
             <main>
+                <SideMenu sideMenuIsActive={sideMenuIsActive}/>
                 <NewPost/>
                 <ul className="timeline">
                     <li><Post/></li>
                     <li><Post/></li>
                     <li><Post/></li>
+                    <li style={{ textAlign: "center", margin: "3rem" }}>
+                        <a href="" style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</a>
+                    </li>
                 </ul>
             </main>
-            <Footer/>
         </>
     );
 }
 
 function NewPost() {
+    const [input, setInput] = useState("");
+
+    function handleChange(e) {
+        setInput(e.target.value);
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        setInput("");
+    }
+
     return(
         <article className="newPost">
             <a href="" className="profilePic-wrapper">
                 <img src={jesus} alt="users profile pic"/>
             </a>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>
-                <textarea name="newPost" id="newPost" placeholder="Write something..."></textarea>
+                <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
+                <button>Post</button>
             </form>
         </article>
     )
