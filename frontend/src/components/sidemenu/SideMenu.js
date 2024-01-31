@@ -4,7 +4,7 @@ import profilePic from "../../assets/imgs/profile-pic.jpg";
 function SideMenu({ sideMenuIsActive }) {
     return(
         <section className={ sideMenuIsActive ? "sidemenu active" : "sidemenu" }>
-            <nav className="navLinks">
+            <nav>
                 <ul>
                     <li>
                         <a href=""><p>Home</p></a>
@@ -15,8 +15,8 @@ function SideMenu({ sideMenuIsActive }) {
                 </ul>
             </nav>
             <hr/>
-            <h2>Friends</h2>
-            <ul className="friendsList">
+            <h2>Followers</h2>
+            <ul>
                 <li>
                     <a href="">
                         <article>
