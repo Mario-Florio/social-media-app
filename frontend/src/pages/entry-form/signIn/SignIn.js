@@ -2,13 +2,15 @@ import { useState } from "react";
 import "../styles.css";
 import Loader from "../../../components/loader/Loader";
 import axios from "axios";
+import { useAuth } from "../../../hooks/useAuth";
 
-function SignIn({ setUser, isSignIn, setIsSignIn }) {
+function SignIn({ isSignIn, setIsSignIn }) {
     const [isLoading, setIsLoading] = useState(false);
     const [formInput, setFormInput] = useState({
         username: "",
         password: "",
     });
+    const { login } = useAuth();
 
     function handleClick() {
         setIsSignIn(!isSignIn);
@@ -25,11 +27,10 @@ function SignIn({ setUser, isSignIn, setIsSignIn }) {
         e.preventDefault();
         setIsLoading(true);
         getUser(formInput)
-            .then(data => {
+            .then(async data => {
                 setIsLoading(false);
-                localStorage.setItem("token", data.token);
                 if (data.user) {
-                    setUser(data.user);
+                    await login(data);
                     setFormInput({
                         username: "",
                         password: ""

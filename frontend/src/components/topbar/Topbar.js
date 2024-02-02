@@ -2,30 +2,28 @@ import { useEffect, useState } from "react";
 import "./topbar.css";
 import searchIcon from "../../assets/imgs/search-icon.png";
 
-function Topbar({ setSideMenuIsActive }) {
+function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
     return(
-        <section className="topbar">
-            <HamburgerMenu setSideMenuIsActive={setSideMenuIsActive}/>
+        <header className="topbar">
+            <HamburgerMenu
+                sideMenuIsActive={sideMenuIsActive}
+                setSideMenuIsActive={setSideMenuIsActive}
+            />
             <SearchBar/>
-        </section>
+        </header>
     );
 }
 
 export default Topbar;
 
-function HamburgerMenu({ setSideMenuIsActive }) {
-    const [isActive, setIsActive] = useState(false);
-
-    useEffect(() => {
-        setSideMenuIsActive(isActive);
-    }, [isActive, setIsActive, setSideMenuIsActive]);
+function HamburgerMenu({ sideMenuIsActive, setSideMenuIsActive }) {
 
     function handleClick() {
-        setIsActive(!isActive);
+        setSideMenuIsActive(!sideMenuIsActive);
     }
 
     return(
-        <div onClick={handleClick} className={ isActive ? "hamburger-menu active" : "hamburger-menu" }>
+        <div onClick={handleClick} className={ sideMenuIsActive ? "hamburger-menu active" : "hamburger-menu" }>
             <div></div>
             <div></div>
             <div></div>

@@ -1,0 +1,22 @@
+
+.profileTop {
+    width: 100%;
+}
+
+.profileTop .coverPhoto {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.profileTop .profilePic {
+    position: relative;
+    top: -75px;
+    display: table;
+    height: 150px;
+    width: 150px;
+    margin: auto;
+    object-fit: cover;
+    border: solid 5px white;
+    border-radius: 50%;
+}
