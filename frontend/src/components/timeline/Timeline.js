@@ -10,7 +10,7 @@ function Timeline({ posts }) {
             <ul className="timeline">
                 { posts.map(post => <li key={post._id}><Post post={post}/></li>) }
                 <li style={{ textAlign: "center", margin: "3rem" }}>
-                    <a href="" style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</a>
+                    <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                 </li>
             </ul>
         </section>

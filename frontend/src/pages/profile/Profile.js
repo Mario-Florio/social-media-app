@@ -2,7 +2,7 @@ import "./profile.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import Timeline from "../../components/timeline/Timeline";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+// import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 
 import getData from "../../dummyData";
@@ -10,7 +10,7 @@ import getData from "../../dummyData";
 function Profile() {
     const [profileUser, setProfileUser] = useState(null);
     const { id } = useParams();
-    const { user } = useAuth();
+    // const { user } = useAuth();
 
     useEffect(() => {
         const profileUser = getProfileUser(id);
@@ -50,8 +50,8 @@ function Profile() {
     return(profileUser &&
         <PageLayout>
             <section className="profileTop">
-                <img src={profileUser.profile.coverPhoto} alt="cover photo" className="coverPhoto"/>
-                <img src={profileUser.profile.pic} alt="profile picture" className="profilePic"/>
+                <img src={profileUser.profile.coverPhoto} alt="cover" className="coverPhoto"/>
+                <img src={profileUser.profile.pic} alt="profile" className="profilePic"/>
             </section>
             <Timeline posts={profileUser.profile.posts}/>
         </PageLayout>
