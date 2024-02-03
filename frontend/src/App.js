@@ -11,7 +11,7 @@ function App() {
             <Route path="/login" element={<EntryForm/>}/>
             <Route path="/" element={<ProtectedOutlet/>}>
                 <Route path="" element={<Home/>}/>
-                <Route path="profile" element={<Profile/>}/>
+                <Route path="profile/:id" element={<Profile/>}/>
             </Route>
         </Routes>
     );

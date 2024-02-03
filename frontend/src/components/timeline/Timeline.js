@@ -1,16 +1,14 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./timeline.css";
-import jesus from "../../assets/imgs/jesus.jpg"
-import profilePic from "../../assets/imgs/profile-pic.jpg";
+import { useAuth } from "../../hooks/useAuth";
 
-function Timeline() {
+function Timeline({ posts }) {
     return(
         <section>
             <NewPost/>
             <ul className="timeline">
-                <li><Post/></li>
-                <li><Post/></li>
-                <li><Post/></li>
+                { posts.map(post => <li key={post._id}><Post post={post}/></li>) }
                 <li style={{ textAlign: "center", margin: "3rem" }}>
                     <a href="" style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</a>
                 </li>
@@ -23,6 +21,7 @@ export default Timeline;
 
 function NewPost() {
     const [input, setInput] = useState("");
+    const { user } = useAuth();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -35,9 +34,9 @@ function NewPost() {
 
     return(
         <article className="newPost">
-            <a href="" className="profilePic-wrapper">
-                <img src={jesus} alt="users profile pic"/>
-            </a>
+            <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
+                <img src={user.profile.pic} alt="users profile pic"/>
+            </Link>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>
                 <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
@@ -47,44 +46,47 @@ function NewPost() {
     );
 }
 
-function Post() {
+function Post({ post }) {
+    const { user } = post;
+    const { profile } = user;
+
     return(
         <article className="post">
             <header>
-                <a href="" className="profilePic-wrapper">
-                    <img src={profilePic} alt="users profile pic"/>
-                </a>
+                <Link to={`/profile/${profile._id}`} className="profilePic-wrapper">
+                    <img src={profile.pic} alt="users profile pic"/>
+                </Link>
                 <div className="title">
-                    <a href="">
-                        <h3>Profile Name</h3>
-                    </a>
+                    <Link to={`/profile/${profile._id}`}>
+                        <h3>{user.username}</h3>
+                    </Link>
                     <span>Time passed</span>
                 </div>
             </header>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ipsum a arcu cursus vitae congue mauris. Quis varius quam quisque id diam vel quam.</p>
+            <p>{post.text}</p>
             <footer>
                 <div className="top">
-                    <a href="">
+                    <Link>
                         <span># likes</span>
-                    </a>
-                    <a href="">
+                    </Link>
+                    <Link>
                         <span># comments</span>
-                    </a>
-                    <a href="">
+                    </Link>
+                    <Link>
                         <span># shares</span>
-                    </a>
+                    </Link>
                 </div>
                 <hr/>
                 <div className="bottom">
-                    <a href="">
+                    <Link>
                         <span>Like</span>
-                    </a>
-                    <a href="">
+                    </Link>
+                    <Link>
                         <span>Comment</span>
-                    </a>
-                    <a href="">
+                    </Link>
+                    <Link>
                         <span>Share</span>
-                    </a>
+                    </Link>
                 </div>
             </footer>
         </article>

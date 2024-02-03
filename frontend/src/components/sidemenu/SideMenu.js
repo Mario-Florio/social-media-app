@@ -1,8 +1,33 @@
 import "./sideMenu.css";
 import { Link } from "react-router-dom";
-import profilePic from "../../assets/imgs/profile-pic.jpg";
+import { useAuth } from "../../hooks/useAuth";
+
+import getData from "../../dummyData";
+import { useEffect, useState } from "react";
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
+    const { user } = useAuth();
+    const [following, setFollowing] = useState([]);
+
+    useEffect(() => {
+        const followingData = getFollowingData();
+        setFollowing(followingData);
+
+        function getFollowingData() {
+            const { users } = getData();
+            let followingData = [];
+
+            user.profile.following.forEach(a => {
+                users.forEach(b => {
+                    if (a === b._id) {
+                        followingData.push(b);
+                    }
+                });
+            });
+
+            return followingData;
+        }
+    }, [user]);
 
     function handleClick() {
         setSideMenuIsActive(false);
@@ -18,23 +43,27 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/profile" onClick={handleClick}>
+                        <Link to={`/profile/${user.profile._id}`} onClick={handleClick}>
                             <p>Profile</p>
                         </Link>
                     </li>
                 </ul>
             </nav>
             <hr/>
-            <h2>Followers</h2>
+            <h2>Following</h2>
             <ul>
-                <li>
-                    <Link onClick={handleClick}>
-                        <article>
-                            <img src={profilePic} alt="Profile pic"/>
-                            <h3>User Name</h3>
-                        </article>
-                    </Link>
-                </li>
+                {
+                    following.map(u => {
+                        return <li key={u._id}>
+                            <Link to={`/profile/${u.profile._id}`} onClick={handleClick}>
+                                <article>
+                                    <img src={u.profile.pic} alt="Profile pic"/>
+                                    <h3>{u.username}</h3>
+                                </article>
+                            </Link>
+                        </li>
+                    })
+                }
             </ul>
         </section>
     )
