@@ -94,7 +94,5 @@ export default function getData() {
         post.user = userData;
     });
 
-
-
     return { users, posts, comments };
 }
