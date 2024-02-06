@@ -1,18 +1,35 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./timeline.css";
+import { Post, LikesSection } from "./post/Post";
 import { useAuth } from "../../hooks/useAuth";
 
 function Timeline({ posts }) {
+    const [likes, setLikes] = useState([]);
+    const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     return(
         <section>
             <NewPost/>
             <ul className="timeline">
-                { posts.map(post => <li key={post._id}><Post post={post}/></li>) }
+                {
+                    posts.map(post =>
+                        <li key={post._id}>
+                            <Post
+                                post={post}
+                                setLikes={setLikes}
+                                setLikesSectionIsActive={setLikesSectionIsActive}
+                            />
+                        </li>)
+                }
                 <li style={{ textAlign: "center", margin: "3rem" }}>
                     <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                 </li>
             </ul>
+            <LikesSection
+                likes={likes}
+                likesSectionIsActive={likesSectionIsActive}
+                setLikesSectionIsActive={setLikesSectionIsActive}
+            />
         </section>
     );
 }
@@ -42,53 +59,6 @@ function NewPost() {
                 <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
                 <button>Post</button>
             </form>
-        </article>
-    );
-}
-
-function Post({ post }) {
-    const { user } = post;
-    const { profile } = user;
-
-    return(
-        <article className="post">
-            <header>
-                <Link to={`/profile/${profile._id}`} className="profilePic-wrapper">
-                    <img src={profile.pic} alt="users profile pic"/>
-                </Link>
-                <div className="title">
-                    <Link to={`/profile/${profile._id}`}>
-                        <h3>{user.username}</h3>
-                    </Link>
-                    <span>Time passed</span>
-                </div>
-            </header>
-            <p>{post.text}</p>
-            <footer>
-                <div className="top">
-                    <Link>
-                        <span># likes</span>
-                    </Link>
-                    <Link>
-                        <span># comments</span>
-                    </Link>
-                    <Link>
-                        <span># shares</span>
-                    </Link>
-                </div>
-                <hr/>
-                <div className="bottom">
-                    <Link>
-                        <span>Like</span>
-                    </Link>
-                    <Link>
-                        <span>Comment</span>
-                    </Link>
-                    <Link>
-                        <span>Share</span>
-                    </Link>
-                </div>
-            </footer>
         </article>
     );
 }

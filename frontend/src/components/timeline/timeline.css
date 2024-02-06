@@ -33,6 +33,7 @@
 }
 
 .newPost button {
+    font-weight: 600;
     color: white;
     background-color: rgb(200, 170, 175);
     border: none;
@@ -50,68 +51,4 @@
 
 .timeline li {
     margin-bottom: 1rem;
-}
-
-.timeline .post {
-    background-color: rgb(255, 255, 255);
-    padding: 1rem;
-    box-shadow: 0px 1px 5px gray;
-}
-
-.timeline .post a {
-    text-decoration: none;
-    color: black;
-}
-
-.timeline .post header {
-    display: flex;
-}
-
-.timeline .post .profilePic-wrapper {
-    border-radius: 5px;
-}
-
-.timeline .post img {
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.timeline .post .title {
-    margin-left: 1rem;
-}
-
-.timeline .post .title h3 {
-    font-size: 1rem;
-    margin: .25rem 0;
-}
-
-.timeline .post .title span {
-    color: grey;
-    font-size: .85rem;
-}
-
-.timeline footer .top {
-    display: flex;
-    justify-content: space-between;
-}
-
-.timeline footer .top span {
-    color: grey;
-    font-size: .75rem;
-}
-
-.timeline footer hr {
-    border-top: .5px solid rgb(190, 190, 190);
-}
-
-.timeline footer .bottom {
-    display: flex;
-    justify-content: space-between;
-}
-
-.timeline footer .bottom span {
-    color: grey;
-    font-size: .9rem;
 }

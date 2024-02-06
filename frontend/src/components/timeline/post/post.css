@@ -1,0 +1,175 @@
+
+.post {
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    box-shadow: 0px 1px 5px gray;
+}
+
+.post a {
+    text-decoration: none;
+}
+
+.post header {
+    display: flex;
+}
+
+.post header a {
+    color: black;
+}
+
+.post .profilePic-wrapper {
+    border-radius: 5px;
+}
+
+.post img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.post .title {
+    margin-left: 1rem;
+}
+
+.post .title h3 {
+    font-size: 1rem;
+    margin: .25rem 0;
+}
+
+.post .title span {
+    color: grey;
+    font-size: .85rem;
+}
+
+.post footer .top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post footer .top span, 
+.post footer .top a {
+    color: grey;
+    font-size: .75rem;
+}
+
+.post footer hr {
+    border-top: .5px solid rgb(190, 190, 190);
+}
+
+.post footer .bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post footer .bottom span {
+    color: grey;
+    font-size: .9rem;
+}
+
+.likes-section {
+    position: fixed;
+    left: 0rem;
+    bottom: -360px;
+    padding: 1rem;
+    height: 350px;
+    width: 100%;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 1px 5px gray;
+    transition-duration: .2s;
+}
+
+.likes-section.active {
+    position: fixed;
+    left: 0rem;
+    bottom: 0px;
+    height: 350px;
+    width: 100%;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 1px 5px gray;
+    transition-duration: .2s;
+}
+
+.likes-section ul {
+    margin: 0;
+    padding: 0;
+}
+
+.likes-section li {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.likes-section a {
+    color: black;
+    text-decoration: none;
+}
+
+.likes-section header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: .5rem;
+}
+
+.likes-section .close-icon_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgrey;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.likes-section .close-icon_wrapper:hover {
+    background-color: grey;
+}
+
+.likes-section .close-icon_wrapper .bar-1,
+.likes-section .close-icon_wrapper .bar-2 {
+    position: relative;
+    background-color: white;
+    height: 12.5px;
+    width: 1.5px;
+    border-radius: 5px;
+}
+
+.likes-section .close-icon_wrapper .bar-1 {
+    top: 0px;
+    left: 0.5px;
+    rotate: 45deg;
+}
+
+.likes-section .close-icon_wrapper .bar-2 {
+    top: 0px;
+    right: .5px;
+    rotate: -45deg;
+}
+
+.likes-section .profile_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.likes-section .profile_wrapper img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.likes-section .profile_wrapper h3 {
+    font-size: 1rem;
+}
+
+.likes-section .profile_wrapper:hover {
+    background-color: lightgrey;
+}

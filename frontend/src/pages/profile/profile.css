@@ -1,6 +1,7 @@
 
 .profileTop {
     width: 100%;
+    height: 380px;
 }
 
 .profileTop .coverPhoto {
@@ -19,4 +20,29 @@
     object-fit: cover;
     border: solid 5px white;
     border-radius: 50%;
+}
+
+.profileBottom {
+    padding: 0 1rem;
+}
+
+.profileBottom form {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.profileBottom form button {
+    font-weight: 600;
+    color: white;
+    background-color: navy;
+    padding: .3rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profileBottom p>span {
+    font-weight: 300;
+    color: rgb(75, 75, 75);
 }
