@@ -56,7 +56,9 @@ export function Post({ post, setLikes, setLikesSectionIsActive }) {
                 <hr/>
                 <div className="bottom">
                         <span>Like</span>
-                        <span>Comment</span>
+                        <Link to={`/post/${post._id}`}>
+                            Comment
+                        </Link>
                         <span>Share</span>
                 </div>
             </footer>

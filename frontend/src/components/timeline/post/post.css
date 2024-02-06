@@ -62,7 +62,8 @@
     justify-content: space-between;
 }
 
-.post footer .bottom span {
+.post footer .bottom span,
+.post footer .bottom a {
     color: grey;
     font-size: .9rem;
 }
