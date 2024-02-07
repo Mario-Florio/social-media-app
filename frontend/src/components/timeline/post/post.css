@@ -141,14 +141,14 @@
 }
 
 .likes-section .close-icon_wrapper .bar-1 {
-    top: 0px;
-    left: 0.5px;
+    top: -1px;
+    left: 1px;
     rotate: 45deg;
 }
 
 .likes-section .close-icon_wrapper .bar-2 {
-    top: 0px;
-    right: .5px;
+    top: -1px;
+    right: 1px;
     rotate: -45deg;
 }
 
