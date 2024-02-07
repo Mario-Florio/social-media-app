@@ -50,6 +50,19 @@
     transition-duration: .2s;
 }
 
+.topbar .dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.topbar .dropdown_top {
+    z-index: 3;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 .topbar form button {
     background-color: transparent;
     height: 15px;
@@ -59,6 +72,7 @@
 
 .topbar form img {
     height: 100%;
+    width: 100%;
 }
 
 .topbar form input {
@@ -66,4 +80,59 @@
     width: 100%;
     border: none;
     outline: none;
+}
+
+.topbar form .dropdown_bottom {
+    z-index: 2;
+    position: absolute;
+    top: -70px;
+    left: -.25rem;
+    background-color: white;
+    padding: 0;
+    width: calc(100% + .5rem);
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+    box-shadow: 0px 1px 5px grey;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.topbar form .dropdown_bottom.active {
+    top: 5px;
+    opacity: 1;
+    pointer-events: inherit;
+}
+
+.topbar form .dropdown_bottom li {
+    margin: 0;
+    padding: .1rem 0;
+    list-style: none;
+    cursor: pointer;
+}
+
+.topbar form .dropdown_bottom li:not(:last-child) {
+    border-bottom: dashed .5px grey;
+}
+
+.topbar form .dropdown_bottom li:hover {
+    background-color: lightgrey;
+}
+
+.topbar form .dropdown_bottom a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: black;
+
+}
+
+.topbar form .dropdown_bottom .profile-pic_wrapper {
+    height: 25px;
+    width: 25px;
+}
+
+.topbar form .dropdown_bottom h5 {
+    font-weight: 500;
+    margin: 0;
 }
