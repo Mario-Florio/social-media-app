@@ -29,19 +29,23 @@ function PostPage() {
         }
     }, [id]);
 
-    return(post &&
+    return(
         <PageLayout>
-            <Post
-                post={post}
-                setLikes={setLikes}
-                setLikesSectionIsActive={setLikesSectionIsActive}
-            />
-            <CommentsSection post={post}/>
-            <LikesSection
-                likes={likes}
-                likesSectionIsActive={likesSectionIsActive}
-                setLikesSectionIsActive={setLikesSectionIsActive}
-            />
+            { post &&
+                <>
+                    <Post
+                        post={post}
+                        setLikes={setLikes}
+                        setLikesSectionIsActive={setLikesSectionIsActive}
+                    />
+                    <CommentsSection post={post}/>
+                    <LikesSection
+                        likes={likes}
+                        likesSectionIsActive={likesSectionIsActive}
+                        setLikesSectionIsActive={setLikesSectionIsActive}
+                    />
+                </>
+            }
         </PageLayout>
     );
 }
