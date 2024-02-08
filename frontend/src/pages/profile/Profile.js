@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 
-import getData from "../../dummyData";
+import { getProfileUser } from "../../dummyData";
 
 function Profile() {
     const [profileUser, setProfileUser] = useState(null);
@@ -22,37 +22,7 @@ function Profile() {
                 setIsFollowing(true);
             }
         });
-
-        function getProfileUser(id) {
-            const { users, posts } = getData();
-            let profileUser = null;
-
-            users.forEach(user => {
-                if (user.profile._id.toString() === id) {
-                    profileUser = user;
-                }
-            });
-
-            populatePosts(profileUser);
-
-            return profileUser;
-
-            // UTILS
-            function populatePosts(user) {
-                const postsData = [];
-
-                user.profile.posts.forEach(userPost => {
-                    posts.forEach(post => {
-                        if (post._id === userPost) {
-                            postsData.push(post);
-                        }
-                    });
-                });
-
-                user.profile.posts = postsData;
-            }
-        }
-    }, [id]);
+    }, [id, user]);
 
     return(
         <PageLayout>
