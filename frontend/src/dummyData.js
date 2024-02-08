@@ -96,3 +96,102 @@ export default function getData() {
 
     return { users, posts, comments };
 }
+
+// Sidemenu
+function getFollowingData(user) {
+    const { users } = getData();
+
+    let followingData = [];
+    user.profile.following.forEach(a => {
+        users.forEach(b => {
+            if (a === b._id) {
+                followingData.push(b);
+            }
+        });
+    });
+
+    return followingData;
+}
+
+// Topbar
+function searchUsers(input) {
+    const { users } = getData();
+
+    const results = [];
+    users.forEach(user => {
+        if (user.username.toLowerCase().includes(input.toLowerCase())) {
+            results.push(user);
+        }
+    });
+    
+    return results;
+}
+
+// Post
+function getLikes(post) {
+    const { users } = getData();
+
+    let likes = [];
+    post.likes.forEach(like => {
+        users.forEach(user => {
+            if (user._id === like) {
+                likes.push(user);
+            }
+        });
+    });
+
+    return likes;
+}
+
+// Post Page
+function getPost(id) {
+    const { posts } = getData();
+
+    let returnPost = null;
+    posts.forEach(post => {
+        if (post._id.toString() === id) {
+            returnPost = post;
+        }
+    });
+    
+    return returnPost;
+}
+
+// Comments Section
+function getComments(post) {
+    const { comments, users } = getData();
+
+    const commentsArr = [];
+
+    post.comments.forEach(postComment => {
+        comments.forEach(comment => {
+            if (comment._id === postComment) {
+                commentsArr.push(comment);
+            }
+        });
+    });
+
+    populateUsers(commentsArr);
+
+    return commentsArr;
+
+    function populateUsers(comments) {
+        comments.forEach(comment => {
+            let userData = null;
+            users.forEach(user => {
+                if (user._id === comment.user) {
+                    userData = user;
+                }
+            });
+            comment.user = userData;
+        });
+    }
+}
+
+export {
+    getFollowingData,
+    searchUsers,
+    getLikes,
+    getPost,
+    getComments
+}

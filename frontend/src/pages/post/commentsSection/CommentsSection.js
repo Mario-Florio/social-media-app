@@ -2,46 +2,16 @@ import {  useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./commentsSection.css";
 
-import getData from "../../../dummyData";
+import { getComments } from "../../../dummyData";
 
 function CommentsSection({ post }) {
     const [comments, setComments] = useState([]);
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        const comments = getComments();
+        const comments = getComments(post);
         setComments(comments);
-
-        function getComments() {
-            const { comments, users } = getData();
-
-            const commentsArr = [];
-
-            post.comments.forEach(postComment => {
-                comments.forEach(comment => {
-                    if (comment._id === postComment) {
-                        commentsArr.push(comment);
-                    }
-                });
-            });
-
-            populateUsers(commentsArr);
-
-            return commentsArr;
-
-            function populateUsers(comments) {
-                comments.forEach(comment => {
-                    let userData = null;
-                    users.forEach(user => {
-                        if (user._id === comment.user) {
-                            userData = user;
-                        }
-                    });
-                    comment.user = userData;
-                });
-            }
-        }
-    }, [post.comments]);
+    }, [post]);
 
     function handleChange(e) {
         setInput(e.target.value);

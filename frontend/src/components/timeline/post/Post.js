@@ -1,29 +1,16 @@
 import { Link } from "react-router-dom";
 import "./post.css";
 
-import getData from "../../../dummyData";
+import { getLikes } from "../../../dummyData";
 
 export function Post({ post, setLikes, setLikesSectionIsActive }) {
     const { user } = post;
     const { profile } = user;
 
     function handleClick() {
-        const likes = getLikes();
+        const likes = getLikes(post);
         setLikes(likes);
         setLikesSectionIsActive(true);
-
-        function getLikes() {
-            const { users } = getData();
-            let likes = [];
-            post.likes.forEach(like => {
-                users.forEach(user => {
-                    if (user._id === like) {
-                        likes.push(user);
-                    }
-                });
-            });
-            return likes;
-        }
     }
 
     return(

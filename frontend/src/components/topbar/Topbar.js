@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./topbar.css";
 import searchIcon from "../../assets/imgs/search-icon.png";
 
-import getData from "../../dummyData";
+import { searchUsers } from "../../dummyData";
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
     return(
@@ -40,21 +40,8 @@ function SearchBar() {
     const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
-        const suggestions = searchData(input);
+        const suggestions = searchUsers(input);
         setSuggestions(suggestions);
-
-        function searchData(input) {
-            const { users } = getData();
-
-            const results = [];
-            users.forEach(user => {
-                if (user.username.toLowerCase().includes(input.toLowerCase())) {
-                    results.push(user);
-                }
-            });
-            
-            return results;
-        }
     }, [input]);
 
     function handleFocus() {

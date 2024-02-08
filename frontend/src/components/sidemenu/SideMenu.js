@@ -2,7 +2,7 @@ import "./sideMenu.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-import getData from "../../dummyData";
+import { getFollowingData } from "../../dummyData";
 import { useEffect, useState } from "react";
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
@@ -10,23 +10,8 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
     const [following, setFollowing] = useState([]);
 
     useEffect(() => {
-        const followingData = getFollowingData();
+        const followingData = getFollowingData(user);
         setFollowing(followingData);
-
-        function getFollowingData() {
-            const { users } = getData();
-            let followingData = [];
-
-            user.profile.following.forEach(a => {
-                users.forEach(b => {
-                    if (a === b._id) {
-                        followingData.push(b);
-                    }
-                });
-            });
-
-            return followingData;
-        }
     }, [user]);
 
     function handleClick() {
