@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./topbar.css";
+import "./searchbar.css"
 import searchIcon from "../../assets/imgs/search-icon.png";
 
 import { searchUsers } from "../../dummyData";
@@ -48,7 +49,7 @@ function SearchBar() {
         setIsFocused(true);
     }
 
-    function handleBlur(e) {
+    function handleBlur() {
         setTimeout(() => {
             setIsFocused(false);
         }, 130);
@@ -64,9 +65,9 @@ function SearchBar() {
     }
 
     return(
-        <form onSubmit={handleSubmit} className={ isFocused ? "focused" : "" }>
+        <div onSubmit={handleSubmit} className={ isFocused ? "searchbar focused" : "searchbar" }>
             <div className="dropdown">
-                <div className="dropdown_top">
+                <form className="dropdown_top">
                     <label htmlFor="search" className="hide">Search</label>
                     <button>
                         <img src={searchIcon} alt="Search"/>
@@ -82,7 +83,7 @@ function SearchBar() {
                         onBlur={handleBlur}
                         autoComplete="off"
                     />
-                </div>
+                </form>
                 <ul className={ isFocused ? "dropdown_bottom active" : "dropdown_bottom" }>
                     { input.length > 0 && suggestions.map(user =>
                         <li key={user._id}>
@@ -98,6 +99,6 @@ function SearchBar() {
                         </li>) }
                 </ul>
             </div>
-        </form>
+        </div>
     );
 }
