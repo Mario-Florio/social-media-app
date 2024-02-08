@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./post.css";
+import "./likesSection.css";
 
 import { getLikes } from "../../../dummyData";
 

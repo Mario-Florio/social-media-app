@@ -1,0 +1,107 @@
+
+.likes-section {
+    position: fixed;
+    left: 0rem;
+    bottom: -360px;
+    padding: 1rem;
+    height: 350px;
+    width: 100%;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 1px 5px gray;
+    transition-duration: .2s;
+}
+
+.likes-section.active {
+    position: fixed;
+    left: 0rem;
+    bottom: 0px;
+    height: 350px;
+    width: 100%;
+    background-color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 0px 1px 5px gray;
+    transition-duration: .2s;
+}
+
+.likes-section ul {
+    margin: 0;
+    padding: 0;
+}
+
+.likes-section li {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.likes-section a {
+    color: black;
+    text-decoration: none;
+}
+
+.likes-section header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: .5rem;
+}
+
+.likes-section .close-icon_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgrey;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.likes-section .close-icon_wrapper:hover {
+    background-color: grey;
+}
+
+.likes-section .close-icon_wrapper .bar-1,
+.likes-section .close-icon_wrapper .bar-2 {
+    position: relative;
+    background-color: white;
+    height: 12.5px;
+    width: 1.5px;
+    border-radius: 5px;
+}
+
+.likes-section .close-icon_wrapper .bar-1 {
+    top: 0px;
+    left: .5px;
+    rotate: 45deg;
+}
+
+.likes-section .close-icon_wrapper .bar-2 {
+    top: 0px;
+    right: .5px;
+    rotate: -45deg;
+}
+
+.likes-section .profile_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .5rem;
+    border-radius: 5px;
+}
+
+.likes-section .profile_wrapper img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.likes-section .profile_wrapper h3 {
+    font-size: 1rem;
+}
+
+.likes-section .profile_wrapper:hover {
+    background-color: lightgrey;
+}
