@@ -1,11 +1,31 @@
 
+:root {
+    --sidemenu_width: 100%;
+    --sidemenu_max-width: 100%;
+}
+
+body {
+    background-color: rgb(235, 238, 240);
+}
+
 main {
     display: flex;
-    background-color: rgb(235, 238, 240);
 }
 
 .hide {
     position: absolute !important;
     top: -9999px !important;
     left: -9999px !important;
+}
+
+@media all and (min-width: 750px) {
+    :root {
+        --sidemenu_max-width: 300px;
+    }
+}
+
+@media all and (min-width: 900px) {
+    :root {
+        --sidemenu_max-width: 400px;
+    }
 }

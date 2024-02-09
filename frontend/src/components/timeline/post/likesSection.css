@@ -110,17 +110,17 @@
     .likes-section {
         left: inherit;
         right: 0;
-        width: calc(100% - 300px);
+        width: calc(100% - var(--sidemenu_max-width));
     }
 
     .likes-section.active {
         left: inherit;
         right: 0;
-        width: calc(100% - 300px);
+        width: calc(100% - var(--sidemenu_max-width));
     }
 }
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 1045px) {
     .likes-section {
         left: 400px;
         right: inherit;
