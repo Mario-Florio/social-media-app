@@ -11,10 +11,20 @@
     width: 100%;
 }
 
+.topbar a {
+    text-decoration: none;
+}
+
+.topbar .logo {
+    display: none;
+    color: white;
+}
+
 .topbar .hamburger-menu {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    margin-left: -1rem;
     cursor: pointer;
 }
 
@@ -31,4 +41,43 @@
     background-color: rgb(236, 226, 228);
     box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
     transition-duration: .2s;
+}
+
+.topbar nav {
+    display: none;
+}
+
+.topbar nav ul {
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.topbar nav a {
+    font-weight: 600;
+    color: white;
+}
+
+@media all and (min-width: 750px) {
+    .topbar .logo {
+        display: initial;
+        margin: 0;
+    }
+
+    .topbar .hamburger-menu {
+        display: none;
+    }
+
+    .topbar nav {
+        display: initial;
+    }
+}
+
+@media all and (min-width: 900px) {
+    .topbar {
+        padding-left: 6rem;
+        padding-right: 6rem;
+    }
 }

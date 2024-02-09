@@ -1,4 +1,8 @@
 
+.comments-section {
+    width: 100%;
+}
+
 .comments-section ul {
     list-style: none;
     margin: 0;
@@ -79,4 +83,33 @@
 
 .comment p {
     margin: 0;
+}
+
+@media all and (min-width: 750px) {
+    .comments-section form {
+        width: calc(100% - 300px);
+    }
+}
+
+@media all and (min-width: 900px) {
+    .comments-section form {
+        width: calc(100% - 400px);
+    }
+}
+
+@media all and (min-width: 1045px) {
+    .comments-section ul {
+        margin-bottom: 6.5rem;
+    }
+
+    .comments-section form {
+        margin-left: 3rem;
+        margin-bottom: 1rem;
+        width: 500px;
+        border-radius: 5px;
+    }
+
+    .comments-section li {
+        padding-left: 3rem;
+    }
 }

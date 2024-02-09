@@ -9,7 +9,9 @@ const { posts } = getData();
 function Home() {
     return(
         <PageLayout>
-            <Timeline posts={posts}/>
+            <section id="home" style={{ position: "relative" }}>
+                <Timeline posts={posts}/> 
+            </section>
         </PageLayout>
     );
 }

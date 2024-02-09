@@ -21,7 +21,7 @@ function PostPage() {
     return(
         <PageLayout>
             { post &&
-                <>
+                <section id="post">
                     <Post
                         post={post}
                         setLikes={setLikes}
@@ -33,7 +33,7 @@ function PostPage() {
                         likesSectionIsActive={likesSectionIsActive}
                         setLikesSectionIsActive={setLikesSectionIsActive}
                     />
-                </>
+                </section>
             }
         </PageLayout>
     );

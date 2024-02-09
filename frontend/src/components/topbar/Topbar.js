@@ -3,17 +3,32 @@ import { Link } from "react-router-dom";
 import "./topbar.css";
 import "./searchbar.css"
 import searchIcon from "../../assets/imgs/search-icon.png";
+import { useAuth } from "../../hooks/useAuth";
 
 import { searchUsers } from "../../dummyData";
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
+    const { user } = useAuth();
     return(
         <header className="topbar">
+            <Link to="/">
+                <h1 className="logo">Logo</h1>
+            </Link>
             <HamburgerMenu
                 sideMenuIsActive={sideMenuIsActive}
                 setSideMenuIsActive={setSideMenuIsActive}
             />
             <SearchBar/>
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to={`/profile/${user.profile._id}`}>Profile</Link>
+                    </li>
+                </ul>
+            </nav>
         </header>
     );
 }

@@ -27,7 +27,7 @@ function Profile() {
     return(
         <PageLayout>
             { profileUser &&
-                <>
+                <section id="profile" style={{ width: "100%" }}>
                     <section className="profileTop">
                         <img src={profileUser.profile.coverPhoto} alt="cover" className="coverPhoto"/>
                         <img src={profileUser.profile.pic} alt="profile" className="profilePic"/>
@@ -35,15 +35,15 @@ function Profile() {
                     <section className="profileBottom">
                         {user._id !== profileUser._id &&
                             <FollowButton isFollowing={isFollowing} setIsFollowing={setIsFollowing}/>}
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <p style={{ margin: "0" }}>{profileUser.profile.followers.length} <span>followers</span></p>
-                                <div style={{ margin: "0 .5rem" }}>&#x2022;</div>
-                                <p style={{ margin: "0" }}>{profileUser.profile.following.length} <span>following</span></p>
+                            <div className="followCount">
+                                <p>{profileUser.profile.followers.length} <span>followers</span></p>
+                                <div>&#x2022;</div>
+                                <p>{profileUser.profile.following.length} <span>following</span></p>
                             </div>
                             <p>{profileUser.profile.bio}</p>
                     </section>
                     <Timeline posts={profileUser.profile.posts}/>
-                </>
+                </section>
             }
         </PageLayout>
     );

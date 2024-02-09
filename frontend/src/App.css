@@ -1,4 +1,8 @@
 
+main {
+    display: flex;
+    background-color: rgb(235, 238, 240);
+}
 
 .hide {
     position: absolute !important;

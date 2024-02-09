@@ -8,7 +8,7 @@ function Timeline({ posts }) {
     const [likes, setLikes] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     return(
-        <section>
+        <>
             <NewPost/>
             <ul className="timeline">
                 {
@@ -21,7 +21,7 @@ function Timeline({ posts }) {
                             />
                         </li>)
                 }
-                <li style={{ textAlign: "center", margin: "3rem" }}>
+                <li className="seeMore">
                     <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                 </li>
             </ul>
@@ -30,7 +30,7 @@ function Timeline({ posts }) {
                 likesSectionIsActive={likesSectionIsActive}
                 setLikesSectionIsActive={setLikesSectionIsActive}
             />
-        </section>
+        </>
     );
 }
 

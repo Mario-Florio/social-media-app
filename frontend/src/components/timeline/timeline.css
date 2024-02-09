@@ -43,7 +43,6 @@
 
 .timeline {
     list-style: none;
-    background-color: rgb(240, 240, 240);
     margin: 0;
     padding: 0;
     border-bottom: solid .25px transparent;
@@ -51,4 +50,21 @@
 
 .timeline li {
     margin-bottom: 1rem;
+}
+
+.timeline .seeMore {
+    text-align: center;
+    margin: 3rem;
+}
+
+@media all and (min-width: 1045px) {
+    .newPost {
+        max-width: 500px;
+        border-radius: 5px;
+        margin: 3rem;
+    }
+
+    .timeline .seeMore {
+        max-width: 500px;
+    }
 }

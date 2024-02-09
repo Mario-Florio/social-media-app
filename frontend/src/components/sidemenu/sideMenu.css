@@ -64,3 +64,25 @@
     object-fit: cover;
     border-radius: 5px;
 }
+
+@media all and (min-width: 750px) {
+    .sidemenu {
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        max-width: 300px;
+        transition-duration: 2ms;
+    }
+
+    .sidemenu nav,
+    .sidemenu hr {
+        display: none;
+    }
+}
+
+@media all and (min-width: 900px) {
+    .sidemenu {
+        padding-left: 6rem;
+        max-width: 400px;
+    }
+}

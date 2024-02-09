@@ -105,3 +105,31 @@
 .likes-section .profile_wrapper:hover {
     background-color: lightgrey;
 }
+
+@media all and (min-width: 750px) {
+    .likes-section {
+        left: inherit;
+        right: 0;
+        width: calc(100% - 300px);
+    }
+
+    .likes-section.active {
+        left: inherit;
+        right: 0;
+        width: calc(100% - 300px);
+    }
+}
+
+@media all and (min-width: 900px) {
+    .likes-section {
+        left: 400px;
+        right: inherit;
+        width: calc(500px + 6rem);
+    }
+
+    .likes-section.active {
+        left: 400px;
+        right: inherit;
+        width: calc(500px + 6rem);
+    }
+}

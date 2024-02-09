@@ -1,4 +1,8 @@
 
+#profile {
+    width: 100%;
+}
+
 .profileTop {
     width: 100%;
     height: 380px;
@@ -42,7 +46,55 @@
     cursor: pointer;
 }
 
+.profileBottom .followCount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileBottom .followCount p {
+    margin: 0;
+}
+
+.profileBottom .followCount div {
+    margin: 0 .5rem;
+}
+
 .profileBottom p>span {
     font-weight: 300;
     color: rgb(75, 75, 75);
+}
+
+@media all and (min-width: 1045px) {
+    .profileTop {
+        position: relative;
+    }
+
+    .profileTop .profilePic {
+        position: absolute;
+        top: 150px;
+        left: 3rem;
+        height: 300px;
+        width: 300px;
+    }
+
+    .profileBottom {
+        padding: 0 3rem;
+        min-width: calc(500px + 6rem);
+        margin-top: 6rem;
+        margin-right: 6rem;
+    }
+
+    .profileBottom form {
+        justify-content: flex-end;
+        margin-right: 0;
+    }
+
+    .profileBottom form button {
+        font-size: 1.2rem;
+    }
+
+    .profileBottom .followCount {
+        justify-content: flex-end;
+    }
 }
