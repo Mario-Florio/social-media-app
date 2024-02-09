@@ -28,17 +28,20 @@ function CommentsSection({ post }) {
                     comments.map(comment => <li key={comment._id}><Comment comment={comment}/></li>)
                 }
             </ul>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="comment"className="hide">Comment</label>
-                <textarea
-                    name="comment"
-                    id="comment"
-                    placeholder="Write something..."
-                    value={input}
-                    onChange={handleChange}
-                />
-                <button>Send</button>
-            </form>
+            <footer>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="comment"className="hide">Comment</label>
+                    <textarea
+                        name="comment"
+                        id="comment"
+                        placeholder="Write something..."
+                        value={input}
+                        onChange={handleChange}
+                    />
+                    <button>Send</button>
+                </form>
+            </footer>
+            <div style={{ height: "1px" }}></div>
         </section>
     );
 }

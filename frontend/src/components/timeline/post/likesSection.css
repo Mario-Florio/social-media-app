@@ -124,12 +124,12 @@
     .likes-section {
         left: 400px;
         right: inherit;
-        width: calc(500px + 6rem);
+        max-width: calc(750px);
     }
 
     .likes-section.active {
         left: 400px;
         right: inherit;
-        width: calc(500px + 6rem);
+        max-width: calc(750px);
     }
 }

@@ -21,7 +21,7 @@ function PostPage() {
     return(
         <PageLayout>
             { post &&
-                <section id="post">
+                <section id="post" style={{ maxWidth: "750px" }}>
                     <Post
                         post={post}
                         setLikes={setLikes}

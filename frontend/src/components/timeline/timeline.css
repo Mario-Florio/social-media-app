@@ -59,12 +59,7 @@
 
 @media all and (min-width: 1045px) {
     .newPost {
-        max-width: 500px;
         border-radius: 5px;
         margin: 3rem;
-    }
-
-    .timeline .seeMore {
-        max-width: 500px;
     }
 }
