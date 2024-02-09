@@ -79,7 +79,8 @@
     }
 
     .profileBottom {
-        padding: 0 3rem;
+        padding: 0;
+        padding-left: 3rem;
         min-width: calc(500px + 6rem);
         margin-top: 6rem;
         margin-right: 6rem;
