@@ -21,7 +21,7 @@ function PostPage() {
     return(
         <PageLayout>
             { post &&
-                <section id="post">
+                <section id="post" className="main-component">
                     <Post
                         post={post}
                         setLikes={setLikes}

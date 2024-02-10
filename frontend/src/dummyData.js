@@ -7,6 +7,18 @@ import jesusChristCoverPhoto from "./assets/imgs/jesusChrist/cover-photo.jpg";
 import tyrionLannisterProfilePic from "./assets/imgs/tyrionLannister/profile-pic.jpg";
 import tyrionLannisterCoverPhoto from "./assets/imgs/tyrionLannister/cover-photo.jpg";
 
+import jinxProfilePic from "./assets/imgs/jinx/profile-pic.jpg";
+import jinxCoverPhoto from "./assets/imgs/jinx/cover-photo.jpg";
+
+import neaKarlssonProfilePic from "./assets/imgs/neaKarlsson/profile-pic.jpg";
+import neaKarlssonCoverPhoto from "./assets/imgs/neaKarlsson/cover-photo.jpg";
+
+import rustCohleProfilePic from "./assets/imgs/rustCohle/profile-pic.jpg";
+import rustCohleCoverPhoto from "./assets/imgs/rustCohle/cover-photo.jpg";
+
+import ellieWilliamsProfilePic from "./assets/imgs/ellieWilliams/profile-pic.jpg";
+import ellieWilliamsCoverPhoto from "./assets/imgs/ellieWilliams/cover-photo.jpg";
+
 export default function getData() {
     const users = [
         {
@@ -17,8 +29,8 @@ export default function getData() {
                 pic: janeDoughProfilePic,
                 coverPhoto: janeDoughCoverPhoto,
                 bio: "Hello World!",
-                following: [2, 3],
-                followers: [2, 3],
+                following: [2, 3, 4, 5, 6, 7],
+                followers: [2, 3, 4, 5, 6, 7],
                 posts: [1, 2, 3]
             }
         },
@@ -30,8 +42,8 @@ export default function getData() {
                 pic: jesusChristProfilePic,
                 coverPhoto: jesusChristCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 3],
-                followers: [1, 3],
+                following: [1, 3, 4, 5, 6, 7],
+                followers: [1, 3, 4, 5, 6, 7],
                 posts: [4, 5, 6]
             }
         },
@@ -43,9 +55,61 @@ export default function getData() {
                 pic: tyrionLannisterProfilePic,
                 coverPhoto: tyrionLannisterCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 2],
-                followers: [1, 2],
+                following: [1, 2, 4, 5, 6, 7],
+                followers: [1, 2, 4, 5, 6, 7],
                 posts: [7, 8, 9, 10]
+            }
+        },
+        {
+            _id: 4,
+            username: "Jinx",
+            profile: {
+                _id: 4,
+                pic: jinxProfilePic,
+                coverPhoto: jinxCoverPhoto,
+                bio: "Hello World!",
+                following: [1, 2, 3, 5, 6, 7],
+                followers: [1, 2, 3, 5, 6, 7],
+                posts: []
+            }
+        },
+        {
+            _id: 5,
+            username: "Nea Karlsson",
+            profile: {
+                _id: 5,
+                pic: neaKarlssonProfilePic,
+                coverPhoto: neaKarlssonCoverPhoto,
+                bio: "Hello World!",
+                following: [1, 2, 3, 4, 6, 7],
+                followers: [1, 2, 3, 4, 6, 7],
+                posts: []
+            }
+        },
+        {
+            _id: 6,
+            username: "Rust Cohle",
+            profile: {
+                _id: 6,
+                pic: rustCohleProfilePic,
+                coverPhoto: rustCohleCoverPhoto,
+                bio: "Time is a flat circle, man",
+                following: [1, 2, 3, 4, 5, 7],
+                followers: [1, 2, 3, 4, 5, 7],
+                posts: []
+            }
+        },
+        {
+            _id: 7,
+            username: "Ellie Williams",
+            profile: {
+                _id: 7,
+                pic: ellieWilliamsProfilePic,
+                coverPhoto: ellieWilliamsCoverPhoto,
+                bio: "Hello!",
+                following: [1, 2, 3, 4, 5, 6],
+                followers: [1, 2, 3, 4, 5, 6],
+                posts: []
             }
         }
     ];

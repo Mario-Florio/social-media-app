@@ -10,12 +10,37 @@ body {
 
 main {
     display: flex;
+    max-height: calc(100vh - 70px);
+    overflow-y: hidden;
 }
 
 .hide {
     position: absolute !important;
     top: -9999px !important;
     left: -9999px !important;
+}
+
+.main-component {
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+/* Scroll bar */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #a7a7a7;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #878787;
 }
 
 @media all and (min-width: 750px) {

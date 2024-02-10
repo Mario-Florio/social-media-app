@@ -27,7 +27,7 @@ function Profile() {
     return(
         <PageLayout>
             { profileUser &&
-                <section id="profile" style={{ width: "100%" }}>
+                <section id="profile" className="main-component">
                     <section className="profileTop">
                         <img src={profileUser.profile.coverPhoto} alt="cover" className="coverPhoto"/>
                         <img src={profileUser.profile.pic} alt="profile" className="profilePic"/>

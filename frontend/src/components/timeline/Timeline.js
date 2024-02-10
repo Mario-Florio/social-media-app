@@ -8,9 +8,9 @@ function Timeline({ posts }) {
     const [likes, setLikes] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     return(
-        <section style={{ maxWidth: "750px" }}>
+        <section className="timeline">
             <NewPost/>
-            <ul className="timeline">
+            <ul className="feed">
                 {
                     posts.map(post =>
                         <li key={post._id}>
