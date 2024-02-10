@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
     bio: { type: String, maxLength: 250 },
-    picture: { type: String },
+    picture: { type: String, default: "" },
+    coverPicture: { type: String, default: "" },
     posts: { type: [Schema.Types.ObjectId], ref: "Post", default: [] },
     followers: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] },
     following: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] }
