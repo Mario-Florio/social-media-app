@@ -52,7 +52,7 @@ function NewPost() {
     return(
         <article className="newPost">
             <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
-                <img src={user.profile.pic} alt="users profile pic"/>
+                <img src={user.profile.picture} alt="users profile pic"/>
             </Link>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>

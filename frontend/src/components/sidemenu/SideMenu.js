@@ -42,7 +42,7 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                         return <li key={u._id}>
                             <Link to={`/profile/${u.profile._id}`} onClick={handleClick}>
                                 <article>
-                                    <img src={u.profile.pic} alt="Profile pic"/>
+                                    <img src={u.profile.picture} alt="Profile pic"/>
                                     <h3>{u.username}</h3>
                                 </article>
                             </Link>

@@ -18,7 +18,7 @@ export function Post({ post, setLikes, setLikesSectionIsActive }) {
         <article className="post">
             <header>
                 <Link to={`/profile/${profile._id}`} className="profilePic-wrapper">
-                    <img src={profile.pic} alt="users profile pic"/>
+                    <img src={profile.picture} alt="users profile pic"/>
                 </Link>
                 <div className="title">
                     <Link to={`/profile/${profile._id}`}>

@@ -29,8 +29,8 @@ function Profile() {
             { profileUser &&
                 <section id="profile" className="main-component">
                     <section className="profileTop">
-                        <img src={profileUser.profile.coverPhoto} alt="cover" className="coverPhoto"/>
-                        <img src={profileUser.profile.pic} alt="profile" className="profilePic"/>
+                        <img src={profileUser.profile.coverPicture} alt="cover" className="coverPhoto"/>
+                        <img src={profileUser.profile.picture} alt="profile" className="profilePic"/>
                     </section>
                     <section className="profileBottom">
                         <h2>{profileUser.username}</h2>

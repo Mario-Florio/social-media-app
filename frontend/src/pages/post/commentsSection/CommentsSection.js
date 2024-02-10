@@ -30,7 +30,7 @@ function CommentsSection({ post }) {
             </ul>
             <footer>
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="comment"className="hide">Comment</label>
+                    <label htmlFor="comment" className="hide">Comment</label>
                     <textarea
                         name="comment"
                         id="comment"
@@ -52,7 +52,7 @@ function Comment({ comment }) {
     return(
         <article className="comment">
             <Link to={`/profile/${comment.user.profile._id}`} className="profile-pic_wrapper">
-                <img src={comment.user.profile.pic} alt="user profile pic"/>
+                <img src={comment.user.profile.picture} alt="user profile pic"/>
             </Link>
             <div>
                 <Link to={`/profile/${comment.user.profile._id}`}>
