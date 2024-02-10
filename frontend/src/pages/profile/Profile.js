@@ -33,6 +33,7 @@ function Profile() {
                         <img src={profileUser.profile.pic} alt="profile" className="profilePic"/>
                     </section>
                     <section className="profileBottom">
+                        <h2>{profileUser.username}</h2>
                         {user._id !== profileUser._id &&
                             <FollowButton isFollowing={isFollowing} setIsFollowing={setIsFollowing}/>}
                             <div className="followCount">

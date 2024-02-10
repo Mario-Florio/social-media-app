@@ -30,6 +30,10 @@
     padding: 0 1rem;
 }
 
+.profileBottom h2 {
+    text-align: center;
+}
+
 .profileBottom form {
     display: flex;
     justify-content: center;
@@ -84,6 +88,12 @@
         min-width: calc(500px + 6rem);
         margin-top: 6rem;
         margin-right: 6rem;
+    }
+
+    .profileBottom h2 {
+        position: relative;
+        text-align: left;
+        top: 3rem
     }
 
     .profileBottom form {
