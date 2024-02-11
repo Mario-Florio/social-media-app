@@ -1,5 +1,6 @@
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
+const Forum = require("../../models/Forum");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -13,7 +14,8 @@ async function registerUser(credentials) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const profile = await new Profile().save();
+        const forum = await new Forum().save();
+        const profile = await new Profile({ forum }).save();
         await new User({
             username,
             password: hashedPassword,
