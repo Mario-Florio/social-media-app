@@ -27,8 +27,8 @@ async function posts() {
 
     const posts = [];
     for (let i = 1; i < 5; i++) {
-        const comment = await new Comment({ user: user._id, text: "This is a comment on post number "+i }).save();
-        const post = await new Post({ user: user._id, text: "This is post number "+i, comments: comment }).save();
+        const post = await new Post({ user: user._id, text: "This is post number "+i }).save();
+        const comment = await new Comment({ user, post, text: "This is a comment on post number "+i }).save();
         await User.findByIdAndUpdate(user._id, { $push: { posts: post._id } }).exec();
     }
 }
