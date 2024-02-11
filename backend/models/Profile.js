@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
-    bio: { type: String, maxLength: 250 },
+    bio: { type: String, maxLength: 250, default: "" },
     picture: { type: String, default: "" },
     coverPicture: { type: String, default: "" },
     posts: { type: [Schema.Types.ObjectId], ref: "Post", default: [] },
