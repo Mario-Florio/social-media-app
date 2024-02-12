@@ -20,19 +20,19 @@ function PostPage() {
 
     return(
         <PageLayout>
-                <section id="post" className="main-component">
-                    <Post
-                        post={post}
-                        setLikes={setLikes}
-                        setLikesSectionIsActive={setLikesSectionIsActive}
-                    />
-                    <CommentsSection post={post}/>
-                    <LikesSection
-                        likes={likes}
-                        likesSectionIsActive={likesSectionIsActive}
-                        setLikesSectionIsActive={setLikesSectionIsActive}
-                    />
-                </section>
+            <section id="post" className="main-component">
+                <Post
+                    post={post}
+                    setLikes={setLikes}
+                    setLikesSectionIsActive={setLikesSectionIsActive}
+                />
+                <CommentsSection post={post}/>
+                <LikesSection
+                    likes={likes}
+                    likesSectionIsActive={likesSectionIsActive}
+                    setLikesSectionIsActive={setLikesSectionIsActive}
+                />
+            </section>
         </PageLayout>
     );
 }
