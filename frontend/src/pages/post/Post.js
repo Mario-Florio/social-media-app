@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { getPost } from "../../dummyData";
 
 function PostPage() {
-    const [post, setPost] = useState(null);
+    const [post, setPost] = useState({ _id: false, user: { profile: {} }, text: "", likes: [], comments: [] });
     const [likes, setLikes] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const { id } = useParams();
@@ -20,7 +20,6 @@ function PostPage() {
 
     return(
         <PageLayout>
-            { post &&
                 <section id="post" className="main-component">
                     <Post
                         post={post}
@@ -34,7 +33,6 @@ function PostPage() {
                         setLikesSectionIsActive={setLikesSectionIsActive}
                     />
                 </section>
-            }
         </PageLayout>
     );
 }

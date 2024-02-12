@@ -6,22 +6,25 @@ import { getLikes } from "../../../dummyData";
 
 export function Post({ post, setLikes, setLikesSectionIsActive }) {
     const { user } = post;
-    const { profile } = user;
 
     function handleClick() {
         const likes = getLikes(post);
         setLikes(likes);
-        setLikesSectionIsActive(true);
+        likes.length && setLikesSectionIsActive(true);
     }
 
     return(
         <article className="post">
             <header>
-                <Link to={`/profile/${profile._id}`} className="profilePic-wrapper">
-                    <img src={profile.picture} alt="users profile pic"/>
-                </Link>
+                {user.profile._id ? 
+                    <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
+                        <div className="profilePic_wrapper">
+                            <img src={user.profile.picture} alt="users profile pic"/>
+                        </div>
+                    </Link> :
+                    <div className="loadingBGColor profilePic_wrapper"></div>}
                 <div className="title">
-                    <Link to={`/profile/${profile._id}`}>
+                    <Link to={`/profile/${user.profile._id}`}>
                         <h3>{user.username}</h3>
                     </Link>
                     <span>Time passed</span>
@@ -36,7 +39,7 @@ export function Post({ post, setLikes, setLikesSectionIsActive }) {
                         >
                             {post.likes.length} likes
                         </span>
-                        <Link to={`/post/${post._id}`}>
+                        <Link to={post._id && `/post/${post._id}`}>
                             {post.comments.length} comments
                         </Link>
                         <span># shares</span>
@@ -44,7 +47,7 @@ export function Post({ post, setLikes, setLikesSectionIsActive }) {
                 <hr/>
                 <div className="bottom">
                         <span>Like</span>
-                        <Link to={`/post/${post._id}`}>
+                        <Link to={post._id && `/post/${post._id}`}>
                             Comment
                         </Link>
                         <span>Share</span>

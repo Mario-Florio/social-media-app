@@ -17,13 +17,15 @@
     color: black;
 }
 
-.post .profilePic-wrapper {
+.post .profilePic_wrapper {
+    height: 60px;
+    width: 60px;
     border-radius: 5px;
 }
 
-.post img {
-    height: 60px;
-    width: 60px;
+.post .profilePic_wrapper img {
+    height: 100%;
+    width: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
