@@ -5,7 +5,7 @@ import CommentsSection from "./commentsSection/CommentsSection";
 import { Post, LikesSection } from "../../components/timeline/post/Post";
 import { useParams } from "react-router-dom";
 
-import { getPost } from "../../dummyData";
+import { getPost } from "../../mockDB/methods/posts";
 
 function PostPage() {
     const [post, setPost] = useState({ _id: false, user: { profile: {} }, text: "", likes: [], comments: [] });

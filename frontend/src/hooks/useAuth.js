@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
 import axios from "axios";
-import getData from "../dummyData";
+import getUsers from "../mockDB/databases/Users";
 
-const { users } = getData();
+const users = getUsers();
 
 const AuthContext = createContext();
 

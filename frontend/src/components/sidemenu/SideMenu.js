@@ -2,7 +2,7 @@ import "./sideMenu.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-import { getFollowingData } from "../../dummyData";
+import { getFollowingData } from "../../mockDB/methods/users";
 import { useEffect, useState } from "react";
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {

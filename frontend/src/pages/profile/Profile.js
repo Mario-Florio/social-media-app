@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 
-import { getProfileUser } from "../../dummyData";
+import { getProfileUser } from "../../mockDB/methods/users";
 
 const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 

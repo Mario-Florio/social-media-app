@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
 
-import { getLikes } from "../../../dummyData";
+import { getLikes } from "../../../mockDB/methods/users";
 
 export function Post({ post, setLikes, setLikesSectionIsActive }) {
     const { user } = post;

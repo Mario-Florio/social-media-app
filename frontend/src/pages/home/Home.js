@@ -2,9 +2,9 @@ import "./home.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import Timeline from "../../components/timeline/Timeline";
 
-import getData from "../../dummyData";
+import getPosts from "../../mockDB/databases/Posts";
 
-const { posts } = getData();
+const posts = getPosts();
 
 function Home() {
     return(
