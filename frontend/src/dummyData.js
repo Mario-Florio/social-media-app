@@ -296,7 +296,7 @@ function getProfileUser(id) {
                     }
                 });
             });
-            user.profile.posts = postsData;
+            user.profile.forum.posts = postsData;
         }
     }
 }
