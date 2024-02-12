@@ -14,8 +14,10 @@ function PostPage() {
     const { id } = useParams();
 
     useEffect(() => {
-        const post = getPost(id);
-        setPost(post);
+        setTimeout(() => {
+            const post = getPost(id);
+            setPost(post);
+        }, 3000);
     }, [id]);
 
     return(

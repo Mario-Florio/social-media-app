@@ -7,13 +7,16 @@ import { useEffect, useState } from "react";
 
 import { getProfileUser } from "../../dummyData";
 
+const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
+
 function Profile() {
-    const [profileUser, setProfileUser] = useState({ profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } });
+    const [profileUser, setProfileUser] = useState(placeholderProfileUser);
     const [isFollowing, setIsFollowing] = useState(false);
     const { id } = useParams();
     const { user } = useAuth();
 
     useEffect(() => {
+        setProfileUser(placeholderProfileUser);
         setTimeout(() => {
             const profileUser = getProfileUser(id);
             setProfileUser(profileUser);
