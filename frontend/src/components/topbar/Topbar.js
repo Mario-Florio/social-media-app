@@ -107,7 +107,7 @@ function SearchBar() {
                                 onClick={() => setInput("")}
                             >
                                 <div className="profile-pic_wrapper">
-                                    <img src={user.profile.pic} alt="user profile pic"/>
+                                    <img src={user.profile.picture} alt="user profile pic"/>
                                 </div>
                                 <h5>{user.username}</h5>
                             </Link>

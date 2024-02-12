@@ -75,7 +75,7 @@ export function LikesSection({ likes, likesSectionIsActive, setLikesSectionIsAct
                                 onClick={() => setLikesSectionIsActive(false)}
                             >
                                 <div className="profile_wrapper">
-                                    <img src={like.profile.pic} alt="users profile pic"/>
+                                    <img src={like.profile.picture} alt="users profile pic"/>
                                     <h3>{like.username}</h3>
                                 </div>
                             </Link>

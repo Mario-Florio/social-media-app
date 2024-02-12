@@ -20,6 +20,16 @@ import ellieWilliamsProfilePic from "./assets/imgs/ellieWilliams/profile-pic.jpg
 import ellieWilliamsCoverPhoto from "./assets/imgs/ellieWilliams/cover-photo.jpg";
 
 export default function getData() {
+    const forums = [
+        { _id: 1, posts: [1, 2, 3] },
+        { _id: 2, posts: [4, 5, 6] },
+        { _id: 3, posts: [7, 8, 9, 10] },
+        { _id: 4, posts: [] },
+        { _id: 5, posts: [] },
+        { _id: 6, posts: [] },
+        { _id: 7, posts: [] },
+    ]
+
     const users = [
         {
             _id: 1,
@@ -31,7 +41,7 @@ export default function getData() {
                 bio: "Hello World!",
                 following: [2, 3, 4, 5, 6, 7],
                 followers: [2, 3, 4, 5, 6, 7],
-                posts: [1, 2, 3]
+                forum: 1
             }
         },
         {
@@ -44,7 +54,7 @@ export default function getData() {
                 bio: "Hello World!",
                 following: [1, 3, 4, 5, 6, 7],
                 followers: [1, 3, 4, 5, 6, 7],
-                posts: [4, 5, 6]
+                forum: 2
             }
         },
         {
@@ -57,7 +67,7 @@ export default function getData() {
                 bio: "Hello World!",
                 following: [1, 2, 4, 5, 6, 7],
                 followers: [1, 2, 4, 5, 6, 7],
-                posts: [7, 8, 9, 10]
+                forum: 3
             }
         },
         {
@@ -70,7 +80,7 @@ export default function getData() {
                 bio: "Hello World!",
                 following: [1, 2, 3, 5, 6, 7],
                 followers: [1, 2, 3, 5, 6, 7],
-                posts: []
+                forum: 4
             }
         },
         {
@@ -83,7 +93,7 @@ export default function getData() {
                 bio: "Hello World!",
                 following: [1, 2, 3, 4, 6, 7],
                 followers: [1, 2, 3, 4, 6, 7],
-                posts: []
+                forum: 5
             }
         },
         {
@@ -96,7 +106,7 @@ export default function getData() {
                 bio: "Time is a flat circle, man",
                 following: [1, 2, 3, 4, 5, 7],
                 followers: [1, 2, 3, 4, 5, 7],
-                posts: []
+                forum: 6
             }
         },
         {
@@ -109,7 +119,7 @@ export default function getData() {
                 bio: "Hello!",
                 following: [1, 2, 3, 4, 5, 6],
                 followers: [1, 2, 3, 4, 5, 6],
-                posts: []
+                forum: 7
             }
         }
     ];
@@ -158,7 +168,7 @@ export default function getData() {
         post.user = userData;
     });
 
-    return { users, posts, comments };
+    return { users, forums, posts, comments };
 }
 
 // Sidemenu
@@ -254,7 +264,7 @@ function getComments(post) {
 
 // Profile
 function getProfileUser(id) {
-    const { users, posts } = getData();
+    const { users, forums, posts } = getData();
 
     let profileUser = null;
     users.forEach(user => {
@@ -263,20 +273,31 @@ function getProfileUser(id) {
         }
     });
 
-    populatePosts(profileUser);
+    getForum(profileUser);
 
     return profileUser;
 
-    function populatePosts(user) {
-        const postsData = [];
-        user.profile.posts.forEach(userPost => {
-            posts.forEach(post => {
-                if (post._id === userPost) {
-                    postsData.push(post);
-                }
-            });
+    function getForum(user) {
+        let forumData = null;
+        forums.forEach(forum => {
+            if (forum._id === user.profile.forum) {
+                forumData = forum;
+            }
         });
-        user.profile.posts = postsData;
+        user.profile.forum = forumData;
+        populatePosts(user);
+
+        function populatePosts(user) {
+            const postsData = [];
+            user.profile.forum.posts.forEach(userPost => {
+                posts.forEach(post => {
+                    if (post._id === userPost) {
+                        postsData.push(post);
+                    }
+                });
+            });
+            user.profile.posts = postsData;
+        }
     }
 }
 
