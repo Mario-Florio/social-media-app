@@ -1,16 +1,30 @@
 import {  useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./commentsSection.css";
+import Loader from "../../../components/loader/Loader";
 
 import { getComments } from "../../../dummyData";
 
 function CommentsSection({ post }) {
     const [comments, setComments] = useState([]);
     const [input, setInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const comments = getComments(post);
-        setComments(comments);
+        setIsLoading(true);
+        setData()
+            .then(() => setIsLoading(false));
+
+        async function setData() {
+            await delay(3000);
+            const comments = getComments(post);
+            setComments(comments);
+
+            // UTILS
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+              }
+        }
     }, [post]);
 
     function handleChange(e) {
@@ -21,11 +35,17 @@ function CommentsSection({ post }) {
         e.preventDefault();
         setInput("");
     }
-    return(comments &&
+    return(
         <section className="comments-section">
             <ul>
-                {
-                    comments.map(comment => <li key={comment._id}><Comment comment={comment}/></li>)
+                { isLoading ?
+                    <div
+                        style={{ display: "flex", justifyContent: "center", padding: "4rem" }}
+                    ><Loader/></div> :
+                    comments.map(comment => 
+                        <li key={comment._id}>
+                            <Comment comment={comment}/>
+                        </li>)
                 }
             </ul>
             <footer>
