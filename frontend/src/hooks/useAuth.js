@@ -5,8 +5,6 @@ import { useLocalStorage } from "./useLocalStorage";
 import axios from "axios";
 import getUsers from "../mockDB/databases/Users";
 
-const users = getUsers();
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -30,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
 
         async function getSession() {
+            const users = await getUsers();
             // const config = {
             //     headers: {
             //         Authorization: `Bearer ${token}`

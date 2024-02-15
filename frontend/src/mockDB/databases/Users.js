@@ -19,7 +19,9 @@ import rustCohleCoverPhoto from "../../assets/imgs/rustCohle/cover-photo.jpg";
 import ellieWilliamsProfilePic from "../../assets/imgs/ellieWilliams/profile-pic.jpg";
 import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo.jpg";
 
-function getUsers() {
+async function getUsers() {
+    await delay(1000);
+
     const users = [
         {
             _id: 1,
@@ -118,3 +120,8 @@ function getUsers() {
 }
 
 export default getUsers;
+
+// UTILS
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

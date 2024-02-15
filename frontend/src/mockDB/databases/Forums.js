@@ -1,5 +1,7 @@
 
-function getForums() {
+async function getForums() {
+    await delay(1000);
+
     const forums = [
         { _id: 1, posts: [1, 2, 3] },
         { _id: 2, posts: [4, 5, 6] },
@@ -14,3 +16,8 @@ function getForums() {
 }
 
 export default getForums;
+
+// UTILS
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

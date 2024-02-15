@@ -56,8 +56,14 @@ function SearchBar() {
     const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
-        const suggestions = searchUsers(input);
-        setSuggestions(suggestions);
+        (async () => {
+            try {
+                const suggestions = await searchUsers(input);
+                setSuggestions(suggestions);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }, [input]);
 
     function handleFocus() {

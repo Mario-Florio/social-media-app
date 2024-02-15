@@ -2,15 +2,21 @@ import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
 
-import { getLikes } from "../../../mockDB/methods/users";
+import { populateUsers } from "../../../mockDB/methods/users";
 
 export function Post({ post, setLikes, setLikesSectionIsActive }) {
     const { user } = post;
 
     function handleClick() {
-        const likes = getLikes(post);
-        setLikes(likes);
-        likes.length && setLikesSectionIsActive(true);
+        (async () => {
+            try {
+                const likes = await populateUsers(post.likes);
+                setLikes(likes);
+                likes.length && setLikesSectionIsActive(true);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }
 
     return(

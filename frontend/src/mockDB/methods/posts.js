@@ -1,19 +1,36 @@
 import getPosts from "../databases/Posts";
 
-// Post Page
-function getPost(id) {
-    const posts = getPosts();
+// Profile & Home
+async function populatePosts(postIds) {
+    const posts = await getPosts();
 
-    let returnPost = null;
+    const populatedPosts = [];
+    postIds.forEach(id => {
+        posts.forEach(post => {
+            if (post._id === id) {
+                populatedPosts.push(post);
+            }
+        });
+    });
+
+    return populatedPosts;
+}
+
+// Post page
+async function populatePost(id) {
+    const posts = await getPosts();
+
+    let populatedPost = null;
     posts.forEach(post => {
         if (post._id.toString() === id) {
-            returnPost = post;
+            populatedPost = post;
         }
     });
     
-    return returnPost;
+    return populatedPost;
 }
 
 export {
-    getPost
+    populatePosts,
+    populatePost
 }

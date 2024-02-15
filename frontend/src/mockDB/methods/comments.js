@@ -1,38 +1,21 @@
-import getComs from "../databases/Comments";
-import getUsers from "../databases/Users"
+import getComments from "../databases/Comments";
 
 // Comments Section
-function getComments(post) {
-    const comments = getComs();
-    const users = getUsers();
+async function populateComments(commentIds) {
+    const comments = await getComments();
 
-    const commentsArr = [];
-
-    post.comments.forEach(postComment => {
+    const populatedComments = [];
+    commentIds.forEach(id => {
         comments.forEach(comment => {
-            if (comment._id === postComment) {
-                commentsArr.push(comment);
+            if (comment._id === id) {
+                populatedComments.push(comment);
             }
         });
     });
 
-    populateUsers(commentsArr);
-
-    return commentsArr;
-
-    function populateUsers(comments) {
-        comments.forEach(comment => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === comment.user) {
-                    userData = user;
-                }
-            });
-            comment.user = userData;
-        });
-    }
+    return populatedComments;
 }
 
 export {
-    getComments
+    populateComments
 }

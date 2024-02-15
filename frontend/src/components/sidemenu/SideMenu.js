@@ -2,7 +2,7 @@ import "./sideMenu.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-import { getFollowingData } from "../../mockDB/methods/users";
+import { populateUsers } from "../../mockDB/methods/users";
 import { useEffect, useState } from "react";
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
@@ -10,8 +10,14 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
     const [following, setFollowing] = useState([]);
 
     useEffect(() => {
-        const followingData = getFollowingData(user);
-        setFollowing(followingData);
+        (async () => {
+            try {
+                const followingData = await populateUsers(user.profile.following);
+                setFollowing(followingData);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }, [user]);
 
     function handleClick() {

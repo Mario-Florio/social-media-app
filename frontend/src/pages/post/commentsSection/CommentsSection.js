@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
 
-import { getComments } from "../../../mockDB/methods/comments";
+import { populateComments } from "../../../mockDB/methods/comments";
 
 function CommentsSection({ post }) {
     const [comments, setComments] = useState([]);
@@ -12,19 +12,12 @@ function CommentsSection({ post }) {
 
     useEffect(() => {
         setIsLoading(true);
-        setData()
-            .then(() => setIsLoading(false));
 
-        async function setData() {
-            await delay(3000);
-            const comments = getComments(post);
+        (async () => {
+            const comments = await populateComments(post.comments);
             setComments(comments);
-
-            // UTILS
-            function delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-              }
-        }
+            setIsLoading(false);
+        })();
     }, [post]);
 
     function handleChange(e) {
