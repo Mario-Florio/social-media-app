@@ -7,7 +7,6 @@ const ProfileSchema = new Schema({
     picture: { type: String, default: "" },
     coverPicture: { type: String, default: "" },
     forum: { type: Schema.Types.ObjectId, ref: "Forum", required: true },
-    posts: { type: [Schema.Types.ObjectId], ref: "Post", default: [] },
     followers: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] },
     following: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] }
 }, { timestamps: true, virtuals: true });
