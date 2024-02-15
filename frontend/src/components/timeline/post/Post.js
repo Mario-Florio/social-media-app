@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
 
-import { populateUsers } from "../../../mockDB/methods/users";
+import { populateUsers } from "../../../serverRequests/methods/users";
 
 export function Post({ post, setLikes, setLikesSectionIsActive }) {
     const { user } = post;

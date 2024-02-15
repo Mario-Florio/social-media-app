@@ -1,4 +1,4 @@
-import getUsers from "../databases/Users";
+import getUsers from "../mockServer/Users";
 
 // Sidemenu & Post
 async function populateUsers(userIds) {

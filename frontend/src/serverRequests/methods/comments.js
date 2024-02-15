@@ -1,4 +1,4 @@
-import getComments from "../databases/Comments";
+import getComments from "../mockServer/Comments";
 
 // Comments Section
 async function populateComments(commentIds) {

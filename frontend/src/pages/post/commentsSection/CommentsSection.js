@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
 
-import { populateComments } from "../../../mockDB/methods/comments";
+import { populateComments } from "../../../serverRequests/methods/comments";
 
 function CommentsSection({ post }) {
     const [comments, setComments] = useState([]);

@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
-import axios from "axios";
-import getUsers from "../mockDB/databases/Users";
+import getMockSession from "../serverRequests/mockServer/Auth";
+import getUsers from "../serverRequests/mockServer/Users";
 
 const AuthContext = createContext();
 
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     // localStorage.removeItem("token");
 
     useEffect(() => {
-        token ? getSession()
+        token ? getMockSession()
             .then(async data => {
                 if (data.success) {
                     setUser(data.authData.user);
@@ -26,24 +26,6 @@ export const AuthProvider = ({ children }) => {
             })
             .catch(err => console.log(err)) :
         setUser(null);
-
-        async function getSession() {
-            const users = await getUsers();
-            // const config = {
-            //     headers: {
-            //         Authorization: `Bearer ${token}`
-            //     }
-            // }
-            // const session = await axios.get("/auth/session", config);
-            // return session.data;
-            return {
-                authData: {
-                    user: users[1]
-                },
-                token: "",
-                success: true
-            }
-        }
     }, []);
 
     const login = async (data) => {

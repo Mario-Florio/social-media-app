@@ -1,4 +1,4 @@
-import getForums from "../databases/Forums";
+import getForums from "../mockServer/Forums";
 
 // Profile
 async function populateForum(id) {

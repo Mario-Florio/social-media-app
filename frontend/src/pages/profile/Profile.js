@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 
-import { populateProfileUser } from "../../mockDB/methods/users";
-import { populateForum } from "../../mockDB/methods/forums";
-import { populatePosts } from "../../mockDB/methods/posts";
+import { populateProfileUser } from "../../serverRequests/methods/users";
+import { populateForum } from "../../serverRequests/methods/forums";
+import { populatePosts } from "../../serverRequests/methods/posts";
 
 const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 

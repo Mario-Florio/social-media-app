@@ -1,4 +1,4 @@
-import getPosts from "../databases/Posts";
+import getPosts from "../mockServer/Posts";
 
 // Profile & Home
 async function populatePosts(postIds) {

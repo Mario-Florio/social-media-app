@@ -5,7 +5,7 @@ import "./searchbar.css"
 import searchIcon from "../../assets/imgs/search-icon.png";
 import { useAuth } from "../../hooks/useAuth";
 
-import { searchUsers } from "../../mockDB/methods/users";
+import { searchUsers } from "../../serverRequests/methods/users";
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
     const { user } = useAuth();

@@ -1,5 +1,6 @@
 
 .entryForm-wrapper {
+    display: block;
     margin: auto;
     padding: 1rem;
     max-width: 700px;

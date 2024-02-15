@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../styles.css";
 import Loader from "../../../components/loader/Loader";
 import axios from "axios";
 

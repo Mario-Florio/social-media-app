@@ -4,9 +4,9 @@ import PageLayout from "../../components/pageLayout/PageLayout";
 import Timeline from "../../components/timeline/Timeline";
 import { useAuth } from "../../hooks/useAuth";
 
-import { populateForum } from "../../mockDB/methods/forums";
-import { populateUsers } from "../../mockDB/methods/users";
-import { populatePosts } from "../../mockDB/methods/posts";
+import { populateForum } from "../../serverRequests/methods/forums";
+import { populateUsers } from "../../serverRequests/methods/users";
+import { populatePosts } from "../../serverRequests/methods/posts";
 
 function Home() {
     const [posts, setPosts] = useState([]);

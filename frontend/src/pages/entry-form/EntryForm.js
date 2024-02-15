@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import "./styles.css";
 import SignIn from "./signIn/SignIn";
 import SignUp from "./signUp/SignUp";
 
