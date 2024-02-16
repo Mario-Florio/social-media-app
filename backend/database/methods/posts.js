@@ -7,13 +7,15 @@ async function createPost(data) {
 }
 
 async function getPosts() {
-    const posts = await Post.find().exec();
+    const posts = await Post.find()
+        .populate({ path: "user", populate: { path: "profile" } }).exec();
     return posts;
 }
 
 async function getPostById(id) {
     try {
-        const post = await Post.findById(id).exec();
+        const post = await Post.findById(id)
+            .populate({ path: "user", populate: { path: "profile" } }).exec();
         return post;
     } catch(err) {
         return null;

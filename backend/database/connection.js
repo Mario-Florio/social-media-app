@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-function connectDB() {
+async function connectDB() {
     mongoose.set("strictQuery", false);
     mongoose.connect(process.env.MONGODBURL)
         .then(res => console.log("Database connected"))
