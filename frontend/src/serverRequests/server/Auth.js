@@ -1,6 +1,6 @@
 import axios from "axios";
 
-async function getSession(token) {
+async function fetchSession(token) {
     const config = {
         headers: {
             Authorization: `Bearer ${token}`
@@ -10,4 +10,4 @@ async function getSession(token) {
     return session.data;
 }
 
-export default getSession;
+export default fetchSession;

@@ -1,4 +1,6 @@
-import getPosts from "../mockServer/Posts";
+import methods from "./config";
+
+const { getPosts } = methods;
 
 // Profile & Home
 async function populatePosts(postIds) {

@@ -1,5 +1,5 @@
 
-async function getForums() {
+async function fetchMockForum(id) {
     await delay(1000);
 
     const forums = [
@@ -11,11 +11,18 @@ async function getForums() {
         { _id: 6, posts: [] },
         { _id: 7, posts: [] },
     ];
+
+    let returnForum = null;
+    forums.forEach(forum => {
+        if (forum._id === id) {
+            returnForum = forum;
+        }
+    })
     
-    return forums;
+    return returnForum;
 }
 
-export default getForums;
+export default fetchMockForum;
 
 // UTILS
 function delay(ms) {

@@ -1,17 +1,12 @@
-import getForums from "../mockServer/Forums";
+import methods from "./config";
+
+const { getForum } = methods;
 
 // Profile
 async function populateForum(id) {
-    const forums = await getForums();
+    const forum = await getForum(id);
     
-    let populatedForum = null;
-    forums.forEach(forum => {
-        if (forum._id === id) {
-            populatedForum = forum
-        }
-    });
-
-    return populatedForum;
+    return forum;
 }
 
 export {

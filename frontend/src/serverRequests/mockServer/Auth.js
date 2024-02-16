@@ -1,7 +1,7 @@
-import getUsers from "./Users";
+import fetchMockUsers from "./Users";
 
-async function getMockSession() {
-    const users = await getUsers();
+async function fetchMockSession() {
+    const users = await fetchMockUsers();
 
     return {
         authData: {
@@ -12,4 +12,4 @@ async function getMockSession() {
     }
 }
 
-export default getMockSession;
+export default fetchMockSession;

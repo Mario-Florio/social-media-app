@@ -1,6 +1,6 @@
-import getUsers from "./Users";
+import fetchMockUsers from "./Users";
 
-async function getPosts() {
+async function fetchMockPosts() {
     await delay(1000);
 
     const posts = [
@@ -21,7 +21,7 @@ async function getPosts() {
     return posts;
 
     async function populateUsers(posts) {
-        const users = await getUsers();
+        const users = await fetchMockUsers();
         
         posts.forEach(async post => {
             let userData = null;
@@ -35,7 +35,7 @@ async function getPosts() {
     };
 }
 
-export default getPosts;
+export default fetchMockPosts;
 
 // UTILS
 function delay(ms) {

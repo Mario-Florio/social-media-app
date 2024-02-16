@@ -19,7 +19,7 @@ import rustCohleCoverPhoto from "../../assets/imgs/rustCohle/cover-photo.jpg";
 import ellieWilliamsProfilePic from "../../assets/imgs/ellieWilliams/profile-pic.jpg";
 import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo.jpg";
 
-async function getUsers() {
+async function fetchMockUsers() {
     await delay(1000);
 
     const users = [
@@ -119,7 +119,7 @@ async function getUsers() {
     return users;
 }
 
-export default getUsers;
+export default fetchMockUsers;
 
 // UTILS
 function delay(ms) {

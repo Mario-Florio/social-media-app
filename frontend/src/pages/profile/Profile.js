@@ -45,7 +45,6 @@ function Profile() {
         
                 const posts = await populatePosts(profileUser.profile.forum.posts);
                 setPosts(posts);
-
             } catch (err) {
                 console.log(err);
             }

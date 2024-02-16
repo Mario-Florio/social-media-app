@@ -2,30 +2,32 @@ import { createContext, useContext, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
-import getMockSession from "../serverRequests/mockServer/Auth";
-import getUsers from "../serverRequests/mockServer/Users";
+import requests from "../serverRequests/methods/config";
 
+const { getSession } = requests;
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useLocalStorage("user", null);
-    const [token, setToken] = useLocalStorage("token", "token");
+    const [token, setToken] = useLocalStorage("token", null);
     const navigate = useNavigate();
 
     // localStorage.removeItem("token");
 
     useEffect(() => {
-        token ? getMockSession()
-            .then(async data => {
-                if (data.success) {
-                    setUser(data.authData.user);
-                } else {
-                    setUser(null);
-                    setToken(null);
-                }
-            })
-            .catch(err => console.log(err)) :
-        setUser(null);
+        (async () => {
+            token ? await getSession(token)
+                .then(async data => {
+                    if (data.success) {
+                        setUser(data.authData.user);
+                    } else {
+                        setUser(null);
+                        setToken(null);
+                    }
+                })
+                .catch(err => console.log(err)) :
+            setUser(null);
+        })();
     }, []);
 
     const login = async (data) => {

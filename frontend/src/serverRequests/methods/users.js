@@ -1,4 +1,6 @@
-import getUsers from "../mockServer/Users";
+import methods from "./config";
+
+const { getUsers } = methods;
 
 // Sidemenu & Post
 async function populateUsers(userIds) {
@@ -22,7 +24,7 @@ async function populateProfileUser(profileId) {
 
     let populatedUser = null;
     users.forEach(user => {
-        if (user.profile._id === Number(profileId)) {
+        if (user.profile._id.toString() === profileId) {
             populatedUser = user;
         }
     });
