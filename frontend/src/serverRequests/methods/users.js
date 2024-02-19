@@ -1,6 +1,6 @@
-import methods from "./config";
+import requests from "./config";
 
-const { getUsers } = methods;
+const { getUsers } = requests.users;
 
 // Sidemenu & Post
 async function populateUsers(userIds) {

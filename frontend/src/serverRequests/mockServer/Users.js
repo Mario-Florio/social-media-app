@@ -19,13 +19,142 @@ import rustCohleCoverPhoto from "../../assets/imgs/rustCohle/cover-photo.jpg";
 import ellieWilliamsProfilePic from "../../assets/imgs/ellieWilliams/profile-pic.jpg";
 import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo.jpg";
 
-async function fetchMockUsers() {
+setupUsersCollection();
+
+async function getUsersMock() {
     await delay(1000);
 
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    return users;
+}
+
+async function getUserMock(id) {
+    await delay(1000);
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    let userFound = null;
+    for (const user of users) {
+        if (user._id === id) {
+            userFound = user;
+        }
+    }
+
+    return userFound;
+}
+
+async function postUserMock(credentials) {
+    await delay(1000);
+
+    const { username, password } = credentials;
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    for (const user of users) {
+        if (user.username === username) {
+            return "User already exists";
+        }
+    }
+
+    const _id = Number(users[users.length]._id) + 1;
+    const newUser = {
+        _id,
+        username,
+        password,
+        profile: {
+            _id,
+            picture: "../../assets/imgs/default/profile-picture.jpg",
+            coverPicture: "../../assets/imgs/default/cover-photo.jpg",
+            bio: "Hello world!",
+            followers: [],
+            following: [],
+            forum: _id
+        }
+    }
+
+    users.push(newUser);
+    window.localStorage.setItem("Users", JSON.stringify(users));
+
+    return newUser;
+}
+
+async function putUserMock(id, update) {
+    await delay(1000);
+
+    const token = window.localStorage.getItem("token");
+    if (token !== id.toString()) return "Request is forbidden";
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    let userFound = false;
+    let index = 0;
+    for (const user of users) {
+        if (user._id === id) {
+            userFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!userFound) return "User does not exist";
+
+    users[index] = update;
+    window.localStorage.setItem(JSON.stringify(users));
+
+    return "Update was successful";
+}
+
+async function deleteUserMock(id) {
+    await delay(1000);
+
+    const token = window.localStorage.getItem("token");
+    if (token !== id) return "Request is forbidden";
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    let userFound = false;
+    let index = 0;
+    for (const user of users) {
+        if (user._id === id) {
+            userFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!userFound) return "User does not exist";
+
+    users.splice(index, 1);
+    window.localStorage.setItem(JSON.stringify(users));
+
+    return "Deletion was successful";
+}
+
+export {
+    getUsersMock,
+    getUserMock,
+    postUserMock,
+    putUserMock,
+    deleteUserMock
+};
+
+// UTILS
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function setupUsersCollection() {
     const users = [
         {
             _id: 1,
             username: "Jane Dough",
+            password: "password",
             profile: {
                 _id: 1,
                 picture: janeDoughProfilePic,
@@ -39,6 +168,7 @@ async function fetchMockUsers() {
         {
             _id: 2,
             username: "Jesus Christ",
+            password: "password",
             profile: {
                 _id: 2,
                 picture: jesusChristProfilePic,
@@ -52,6 +182,7 @@ async function fetchMockUsers() {
         {
             _id: 3,
             username: "Tyrion Lannister",
+            password: "password",
             profile: {
                 _id: 3,
                 picture: tyrionLannisterProfilePic,
@@ -65,6 +196,7 @@ async function fetchMockUsers() {
         {
             _id: 4,
             username: "Jinx",
+            password: "password",
             profile: {
                 _id: 4,
                 picture: jinxProfilePic,
@@ -78,6 +210,7 @@ async function fetchMockUsers() {
         {
             _id: 5,
             username: "Nea Karlsson",
+            password: "password",
             profile: {
                 _id: 5,
                 picture: neaKarlssonProfilePic,
@@ -91,6 +224,7 @@ async function fetchMockUsers() {
         {
             _id: 6,
             username: "Rust Cohle",
+            password: "password",
             profile: {
                 _id: 6,
                 picture: rustCohleProfilePic,
@@ -104,6 +238,7 @@ async function fetchMockUsers() {
         {
             _id: 7,
             username: "Ellie Williams",
+            password: "password",
             profile: {
                 _id: 7,
                 picture: ellieWilliamsProfilePic,
@@ -115,13 +250,8 @@ async function fetchMockUsers() {
             }
         }
     ];
-
-    return users;
-}
-
-export default fetchMockUsers;
-
-// UTILS
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    
+    if (!window.localStorage.getItem("users")) {
+        window.localStorage.setItem("Users", JSON.stringify(users));
+    }
 }

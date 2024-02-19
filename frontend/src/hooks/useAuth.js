@@ -4,7 +4,7 @@ import { useLocalStorage } from "./useLocalStorage";
 
 import requests from "../serverRequests/methods/config";
 
-const { getSession } = requests;
+const { getSession } = requests.auth;
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

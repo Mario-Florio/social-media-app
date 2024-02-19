@@ -1,6 +1,6 @@
-import methods from "./config";
+import request from "./config";
 
-const { getPosts } = methods;
+const { getPosts } = request.posts;
 
 // Profile & Home
 async function populatePosts(postIds) {

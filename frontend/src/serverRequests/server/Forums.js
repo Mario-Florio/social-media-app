@@ -1,14 +1,10 @@
 import axios from "axios";
 
-async function fetchForum(id) {
-    const token = window.localStorage.getItem("token");
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }
-    const response = await axios.get(`/forums/${id}`, config);
+async function getForum(id) {
+    const response = await axios.get(`/forums/${id}`);
     return response.data.forum;
 }
 
-export default fetchForum;
+export {
+    getForum
+};

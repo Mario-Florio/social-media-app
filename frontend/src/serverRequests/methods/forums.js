@@ -1,6 +1,6 @@
-import methods from "./config";
+import requests from "./config";
 
-const { getForum } = methods;
+const { getForum } = requests.forums;
 
 // Profile
 async function populateForum(id) {

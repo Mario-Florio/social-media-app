@@ -11,19 +11,17 @@ function Timeline({ posts }) {
         <section className="timeline">
             <NewPost/>
             <ul className="feed">
-                {
-                    posts.map(post =>
+                { posts.map(post =>
                         <li key={post._id}>
                             <Post
                                 post={post}
                                 setLikes={setLikes}
                                 setLikesSectionIsActive={setLikesSectionIsActive}
                             />
-                        </li>)
-                }
-                <li className="seeMore">
+                        </li>) }
+                { posts.length >= 10 && <li className="seeMore">
                     <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
-                </li>
+                </li> }
             </ul>
             <LikesSection
                 likes={likes}

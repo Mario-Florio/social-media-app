@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Loader from "../../../components/loader/Loader";
-import axios from "axios";
 import { useAuth } from "../../../hooks/useAuth";
+
+import requests from "../../../serverRequests/methods/config";
+const { postLogin } = requests.auth;
 
 function SignIn({ isSignIn, setIsSignIn }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +27,7 @@ function SignIn({ isSignIn, setIsSignIn }) {
     function handleSubmit(e) {
         e.preventDefault();
         setIsLoading(true);
-        getUser(formInput)
+        postLogin(formInput)
             .then(async data => {
                 setIsLoading(false);
                 if (data.user) {
@@ -40,20 +42,6 @@ function SignIn({ isSignIn, setIsSignIn }) {
                 setIsLoading(false);
                 console.error(err);
             });
-    }
-
-    async function getUser(credentials) {
-        const { username, password } = credentials;
-        try {
-            const res = await axios.post("/auth/login", {
-                username,
-                password
-            });
-            const user = res.data;
-            return user;
-        } catch(err) {
-            console.log(err);
-        }
     }
 
     return(

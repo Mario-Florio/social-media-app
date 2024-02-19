@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Loader from "../../../components/loader/Loader";
-import axios from "axios";
+
+import requests from "../../../serverRequests/methods/config";
+const { postUser } = requests.users;
 
 function SignUp({ isSignIn, setIsSignIn }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -74,19 +76,6 @@ function SignUp({ isSignIn, setIsSignIn }) {
                 setIsLoading(false);
                 console.error(err);
             });
-    }
-
-    async function postUser(credentials) {
-        const { username, password } = credentials;
-        try {
-            const res = await axios.post("/users", {
-                username,
-                password
-            });
-            return res.data;
-        } catch(err) {
-            console.log(err);
-        }
     }
 
     return(

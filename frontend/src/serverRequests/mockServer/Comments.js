@@ -1,4 +1,4 @@
-import getUsers from "./Users";
+import { getUsersMock } from "./Users";
 
 async function getComments() {
     await delay(1000);
@@ -27,7 +27,7 @@ async function getComments() {
     return comments;
 
     async function populateUsers(comments) {
-        const users = await getUsers();
+        const users = await getUsersMock();
     
         comments.forEach(async comment => {
             let userData = null;
