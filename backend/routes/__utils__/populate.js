@@ -25,11 +25,11 @@ async function posts() {
         user = await new User({ username: "username", password: hashedPassword, profile }).save();
     }
 
-    const posts = [];
     for (let i = 1; i < 5; i++) {
-        const post = await new Post({ user: user._id, text: "This is post number "+i }).save();
-        const comment = await new Comment({ user, post, text: "This is a comment on post number "+i }).save();
-        await User.findByIdAndUpdate(user._id, { $push: { posts: post._id } }).exec();
+        const comment = await new Comment({ user, text: "This is a comment on post number "+i }).save();
+        const post = await new Post({ user: user._id, text: "This is post number "+i, comments: [comment._id] }).save();
+        const profile = await Profile.findById(user.profile).exec();
+        await Forum.findByIdAndUpdate(profile.forum, { $push: { posts: post._id } }).exec();
     }
 }
 

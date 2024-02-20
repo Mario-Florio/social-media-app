@@ -22,34 +22,36 @@ function Profile() {
         setProfileUser(placeholderProfileUser);
         setPosts([]);
 
-        (async () => {
-            try {
-                const profileUser = await populateProfileUser(id);
-                setProfileUser(profileUser);
-
-                const populatedForum = await populateForum(profileUser.profile.forum);
-                profileUser.profile.forum = populatedForum;
-                const placeholderPosts = [];
-                profileUser.profile.forum.posts.forEach(postId => {
-                    const placeholderPost = {
-                        _id: postId,
-                        user: { profile: {} },
-                        text: "",
-                        likes: [],
-                        comments: []
-                    };
-                    placeholderPosts.push(placeholderPost);
-                });
-                setProfileUser(profileUser);
-                setPosts(placeholderPosts);
-        
-                const posts = await populatePosts(profileUser.profile.forum.posts);
-                setPosts(posts);
-            } catch (err) {
-                console.log(err);
-            }
-        })();
+        (async () => await setTimeline())();
     }, [id, user]);
+
+    async function setTimeline() {
+        try {
+            const profileUser = await populateProfileUser(id);
+            setProfileUser(profileUser);
+            const populatedForum = await populateForum(profileUser.profile.forum);
+            profileUser.profile.forum = populatedForum;
+            const placeholderPosts = [];
+            profileUser.profile.forum.posts.forEach(postId => {
+                const placeholderPost = {
+                    _id: postId,
+                    user: { profile: {} },
+                    text: "",
+                    likes: [],
+                    comments: []
+                };
+                placeholderPosts.push(placeholderPost);
+            });
+            setProfileUser(profileUser);
+            setPosts(placeholderPosts);
+    
+            const posts = await populatePosts(profileUser.profile.forum.posts);
+            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPosts(posts);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     return(
         <PageLayout>
@@ -73,7 +75,7 @@ function Profile() {
                             </div>
                             <p>{profileUser.profile.bio}</p>
                     </section>
-                    <Timeline posts={posts}/>
+                    <Timeline posts={posts} setTimeline={setTimeline} forumId={profileUser.profile.forum._id}/>
                 </section>
         </PageLayout>
     );

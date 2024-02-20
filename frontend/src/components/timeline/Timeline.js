@@ -4,12 +4,15 @@ import "./timeline.css";
 import { Post, LikesSection } from "./post/Post";
 import { useAuth } from "../../hooks/useAuth";
 
-function Timeline({ posts }) {
+import requests from "../../serverRequests/methods/config";
+const { postPost } = requests.posts;
+
+function Timeline({ posts, setTimeline, forumId }) {
     const [likes, setLikes] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     return(
         <section className="timeline">
-            <NewPost/>
+            <NewPost setTimeline={setTimeline} forumId={forumId}/>
             <ul className="feed">
                 { posts.map(post =>
                         <li key={post._id}>
@@ -34,7 +37,7 @@ function Timeline({ posts }) {
 
 export default Timeline;
 
-function NewPost() {
+function NewPost({ setTimeline, forumId }) {
     const [input, setInput] = useState("");
     const { user } = useAuth();
 
@@ -42,9 +45,14 @@ function NewPost() {
         setInput(e.target.value);
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+
+        await postPost({ user, text: input.trim() }, forumId);
+
         setInput("");
+
+        await setTimeline();
     }
 
     return(
