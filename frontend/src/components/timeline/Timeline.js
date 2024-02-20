@@ -48,7 +48,7 @@ function NewPost({ setTimeline, forumId }) {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await postPost({ user, text: input.trim() }, forumId);
+        await postPost({ user: user._id, text: input.trim() }, forumId);
 
         setInput("");
 

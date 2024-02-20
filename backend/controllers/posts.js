@@ -12,7 +12,7 @@ async function read_one(req, res, next) {
 }
 
 async function create(req, res, next) {
-    const { user, text } = req.body;
+    const { user, text } = req.body.post;
     if (!user || !text) {
         return res.sendStatus(400);
     }
@@ -22,19 +22,19 @@ async function create(req, res, next) {
         const { status, message } = verifyTokenResBody;
         return res.status(status).json({ message });
     }
-    const userId = req.body.user;
+    const userId = user;
     const { authData } = verifyTokenResBody;
     if (authData.user._id !== userId) {
         return res.status(404).json({ message: "You are not authorized to create posts for this user" });
     }
     
-    const sanitizedInput = sanitizeInput(req.body);
+    const sanitizedInput = sanitizeInput(req.body.post);
     const isValid = validateInput(sanitizedInput);
     if (!isValid) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
 
-    const responseBody = await posts_dbMethods.createPost(sanitizedInput);
+    const responseBody = await posts_dbMethods.createPost(sanitizedInput, req.body.forum);
     if (!responseBody.success) {
         const { status, message, success } = responseBody;
         return res.status(status).json({ message, success });

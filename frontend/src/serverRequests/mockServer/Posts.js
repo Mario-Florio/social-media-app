@@ -47,7 +47,7 @@ async function postPostMock(content, forumId) {
     await delay(1000);
 
     const token = window.localStorage.getItem("token");
-    if (token !== content.user._id.toString()) return "Request is forbidden";
+    if (token !== content.user.toString()) return "Request is forbidden";
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -57,7 +57,7 @@ async function postPostMock(content, forumId) {
     const _id = posts[posts.length-1]._id + 1;
     const newPost = {
         _id,
-        user: content.user._id,
+        user: content.user,
         text: content.text,
         likes: [],
         comments: [],

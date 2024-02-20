@@ -1,7 +1,9 @@
 const Post = require("../../models/Post");
+const Forum = require("../../models/Forum");
 
-async function createPost(data) {
+async function createPost(data, forumId) {
     const post = await new Post(data).save();
+    await Forum.findByIdAndUpdate(forumId, { $push: { posts: post } }).exec();
     const res = { message: "Success: post has been created", success: true };
     return res;
 }

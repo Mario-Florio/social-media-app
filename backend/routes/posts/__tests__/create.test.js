@@ -29,7 +29,7 @@ describe("/posts CREATE", () => {
         describe("given user and text", () => {
             test("should return 200 status code and json content type header", async () => {
                 const response = await request(app).post("/api/posts")
-                    .send({ user: user._id, text: "This is a new post" })
+                    .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
                     .set("Authorization", `Bearer ${token}`);
 
                 expect(response.statusCode).toBe(200);
@@ -37,7 +37,7 @@ describe("/posts CREATE", () => {
             });
             test("response body has success and message fields defined", async () => {
                 const response = await request(app).post("/api/posts")
-                    .send({ user: user._id, text: "This is a new post" })
+                    .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
                     .set("Authorization", `Bearer ${token}`);
 
                 expect(response.body.success).toBeDefined();
@@ -48,9 +48,9 @@ describe("/posts CREATE", () => {
         describe("missing user and/or text", () => {
             test("should return 400 status code", async () => {
                 const bodyData = [
-                    { user: user._id },
-                    { text: "This is a new post" },
-                    {}
+                    { forum: user.profile.forum, post: { user: user._id } },
+                    { forum: user.profile.forum, post: { text: "This is a new post" } },
+                    { forum: user.profile.forum, post: {} }
                 ];
 
                 for (const data of bodyData) {
@@ -87,7 +87,7 @@ describe("/posts CREATE", () => {
 
         test("should return 404 status code and json content type header", async () => {
             const response = await request(app).post("/api/posts")
-                .send({ user: authorUser._id, text: "This is a new post" })
+                .send({ forum: user.profile.forum, post: { user: authorUser._id, text: "This is a new post" } })
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.statusCode).toBe(404);
@@ -98,7 +98,7 @@ describe("/posts CREATE", () => {
     describe("client not authenticated (token unverified)", () => {
         test("should return 404 status code and json content type header", async () => {
             const response = await request(app).post("/api/posts")
-                .send({ user: user._id, text: "This is a new post" });
+                .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } });
 
             expect(response.statusCode).toBe(404);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
@@ -109,7 +109,7 @@ describe("/posts CREATE", () => {
         test("should return 400 status code and json content type header", async () => {
             token = "";
             const response = await request(app).post("/api/posts")
-                .send({ user: user._id, text: "This is a new post" })
+                .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.statusCode).toBe(400);
@@ -118,7 +118,7 @@ describe("/posts CREATE", () => {
         test("should return 400 status code and json content type header", async () => {
             token += "tamper";
             const response = await request(app).post("/api/posts")
-                .send({ user: user._id, text: "This is a new post" })
+                .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
                 .set("Authorization", `Bearer ${token}`);
 
             expect(response.statusCode).toBe(400);

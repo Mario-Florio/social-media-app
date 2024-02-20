@@ -18,17 +18,22 @@ async function getPost(id) {
     }
 }
 
-async function postPost(content) {
+async function postPost(content, forumId) {
     try {
-        const token = window.localStorage.getItem("token");
+        const body = {
+            post: content,
+            forum: forumId
+        }
+
+        const token = JSON.parse(window.localStorage.getItem("token"));
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
 
-        const response = await axios.post("/posts", content, config);
-        return response.data.post;
+        const response = await axios.post("/posts", body, config);
+        return response.data;
     } catch (err) {
         console.log(err);
     }
@@ -36,7 +41,7 @@ async function postPost(content) {
 
 async function putPost(id, update) {
     try {
-        const token = window.localStorage.getItem("token");
+        const token = JSON.parse(window.localStorage.getItem("token"));
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -52,7 +57,7 @@ async function putPost(id, update) {
 
 async function deletePost(id) {
     try {
-        const token = window.localStorage.getItem("token");
+        const token = JSON.parse(window.localStorage.getItem("token"));
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
