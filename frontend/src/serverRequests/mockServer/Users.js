@@ -53,6 +53,8 @@ async function postUserMock(credentials) {
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
+    const forumsJSON = window.localStorage.getItem("Forums");
+    const forums = JSON.parse(forumsJSON);
 
     for (const user of users) {
         if (user.username === username) {
@@ -61,6 +63,7 @@ async function postUserMock(credentials) {
     }
 
     const _id = users[users.length-1]._id + 1;
+    const newForum = { _id, posts: [] };
     const newUser = {
         _id,
         username,
@@ -78,6 +81,8 @@ async function postUserMock(credentials) {
 
     users.push(newUser);
     window.localStorage.setItem("Users", JSON.stringify(users));
+    forums.push(newForum);
+    window.localStorage.setItem("Forums", JSON.stringify(forums));
 
     return {
         message: "Success: user has been created",
