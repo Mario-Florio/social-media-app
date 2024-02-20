@@ -37,7 +37,5 @@ function setupForumsCollection() {
         { _id: 7, posts: [] },
     ];
 
-    if (!window.localStorage.getItem("Forums")) {
-        window.localStorage.setItem("Forums", JSON.stringify(forums));
-    }
+    window.localStorage.setItem("Forums", JSON.stringify(forums));
 }

@@ -259,7 +259,5 @@ function setupUsersCollection() {
         }
     ];
     
-    if (!window.localStorage.getItem("users")) {
-        window.localStorage.setItem("Users", JSON.stringify(users));
-    }
+    window.localStorage.setItem("Users", JSON.stringify(users));
 }

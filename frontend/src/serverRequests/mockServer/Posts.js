@@ -43,25 +43,36 @@ async function getPostMock(id) {
     return postFound;
 }
 
-async function postPostMock(content) {
+async function postPostMock(content, forumId) {
     await delay(1000);
 
     const token = window.localStorage.getItem("token");
-    if (token !== content.user.toString()) return "Request is forbidden";
+    if (token !== content.user._id.toString()) return "Request is forbidden";
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
+    const forumsJSON = window.localStorage.getItem("Forums");
+    const forums = JSON.parse(forumsJSON);
 
     const _id = posts[posts.length-1]._id + 1;
     const newPost = {
         _id,
-        user: content.user,
+        user: content.user._id,
         text: content.text,
-        comments: []
+        likes: [],
+        comments: [],
+        createdAt: new Date()
+    }
+
+    for (const forum of forums) {
+        if (forum._id === forumId) {
+            forum.posts.push(newPost._id);
+        }
     }
 
     posts.push(newPost);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
+    window.localStorage.setItem("Forums", JSON.stringify(forums));
 
     return "Post was successful";
 }
@@ -149,7 +160,5 @@ function setupPostsCollection() {
         { _id: 10, user: 3, text: "Hello", likes: [2], comments: [], createdAt: new Date() }
     ];
 
-    if (!window.localStorage.getItem("Posts")) {
-        window.localStorage.setItem("Posts", JSON.stringify(posts));
-    }
+    window.localStorage.setItem("Posts", JSON.stringify(posts));
 }
