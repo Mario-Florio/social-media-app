@@ -55,7 +55,7 @@ async function update(req, res, next) {
         return res.status(status).json({ message });
     }
     const post = await posts_dbMethods.getPostById(req.params.id);
-    const userId = post.user.toString();
+    const userId = post.user._id.toString();
     const { authData } = verifyTokenResBody;
     if (authData.user._id !== userId) {
         return res.status(404).json({ message: "You are not authorized to delete this post" });
@@ -83,7 +83,7 @@ async function remove(req, res, next) {
         return res.status(status).json({ message });
     }
     const post = await posts_dbMethods.getPostById(req.params.id);
-    const userId = post.user.toString();
+    const userId = post.user._id.toString();
     const { authData } = verifyTokenResBody;
     if (authData.user._id !== userId) {
         return res.status(404).json({ message: "You are not authorized to delete this post" });
