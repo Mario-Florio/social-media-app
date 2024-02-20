@@ -52,7 +52,7 @@ async function postPostMock(content) {
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
 
-    const _id = Number(posts[posts.length]._id) + 1;
+    const _id = posts[posts.length-1]._id + 1;
     const newPost = {
         _id,
         user: content.user,

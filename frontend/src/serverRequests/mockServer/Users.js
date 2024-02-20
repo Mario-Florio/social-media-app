@@ -56,11 +56,11 @@ async function postUserMock(credentials) {
 
     for (const user of users) {
         if (user.username === username) {
-            return "User already exists";
+            throw new Error("404: User already exists");
         }
     }
 
-    const _id = Number(users[users.length]._id) + 1;
+    const _id = users[users.length-1]._id + 1;
     const newUser = {
         _id,
         username,
@@ -79,7 +79,10 @@ async function postUserMock(credentials) {
     users.push(newUser);
     window.localStorage.setItem("Users", JSON.stringify(users));
 
-    return newUser;
+    return {
+        message: "Success: user has been created",
+        success: true
+    };
 }
 
 async function putUserMock(id, update) {

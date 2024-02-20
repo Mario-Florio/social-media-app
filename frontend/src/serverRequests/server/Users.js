@@ -20,8 +20,9 @@ async function getUser(id) {
 
 async function postUser(credentials) {
     try {
-        const response = await axios.post("/users", credentials);
-        return response.data.user;
+        const { username, password } = credentials;
+        const response = await axios.post("/users", { username, password });
+        return response.data;
     } catch (err) {
         console.log(err);
     }
