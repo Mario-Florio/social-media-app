@@ -1,22 +1,25 @@
 
-.likes-section {
+.likes-section_mask {
+    z-index: 1;
     position: fixed;
-    left: 0rem;
-    bottom: -360px;
-    padding: 1rem;
-    height: 350px;
-    width: 100%;
-    background-color: white;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    box-shadow: 0px 1px 5px gray;
+    top: 100%;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.273);
     transition-duration: .2s;
 }
 
-.likes-section.active {
-    position: fixed;
-    left: 0rem;
-    bottom: 0px;
+.likes-section_mask.active {
+    top: 0;
+    bottom: 0;
+    transition-duration: .2s;
+}
+
+.likes-section {
+    position: absolute;
+    bottom: 0;
+    padding: 1rem;
     height: 350px;
     width: 100%;
     background-color: white;
@@ -107,29 +110,25 @@
 }
 
 @media all and (min-width: 750px) {
-    .likes-section {
-        left: inherit;
-        right: 0;
+    .likes-section_mask {
+        left: var(--sidemenu_max-width);
         width: calc(100% - var(--sidemenu_max-width));
     }
 
-    .likes-section.active {
-        left: inherit;
-        right: 0;
+    .likes-section_mask.active {
+        left: var(--sidemenu_max-width);
         width: calc(100% - var(--sidemenu_max-width));
     }
 }
 
 @media all and (min-width: 1045px) {
-    .likes-section {
+    .likes-section_mask {
         left: 400px;
-        right: inherit;
         max-width: calc(750px);
     }
 
-    .likes-section.active {
+    .likes-section_mask.active {
         left: 400px;
-        right: inherit;
         max-width: calc(750px);
     }
 }

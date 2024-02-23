@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./timeline.css";
-import { Post, LikesSection } from "./post/Post";
+import { Post } from "./post/Post";
 import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
 
@@ -11,8 +11,6 @@ const { postPost } = requests.posts;
 
 function Timeline({ forumId }) {
     const [posts, setPosts] = useState([]);
-    const [likeIds, setLikeIds] = useState([]);
-    const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const { postIds } = useTimeline();
 
     useEffect(() => {
@@ -39,8 +37,6 @@ function Timeline({ forumId }) {
                     <li key={post._id}>
                         <Post
                             post={post}
-                            setLikeIds={setLikeIds}
-                            setLikesSectionIsActive={setLikesSectionIsActive}
                             setParentState={setTimeline}
                         />
                     </li>) }
@@ -49,11 +45,6 @@ function Timeline({ forumId }) {
                         <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                     </li> }
             </ul>
-            <LikesSection
-                likeIds={likeIds}
-                likesSectionIsActive={likesSectionIsActive}
-                setLikesSectionIsActive={setLikesSectionIsActive}
-            />
         </section>
     );
 }

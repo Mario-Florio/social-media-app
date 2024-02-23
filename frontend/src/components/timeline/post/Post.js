@@ -9,8 +9,10 @@ import { populateUsers } from "../../../serverRequests/methods/users";
 import requests from "../../../serverRequests/methods/config";
 const { putPostLike } = requests.posts;
 
-export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState }) {
+export function Post({ post, setParentState }) {
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
+    const [likeIds, setLikeIds] = useState([]);
+    const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const { user } = useAuth();
 
     function viewLikes() {
@@ -86,11 +88,16 @@ export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState
                 optionsSectionIsActive={optionsSectionIsActive}
                 setOptionsSectionIsActive={setOptionsSectionIsActive}
             />
+            <LikesSection
+                likeIds={likeIds}
+                likesSectionIsActive={likesSectionIsActive}
+                setLikesSectionIsActive={setLikesSectionIsActive}
+            />
         </article>
     );
 }
 
-export function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
+function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
     const [likes, setLikes] = useState([]);
 
     useEffect(() => {
@@ -105,32 +112,34 @@ export function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsA
     }, [likeIds]);
 
     return(
-        <section className={likesSectionIsActive ? "likes-section active" : "likes-section"}>
-            <header>
-                <div
-                    onClick={() => setLikesSectionIsActive(false)}
-                    className="close-icon_wrapper"
-                >
-                    <div className="bar-1"></div>
-                    <div className="bar-2"></div>
-                </div>
-            </header>
-            <ul>
-                { likes.map(like =>
-                    <li key={like._id}>
-                        <Link 
-                            to={`/profile/${like.profile._id}`}
-                            onClick={() => setLikesSectionIsActive(false)}
-                        >
-                            <div className="profile_wrapper">
-                                <img src={like.profile.picture} alt="users profile pic"/>
-                                <h3>{like.username}</h3>
-                            </div>
-                        </Link>
-                    </li>
-                ) }
-            </ul>
-        </section>
+        <div className={likesSectionIsActive ? "likes-section_mask active" : "likes-section_mask"}>
+            <section className="likes-section">
+                <header>
+                    <div
+                        onClick={() => setLikesSectionIsActive(false)}
+                        className="close-icon_wrapper"
+                    >
+                        <div className="bar-1"></div>
+                        <div className="bar-2"></div>
+                    </div>
+                </header>
+                <ul>
+                    { likes.map(like =>
+                        <li key={like._id}>
+                            <Link 
+                                to={`/profile/${like.profile._id}`}
+                                onClick={() => setLikesSectionIsActive(false)}
+                            >
+                                <div className="profile_wrapper">
+                                    <img src={like.profile.picture} alt="users profile pic"/>
+                                    <h3>{like.username}</h3>
+                                </div>
+                            </Link>
+                        </li>
+                    ) }
+                </ul>
+            </section>
+        </div>
     );
 }
 
