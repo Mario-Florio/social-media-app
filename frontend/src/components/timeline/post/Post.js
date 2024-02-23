@@ -141,6 +141,7 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
 }
 
 function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive }) {
+    const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user } = useAuth();
     const { postIds, setPostIds } = useTimeline();
 
@@ -150,6 +151,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
         if (res.success) {
             const newPostIds = postIds.filter(postId => postId !== post._id);
             setPostIds(newPostIds);
+            setConfirmDeletePopupIsActive(false);
             setOptionsSectionIsActive(false);
         }
     }
@@ -165,7 +167,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
             setSectionIsActive={setOptionsSectionIsActive}
         >
             <ul>
-                { post.user._id === user._id && <li onClick={async () => await deletePost()}>Delete Post</li> }
+                { post.user._id === user._id && <li onClick={() => setConfirmDeletePopupIsActive(true)}>Delete Post</li> }
                 { post.user._id === user._id && <li onClick={async () => await editPost()}>Edit Post</li> }
                 <li onClick={async () => await likePost()}>
                     { post.likes.includes(user._id) ? "Unlike Post" : "Like Post" }
@@ -177,6 +179,11 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
                 </Link>
                 <li>Share Post</li>
             </ul>
+            <div className={ confirmDeletePopupIsActive ? "confirm-delete_popup active" : "confirm-delete_popup" }>
+                <p>Are you sure you want to delete this post?</p>
+                <button onClick={async () => await deletePost()}>Confirm</button>
+                <button onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
+            </div>
         </SectionWrapper>
     );
 }
