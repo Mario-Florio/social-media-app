@@ -1,33 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./timeline.css";
 import { Post, LikesSection } from "./post/Post";
 import { useAuth } from "../../hooks/useAuth";
+import { useTimeline } from "../../hooks/useTimeline";
 
 import requests from "../../serverRequests/methods/config";
+import { populatePosts } from "../../serverRequests/methods/posts";
 const { postPost } = requests.posts;
 
-function Timeline({ posts, setTimeline, forumId }) {
-    const [likes, setLikes] = useState([]);
+function Timeline({ forumId }) {
+    const [posts, setPosts] = useState([]);
+    const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
+    const { postIds } = useTimeline();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                await setTimeline();
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [postIds]);
+
+    async function setTimeline() {
+        const timeline = await populatePosts(postIds);
+        timeline.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPosts(timeline);
+    };
+
     return(
         <section className="timeline">
-            <NewPost setTimeline={setTimeline} forumId={forumId}/>
+            <NewPost forumId={forumId}/>
             <ul className="feed">
                 { posts.map(post =>
-                        <li key={post._id}>
-                            <Post
-                                post={post}
-                                setLikes={setLikes}
-                                setLikesSectionIsActive={setLikesSectionIsActive}
-                            />
-                        </li>) }
-                { posts.length >= 10 && <li className="seeMore">
-                    <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
-                </li> }
+                    <li key={post._id}>
+                        <Post
+                            post={post}
+                            setLikeIds={setLikeIds}
+                            setLikesSectionIsActive={setLikesSectionIsActive}
+                            setParentState={setTimeline}
+                        />
+                    </li>) }
+                { posts.length >= 10 && 
+                    <li className="seeMore">
+                        <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
+                    </li> }
             </ul>
             <LikesSection
-                likes={likes}
+                likeIds={likeIds}
                 likesSectionIsActive={likesSectionIsActive}
                 setLikesSectionIsActive={setLikesSectionIsActive}
             />
@@ -37,8 +60,9 @@ function Timeline({ posts, setTimeline, forumId }) {
 
 export default Timeline;
 
-function NewPost({ setTimeline, forumId }) {
+function NewPost({ forumId }) {
     const [input, setInput] = useState("");
+    const { postIds, setPostIds } = useTimeline();
     const { user } = useAuth();
 
     function handleChange(e) {
@@ -48,11 +72,10 @@ function NewPost({ setTimeline, forumId }) {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await postPost({ user: user._id, text: input.trim() }, forumId);
+        const res = await postPost({ user: user._id, text: input.trim() }, forumId);
+        setPostIds([...postIds, res.post._id]);
 
         setInput("");
-
-        await setTimeline();
     }
 
     return(

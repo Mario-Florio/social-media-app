@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
 import requests from "../serverRequests/methods/config";
-
 const { getSession } = requests.auth;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useLocalStorage("user", null);
     const [token, setToken] = useLocalStorage("token", null);
     const navigate = useNavigate();
-
-    // localStorage.removeItem("token");
 
     useEffect(() => {
         (async () => {
@@ -43,13 +41,13 @@ export const AuthProvider = ({ children }) => {
     }
 
     const value = useMemo(() => ({
-            user,
-            token,
-            login,
-            logout,
-        }),
-        [user, token]);
-        
+        user,
+        token,
+        login,
+        logout,
+    }),
+    [user, token]);
+
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

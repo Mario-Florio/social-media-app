@@ -1,69 +1,100 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
+import { useAuth } from "../../../hooks/useAuth";
 
 import { populateUsers } from "../../../serverRequests/methods/users";
+import requests from "../../../serverRequests/methods/config";
+const { putPostLike } = requests.posts;
 
-export function Post({ post, setLikes, setLikesSectionIsActive }) {
-    const { user } = post;
+export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState }) {
+    const { user } = useAuth();
 
-    function handleClick() {
-        (async () => {
-            try {
-                const likes = await populateUsers(post.likes);
-                setLikes(likes);
-                likes.length && setLikesSectionIsActive(true);
-            } catch (err) {
-                console.log(err);
+    function viewLikes() {
+        setLikeIds(post.likes);
+        post.likes.length && setLikesSectionIsActive(true);
+    }
+
+    async function like() {
+        try {
+            const res = await putPostLike(post._id, user._id);
+            if (res.success) {
+                await setParentState();
             }
-        })();
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return(
         <article className="post">
             <header>
-                {user.profile._id ? 
-                    <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
-                        <div className="profilePic_wrapper">
-                            <img src={user.profile.picture} alt="users profile pic"/>
-                        </div>
-                    </Link> :
-                    <div className="loadingBGColor profilePic_wrapper"></div>}
-                <div className="title">
-                    <Link to={`/profile/${user.profile._id}`}>
-                        <h3>{user.username}</h3>
-                    </Link>
-                    <span>Time passed</span>
+                <div className="details">
+                    { post.user.profile._id ? 
+                        <Link to={`/profile/${post.user.profile._id}`} className="profilePic_wrapper">
+                            <img src={post.user.profile.picture} alt="users profile pic"/>
+                        </Link> :
+                        <div className="loadingBGColor profilePic_wrapper"></div> }
+                    <div className="title">
+                        <Link to={post.user.profile._id && `/profile/${post.user.profile._id}`}>
+                            <h3>{post.user.username}</h3>
+                        </Link>
+                        <span>{new Date(post.createdAt).toLocaleString()}</span>
+                    </div>
+                </div>
+                <div className="options">
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </div>
             </header>
             <p>{post.text}</p>
             <footer>
                 <div className="top">
-                        <span
-                            onClick={handleClick}
-                            style={{ cursor: "pointer" }}
-                        >
-                            {post.likes.length} likes
-                        </span>
-                        <Link to={post._id && `/post/${post._id}`}>
-                            {post.comments.length} comments
-                        </Link>
-                        <span># shares</span>
+                    <span
+                        onClick={viewLikes}
+                        style={{ cursor: "pointer" }}
+                    >
+                        {post.likes.length} likes
+                    </span>
+                    <Link to={post._id && `/post/${post._id}`}>
+                        {post.comments.length} comments
+                    </Link>
+                    <span># shares</span>
                 </div>
                 <hr/>
                 <div className="bottom">
-                        <span>Like</span>
-                        <Link to={post._id && `/post/${post._id}`}>
-                            Comment
-                        </Link>
-                        <span>Share</span>
+                    <span
+                        onClick={like}
+                        style={{ cursor: "pointer" }}
+                    >
+                        { post.likes.includes(user._id) ? "Unlike" : "Like" }
+                    </span>
+                    <Link to={post._id && `/post/${post._id}`}>
+                        Comment
+                    </Link>
+                    <span>Share</span>
                 </div>
             </footer>
         </article>
     );
 }
 
-export function LikesSection({ likes, likesSectionIsActive, setLikesSectionIsActive }) {
+export function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
+    const [likes, setLikes] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const likes = await populateUsers(likeIds);
+                setLikes(likes);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [likeIds]);
+
     return(
         <section className={likesSectionIsActive ? "likes-section active" : "likes-section"}>
             <header>
@@ -76,21 +107,19 @@ export function LikesSection({ likes, likesSectionIsActive, setLikesSectionIsAct
                 </div>
             </header>
             <ul>
-                {
-                    likes.map(like =>
-                        <li key={like._id}>
-                            <Link 
-                                to={`/profile/${like.profile._id}`}
-                                onClick={() => setLikesSectionIsActive(false)}
-                            >
-                                <div className="profile_wrapper">
-                                    <img src={like.profile.picture} alt="users profile pic"/>
-                                    <h3>{like.username}</h3>
-                                </div>
-                            </Link>
-                        </li>
-                    )    
-                }
+                { likes.map(like =>
+                    <li key={like._id}>
+                        <Link 
+                            to={`/profile/${like.profile._id}`}
+                            onClick={() => setLikesSectionIsActive(false)}
+                        >
+                            <div className="profile_wrapper">
+                                <img src={like.profile.picture} alt="users profile pic"/>
+                                <h3>{like.username}</h3>
+                            </div>
+                        </Link>
+                    </li>
+                ) }
             </ul>
         </section>
     );

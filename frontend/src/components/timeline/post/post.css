@@ -11,37 +11,57 @@
 
 .post header {
     display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .post header a {
     color: black;
 }
 
-.post .profilePic_wrapper {
+.post .details {
+    display: flex;
+}
+
+.post .details .profilePic_wrapper {
     height: 60px;
     width: 60px;
     border-radius: 5px;
 }
 
-.post .profilePic_wrapper img {
+.post .details .profilePic_wrapper img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
 
-.post .title {
+.post .details .title {
     margin-left: 1rem;
 }
 
-.post .title h3 {
+.post .details .title h3 {
     font-size: 1rem;
     margin: .25rem 0;
 }
 
-.post .title span {
+.post .details .title span {
     color: grey;
     font-size: .85rem;
+}
+
+.post .options {
+    display: flex;
+    gap: 2px;
+    padding: .5rem .25rem;
+    cursor: pointer;
+}
+
+.post .options div {
+    background-color: grey;
+    height: 2px;
+    width: 2px;
+    border-radius: 2px;
 }
 
 .post footer .top {

@@ -1,57 +1,41 @@
+import { useEffect, useState } from "react";
 import "./profile.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import Timeline from "../../components/timeline/Timeline";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useEffect, useState } from "react";
+import { useTimeline } from "../../hooks/useTimeline";
 
 import { populateProfileUser } from "../../serverRequests/methods/users";
 import { populateForum } from "../../serverRequests/methods/forums";
-import { populatePosts } from "../../serverRequests/methods/posts";
 
 const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
     const [profileUser, setProfileUser] = useState(placeholderProfileUser);
-    const [posts, setPosts] = useState([]);
     const [isFollowing, setIsFollowing] = useState(false);
     const { id } = useParams();
+    const { setPostIds } = useTimeline();
     const { user } = useAuth();
 
     useEffect(() => {
-        setProfileUser(placeholderProfileUser);
-        setPosts([]);
+        (async () => {
+            try {
+                const profileUser = await populateProfileUser(id);
+                const populatedForum = await populateForum(profileUser.profile.forum);
+                profileUser.profile.forum = populatedForum;
+                setProfileUser(profileUser);
+                setPostIds(profileUser.profile.forum.posts);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
 
-        (async () => await setTimeline())();
-    }, [id, user]);
-
-    async function setTimeline() {
-        try {
-            const profileUser = await populateProfileUser(id);
-            setProfileUser(profileUser);
-            const populatedForum = await populateForum(profileUser.profile.forum);
-            profileUser.profile.forum = populatedForum;
-            const placeholderPosts = [];
-            profileUser.profile.forum.posts.forEach(postId => {
-                const placeholderPost = {
-                    _id: postId,
-                    user: { profile: {} },
-                    text: "",
-                    likes: [],
-                    comments: []
-                };
-                placeholderPosts.push(placeholderPost);
-            });
-            setProfileUser(profileUser);
-            setPosts(placeholderPosts);
-    
-            const posts = await populatePosts(profileUser.profile.forum.posts);
-            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setPosts(posts);
-        } catch (err) {
-            console.log(err);
+        return () => {
+            setProfileUser(placeholderProfileUser);
+            setPostIds([]);
         }
-    };
+    }, [id, user]);
 
     return(
         <PageLayout>
@@ -75,7 +59,7 @@ function Profile() {
                             </div>
                             <p>{profileUser.profile.bio}</p>
                     </section>
-                    <Timeline posts={posts} setTimeline={setTimeline} forumId={profileUser.profile.forum._id}/>
+                    <Timeline forumId={profileUser.profile.forum._id}/>
                 </section>
         </PageLayout>
     );

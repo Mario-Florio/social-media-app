@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { TimelineProvider } from "../../hooks/useTimeline";
 
 function ProtectedOutlet() {
     const { user } = useAuth();
@@ -8,8 +9,10 @@ function ProtectedOutlet() {
         return <Navigate to="/login" />;
     }
 
-    return (
-        <Outlet/>
+    return(
+        <TimelineProvider>
+            <Outlet/>
+        </TimelineProvider>
     );
 }
 

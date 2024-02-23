@@ -8,7 +8,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { searchUsers } from "../../serverRequests/methods/users";
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     return(
         <header className="topbar">
             <Link to="/">
@@ -29,6 +29,16 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
                     </li>
                 </ul>
             </nav>
+            <span
+                style={{
+                    color: "white",
+                    fontWeight: "600",
+                    cursor: "pointer"
+                }}
+                onClick={async () => await logout()}
+            >
+                Logout
+            </span>
         </header>
     );
 }

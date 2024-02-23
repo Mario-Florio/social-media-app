@@ -1,69 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./home.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import Timeline from "../../components/timeline/Timeline";
 import { useAuth } from "../../hooks/useAuth";
+import { useTimeline } from "../../hooks/useTimeline";
 
 import { populateForum } from "../../serverRequests/methods/forums";
 import { populateUsers } from "../../serverRequests/methods/users";
-import { populatePosts } from "../../serverRequests/methods/posts";
 
 function Home() {
-    const [posts, setPosts] = useState([]);
+    const { setPostIds } = useTimeline();
     const { user } = useAuth();
 
     useEffect(() => {
-        (async () => await setTimeline())();
-    }, [user]);
-
-    async function setTimeline() {
-        try {
-            const timelineIds = await getTimelineIds();
-            await setPlaceholders(timelineIds);
-            await setTimeline(timelineIds);
-
-            async function getTimelineIds() {
-                const timelineIds = [];
-                const userForum = await populateForum(user.profile.forum);
-                timelineIds.push(...userForum.posts);
-
-                const following = await populateUsers(user.profile.following);
-                await Promise.all(following.map(async user => {
-                    const forum = await populateForum(user.profile.forum);
-                    timelineIds.push(...forum.posts);
-                }));
-
-                return timelineIds;
+        (async () => {
+            try {
+                const postIds = await getPostIds();
+                setPostIds(postIds);
+            } catch (err) {
+                console.log(err);
             }
+        })();
 
-            async function setPlaceholders(timelineIds) {
-                const placeholderPosts = [];
-                timelineIds.forEach(id => {
-                    placeholderPosts.push({
-                        _id: id,
-                        user: { profile: {} },
-                        text: "",
-                        likes: [],
-                        comments: []
-                    });
-                });
-                setPosts(placeholderPosts);
-            }
-
-            async function setTimeline(timelineIds) {
-                const timeline = await populatePosts(timelineIds);
-                timeline.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setPosts(timeline);
-            }
-        } catch (err) {
-            console.log(err);
+        async function getPostIds() {
+            const postIds = [];
+            const userForum = await populateForum(user.profile.forum);
+            postIds.push(...userForum.posts);
+    
+            const following = await populateUsers(user.profile.following);
+            await Promise.all(following.map(async user => {
+                const forum = await populateForum(user.profile.forum);
+                postIds.push(...forum.posts);
+            }));
+    
+            return postIds;
         }
-    };
+    }, [user]);
 
     return(
         <PageLayout>
             <section id="home" className="main-component">
-                <Timeline posts={posts} setTimeline={setTimeline} forumId={user.profile.forum}/> 
+                <Timeline forumId={user.profile.forum}/> 
             </section>
         </PageLayout>
     );
