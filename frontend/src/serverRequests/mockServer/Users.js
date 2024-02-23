@@ -21,8 +21,10 @@ import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo
 
 setupUsersCollection();
 
+const ms = 0;
+
 async function getUsersMock() {
-    await delay(1000);
+    await delay(ms);
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -31,7 +33,7 @@ async function getUsersMock() {
 }
 
 async function getUserMock(id) {
-    await delay(1000);
+    await delay(ms);
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -47,7 +49,7 @@ async function getUserMock(id) {
 }
 
 async function postUserMock(credentials) {
-    await delay(1000);
+    await delay(ms);
 
     const { username, password } = credentials;
 
@@ -91,7 +93,7 @@ async function postUserMock(credentials) {
 }
 
 async function putUserMock(id, update) {
-    await delay(1000);
+    await delay(ms);
 
     const token = window.localStorage.getItem("token");
     if (token !== id.toString()) return "Request is forbidden";
@@ -118,7 +120,7 @@ async function putUserMock(id, update) {
 }
 
 async function deleteUserMock(id) {
-    await delay(1000);
+    await delay(ms);
 
     const token = window.localStorage.getItem("token");
     if (token !== id) return "Request is forbidden";
@@ -160,101 +162,101 @@ function delay(ms) {
 function setupUsersCollection() {
     const users = [
         {
-            _id: 1,
+            _id: "1",
             username: "Jane Dough",
             password: "password",
             profile: {
-                _id: 1,
+                _id: "1",
                 picture: janeDoughProfilePic,
                 coverPicture: janeDoughCoverPhoto,
                 bio: "Hello World!",
-                following: [2, 3, 4, 5, 6, 7],
-                followers: [2, 3, 4, 5, 6, 7],
-                forum: 1
+                following: ["2", "3", "4", "5", "6", "7"],
+                followers: ["2", "3", "4", "5", "6", "7"],
+                forum: "1"
             }
         },
         {
-            _id: 2,
+            _id: "2",
             username: "Jesus Christ",
             password: "password",
             profile: {
-                _id: 2,
+                _id: "2",
                 picture: jesusChristProfilePic,
                 coverPicture: jesusChristCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 3, 4, 5, 6, 7],
-                followers: [1, 3, 4, 5, 6, 7],
-                forum: 2
+                following: ["1", "3", "4", "5", "6", "7"],
+                followers: ["1", "3", "4", "5", "6", "7"],
+                forum: "2"
             }
         },
         {
-            _id: 3,
+            _id: "3",
             username: "Tyrion Lannister",
             password: "password",
             profile: {
-                _id: 3,
+                _id: "3",
                 picture: tyrionLannisterProfilePic,
                 coverPicture: tyrionLannisterCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 2, 4, 5, 6, 7],
-                followers: [1, 2, 4, 5, 6, 7],
-                forum: 3
+                following: ["1", "2", "4", "5", "6", "7"],
+                followers: ["1", "2", "4", "5", "6", "7"],
+                forum: "3"
             }
         },
         {
-            _id: 4,
+            _id: "4",
             username: "Jinx",
             password: "password",
             profile: {
-                _id: 4,
+                _id: "4",
                 picture: jinxProfilePic,
                 coverPicture: jinxCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 2, 3, 5, 6, 7],
-                followers: [1, 2, 3, 5, 6, 7],
-                forum: 4
+                following: ["1", "2", "3", "5", "6", "7"],
+                followers: ["1", "2", "3", "5", "6", "7"],
+                forum: "4"
             }
         },
         {
-            _id: 5,
+            _id: "5",
             username: "Nea Karlsson",
             password: "password",
             profile: {
-                _id: 5,
+                _id: "5",
                 picture: neaKarlssonProfilePic,
                 coverPicture: neaKarlssonCoverPhoto,
                 bio: "Hello World!",
-                following: [1, 2, 3, 4, 6, 7],
-                followers: [1, 2, 3, 4, 6, 7],
-                forum: 5
+                following: ["1", "2", "3", "4", "6", "7"],
+                followers: ["1", "2", "3", "4", "6", "7"],
+                forum: "5"
             }
         },
         {
-            _id: 6,
+            _id: "6",
             username: "Rust Cohle",
             password: "password",
             profile: {
-                _id: 6,
+                _id: "6",
                 picture: rustCohleProfilePic,
                 coverPicture: rustCohleCoverPhoto,
                 bio: "Time is a flat circle, man",
-                following: [1, 2, 3, 4, 5, 7],
-                followers: [1, 2, 3, 4, 5, 7],
-                forum: 6
+                following: ["1", "2", "3", "4", "5", "7"],
+                followers: ["1", "2", "3", "4", "5", "7"],
+                forum: "6"
             }
         },
         {
-            _id: 7,
+            _id: "7",
             username: "Ellie Williams",
             password: "password",
             profile: {
-                _id: 7,
+                _id: "7",
                 picture: ellieWilliamsProfilePic,
                 coverPicture: ellieWilliamsCoverPhoto,
                 bio: "Hello!",
-                following: [1, 2, 3, 4, 5, 6],
-                followers: [1, 2, 3, 4, 5, 6],
-                forum: 7
+                following: ["1", "2", "3", "4", "5", "6"],
+                followers: ["1", "2", "3", "4", "5", "6"],
+                forum: "7"
             }
         }
     ];

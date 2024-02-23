@@ -2,8 +2,10 @@ import { getUsersMock } from "./Users";
 
 setupPostsCollection();
 
+const ms = 0;
+
 async function getPostsMock(){
-    await delay(1000);
+    await delay(ms);
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -28,7 +30,7 @@ async function getPostsMock(){
 }
 
 async function getPostMock(id) {
-    await delay(1000);
+    await delay(ms);
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -40,14 +42,31 @@ async function getPostMock(id) {
         }
     }
 
+    await populateUsers([postFound]);
+
     return postFound;
+
+    async function populateUsers(posts) {
+        const users = await getUsersMock();
+        
+        posts.forEach(async post => {
+            let userData = null;
+            users.forEach(user => {
+                if (user._id === post.user) {
+                    userData = user;
+                }
+            });
+            post.user = userData;
+        });
+    };
 }
 
 async function postPostMock(content, forumId) {
-    await delay(1000);
+    await delay(ms);
 
-    const token = window.localStorage.getItem("token");
-    if (token !== content.user.toString()) return "Request is forbidden";
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
+    if (token !== content.user) return { message: "Request is forbidden", success: false };
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -74,14 +93,15 @@ async function postPostMock(content, forumId) {
     window.localStorage.setItem("Posts", JSON.stringify(posts));
     window.localStorage.setItem("Forums", JSON.stringify(forums));
 
-    return "Post was successful";
+    return { message: "Post was successful", success: true, post: newPost };
 }
 
 async function putPostMock(id, update) {
-    await delay(1000);
+    await delay(ms);
 
-    const token = window.localStorage.getItem("token");
-    if (token !== update.user.toString()) return "Request is forbidden";
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
+    if (token !== update.user) return "Request is forbidden";
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -105,9 +125,10 @@ async function putPostMock(id, update) {
 }
 
 async function deletePostMock(id) {
-    await delay(1000);
+    await delay(ms);
 
-    const token = window.localStorage.getItem("token");
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
 
@@ -125,7 +146,7 @@ async function deletePostMock(id) {
     }
 
     if (!postFound) return "Post does not exist";
-    if (token !== userId.toString()) return "Request is forbidden";
+    if (token !== userId) return "Request is forbidden";
 
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
@@ -133,12 +154,43 @@ async function deletePostMock(id) {
     return "Deletion was successful";
 }
 
+async function putPostLikeMock(id, userId) {
+    await delay(ms);
+
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
+    if (token !== userId) return { message: "Request is forbidden", success: false};
+
+    const postsJSON = window.localStorage.getItem("Posts");
+    const posts = JSON.parse(postsJSON);
+
+    let postFound = false;
+    let index = 0;
+    for (const post of posts) {
+        if (post._id === id) {
+            postFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!postFound) return { message: "Post does not exist", success: false };
+
+    posts[index].likes.includes(userId) ?
+        posts[index].likes.splice(posts[index].likes.indexOf(userId), 1) :
+        posts[index].likes.push(userId);
+    window.localStorage.setItem("Posts", JSON.stringify(posts));
+
+    return { message: "Update was successful", success: true };
+}
+
 export {
     getPostsMock,
     getPostMock,
     postPostMock,
     putPostMock,
-    deletePostMock
+    deletePostMock,
+    putPostLikeMock
 };
 
 // UTILS
@@ -148,16 +200,16 @@ function delay(ms) {
 
 function setupPostsCollection() {
     const posts = [
-        { _id: 1, user: 1, text: "Hello", likes: [2, 3], comments: [2, 3, 5, 6, 11, 12, 13, 14, 15, 16], createdAt: new Date() },
-        { _id: 2, user: 1, text: "Hello", likes: [3], comments: [4, 7], createdAt: new Date() },
-        { _id: 3, user: 1, text: "Hello", likes: [], comments: [1], createdAt: new Date() },
-        { _id: 4, user: 2, text: "Hello", likes: [1, 3], comments: [8, 9], createdAt: new Date() },
-        { _id: 5, user: 2, text: "Hello", likes: [1], comments: [10], createdAt: new Date() },
-        { _id: 6, user: 2, text: "Hello", likes: [3], comments: [], createdAt: new Date() },
-        { _id: 7, user: 3, text: "Hello", likes: [], comments: [], createdAt: new Date() },
-        { _id: 8, user: 3, text: "Hello", likes: [1, 2], comments: [], createdAt: new Date() },
-        { _id: 9, user: 3, text: "Hello", likes: [1], comments: [], createdAt: new Date() },
-        { _id: 10, user: 3, text: "Hello", likes: [2], comments: [], createdAt: new Date() }
+        { _id: "1", user: "1", text: "Hello", likes: ["2", "3"], comments: ["2", "3", "5", "6", "11", "12", "13", "14", "15", "16"], createdAt: new Date() },
+        { _id: "2", user: "1", text: "Hello", likes: ["3"], comments: ["4", "7"], createdAt: new Date() },
+        { _id: "3", user: "1", text: "Hello", likes: [], comments: ["1"], createdAt: new Date() },
+        { _id: "4", user: "2", text: "Hello", likes: ["1", "3"], comments: ["8", "9"], createdAt: new Date() },
+        { _id: "5", user: "2", text: "Hello", likes: ["1"], comments: ["10"], createdAt: new Date() },
+        { _id: "6", user: "2", text: "Hello", likes: ["3"], comments: [], createdAt: new Date() },
+        { _id: "7", user: "3", text: "Hello", likes: [], comments: [], createdAt: new Date() },
+        { _id: "8", user: "3", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
+        { _id: "9", user: "3", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
+        { _id: "10", user: "3", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() }
     ];
 
     window.localStorage.setItem("Posts", JSON.stringify(posts));

@@ -1,6 +1,10 @@
 import { getUsersMock } from "./Users";
 
+const ms = 0;
+
 async function getSessionMock(token) {
+    await delay(ms);
+
     const users = await getUsersMock();
     const payload = {
         authData: { user: null },
@@ -20,6 +24,8 @@ async function getSessionMock(token) {
 }
 
 async function postLoginMock(credentials) {
+    await delay(ms);
+
     const { username, password } = credentials;
     const users = await getUsersMock();
 
@@ -45,3 +51,8 @@ export {
     getSessionMock,
     postLoginMock
 };
+
+// UTILS
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
