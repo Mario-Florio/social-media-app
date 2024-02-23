@@ -145,13 +145,13 @@ async function deletePostMock(id) {
         index++;
     }
 
-    if (!postFound) return "Post does not exist";
-    if (token !== userId) return "Request is forbidden";
+    if (!postFound) return { message: "Post does not exist", success: false };
+    if (token !== userId) return { message: "Request is forbidden", success: false };
 
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    return "Deletion was successful";
+    return { message: "Deletion was successful", success: true };
 }
 
 async function putPostLikeMock(id, userId) {

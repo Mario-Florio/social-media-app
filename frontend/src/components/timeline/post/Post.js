@@ -4,6 +4,7 @@ import "./post.css";
 import "./likesSection.css";
 import "./optionsSection.css";
 import { useAuth } from "../../../hooks/useAuth";
+import { useTimeline } from "../../../hooks/useTimeline";
 
 import { populateUsers } from "../../../serverRequests/methods/users";
 import requests from "../../../serverRequests/methods/config";
@@ -21,7 +22,7 @@ function Post({ post, setParentState }) {
         post.likes.length && setLikesSectionIsActive(true);
     }
 
-    async function like() {
+    async function likePost() {
         try {
             const res = await putPostLike(post._id, user._id);
             if (res.success) {
@@ -74,7 +75,7 @@ function Post({ post, setParentState }) {
                 <hr/>
                 <div className="bottom">
                     <span
-                        onClick={async () => await like()}
+                        onClick={async () => await likePost()}
                         style={{ cursor: "pointer" }}
                     >
                         { post.likes.includes(user._id) ? "Unlike" : "Like" }
@@ -86,7 +87,7 @@ function Post({ post, setParentState }) {
                 </div>
             </footer>
             <OptionsSection
-                like={like}
+                likePost={likePost}
                 post={post}
                 optionsSectionIsActive={optionsSectionIsActive}
                 setOptionsSectionIsActive={setOptionsSectionIsActive}
@@ -139,8 +140,23 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
     );
 }
 
-function OptionsSection({ like, post, optionsSectionIsActive, setOptionsSectionIsActive }) {
+function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive }) {
     const { user } = useAuth();
+    const { postIds, setPostIds } = useTimeline();
+
+    async function deletePost() {
+        const res = await requests.posts.deletePost(post._id);
+
+        if (res.success) {
+            const newPostIds = postIds.filter(postId => postId !== post._id);
+            setPostIds(newPostIds);
+            setOptionsSectionIsActive(false);
+        }
+    }
+
+    async function editPost() {
+        setOptionsSectionIsActive(false);
+    }
 
     return(
         <SectionWrapper
@@ -149,8 +165,9 @@ function OptionsSection({ like, post, optionsSectionIsActive, setOptionsSectionI
             setSectionIsActive={setOptionsSectionIsActive}
         >
             <ul>
-                { post.user._id === user._id && <li onClick={() => console.log('hit')}>Delete Post</li> }
-                <li onClick={async () => await like()}>
+                { post.user._id === user._id && <li onClick={async () => await deletePost()}>Delete Post</li> }
+                { post.user._id === user._id && <li onClick={async () => await editPost()}>Edit Post</li> }
+                <li onClick={async () => await likePost()}>
                     { post.likes.includes(user._id) ? "Unlike Post" : "Like Post" }
                 </li>
                 <Link to={post._id && `/post/${post._id}`}>
