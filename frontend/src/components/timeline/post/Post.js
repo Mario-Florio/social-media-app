@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
+import "./optionsSection.css";
 import { useAuth } from "../../../hooks/useAuth";
 
 import { populateUsers } from "../../../serverRequests/methods/users";
@@ -9,6 +10,7 @@ import requests from "../../../serverRequests/methods/config";
 const { putPostLike } = requests.posts;
 
 export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState }) {
+    const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const { user } = useAuth();
 
     function viewLikes() {
@@ -43,7 +45,10 @@ export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState
                         <span>{new Date(post.createdAt).toLocaleString()}</span>
                     </div>
                 </div>
-                <div className="options">
+                <div
+                    className="options"
+                    onClick={() => setOptionsSectionIsActive(true)}
+                >
                     <div></div>
                     <div></div>
                     <div></div>
@@ -77,6 +82,10 @@ export function Post({ post, setLikeIds, setLikesSectionIsActive, setParentState
                     <span>Share</span>
                 </div>
             </footer>
+            <OptionsSection
+                optionsSectionIsActive={optionsSectionIsActive}
+                setOptionsSectionIsActive={setOptionsSectionIsActive}
+            />
         </article>
     );
 }
@@ -122,5 +131,30 @@ export function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsA
                 ) }
             </ul>
         </section>
+    );
+}
+
+function OptionsSection({ optionsSectionIsActive, setOptionsSectionIsActive }) {
+
+    return(
+        <div className={optionsSectionIsActive ? "options-section_mask active" : "options-section_mask"}>
+            <section className="options-section">
+                <header>
+                    <div
+                        onClick={() => setOptionsSectionIsActive(false)}
+                        className="close-icon_wrapper"
+                    >
+                        <div className="bar-1"></div>
+                        <div className="bar-2"></div>
+                    </div>
+                </header>
+                <ul>
+                    <li>Delete Post</li>
+                    <li>Like Post</li>
+                    <li>View Comments</li>
+                    <li>Share Post</li>
+                </ul>
+            </section>
+        </div>
     );
 }

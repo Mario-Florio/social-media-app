@@ -1,0 +1,111 @@
+
+.options-section_mask {
+    position: fixed;
+    top: 100%;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.273);
+    transition-duration: .2s;
+}
+
+.options-section_mask.active {
+    top: 0;
+    bottom: 0;
+    transition-duration: .2s;
+}
+
+.options-section {
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    padding: 1rem;
+    height: 70%;
+    width: 100%;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    box-shadow: 0px 1px 5px gray;
+}
+
+.options-section header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: .5rem;
+}
+
+.options-section .close-icon_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgrey;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.options-section .close-icon_wrapper:hover {
+    background-color: grey;
+}
+
+.options-section .close-icon_wrapper .bar-1,
+.options-section .close-icon_wrapper .bar-2 {
+    position: relative;
+    background-color: white;
+    height: 12.5px;
+    width: 1.5px;
+    border-radius: 5px;
+}
+
+.options-section .close-icon_wrapper .bar-1 {
+    top: 0px;
+    left: .5px;
+    rotate: 45deg;
+}
+
+.options-section .close-icon_wrapper .bar-2 {
+    top: 0px;
+    right: .5px;
+    rotate: -45deg;
+}
+
+.options-section ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.options-section ul li {
+    padding: .5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.options-section ul li:hover {
+    background-color: rgb(195, 195, 195);
+    background-color: lightgrey;
+}
+
+@media all and (min-width: 750px) {
+    .options-section {
+        left: var(--sidemenu_max-width);
+        width: calc(100% - var(--sidemenu_max-width));
+    }
+
+    .options-section.active {
+        left: var(--sidemenu_max-width);
+        width: calc(100% - var(--sidemenu_max-width));
+    }
+}
+
+@media all and (min-width: 1045px) {
+    .options-section {
+        left: 400px;
+        max-width: calc(750px);
+    }
+
+    .options-section.active {
+        left: 400px;
+        max-width: calc(750px);
+    }
+}
