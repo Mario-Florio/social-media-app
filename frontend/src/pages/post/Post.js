@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./post.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import CommentsSection from "./commentsSection/CommentsSection";
-import { Post } from "../../components/timeline/post/Post";
+import Post from "../../components/timeline/post/Post";
 import { useParams } from "react-router-dom";
 
 import requests from "../../serverRequests/methods/config";

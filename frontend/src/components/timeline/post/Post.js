@@ -10,7 +10,7 @@ import requests from "../../../serverRequests/methods/config";
 import SectionWrapper from "./sectionWrapper/SectionWrapper";
 const { putPostLike } = requests.posts;
 
-export function Post({ post, setParentState }) {
+function Post({ post, setParentState }) {
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
@@ -163,3 +163,5 @@ function OptionsSection({ like, post, optionsSectionIsActive, setOptionsSectionI
         </SectionWrapper>
     );
 }
+
+export default Post;
