@@ -31,7 +31,8 @@ import {
     getPostMock,
     postPostMock,
     putPostMock,
-    deletePostMock
+    deletePostMock,
+    putPostLikeMock
 } from "../mockServer/Posts";
 
 let mock = true;
@@ -56,7 +57,8 @@ const requests = {
         getPost: mock ? getPostMock : getPost,
         postPost: mock ? postPostMock : postPost,
         putPost: mock ? putPostMock : putPost,
-        deletePost: mock ? deletePostMock : deletePost
+        deletePost: mock ? deletePostMock : deletePost,
+        putPostLike: mock ? putPostLikeMock : null
     }
 }
 

@@ -18,21 +18,6 @@ async function populatePosts(postIds) {
     return populatedPosts;
 }
 
-// Post page
-async function populatePost(id) {
-    const posts = await getPosts();
-
-    let populatedPost = null;
-    posts.forEach(post => {
-        if (post._id.toString() === id) {
-            populatedPost = post;
-        }
-    });
-    
-    return populatedPost;
-}
-
 export {
-    populatePosts,
-    populatePost
+    populatePosts
 }
