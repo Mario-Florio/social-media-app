@@ -7,6 +7,7 @@ import { useAuth } from "../../../hooks/useAuth";
 
 import { populateUsers } from "../../../serverRequests/methods/users";
 import requests from "../../../serverRequests/methods/config";
+import SectionWrapper from "./sectionWrapper/SectionWrapper";
 const { putPostLike } = requests.posts;
 
 export function Post({ post, setParentState }) {
@@ -73,7 +74,7 @@ export function Post({ post, setParentState }) {
                 <hr/>
                 <div className="bottom">
                     <span
-                        onClick={like}
+                        onClick={async () => await like()}
                         style={{ cursor: "pointer" }}
                     >
                         { post.likes.includes(user._id) ? "Unlike" : "Like" }
@@ -85,6 +86,8 @@ export function Post({ post, setParentState }) {
                 </div>
             </footer>
             <OptionsSection
+                like={like}
+                post={post}
                 optionsSectionIsActive={optionsSectionIsActive}
                 setOptionsSectionIsActive={setOptionsSectionIsActive}
             />
@@ -112,58 +115,51 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
     }, [likeIds]);
 
     return(
-        <div className={likesSectionIsActive ? "likes-section_mask active" : "likes-section_mask"}>
-            <section className="likes-section">
-                <header>
-                    <div
-                        onClick={() => setLikesSectionIsActive(false)}
-                        className="close-icon_wrapper"
-                    >
-                        <div className="bar-1"></div>
-                        <div className="bar-2"></div>
-                    </div>
-                </header>
-                <ul>
-                    { likes.map(like =>
-                        <li key={like._id}>
-                            <Link 
-                                to={`/profile/${like.profile._id}`}
-                                onClick={() => setLikesSectionIsActive(false)}
-                            >
-                                <div className="profile_wrapper">
-                                    <img src={like.profile.picture} alt="users profile pic"/>
-                                    <h3>{like.username}</h3>
-                                </div>
-                            </Link>
-                        </li>
-                    ) }
-                </ul>
-            </section>
-        </div>
+        <SectionWrapper
+            sectionClassName="likes-section"
+            sectionIsActive={likesSectionIsActive}
+            setSectionIsActive={setLikesSectionIsActive}
+        >
+            <ul>
+                { likes.map(like =>
+                    <li key={like._id}>
+                        <Link 
+                            to={`/profile/${like.profile._id}`}
+                            onClick={() => setLikesSectionIsActive(false)}
+                        >
+                            <div className="profile_wrapper">
+                                <img src={like.profile.picture} alt="users profile pic"/>
+                                <h3>{like.username}</h3>
+                            </div>
+                        </Link>
+                    </li>
+                ) }
+            </ul>
+        </SectionWrapper>
     );
 }
 
-function OptionsSection({ optionsSectionIsActive, setOptionsSectionIsActive }) {
+function OptionsSection({ like, post, optionsSectionIsActive, setOptionsSectionIsActive }) {
+    const { user } = useAuth();
 
     return(
-        <div className={optionsSectionIsActive ? "options-section_mask active" : "options-section_mask"}>
-            <section className="options-section">
-                <header>
-                    <div
-                        onClick={() => setOptionsSectionIsActive(false)}
-                        className="close-icon_wrapper"
-                    >
-                        <div className="bar-1"></div>
-                        <div className="bar-2"></div>
-                    </div>
-                </header>
-                <ul>
-                    <li>Delete Post</li>
-                    <li>Like Post</li>
-                    <li>View Comments</li>
-                    <li>Share Post</li>
-                </ul>
-            </section>
-        </div>
+        <SectionWrapper
+            sectionClassName="options-section"
+            sectionIsActive={optionsSectionIsActive}
+            setSectionIsActive={setOptionsSectionIsActive}
+        >
+            <ul>
+                { post.user._id === user._id && <li onClick={() => console.log('hit')}>Delete Post</li> }
+                <li onClick={async () => await like()}>
+                    { post.likes.includes(user._id) ? "Unlike Post" : "Like Post" }
+                </li>
+                <Link to={post._id && `/post/${post._id}`}>
+                    <li>
+                        View Comments
+                    </li>
+                </Link>
+                <li>Share Post</li>
+            </ul>
+        </SectionWrapper>
     );
 }
