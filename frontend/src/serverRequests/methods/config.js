@@ -13,7 +13,8 @@ import {
     getUserMock,
     postUserMock,
     putUserMock,
-    deleteUserMock
+    deleteUserMock,
+    putUserFollowMock
 } from "../mockServer/Users";
 
 import { getForum } from "../server/Forums";
@@ -47,7 +48,8 @@ const requests = {
         getUser: mock ? getUserMock : getUser,
         postUser: mock ? postUserMock : postUser,
         putUser: mock ? putUserMock : putUser,
-        deleteUser: mock ? deleteUserMock : deleteUser
+        deleteUser: mock ? deleteUserMock : deleteUser,
+        putUserFollow: mock ? putUserFollowMock : null
     },
     forums: {
         getForum: mock ? getForumMock : getForum,

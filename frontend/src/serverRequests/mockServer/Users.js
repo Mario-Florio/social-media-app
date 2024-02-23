@@ -95,8 +95,9 @@ async function postUserMock(credentials) {
 async function putUserMock(id, update) {
     await delay(ms);
 
-    const token = window.localStorage.getItem("token");
-    if (token !== id.toString()) return "Request is forbidden";
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
+    if (token !== id) return "Request is forbidden";
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -114,7 +115,7 @@ async function putUserMock(id, update) {
     if (!userFound) return "User does not exist";
 
     users[index] = update;
-    window.localStorage.setItem(JSON.stringify(users));
+    window.localStorage.setItem("Users", JSON.stringify(users));
 
     return "Update was successful";
 }
@@ -122,7 +123,8 @@ async function putUserMock(id, update) {
 async function deleteUserMock(id) {
     await delay(ms);
 
-    const token = window.localStorage.getItem("token");
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
     if (token !== id) return "Request is forbidden";
 
     const usersJSON = window.localStorage.getItem("Users");
@@ -146,12 +148,74 @@ async function deleteUserMock(id) {
     return "Deletion was successful";
 }
 
+async function putUserFollowMock(reqBody) {
+    await delay(ms);
+
+    const { userId, profileUserId, follow } = reqBody;
+
+    const tokenJSON = window.localStorage.getItem("token");
+    const token = JSON.parse(tokenJSON);
+    if (token !== userId) return { message: "Request is forbidden", success: false };
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
+    let profileUserFound = false;
+    let profileUserIndex = null;
+    let userFound = false;
+    let userIndex = null;
+    let index = 0;
+    for (const user of users) {
+        if (user._id === profileUserId) {
+            profileUserFound = true;
+            profileUserIndex = index;
+        }
+        if (user._id === userId) {
+            userFound = true;
+            userIndex = index;
+        }
+        index++;
+    }
+
+    if (!userFound || !profileUserFound) return { message: "User does not exist", success: false };
+
+    if (follow) {
+        if (!users[userIndex].profile.following.includes(profileUserId) &&
+            !users[profileUserIndex].profile.followers.includes(userId)) {
+                users[userIndex].profile.following.push(profileUserId);
+                users[profileUserIndex].profile.followers.push(userId);
+        } else {
+            return { message: "Already following user", success: false };
+        }
+    }
+
+    if (!follow) {
+        if (users[userIndex].profile.following.includes(profileUserId) &&
+            users[profileUserIndex].profile.followers.includes(userId)) {
+                users[userIndex].profile.following.splice(users[userIndex].profile.following.indexOf(profileUserId), 1);
+                users[profileUserIndex].profile.followers.splice(users[profileUserIndex].profile.followers.indexOf(userId), 1);
+        } else {
+            return { message: "Already not following user", success: false };
+        }
+    }
+
+    window.localStorage.setItem("Users", JSON.stringify(users));
+
+    return {
+        message: "Update was successful",
+        success: true,
+        profileUser: users[profileUserIndex],
+        user: users[userIndex]
+    };
+}
+
 export {
     getUsersMock,
     getUserMock,
     postUserMock,
     putUserMock,
-    deleteUserMock
+    deleteUserMock,
+    putUserFollowMock
 };
 
 // UTILS

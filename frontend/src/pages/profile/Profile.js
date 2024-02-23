@@ -9,6 +9,10 @@ import { useTimeline } from "../../hooks/useTimeline";
 import { populateProfileUser } from "../../serverRequests/methods/users";
 import { populateForum } from "../../serverRequests/methods/forums";
 
+import requests from "../../serverRequests/methods/config";
+
+const { putUserFollow } = requests.users;
+
 const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
@@ -22,6 +26,11 @@ function Profile() {
         (async () => {
             try {
                 const profileUser = await populateProfileUser(id);
+
+                if (user.profile.following.includes(profileUser._id)) {
+                    setIsFollowing(true);
+                }
+
                 const populatedForum = await populateForum(profileUser.profile.forum);
                 profileUser.profile.forum = populatedForum;
                 setProfileUser(profileUser);
@@ -51,7 +60,12 @@ function Profile() {
                     <section className="profileBottom">
                         <h2>{profileUser.username}</h2>
                         {user._id !== profileUser._id && profileUser._id &&
-                            <FollowButton isFollowing={isFollowing} setIsFollowing={setIsFollowing}/>}
+                            <FollowButton
+                                profileUser={profileUser}
+                                setProfileUser={setProfileUser}
+                                isFollowing={isFollowing}
+                                setIsFollowing={setIsFollowing}
+                            />}
                             <div className="followCount">
                                 <p>{profileUser.profile.followers.length} <span>followers</span></p>
                                 <div>&#x2022;</div>
@@ -67,11 +81,23 @@ function Profile() {
 
 export default Profile;
 
-function FollowButton({ isFollowing, setIsFollowing }) {
+function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing }) {
+    const { user, updateUser } = useAuth();
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        setIsFollowing(!isFollowing);
+
+        const res = await putUserFollow({
+            userId: user._id,
+            profileUserId: profileUser._id,
+            follow: e.target.children[1].name === "follow" ? true : false
+        });
+
+        if (res.success) {
+            setProfileUser(res.profileUser);
+            setIsFollowing(!isFollowing);
+            await updateUser();
+        }
     }
 
     return(
