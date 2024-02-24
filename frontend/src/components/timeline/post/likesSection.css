@@ -36,27 +36,3 @@
 .likes-section .profile_wrapper:hover {
     background-color: lightgrey;
 }
-
-@media all and (min-width: 750px) {
-    .likes-section_mask {
-        left: var(--sidemenu_max-width);
-        width: calc(100% - var(--sidemenu_max-width));
-    }
-
-    .likes-section_mask.active {
-        left: var(--sidemenu_max-width);
-        width: calc(100% - var(--sidemenu_max-width));
-    }
-}
-
-@media all and (min-width: 1045px) {
-    .likes-section_mask {
-        left: 400px;
-        max-width: calc(750px);
-    }
-
-    .likes-section_mask.active {
-        left: 400px;
-        max-width: calc(750px);
-    }
-}

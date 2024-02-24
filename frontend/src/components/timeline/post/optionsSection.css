@@ -51,27 +51,3 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
-@media all and (min-width: 750px) {
-    .options-section_mask {
-        left: var(--sidemenu_max-width);
-        width: calc(100% - var(--sidemenu_max-width));
-    }
-
-    .options-section_mask.active {
-        left: var(--sidemenu_max-width);
-        width: calc(100% - var(--sidemenu_max-width));
-    }
-}
-
-@media all and (min-width: 1045px) {
-    .options-section_mask {
-        left: 400px;
-        max-width: calc(750px);
-    }
-
-    .options-section_mask.active {
-        left: 400px;
-        max-width: calc(750px);
-    }
-}
