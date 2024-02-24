@@ -96,12 +96,12 @@ async function postPostMock(content, forumId) {
     return { message: "Post was successful", success: true, post: newPost };
 }
 
-async function putPostMock(id, update) {
+async function putPostMock(update) {
     await delay(ms);
 
     const tokenJSON = window.localStorage.getItem("token");
     const token = JSON.parse(tokenJSON);
-    if (token !== update.user) return "Request is forbidden";
+    if (token !== update.user) return { message: "Request is forbidden", success: false };
 
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
@@ -109,19 +109,19 @@ async function putPostMock(id, update) {
     let postFound = false;
     let index = 0;
     for (const post of posts) {
-        if (post._id === id) {
+        if (post._id === update._id) {
             postFound = true;
             break;
         }
         index++;
     }
 
-    if (!postFound) return "Post does not exist";
+    if (!postFound) return { message: "Post does not exist", success: false };
 
     posts[index] = update;
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    return "Update was successful";
+    return { message: "Update was successful", success: true, post: update};
 }
 
 async function deletePostMock(id) {

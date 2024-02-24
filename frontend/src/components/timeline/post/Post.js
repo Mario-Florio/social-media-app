@@ -3,18 +3,20 @@ import { Link } from "react-router-dom";
 import "./post.css";
 import "./likesSection.css";
 import "./optionsSection.css";
+import "./editSection.css";
 import { useAuth } from "../../../hooks/useAuth";
 import { useTimeline } from "../../../hooks/useTimeline";
 
 import { populateUsers } from "../../../serverRequests/methods/users";
 import requests from "../../../serverRequests/methods/config";
 import SectionWrapper from "./sectionWrapper/SectionWrapper";
-const { putPostLike } = requests.posts;
+const { putPost, putPostLike } = requests.posts;
 
 function Post({ post, setParentState }) {
-    const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
+    const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
+    const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user } = useAuth();
 
     function viewLikes() {
@@ -86,16 +88,23 @@ function Post({ post, setParentState }) {
                     <span>Share</span>
                 </div>
             </footer>
+            { likesSectionIsActive && <LikesSection
+                likeIds={likeIds}
+                likesSectionIsActive={likesSectionIsActive}
+                setLikesSectionIsActive={setLikesSectionIsActive}
+            /> }
             { optionsSectionIsActive && <OptionsSection
                 likePost={likePost}
                 post={post}
                 optionsSectionIsActive={optionsSectionIsActive}
                 setOptionsSectionIsActive={setOptionsSectionIsActive}
+                setEditSectionIsActive={setEditSectionIsActive}
             /> }
-            { likesSectionIsActive && <LikesSection
-                likeIds={likeIds}
-                likesSectionIsActive={likesSectionIsActive}
-                setLikesSectionIsActive={setLikesSectionIsActive}
+            { editSectionIsActive && <EditSection
+                post={post}
+                editSectionIsActive={editSectionIsActive}
+                setEditSectionIsActive={setEditSectionIsActive}
+                setParentState={setParentState}
             /> }
         </article>
     );
@@ -140,7 +149,7 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
     );
 }
 
-function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive }) {
+function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive, setEditSectionIsActive }) {
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user } = useAuth();
     const { postIds, setPostIds } = useTimeline();
@@ -157,6 +166,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     }
 
     async function editPost() {
+        setEditSectionIsActive(true);
         setOptionsSectionIsActive(false);
     }
 
@@ -186,6 +196,48 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
             </div>
         </SectionWrapper>
     );
+}
+
+function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setParentState }) {
+    const [input, setInput] = useState(post.text);
+
+    function handleChange(e) {
+        setInput(e.target.value);
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const updatedPost = {
+            _id: post._id,
+            user: post.user._id,
+            text: input,
+            likes: post.likes,
+            comments: post.comments,
+            createdAt: post.createdAt
+        }
+
+        const res = await putPost(updatedPost);
+
+        if (res.success) {
+            setInput(post.text);
+            setEditSectionIsActive(false);
+            setParentState();
+        }
+    }
+
+    return(
+        <SectionWrapper
+            sectionClassName="edit-section"
+            sectionIsActive={editSectionIsActive}
+            setSectionIsActive={setEditSectionIsActive}
+        >
+            <form onSubmit={handleSubmit}>
+                <textarea value={input} onChange={handleChange}/>
+                <button>Submit</button>
+            </form>
+        </SectionWrapper>
+    )
 }
 
 export default Post;
