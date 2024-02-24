@@ -86,17 +86,17 @@ function Post({ post, setParentState }) {
                     <span>Share</span>
                 </div>
             </footer>
-            <OptionsSection
+            { optionsSectionIsActive && <OptionsSection
                 likePost={likePost}
                 post={post}
                 optionsSectionIsActive={optionsSectionIsActive}
                 setOptionsSectionIsActive={setOptionsSectionIsActive}
-            />
-            <LikesSection
+            /> }
+            { likesSectionIsActive && <LikesSection
                 likeIds={likeIds}
                 likesSectionIsActive={likesSectionIsActive}
                 setLikesSectionIsActive={setLikesSectionIsActive}
-            />
+            /> }
         </article>
     );
 }
