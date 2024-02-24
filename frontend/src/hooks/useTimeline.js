@@ -1,15 +1,14 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const TimelineContext = createContext();
 
 export const TimelineProvider = ({ children }) => {
     const [postIds, setPostIds] = useState([]);
 
-    const value = useMemo(() => ({
+    const value = {
         postIds,
         setPostIds
-    }),
-    [postIds]);
+    };
 
     return <TimelineContext.Provider value={value}>{children}</TimelineContext.Provider>;
 };
