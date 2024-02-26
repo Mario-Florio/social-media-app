@@ -72,7 +72,7 @@ function NewPost({ forumId }) {
     return(
         <article className="newPost">
             <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
-                <img src={user.profile.picture} alt="users profile pic"/>
+                <img src={ user.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="users profile pic"/>
             </Link>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>

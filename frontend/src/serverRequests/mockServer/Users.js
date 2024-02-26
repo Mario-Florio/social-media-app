@@ -21,7 +21,7 @@ import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo
 
 setupUsersCollection();
 
-const ms = 0;
+const ms = 1000;
 
 async function getUsersMock() {
     await delay(ms);

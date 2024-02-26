@@ -18,11 +18,13 @@ const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum
 function Profile() {
     const [profileUser, setProfileUser] = useState(placeholderProfileUser);
     const [isFollowing, setIsFollowing] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
     const { setPostIds } = useTimeline();
     const { user } = useAuth();
 
     useEffect(() => {
+        setIsLoading(true);
         (async () => {
             try {
                 const profileUser = await populateProfileUser(id);
@@ -35,6 +37,7 @@ function Profile() {
                 profileUser.profile.forum = populatedForum;
                 setProfileUser(profileUser);
                 setPostIds(profileUser.profile.forum.posts);
+                setIsLoading(false);
             } catch (err) {
                 console.log(err);
             }
@@ -43,6 +46,7 @@ function Profile() {
         return () => {
             setProfileUser(placeholderProfileUser);
             setPostIds([]);
+            setIsLoading(false);
         }
     }, [id, user]);
 
@@ -50,22 +54,22 @@ function Profile() {
         <PageLayout>
                 <section id="profile" className="main-component">
                     <section className="profileTop">
-                        { profileUser.profile.coverPicture ? 
-                            <img src={profileUser.profile.coverPicture} alt="cover" className="coverPhoto"/> :
-                            <div className="loadingBGColor coverPhoto"></div> }
-                        { profileUser.profile.picture ?
-                            <img src={profileUser.profile.picture} alt="profile" className="profilePic"/> :
-                            <div className="loadingBGColor profilePic"></div> }
+                        { isLoading ?
+                            <div className="loadingBGColor coverPhoto"></div> :
+                            <img src={ profileUser.profile.coverPicture || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/> }
+                        { isLoading ?
+                            <div className="loadingBGColor profilePic"></div> :
+                            <img src={ profileUser.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/> }
                     </section>
                     <section className="profileBottom">
                         <h2>{profileUser.username}</h2>
-                        {user._id !== profileUser._id && profileUser._id &&
+                        { profileUser._id && user._id !== profileUser._id &&
                             <FollowButton
                                 profileUser={profileUser}
                                 setProfileUser={setProfileUser}
                                 isFollowing={isFollowing}
                                 setIsFollowing={setIsFollowing}
-                            />}
+                            /> }
                             <div className="followCount">
                                 <p>{profileUser.profile.followers.length} <span>followers</span></p>
                                 <div>&#x2022;</div>

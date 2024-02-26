@@ -41,7 +41,7 @@ function Post({ post, setParentState }) {
                 <div className="details">
                     { post.user.profile._id ? 
                         <Link to={`/profile/${post.user.profile._id}`} className="profilePic_wrapper">
-                            <img src={post.user.profile.picture} alt="users profile pic"/>
+                            <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
                         </Link> :
                         <div className="loadingBGColor profilePic_wrapper"></div> }
                     <div className="title">
