@@ -18,7 +18,6 @@ const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum
 
 function Profile() {
     const [profileUser, setProfileUser] = useState(placeholderProfileUser);
-    const [isFollowing, setIsFollowing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
     const { setPostIds } = useTimeline();
@@ -29,10 +28,6 @@ function Profile() {
         (async () => {
             try {
                 const profileUser = await populateProfileUser(id);
-
-                if (user.profile.following.includes(profileUser._id)) {
-                    setIsFollowing(true);
-                }
 
                 const populatedForum = await populateForum(profileUser.profile.forum);
                 profileUser.profile.forum = populatedForum;
@@ -55,22 +50,7 @@ function Profile() {
         <PageLayout>
                 <section id="profile" className="main-component">
                     <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
-                    <section className="profileBottom">
-                        <h2>{profileUser.username}</h2>
-                        { profileUser._id && user._id !== profileUser._id &&
-                            <FollowButton
-                                profileUser={profileUser}
-                                setProfileUser={setProfileUser}
-                                isFollowing={isFollowing}
-                                setIsFollowing={setIsFollowing}
-                            /> }
-                            <div className="followCount">
-                                <p>{profileUser.profile.followers.length} <span>followers</span></p>
-                                <div>&#x2022;</div>
-                                <p>{profileUser.profile.following.length} <span>following</span></p>
-                            </div>
-                            <p>{profileUser.profile.bio}</p>
-                    </section>
+                    <ProfileBottom profileUser={profileUser} setProfileUser={setProfileUser}/>
                     <Timeline forumId={profileUser.profile.forum._id}/>
                 </section>
         </PageLayout>
@@ -78,6 +58,36 @@ function Profile() {
 }
 
 export default Profile;
+
+function ProfileBottom({ profileUser, setProfileUser }) {
+    const [isFollowing, setIsFollowing] = useState(false);
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user.profile.following.includes(profileUser._id)) {
+            setIsFollowing(true);
+        }
+    }, [user, profileUser]);
+
+    return(
+        <section className="profileBottom">
+            <h2>{profileUser.username}</h2>
+            { profileUser._id && user._id !== profileUser._id &&
+                <FollowButton
+                    profileUser={profileUser}
+                    setProfileUser={setProfileUser}
+                    isFollowing={isFollowing}
+                    setIsFollowing={setIsFollowing}
+                /> }
+                <div className="followCount">
+                    <p>{profileUser.profile.followers.length} <span>followers</span></p>
+                    <div>&#x2022;</div>
+                    <p>{profileUser.profile.following.length} <span>following</span></p>
+                </div>
+                <p>{profileUser.profile.bio}</p>
+        </section>
+    )
+}
 
 function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing }) {
     const { user, updateUser } = useAuth();
@@ -98,8 +108,7 @@ function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing
         }
     }
 
-    return(
-        isFollowing ? 
+    return(isFollowing ? 
             <form onSubmit={handleSubmit}>
                 <label htmlFor="unfollow" className="hide">Unfollow</label>
                 <input type="checkbox" name="unfollow" id="unfollow" checked={true} readOnly className="hide"/>

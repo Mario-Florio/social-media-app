@@ -69,9 +69,17 @@ function PopupWrapper({ children }) {
 function PicturePopup({ isActive, setIsActive, setPicture }) {
     function handleSubmit(e) {
         e.preventDefault();
-        setPicture(URL.createObjectURL(e.target.children[1].files[0]));
+        if (e.target.children[1].files[0]) {
+            setPicture(URL.createObjectURL(e.target.children[1].files[0]));
+        }
         setIsActive(false);
     }
+
+    function handelCancel(e) {
+        e.preventDefault();
+        setIsActive(false)
+    }
+
     return(isActive &&
         <PopupWrapper>
             <form onSubmit={handleSubmit}>
@@ -83,18 +91,27 @@ function PicturePopup({ isActive, setIsActive, setPicture }) {
                         accept="image/*"
                     />
                     <button>Upload</button>
-                    <button onClick={() => setIsActive(false)}>Cancel</button>
+                    <button onClick={handelCancel}>Cancel</button>
                 </form>
         </PopupWrapper>
     );
 }
 
 function CoverPhotoPopup({ isActive, setIsActive, setPhoto }) {
+
     function handleSubmit(e) {
         e.preventDefault();
-        setPhoto(URL.createObjectURL(e.target.children[1].files[0]));
+        if (e.target.children[1].files[0]) {
+            setPhoto(URL.createObjectURL(e.target.children[1].files[0]));
+        }
         setIsActive(false);
     }
+
+    function handelCancel(e) {
+        e.preventDefault();
+        setIsActive(false)
+    }
+
     return(isActive &&
         <PopupWrapper>
             <form onSubmit={handleSubmit}>
@@ -106,7 +123,7 @@ function CoverPhotoPopup({ isActive, setIsActive, setPhoto }) {
                     accept="image/*"
                 />
                 <button>Upload</button>
-                <button onClick={() => setIsActive(false)}>Cancel</button>
+                <button onClick={handelCancel}>Cancel</button>
             </form>
         </PopupWrapper>
     );
