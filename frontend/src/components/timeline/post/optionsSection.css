@@ -20,9 +20,21 @@
     background-color: lightgrey;
 }
 
-.options-section .confirm-delete_popup {
+.options-section .popup_mask {
     z-index: -1;
     position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 750px;
+    background-color: rgba(0, 0, 0, 0.273);
+    opacity: 0;
+    transition-duration: .2s;
+}
+
+.options-section .confirm-delete_popup {
+    position: absolute;
     top: 40%;
     left: 50%;
     width: 200px;
@@ -30,13 +42,11 @@
     padding: 1rem;
     border-radius: 5px;
     box-shadow: 0px 1px 5px gray;
-    opacity: 0;
     transform: translateX(-50%);
-    transition-duration: .2s;
 }
 
-.options-section .confirm-delete_popup.active {
-    z-index: 1;
+.options-section .popup_mask.active {
+    z-index: 0;
     opacity: 1;
     transition-duration: .2s;
 }
@@ -50,4 +60,10 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+@media all and (min-width: 750px) {
+    .options-section .popup_mask {
+        left: calc(var(--sidemenu_max-width));
+    }
 }

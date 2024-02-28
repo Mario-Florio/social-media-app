@@ -189,10 +189,12 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
                 </Link>
                 <li>Share Post</li>
             </ul>
-            <div className={ confirmDeletePopupIsActive ? "confirm-delete_popup active" : "confirm-delete_popup" }>
-                <p>Are you sure you want to delete this post?</p>
-                <button onClick={async () => await deletePost()}>Confirm</button>
-                <button onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
+            <div className={confirmDeletePopupIsActive ? "popup_mask active" : "popup_mask"}>
+                <div className="confirm-delete_popup">
+                    <p>Are you sure you want to delete this post?</p>
+                    <button onClick={async () => await deletePost()}>Confirm</button>
+                    <button onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
+                </div>
             </div>
         </SectionWrapper>
     );
