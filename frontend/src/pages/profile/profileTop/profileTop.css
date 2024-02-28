@@ -91,12 +91,26 @@
     padding: 1rem;
     border-radius: 5px;
     box-shadow: 0px 1px 5px gray;
+    text-overflow: ellipsis;
     transform: translateX(-50%);
     transition-duration: .2s;
 }
 
-.profileTop input {
+.profileTop .popup input::-webkit-file-upload-button {
+    font-weight: 500;
+    color: white;
+    background-color: rgb(200, 170, 175);
+    margin-right: .5rem;
+    padding: .25rem .5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profileTop .popup input {
+    text-overflow: ellipsis;
     margin: 1rem 0;
+    width: 100%;
 }
 
 .profileTop .popup button {
