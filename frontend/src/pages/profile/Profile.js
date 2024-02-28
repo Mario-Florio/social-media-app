@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./profile.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
+import ProfileTop from "./profileTop/ProfileTop";
 import Timeline from "../../components/timeline/Timeline";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
@@ -53,14 +54,7 @@ function Profile() {
     return(
         <PageLayout>
                 <section id="profile" className="main-component">
-                    <section className="profileTop">
-                        { isLoading ?
-                            <div className="loadingBGColor coverPhoto"></div> :
-                            <img src={ profileUser.profile.coverPicture || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/> }
-                        { isLoading ?
-                            <div className="loadingBGColor profilePic"></div> :
-                            <img src={ profileUser.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/> }
-                    </section>
+                    <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
                     <section className="profileBottom">
                         <h2>{profileUser.username}</h2>
                         { profileUser._id && user._id !== profileUser._id &&

@@ -3,29 +3,6 @@
     width: 100%;
 }
 
-.profileTop {
-    width: 100%;
-    height: 380px;
-}
-
-.profileTop .coverPhoto {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-}
-
-.profileTop .profilePic {
-    position: relative;
-    top: -75px;
-    display: table;
-    height: 150px;
-    width: 150px;
-    margin: auto;
-    object-fit: cover;
-    border: solid 5px white;
-    border-radius: 50%;
-}
-
 .profileBottom {
     padding: 0 1rem;
 }
@@ -70,18 +47,6 @@
 }
 
 @media all and (min-width: 1045px) {
-    .profileTop {
-        position: relative;
-    }
-
-    .profileTop .profilePic {
-        position: absolute;
-        top: 150px;
-        left: 3rem;
-        height: 300px;
-        width: 300px;
-    }
-
     .profileBottom {
         padding: 0;
         padding-left: 3rem;
