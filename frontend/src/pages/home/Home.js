@@ -5,8 +5,10 @@ import Timeline from "../../components/timeline/Timeline";
 import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
 
-import { populateForum } from "../../serverRequests/methods/forums";
+import requests from "../../serverRequests/methods/config";
 import { populateUsers } from "../../serverRequests/methods/users";
+
+const { getForum } = requests.forums;
 
 function Home() {
     const { setPostIds } = useTimeline();
@@ -24,13 +26,17 @@ function Home() {
 
         async function getPostIds() {
             const postIds = [];
-            const userForum = await populateForum(user.profile.forum);
-            postIds.push(...userForum.posts.reverse());
+            const res = await getForum({ id: user.profile.forum });
+            if (res.success) {
+                postIds.push(...res.forum.posts.reverse());
+            }
     
             const following = await populateUsers(user.profile.following);
             await Promise.all(following.map(async user => {
-                const forum = await populateForum(user.profile.forum);
-                postIds.push(...forum.posts.reverse());
+                const res = await getForum({ id: user.profile.forum });
+                if (res.success) {
+                    postIds.push(...res.forum.posts.reverse());
+                }
             }));
     
             return postIds;

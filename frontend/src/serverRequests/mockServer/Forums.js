@@ -1,8 +1,10 @@
 
 const ms = 0;
 
-async function getForumMock(id) {
+async function getForumMock(reqBody) {
     await delay(ms);
+
+    const { id } = reqBody;
 
     const forumsJSON = window.localStorage.getItem("Forums");
     const forums = JSON.parse(forumsJSON);
@@ -12,9 +14,13 @@ async function getForumMock(id) {
         if (forum._id === id) {
             returnForum = forum;
         }
-    })
+    });
+
+    if (!returnForum) {
+        return { message: "Request failed", success: false };
+    }
     
-    return returnForum;
+    return { message: "Request successful", forum: returnForum, success: true };
 }
 
 export {

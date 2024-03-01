@@ -1,17 +1,19 @@
 
 const ms = 1000;
 
-async function getUsersMock() {
+async function getUsersMock(reqBody) {
     await delay(ms);
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
 
-    return users;
+    return { message: "Request successful", users, success: true };
 }
 
-async function getUserMock(id) {
+async function getUserMock(reqBody) {
     await delay(ms);
+
+    const { id } = reqBody;
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -23,13 +25,17 @@ async function getUserMock(id) {
         }
     }
 
-    return userFound;
+    if (!userFound) {
+        return { message: "Request failed: User not found", success: false };
+    }
+
+    return { message: "Request successful", user: userFound, success: true };
 }
 
-async function postUserMock(credentials) {
+async function postUserMock(reqBody) {
     await delay(ms);
 
-    const { username, password } = credentials;
+    const { username, password } = reqBody.credentials;
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -64,18 +70,17 @@ async function postUserMock(credentials) {
     forums.push(newForum);
     window.localStorage.setItem("Forums", JSON.stringify(forums));
 
-    return {
-        message: "Success: user has been created",
-        success: true
-    };
+    return { message: "Success: user has been created", success: true };
 }
 
-async function putUserMock(id, update) {
+async function putUserMock(reqBody) {
     await delay(ms);
+
+    const { id, update } = reqBody;
 
     const tokenJSON = window.localStorage.getItem("token");
     const token = JSON.parse(tokenJSON);
-    if (token !== id) return "Request is forbidden";
+    if (token !== id) return { message: "Request is forbidden", success: false };
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -90,20 +95,22 @@ async function putUserMock(id, update) {
         index++;
     }
 
-    if (!userFound) return "User does not exist";
+    if (!userFound) return { message: "User does not exist", success: false };
 
     users[index] = update;
     window.localStorage.setItem("Users", JSON.stringify(users));
 
-    return "Update was successful";
+    return { message: "Update was successful", user: update, success: true };
 }
 
-async function deleteUserMock(id) {
+async function deleteUserMock(reqBody) {
     await delay(ms);
+
+    const { id } = reqBody;
 
     const tokenJSON = window.localStorage.getItem("token");
     const token = JSON.parse(tokenJSON);
-    if (token !== id) return "Request is forbidden";
+    if (token !== id) return { message: "Request is forbidden", success: false };
 
     const usersJSON = window.localStorage.getItem("Users");
     const users = JSON.parse(usersJSON);
@@ -118,12 +125,12 @@ async function deleteUserMock(id) {
         index++;
     }
 
-    if (!userFound) return "User does not exist";
+    if (!userFound) return { message: "User does not exist", success: false };
 
     users.splice(index, 1);
     window.localStorage.setItem(JSON.stringify(users));
 
-    return "Deletion was successful";
+    return { message: "Deletion was successful", success: true };
 }
 
 async function putUserFollowMock(reqBody) {

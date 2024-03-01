@@ -4,7 +4,7 @@ const { getUsers } = requests.users;
 
 // Sidemenu & Post
 async function populateUsers(userIds) {
-    const users = await getUsers();
+    const { users } = await getUsers();
 
     const populatedUsers = [];
     userIds.forEach(id => {
@@ -20,7 +20,7 @@ async function populateUsers(userIds) {
 
 // Profile
 async function populateProfileUser(profileId) {
-    const users = await getUsers();
+    const { users } = await getUsers();
 
     let populatedUser = null;
     users.forEach(user => {
@@ -34,7 +34,7 @@ async function populateProfileUser(profileId) {
 
 // Topbar
 async function searchUsers(input) {
-    const users = await getUsers();
+    const { users } = await getUsers();
 
     const results = [];
     users.forEach(user => {

@@ -8,10 +8,10 @@ import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
 
 import { populateProfileUser } from "../../serverRequests/methods/users";
-import { populateForum } from "../../serverRequests/methods/forums";
 
 import requests from "../../serverRequests/methods/config";
 
+const { getForum } = requests.forums;
 const { putUserFollow } = requests.users;
 
 const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
@@ -29,10 +29,12 @@ function Profile() {
             try {
                 const profileUser = await populateProfileUser(id);
 
-                const populatedForum = await populateForum(profileUser.profile.forum);
-                profileUser.profile.forum = populatedForum;
-                setProfileUser(profileUser);
-                setPostIds(profileUser.profile.forum.posts.reverse());
+                const res = await getForum({ id: profileUser.profile.forum });
+                if (res.success) {
+                    profileUser.profile.forum = res.forum;
+                    setProfileUser(profileUser);
+                    setPostIds(profileUser.profile.forum.posts.reverse());
+                }
                 setIsLoading(false);
             } catch (err) {
                 console.log(err);

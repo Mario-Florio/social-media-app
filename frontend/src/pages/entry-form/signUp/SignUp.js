@@ -60,7 +60,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
         e.preventDefault();
         if (!isValid()) return alert('Form input invalid');
         setIsLoading(true);
-        postUser(formInput)
+        postUser({ credentials: formInput })
             .then(data => {
                 setIsLoading(false);
                 if (data.success) {

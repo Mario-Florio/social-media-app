@@ -1,11 +1,12 @@
-import { getUsersMock } from "./Users";
 
 const ms = 0;
 
 async function getSessionMock(token) {
     await delay(ms);
 
-    const users = await getUsersMock();
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+
     const payload = {
         authData: { user: null },
         token: false,
@@ -27,7 +28,9 @@ async function postLoginMock(credentials) {
     await delay(ms);
 
     const { username, password } = credentials;
-    const users = await getUsersMock();
+    
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
 
     const payload = {
         success: false,

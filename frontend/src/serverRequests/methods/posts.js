@@ -4,7 +4,7 @@ const { getPosts } = request.posts;
 
 // Profile & Home
 async function populatePosts(postIds) {
-    const posts = await getPosts();
+    const { posts } = await getPosts();
 
     const populatedPosts = [];
     postIds.forEach(id => {

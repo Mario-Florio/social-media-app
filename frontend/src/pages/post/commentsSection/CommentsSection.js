@@ -18,10 +18,12 @@ function CommentsSection({ postId }) {
     useEffect(() => {
         setIsLoading(true);
         (async () => {
-            const post = await getPost(postId);
-            const comments = await populateComments(post.comments);
-            setPost(post);
-            setComments(comments);
+            const res = await getPost({ id: postId });
+            if (res.success) {
+                const comments = await populateComments(res.post.comments);
+                setPost(res.post);
+                setComments(comments);
+            }
             setIsLoading(false);
         })();
     }, [postId]);

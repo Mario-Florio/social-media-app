@@ -27,8 +27,10 @@ function Post({ postId }) {
         setIsLoading(true);
         (async () => {
             try {
-                const post = await getPost(postId);
-                setPost(post);
+                const res = await getPost({ id: postId });
+                if (res.success) {
+                    setPost(res.post);
+                }
                 setIsLoading(false);
             } catch (err) {
                 console.log(err);
@@ -48,7 +50,7 @@ function Post({ postId }) {
 
     async function likePost() {
         try {
-            const res = await putPostLike(post._id, user._id);
+            const res = await putPostLike({ id: post._id, userId: user._id});
             if (res.success) {
                 setPost(res.post);
             }
@@ -178,7 +180,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     const { postIds, setPostIds } = useTimeline();
 
     async function deletePost() {
-        const res = await requests.posts.deletePost(post._id);
+        const res = await requests.posts.deletePost({ id: post._id });
 
         if (res.success) {
             const newPostIds = postIds.filter(postId => postId !== post._id);
@@ -242,7 +244,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
             createdAt: post.createdAt
         }
 
-        const res = await putPost(updatedPost);
+        const res = await putPost({ update: updatedPost });
 
         if (res.success) {
             setInput(post.text);

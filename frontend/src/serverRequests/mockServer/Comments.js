@@ -1,4 +1,3 @@
-import { getUsersMock } from "./Users";
 
 const ms = 0;
 
@@ -13,7 +12,8 @@ async function getComments() {
     return comments;
 
     async function populateUsers(comments) {
-        const users = await getUsersMock();
+        const usersJSON = window.localStorage.getItem("Users");
+        const users = JSON.parse(usersJSON);
     
         comments.forEach(async comment => {
             let userData = null;
