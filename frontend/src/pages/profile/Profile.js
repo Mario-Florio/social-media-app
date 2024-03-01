@@ -21,7 +21,6 @@ function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const { id } = useParams();
     const { setPostIds } = useTimeline();
-    const { user } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);
@@ -46,7 +45,7 @@ function Profile() {
             setPostIds([]);
             setIsLoading(false);
         }
-    }, [id, user]);
+    }, [id, setPostIds]);
 
     return(
         <PageLayout>
@@ -87,10 +86,11 @@ function FollowButton({ profileUser, setProfileUser }) {
     const { user, updateUser } = useAuth();
 
     useEffect(() => {
+        console.log("isFollowing: ", user.profile.following.includes(profileUser._id))
         if (user.profile.following.includes(profileUser._id)) {
             setIsFollowing(true);
         }
-    }, [user, profileUser]);
+    }, [user]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -100,6 +100,8 @@ function FollowButton({ profileUser, setProfileUser }) {
             profileUserId: profileUser._id,
             follow: e.target.children[1].name === "follow" ? true : false
         });
+
+        console.log("Response Success: ", res.success);
 
         if (res.success) {
             setProfileUser(res.profileUser);
