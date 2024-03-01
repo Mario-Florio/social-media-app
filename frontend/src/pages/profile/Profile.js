@@ -101,6 +101,8 @@ function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing
             follow: e.target.children[1].name === "follow" ? true : false
         });
 
+        console.log(res);
+
         if (res.success) {
             setProfileUser(res.profileUser);
             setIsFollowing(!isFollowing);

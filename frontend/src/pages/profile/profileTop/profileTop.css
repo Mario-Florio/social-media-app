@@ -131,7 +131,7 @@
     }
 }
 
-@media all and (min-width: 1025px) {
+@media all and (min-width: 1045px) {
     .profileTop {
         position: relative;
     }
