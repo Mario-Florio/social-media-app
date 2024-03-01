@@ -60,14 +60,7 @@ function Profile() {
 export default Profile;
 
 function ProfileBottom({ profileUser, setProfileUser }) {
-    const [isFollowing, setIsFollowing] = useState(false);
     const { user } = useAuth();
-
-    useEffect(() => {
-        if (user.profile.following.includes(profileUser._id)) {
-            setIsFollowing(true);
-        }
-    }, [user, profileUser]);
 
     return(
         <section className="profileBottom">
@@ -76,8 +69,6 @@ function ProfileBottom({ profileUser, setProfileUser }) {
                 <FollowButton
                     profileUser={profileUser}
                     setProfileUser={setProfileUser}
-                    isFollowing={isFollowing}
-                    setIsFollowing={setIsFollowing}
                 /> }
                 <div className="followCount">
                     <p>{profileUser.profile.followers.length} <span>followers</span></p>
@@ -89,8 +80,15 @@ function ProfileBottom({ profileUser, setProfileUser }) {
     )
 }
 
-function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing }) {
+function FollowButton({ profileUser, setProfileUser }) {
+    const [isFollowing, setIsFollowing] = useState(false);
     const { user, updateUser } = useAuth();
+
+    useEffect(() => {
+        if (user.profile.following.includes(profileUser._id)) {
+            setIsFollowing(true);
+        }
+    }, [user, profileUser]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -100,8 +98,6 @@ function FollowButton({ profileUser, setProfileUser, isFollowing, setIsFollowing
             profileUserId: profileUser._id,
             follow: e.target.children[1].name === "follow" ? true : false
         });
-
-        console.log(res);
 
         if (res.success) {
             setProfileUser(res.profileUser);
