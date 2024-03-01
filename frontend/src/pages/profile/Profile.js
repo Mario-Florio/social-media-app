@@ -32,7 +32,7 @@ function Profile() {
                 const populatedForum = await populateForum(profileUser.profile.forum);
                 profileUser.profile.forum = populatedForum;
                 setProfileUser(profileUser);
-                setPostIds(profileUser.profile.forum.posts);
+                setPostIds(profileUser.profile.forum.posts.reverse());
                 setIsLoading(false);
             } catch (err) {
                 console.log(err);

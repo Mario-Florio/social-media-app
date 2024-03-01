@@ -25,12 +25,12 @@ function Home() {
         async function getPostIds() {
             const postIds = [];
             const userForum = await populateForum(user.profile.forum);
-            postIds.push(...userForum.posts);
+            postIds.push(...userForum.posts.reverse());
     
             const following = await populateUsers(user.profile.following);
             await Promise.all(following.map(async user => {
                 const forum = await populateForum(user.profile.forum);
-                postIds.push(...forum.posts);
+                postIds.push(...forum.posts.reverse());
             }));
     
             return postIds;
