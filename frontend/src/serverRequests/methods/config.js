@@ -1,3 +1,5 @@
+import populateCollections from "../mockServer/populateCollections";
+
 import { getSession, postLogin } from "../server/Auth";
 import { getSessionMock, postLoginMock } from "../mockServer/Auth";
 
@@ -37,6 +39,9 @@ import {
 } from "../mockServer/Posts";
 
 let mock = true;
+let resetCollections = false;
+
+resetCollections && populateCollections();
 
 const requests = {
     auth: {
