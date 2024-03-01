@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./timeline.css";
 import Post from "./post/Post";
@@ -6,41 +6,20 @@ import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
 
 import requests from "../../serverRequests/methods/config";
-import { populatePosts } from "../../serverRequests/methods/posts";
 const { postPost } = requests.posts;
 
 function Timeline({ forumId }) {
-    const [posts, setPosts] = useState([]);
     const { postIds } = useTimeline();
-
-    useEffect(() => {
-        (async () => {
-            try {
-                await setTimeline();
-            } catch (err) {
-                console.log(err);
-            }
-        })();
-    }, [postIds]);
-
-    async function setTimeline() {
-        const timeline = await populatePosts(postIds);
-        timeline.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(timeline);
-    };
 
     return(
         <section className="timeline">
             <NewPost forumId={forumId}/>
             <ul className="feed">
-                { posts.map(post =>
-                    <li key={post._id}>
-                        <Post
-                            post={post}
-                            setParentState={setTimeline}
-                        />
+                { postIds.map(postId =>
+                    <li key={postId}>
+                        <Post postId={postId}/>
                     </li>) }
-                { posts.length >= 10 && 
+                { postIds.length >= 10 && 
                     <li className="seeMore">
                         <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                     </li> }

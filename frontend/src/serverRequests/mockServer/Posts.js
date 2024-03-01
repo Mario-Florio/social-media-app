@@ -121,7 +121,23 @@ async function putPostMock(update) {
     posts[index] = update;
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
+    await populateUsers([update]);
+
     return { message: "Update was successful", success: true, post: update};
+
+    async function populateUsers(posts) {
+        const users = await getUsersMock();
+        
+        posts.forEach(async post => {
+            let userData = null;
+            users.forEach(user => {
+                if (user._id === post.user) {
+                    userData = user;
+                }
+            });
+            post.user = userData;
+        });
+    };
 }
 
 async function deletePostMock(id) {
@@ -131,7 +147,6 @@ async function deletePostMock(id) {
     const token = JSON.parse(tokenJSON);
     const postsJSON = window.localStorage.getItem("Posts");
     const posts = JSON.parse(postsJSON);
-
 
     let postFound = false;
     let userId = null;
@@ -150,6 +165,32 @@ async function deletePostMock(id) {
 
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
+
+    const usersJSON = window.localStorage.getItem("Users");
+    const users = JSON.parse(usersJSON);
+    const forumsJSON = window.localStorage.getItem("Forums");
+    const forums = JSON.parse(forumsJSON);
+
+    let user = null;
+    for (let i = 0; i < users.length; i++) {
+        if (users[i]._id === userId) {
+            user = users[i];
+        }
+    }
+    let forumIndex = null;
+    for (let i = 0; i < forums.length; i++) {
+        if (forums[i]._id === user.profile.forum) {
+            forumIndex = i;
+        }
+    }
+    let postIndex = null;
+    for (let i = 0; i < forums[forumIndex].posts.length; i++) {
+        if (forums[forumIndex].posts[i] === id) {
+            postIndex = i;
+        }
+    }
+    forums[forumIndex].posts.splice(postIndex, 1);
+    window.localStorage.setItem("Forums", JSON.stringify(forums));
 
     return { message: "Deletion was successful", success: true };
 }
@@ -181,7 +222,24 @@ async function putPostLikeMock(id, userId) {
         posts[index].likes.push(userId);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    return { message: "Update was successful", success: true };
+    const post = posts[index];
+
+    await populateUsers([post]);
+    async function populateUsers(posts) {
+        const users = await getUsersMock();
+        
+        posts.forEach(async post => {
+            let userData = null;
+            users.forEach(user => {
+                if (user._id === post.user) {
+                    userData = user;
+                }
+            });
+            post.user = userData;
+        });
+    };
+
+    return { message: "Update was successful", post, success: true };
 }
 
 export {

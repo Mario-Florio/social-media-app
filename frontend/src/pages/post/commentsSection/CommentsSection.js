@@ -3,22 +3,28 @@ import { Link } from "react-router-dom";
 import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
 
+import requests from "../../../serverRequests/methods/config";
 import { populateComments } from "../../../serverRequests/methods/comments";
+const { getPost } = requests.posts;
 
-function CommentsSection({ post }) {
+const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
+
+function CommentsSection({ postId }) {
+    const [post, setPost] = useState(placeholderPost)
     const [comments, setComments] = useState([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
-
         (async () => {
+            const post = await getPost(postId);
             const comments = await populateComments(post.comments);
+            setPost(post);
             setComments(comments);
             setIsLoading(false);
         })();
-    }, [post]);
+    }, [postId]);
 
     function handleChange(e) {
         setInput(e.target.value);

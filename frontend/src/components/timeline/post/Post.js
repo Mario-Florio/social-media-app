@@ -10,14 +10,36 @@ import { useTimeline } from "../../../hooks/useTimeline";
 import { populateUsers } from "../../../serverRequests/methods/users";
 import requests from "../../../serverRequests/methods/config";
 import SectionWrapper from "./sectionWrapper/SectionWrapper";
-const { putPost, putPostLike } = requests.posts;
+const { getPost, putPost, putPostLike } = requests.posts;
 
-function Post({ post, setParentState }) {
+const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
+
+function Post({ postId }) {
+    const [post, setPost] = useState(placeholderPost);
+    const [isLoading, setIsLoading] = useState(true);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user } = useAuth();
+
+    useEffect(() => {
+        setIsLoading(true);
+        (async () => {
+            try {
+                const post = await getPost(postId);
+                setPost(post);
+                setIsLoading(false);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+
+        return () => {
+            setIsLoading(true);
+            setPost(placeholderPost);
+        }
+    }, [postId]);
 
     function viewLikes() {
         setLikeIds(post.likes);
@@ -28,7 +50,7 @@ function Post({ post, setParentState }) {
         try {
             const res = await putPostLike(post._id, user._id);
             if (res.success) {
-                await setParentState();
+                setPost(res.post);
             }
         } catch (err) {
             console.log(err);
@@ -39,16 +61,16 @@ function Post({ post, setParentState }) {
         <article className="post">
             <header>
                 <div className="details">
-                    { post.user.profile._id ? 
+                    { !isLoading ? 
                         <Link to={`/profile/${post.user.profile._id}`} className="profilePic_wrapper">
                             <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
                         </Link> :
                         <div className="loadingBGColor profilePic_wrapper"></div> }
                     <div className="title">
-                        <Link to={post.user.profile._id && `/profile/${post.user.profile._id}`}>
+                        <Link to={ post.user.profile._id && `/profile/${post.user.profile._id}` }>
                             <h3>{post.user.username}</h3>
                         </Link>
-                        <span>{new Date(post.createdAt).toLocaleString()}</span>
+                        <span>{ post.createdAt && new Date(post.createdAt).toLocaleString() }</span>
                     </div>
                 </div>
                 <div
@@ -104,7 +126,8 @@ function Post({ post, setParentState }) {
                 post={post}
                 editSectionIsActive={editSectionIsActive}
                 setEditSectionIsActive={setEditSectionIsActive}
-                setParentState={setParentState}
+                // setParentState={setParentState}
+                setPost={setPost}
             /> }
         </article>
     );
@@ -200,7 +223,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     );
 }
 
-function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setParentState }) {
+function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPost }) {
     const [input, setInput] = useState(post.text);
 
     function handleChange(e) {
@@ -224,7 +247,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPar
         if (res.success) {
             setInput(post.text);
             setEditSectionIsActive(false);
-            setParentState();
+            setPost(res.post);
         }
     }
 
