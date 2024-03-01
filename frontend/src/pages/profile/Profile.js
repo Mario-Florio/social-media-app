@@ -86,7 +86,6 @@ function FollowButton({ profileUser, setProfileUser }) {
     const { user, updateUser } = useAuth();
 
     useEffect(() => {
-        console.log("isFollowing: ", user.profile.following.includes(profileUser._id))
         if (user.profile.following.includes(profileUser._id)) {
             setIsFollowing(true);
         }
@@ -100,8 +99,6 @@ function FollowButton({ profileUser, setProfileUser }) {
             profileUserId: profileUser._id,
             follow: e.target.children[1].name === "follow" ? true : false
         });
-
-        console.log("Response Success: ", res.success);
 
         if (res.success) {
             setProfileUser(res.profileUser);
