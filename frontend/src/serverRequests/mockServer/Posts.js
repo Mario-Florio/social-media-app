@@ -80,7 +80,7 @@ async function postPostMock(reqBody) {
     const forumsJSON = window.localStorage.getItem("Forums");
     const forums = JSON.parse(forumsJSON);
 
-    const _id = posts[posts.length-1]._id + 1;
+    const _id = uid();
     const newPost = {
         _id,
         user: content.user,
@@ -269,4 +269,11 @@ export {
 // UTILS
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function uid() {
+    const uid = Date.now().toString(36) +
+        Math.random().toString(36).substring(2).padStart(12, 0);
+        
+    return uid;
 }

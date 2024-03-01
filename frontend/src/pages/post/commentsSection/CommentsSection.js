@@ -2,10 +2,12 @@ import {  useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
+import { useAuth } from "../../../hooks/useAuth";
 
 import requests from "../../../serverRequests/methods/config";
 import { populateComments } from "../../../serverRequests/methods/comments";
 const { getPost } = requests.posts;
+const { postComment } = requests.comments;
 
 const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
 
@@ -14,13 +16,14 @@ function CommentsSection({ postId }) {
     const [comments, setComments] = useState([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { user } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);
         (async () => {
             const res = await getPost({ id: postId });
             if (res.success) {
-                const comments = await populateComments(res.post.comments);
+                const comments = await populateComments(res.post.comments.reverse());
                 setPost(res.post);
                 setComments(comments);
             }
@@ -32,17 +35,29 @@ function CommentsSection({ postId }) {
         setInput(e.target.value);
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+
+        try {
+            const res = await postComment({ postId, comment: { user: user._id, text: input } });
+
+            if (res.success) {
+                const populatedComment = await populateComments([res.comment._id]);
+                setComments(comments.reverse().concat(populatedComment).reverse());
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
         setInput("");
     }
     return(
         <section className="comments-section">
             <ul>
                 { isLoading ?
-                    <div
-                        style={{ display: "flex", justifyContent: "center", padding: "4rem" }}
-                    ><Loader/></div> :
+                    <div style={{ display: "flex", justifyContent: "center", padding: "4rem" }}>
+                        <Loader/>
+                    </div> :
                     comments.map(comment => 
                         <li key={comment._id}>
                             <Comment comment={comment}/>

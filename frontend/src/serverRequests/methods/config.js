@@ -38,6 +38,8 @@ import {
     putPostLikeMock
 } from "../mockServer/Posts";
 
+import { getComments, postComment } from "../mockServer/Comments";
+
 let mock = true;
 let resetCollections = false;
 
@@ -66,6 +68,10 @@ const requests = {
         putPost: mock ? putPostMock : putPost,
         deletePost: mock ? deletePostMock : deletePost,
         putPostLike: mock ? putPostLikeMock : null
+    },
+    comments: {
+        getComments: mock ? getComments : null,
+        postComment: mock ? postComment : null
     }
 }
 

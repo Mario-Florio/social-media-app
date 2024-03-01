@@ -1,7 +1,7 @@
 
 const ms = 0;
 
-async function getComments() {
+async function getComments(reqBody) {
     await delay(ms);
 
     const commentsJSON = window.localStorage.getItem("Comments");
@@ -9,7 +9,7 @@ async function getComments() {
 
     await populateUsers(comments);
 
-    return comments;
+    return { message: "Request successful", comments, success: true };
 
     async function populateUsers(comments) {
         const usersJSON = window.localStorage.getItem("Users");
@@ -28,9 +28,49 @@ async function getComments() {
     }
 }
 
-export default getComments;
+async function postComment(reqBody) {
+    await delay(ms);
+
+    const { postId, comment } = reqBody;
+
+    const commentsJSON = window.localStorage.getItem("Comments");
+    const comments = JSON.parse(commentsJSON);
+    const postsJSON = window.localStorage.getItem("Posts");
+    const posts = JSON.parse(postsJSON);
+
+    const newComment = {
+        _id: uid(),
+        user: comment.user,
+        text: comment.text,
+    }
+
+    comments.push(newComment);
+
+    for (let i = 0; i < posts.length; i++) {
+        if (posts[i]._id === postId) {
+            posts[i].comments.push(newComment._id);
+        }
+    }
+
+    window.localStorage.setItem("Comments", JSON.stringify(comments));
+    window.localStorage.setItem("Posts", JSON.stringify(posts));
+
+    return { message: "Request successful", success: true, comment: newComment };
+}
+
+export {
+    getComments,
+    postComment
+};
 
 // UTILS
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function uid() {
+    const uid = Date.now().toString(36) +
+        Math.random().toString(36).substring(2).padStart(12, 0);
+        
+    return uid;
 }

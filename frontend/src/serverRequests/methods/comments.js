@@ -1,8 +1,10 @@
-import getComments from "../mockServer/Comments";
+import requests from "./config";
+
+const { getComments } = requests.comments;
 
 // Comments Section
 async function populateComments(commentIds) {
-    const comments = await getComments();
+    const { comments } = await getComments();
 
     const populatedComments = [];
     commentIds.forEach(id => {
