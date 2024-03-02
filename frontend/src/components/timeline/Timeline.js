@@ -43,7 +43,7 @@ function NewPost({ forumId }) {
         e.preventDefault();
 
         const res = await postPost({ content: { user: user._id, text: input.trim() }, forumId });
-        setPostIds([...postIds, res.post._id]);
+        setPostIds([...postIds, res.post._id].reverse());
 
         setInput("");
     }
