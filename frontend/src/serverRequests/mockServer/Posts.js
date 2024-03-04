@@ -178,30 +178,17 @@ async function deletePostMock(reqBody) {
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
     const forumsJSON = window.localStorage.getItem("Forums");
     const forums = JSON.parse(forumsJSON);
 
-    let user = null;
-    for (let i = 0; i < users.length; i++) {
-        if (users[i]._id === userId) {
-            user = users[i];
-        }
-    }
-    let forumIndex = null;
     for (let i = 0; i < forums.length; i++) {
-        if (forums[i]._id === user.profile.forum) {
-            forumIndex = i;
+        for (let j = 0; j < forums[i].posts.length; j++) {
+            if (forums[i].posts[j] === id) {
+                forums[i].posts.splice(j, 1);
+            }
         }
     }
-    let postIndex = null;
-    for (let i = 0; i < forums[forumIndex].posts.length; i++) {
-        if (forums[forumIndex].posts[i] === id) {
-            postIndex = i;
-        }
-    }
-    forums[forumIndex].posts.splice(postIndex, 1);
+
     window.localStorage.setItem("Forums", JSON.stringify(forums));
 
     return { message: "Deletion was successful", success: true };
@@ -274,6 +261,6 @@ function delay(ms) {
 function uid() {
     const uid = Date.now().toString(36) +
         Math.random().toString(36).substring(2).padStart(12, 0);
-        
+
     return uid;
 }
