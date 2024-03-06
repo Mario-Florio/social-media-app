@@ -39,7 +39,7 @@ async function postUserMock(reqBody) {
 
     const { username, password } = reqBody.credentials;
 
-    const users = getCollection("Users");
+    const users = getCollection("Users", { showHidden: "password" });
     const forums = getCollection("Forums");
 
     for (const user of users) {
@@ -70,7 +70,9 @@ async function postUserMock(reqBody) {
     forums.push(newForum);
     window.localStorage.setItem("Forums", JSON.stringify(forums));
 
-    return { message: "Success: user has been created", success: true };
+    delete newUser.password;
+
+    return { message: "Success: user has been created", user: newUser, success: true };
 }
 
 async function putUserMock(reqBody) {
@@ -81,7 +83,7 @@ async function putUserMock(reqBody) {
     const tokenIsValid = validateToken(id);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const users = getCollection("Users");
+    const users = getCollection("Users", { showHidden: "password" });
 
     let userFound = false;
     let index = 0;
@@ -98,6 +100,8 @@ async function putUserMock(reqBody) {
     users[index] = update;
     window.localStorage.setItem("Users", JSON.stringify(users));
 
+    delete update.password;
+
     return { message: "Update was successful", user: update, success: true };
 }
 
@@ -109,7 +113,7 @@ async function deleteUserMock(reqBody) {
     const tokenIsValid = validateToken(id);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const users = getCollection("Users");
+    const users = getCollection("Users", { showHidden: "password" });
 
     let userFound = false;
     let index = 0;
@@ -137,7 +141,7 @@ async function putUserFollowMock(reqBody) {
     const tokenIsValid = validateToken(userId);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const users = getCollection("Users");
+    const users = getCollection("Users", { showHidden: "password" });
 
     let profileUserFound = false;
     let profileUserIndex = null;
@@ -179,6 +183,9 @@ async function putUserFollowMock(reqBody) {
     }
 
     window.localStorage.setItem("Users", JSON.stringify(users));
+
+    delete users[profileUserIndex].password;
+    delete users[userIndex].password;
 
     return {
         message: "Update was successful",
