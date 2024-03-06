@@ -1,4 +1,5 @@
 import delay from "./__utils__/delay";
+import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
@@ -7,8 +8,7 @@ const ms = 1000;
 async function getUsersMock(reqBody) {
     await delay(ms);
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     return { message: "Request successful", users, success: true };
 }
@@ -18,8 +18,7 @@ async function getUserMock(reqBody) {
 
     const { id } = reqBody;
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     let userFound = null;
     for (const user of users) {
@@ -40,10 +39,8 @@ async function postUserMock(reqBody) {
 
     const { username, password } = reqBody.credentials;
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
-    const forumsJSON = window.localStorage.getItem("Forums");
-    const forums = JSON.parse(forumsJSON);
+    const users = getCollection("Users");
+    const forums = getCollection("Forums");
 
     for (const user of users) {
         if (user.username === username) {
@@ -81,12 +78,10 @@ async function putUserMock(reqBody) {
 
     const { id, update } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== id) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(id);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     let userFound = false;
     let index = 0;
@@ -111,12 +106,10 @@ async function deleteUserMock(reqBody) {
 
     const { id } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== id) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(id);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     let userFound = false;
     let index = 0;
@@ -141,12 +134,10 @@ async function putUserFollowMock(reqBody) {
 
     const { userId, profileUserId, follow } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== userId) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(userId);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     let profileUserFound = false;
     let profileUserIndex = null;

@@ -1,4 +1,5 @@
 import delay from "./__utils__/delay";
+import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
@@ -7,27 +8,12 @@ const ms = 0;
 async function getPostsMock(reqBody){
     await delay(ms);
 
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const posts = getCollection("Posts");
 
     await populateUsers(posts);
 
     return { message: "Request successful", posts, success: true };
 
-    async function populateUsers(posts) {
-        const usersJSON = window.localStorage.getItem("Users");
-        const users = JSON.parse(usersJSON);
-        
-        posts.forEach(async post => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === post.user) {
-                    userData = user;
-                }
-            });
-            post.user = userData;
-        });
-    };
 }
 
 async function getPostMock(reqBody) {
@@ -35,8 +21,7 @@ async function getPostMock(reqBody) {
 
     const { id } = reqBody;
 
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const posts = getCollection("Posts");
 
     let postFound = null;
     for (const post of posts) {
@@ -53,20 +38,6 @@ async function getPostMock(reqBody) {
 
     return { message: "Request successful", post: postFound, success: true };
 
-    async function populateUsers(posts) {
-        const usersJSON = window.localStorage.getItem("Users");
-        const users = JSON.parse(usersJSON);
-        
-        posts.forEach(async post => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === post.user) {
-                    userData = user;
-                }
-            });
-            post.user = userData;
-        });
-    };
 }
 
 async function postPostMock(reqBody) {
@@ -74,14 +45,11 @@ async function postPostMock(reqBody) {
 
     const { content, forumId } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== content.user) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(content.user);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
-    const forumsJSON = window.localStorage.getItem("Forums");
-    const forums = JSON.parse(forumsJSON);
+    const posts = getCollection("Posts");
+    const forums = getCollection("Forums");
 
     const _id = uid();
     const newPost = {
@@ -111,12 +79,10 @@ async function putPostMock(reqBody) {
 
     const { update } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== update.user) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(update.user);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const posts = getCollection("Posts");
 
     let postFound = false;
     let index = 0;
@@ -137,20 +103,6 @@ async function putPostMock(reqBody) {
 
     return { message: "Update was successful", success: true, post: update};
 
-    async function populateUsers(posts) {
-        const usersJSON = window.localStorage.getItem("Users");
-        const users = JSON.parse(usersJSON);
-        
-        posts.forEach(async post => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === post.user) {
-                    userData = user;
-                }
-            });
-            post.user = userData;
-        });
-    };
 }
 
 async function deletePostMock(reqBody) {
@@ -158,10 +110,7 @@ async function deletePostMock(reqBody) {
 
     const { id } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const posts = getCollection("Posts");
 
     let postFound = false;
     let userId = null;
@@ -176,13 +125,14 @@ async function deletePostMock(reqBody) {
     }
 
     if (!postFound) return { message: "Post does not exist", success: false };
-    if (token !== userId) return { message: "Request is forbidden", success: false };
+
+    const tokenIsValid = validateToken(userId);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    const forumsJSON = window.localStorage.getItem("Forums");
-    const forums = JSON.parse(forumsJSON);
+    const forums = getCollection("Forums");
 
     for (let i = 0; i < forums.length; i++) {
         for (let j = 0; j < forums[i].posts.length; j++) {
@@ -202,12 +152,10 @@ async function putPostLikeMock(reqBody) {
 
     const { id, userId } = reqBody;
 
-    const tokenJSON = window.localStorage.getItem("token");
-    const token = JSON.parse(tokenJSON);
-    if (token !== userId) return { message: "Request is forbidden", success: false };
+    const tokenIsValid = validateToken(userId);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const posts = getCollection("Posts");
 
     let postFound = false;
     let index = 0;
@@ -229,20 +177,6 @@ async function putPostLikeMock(reqBody) {
     const post = posts[index];
 
     await populateUsers([post]);
-    async function populateUsers(posts) {
-        const usersJSON = window.localStorage.getItem("Users");
-        const users = JSON.parse(usersJSON);
-        
-        posts.forEach(async post => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === post.user) {
-                    userData = user;
-                }
-            });
-            post.user = userData;
-        });
-    };
 
     return { message: "Update was successful", post, success: true };
 }
@@ -254,4 +188,19 @@ export {
     putPostMock,
     deletePostMock,
     putPostLikeMock
+};
+
+// UTILS
+async function populateUsers(posts) {
+    const users = getCollection("Users");
+    
+    posts.forEach(async post => {
+        let userData = null;
+        users.forEach(user => {
+            if (user._id === post.user) {
+                userData = user;
+            }
+        });
+        post.user = userData;
+    });
 };

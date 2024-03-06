@@ -1,11 +1,14 @@
+import delay from "./__utils__/delay";
+import getCollection from "./__utils__/getCollection";
+import uid from "./__utils__/uniqueId";
+import validateToken from "./__utils__/validateToken";
 
 const ms = 0;
 
 async function getSessionMock(token) {
     await delay(ms);
 
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     const payload = {
         authData: { user: null },
@@ -29,8 +32,7 @@ async function postLoginMock(credentials) {
 
     const { username, password } = credentials;
     
-    const usersJSON = window.localStorage.getItem("Users");
-    const users = JSON.parse(usersJSON);
+    const users = getCollection("Users");
 
     const payload = {
         success: false,
@@ -54,8 +56,3 @@ export {
     getSessionMock,
     postLoginMock
 };
-
-// UTILS
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}

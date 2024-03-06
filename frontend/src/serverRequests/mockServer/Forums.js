@@ -1,4 +1,5 @@
 import delay from "./__utils__/delay";
+import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
@@ -9,8 +10,7 @@ async function getForumMock(reqBody) {
 
     const { id } = reqBody;
 
-    const forumsJSON = window.localStorage.getItem("Forums");
-    const forums = JSON.parse(forumsJSON);
+    const forums = getCollection("Forums");
 
     let returnForum = null;
     forums.forEach(forum => {

@@ -1,4 +1,5 @@
 import delay from "./__utils__/delay";
+import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
@@ -7,16 +8,14 @@ const ms = 0;
 async function getComments(reqBody) {
     await delay(ms);
 
-    const commentsJSON = window.localStorage.getItem("Comments");
-    const comments = JSON.parse(commentsJSON);
+    const comments = getCollection("Comments");
 
     await populateUsers(comments);
 
     return { message: "Request successful", comments, success: true };
 
     async function populateUsers(comments) {
-        const usersJSON = window.localStorage.getItem("Users");
-        const users = JSON.parse(usersJSON);
+        const users = getCollection("Users");
     
         comments.forEach(async comment => {
             let userData = null;
@@ -36,10 +35,11 @@ async function postComment(reqBody) {
 
     const { postId, comment } = reqBody;
 
-    const commentsJSON = window.localStorage.getItem("Comments");
-    const comments = JSON.parse(commentsJSON);
-    const postsJSON = window.localStorage.getItem("Posts");
-    const posts = JSON.parse(postsJSON);
+    const tokenIsValid = validateToken(comment.user);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+
+    const comments = getCollection("Comments");
+    const posts = getCollection("Posts");
 
     const newComment = {
         _id: uid(),
