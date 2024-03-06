@@ -1,3 +1,6 @@
+import delay from "./__utils__/delay";
+import uid from "./__utils__/uniqueId";
+import validateToken from "./__utils__/validateToken";
 
 const ms = 1000;
 
@@ -202,15 +205,3 @@ export {
     deleteUserMock,
     putUserFollowMock
 };
-
-// UTILS
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function uid() {
-    const uid = Date.now().toString(36) +
-        Math.random().toString(36).substring(2).padStart(12, 0);
-        
-    return uid;
-}

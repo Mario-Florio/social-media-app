@@ -1,3 +1,6 @@
+import delay from "./__utils__/delay";
+import uid from "./__utils__/uniqueId";
+import validateToken from "./__utils__/validateToken";
 
 const ms = 0;
 
@@ -26,8 +29,3 @@ async function getForumMock(reqBody) {
 export {
     getForumMock
 };
-
-// UTILS
-function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
