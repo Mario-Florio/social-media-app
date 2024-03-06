@@ -42,10 +42,17 @@ function NewPost({ forumId }) {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const res = await postPost({ content: { user: user._id, text: input.trim() }, forumId });
-        setPostIds([...postIds, res.post._id].reverse());
+        const res = await postPost({
+            content: {
+                user: user._id, text: input.trim()
+            },
+            forumId
+        });
 
-        setInput("");
+        if (res.success) {
+            setPostIds([...postIds, res.post._id].reverse());
+            setInput("");
+        }
     }
 
     return(
