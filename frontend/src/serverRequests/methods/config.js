@@ -40,8 +40,13 @@ import {
 
 import { getComments, postComment } from "../mockServer/Comments";
 
-let mock = true;
+let mock = false;
 let resetCollections = false;
+
+const notSetup = () => {
+    console.log("Not setup");
+    return { message: "", comments: [], success: false };
+}
 
 resetCollections && populateCollections();
 
@@ -56,7 +61,7 @@ const requests = {
         postUser: mock ? postUserMock : postUser,
         putUser: mock ? putUserMock : putUser,
         deleteUser: mock ? deleteUserMock : deleteUser,
-        putUserFollow: mock ? putUserFollowMock : null
+        putUserFollow: mock ? putUserFollowMock : notSetup
     },
     forums: {
         getForum: mock ? getForumMock : getForum,
@@ -67,11 +72,11 @@ const requests = {
         postPost: mock ? postPostMock : postPost,
         putPost: mock ? putPostMock : putPost,
         deletePost: mock ? deletePostMock : deletePost,
-        putPostLike: mock ? putPostLikeMock : null
+        putPostLike: mock ? putPostLikeMock :notSetup
     },
     comments: {
-        getComments: mock ? getComments : null,
-        postComment: mock ? postComment : null
+        getComments: mock ? getComments : notSetup,
+        postComment: mock ? postComment : notSetup
     }
 }
 

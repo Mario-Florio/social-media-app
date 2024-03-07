@@ -19,13 +19,14 @@ describe("/users CREATE", () => {
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-        test("response body has success and message fields defined", async () => {
+        test("response body has success, message, and user fields defined", async () => {
             const response = await request(app).post("/api/users").send({
                 username: "username",
                 password: "password"
             });
             expect(response.body.success).toBeDefined();
             expect(response.body.message).toBeDefined();
+            expect(response.body.user).toBeDefined();
         });
 
         describe("username already exists", () => {

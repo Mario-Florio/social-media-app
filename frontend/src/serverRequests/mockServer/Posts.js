@@ -77,7 +77,7 @@ async function postPostMock(reqBody) {
 async function putPostMock(reqBody) {
     await delay(ms);
 
-    const { update, token } = reqBody;
+    const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
@@ -87,7 +87,7 @@ async function putPostMock(reqBody) {
     let postFound = false;
     let index = 0;
     for (const post of posts) {
-        if (post._id === update._id) {
+        if (post._id === id) {
             postFound = true;
             break;
         }
@@ -96,12 +96,12 @@ async function putPostMock(reqBody) {
 
     if (!postFound) return { message: "Post does not exist", success: false };
 
-    posts[index] = update;
+    posts[index].text = update.text;
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    await populateUsers([update]);
+    await populateUsers([posts[index]]);
 
-    return { message: "Update was successful", success: true, post: update};
+    return { message: "Update was successful", success: true, post: posts[index]};
 
 }
 

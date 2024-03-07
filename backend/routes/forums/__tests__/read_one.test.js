@@ -30,11 +30,13 @@ describe("/forums READ_ONE", () => {
 
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-        test("response body has accurate forum", async () => {
+        test("response body has accurate forum, and success and message fields defined", async () => {
             const response = await request(app).get(`/api/forums/${forum._id}`);
 
             expect(response.body.forum).toBeDefined();
             expect(response.body.forum._id.toString()).toEqual(forum._id.toString());
+            expect(response.body.success).toBeDefined();
+            expect(response.body.message).toBeDefined();
         });
         test("should return null if forum is not found", async () => {
             const response = await request(app).get("/api/forums/:ksjdnvksjv");

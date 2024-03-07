@@ -3,12 +3,12 @@ const { verifyToken } = require("../authenticate");
 
 async function read_all(req, res, next) {
     const posts = await posts_dbMethods.getPosts();
-    res.json({ posts });
+    res.json({ message: "Request successful", posts, success: true });
 }
 
 async function read_one(req, res, next) {
     const post = await posts_dbMethods.getPostById(req.params.id);
-    res.json({ post });
+    res.json({ message: "Request successful", post, success: true });
 }
 
 async function create(req, res, next) {
@@ -19,13 +19,13 @@ async function create(req, res, next) {
 
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const userId = user;
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to create posts for this user" });
+        return res.status(404).json({ message: "You are not authorized to create posts for this user", success });
     }
     
     const sanitizedInput = sanitizeInput(req.body.post);
@@ -51,14 +51,14 @@ async function update(req, res, next) {
 
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const post = await posts_dbMethods.getPostById(req.params.id);
     const userId = post.user._id.toString();
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to delete this post" });
+        return res.status(404).json({ message: "You are not authorized to delete this post", success });
     }
 
     const sanitizedInput = sanitizeInput(req.body);
@@ -79,14 +79,14 @@ async function update(req, res, next) {
 async function remove(req, res, next) {
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const post = await posts_dbMethods.getPostById(req.params.id);
     const userId = post.user._id.toString();
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to delete this post" });
+        return res.status(404).json({ message: "You are not authorized to delete this post", success });
     }
 
     const responseBody = await posts_dbMethods.deletePost(req.params.id);

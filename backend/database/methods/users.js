@@ -16,13 +16,13 @@ async function registerUser(credentials) {
 
         const forum = await new Forum().save();
         const profile = await new Profile({ forum }).save();
-        await new User({
+        const user = await new User({
             username,
             password: hashedPassword,
             profile
         }).save();
 
-        const res = { message: "Success: user has been created", success: true };
+        const res = { message: "Success: user has been created", user, success: true };
         return res;
     }
 }
@@ -31,16 +31,16 @@ async function authorizeUser(credentials) {
     const { username, password } = credentials;
     const user = await User.findOne({ username }).populate("profile").exec();
     if (!user) {
-        const res = { status: 400, message: "User does not exist", user: false };
+        const res = { status: 400, message: "User does not exist", user: false, success: false };
         return res;
     } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             const token = jwt.sign({ user }, process.env.SECRET, {expiresIn: "1h"});
-            const res = { message: "Login was successful", user, token };
+            const res = { message: "Login was successful", user, token, success: true };
             return res;
         } else {
-            const res = { status: 404, message: "Password does not match", user: false };
+            const res = { status: 404, message: "Password does not match", user: false, success: false };
             return res;
         }
     }
@@ -63,7 +63,7 @@ async function getUserById(id) {
 async function updateUser(id, update) {
     const userExists = await User.findById(id).exec();
     if (!userExists) {
-        const res = { status: 400, message: "User does not exist", user: null };
+        const res = { status: 400, message: "User does not exist", user: null, success: false };
         return res;
     }
 
@@ -76,14 +76,14 @@ async function updateUser(id, update) {
     await User.findByIdAndUpdate(id, update).exec();
     const user = await User.findById(id).populate("profile").exec();
 
-    const res = { user, message: "Update was successful" };
+    const res = { user, message: "Update was successful", success: true };
     return res;
 }
 
 async function deleteUser(id) {
     const userExists = await User.findById(id).exec();
     if (!userExists) {
-        const res = { status: 400, message: "User does not exist", user: null };
+        const res = { status: 400, message: "User does not exist", user: null, success: false };
         return res;
     }
 
@@ -97,7 +97,12 @@ async function updateProfile(id, update) {
     await Profile.findByIdAndUpdate(id, update).exec();
     const profile = await Profile.findById(id).exec();
 
-    const res = { profile, message: "Update was successful" };
+    if (!profile) {
+        const res = { status: 400, message: "Profile does not exist", profile, success: false };
+        return res;
+    }
+
+    const res = { profile, message: "Update was successful", success: true };
     return res;
 }
 

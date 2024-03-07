@@ -1,31 +1,32 @@
 import axios from "axios";
 
-async function getPosts() {
+async function getPosts(reqBody) {
     try {
         const response = await axios.get("/posts");
-        return response.data.posts;
+        return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function getPost(id) {
+async function getPost(reqBody) {
     try {
+        const { id } = reqBody;
         const response = await axios.get(`/posts/${id}`);
-        return response.data.post;
+        return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function postPost(content, forumId) {
+async function postPost(reqBody) {
     try {
+        const { content, forumId, token } = reqBody;
         const body = {
             post: content,
             forum: forumId
         }
 
-        const token = JSON.parse(window.localStorage.getItem("token"));
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -39,9 +40,9 @@ async function postPost(content, forumId) {
     }
 }
 
-async function putPost(id, update) {
+async function putPost(reqBody) {
     try {
-        const token = JSON.parse(window.localStorage.getItem("token"));
+        const { id, update, token } = reqBody;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -49,15 +50,15 @@ async function putPost(id, update) {
         }
 
         const response = await axios.put(`/posts/${id}`, update, config);
-        return response.data.post;
+        return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function deletePost(id) {
+async function deletePost(reqBody) {
     try {
-        const token = JSON.parse(window.localStorage.getItem("token"));
+        const { id, token } = reqBody;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`

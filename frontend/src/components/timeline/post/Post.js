@@ -235,16 +235,11 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const updatedPost = {
-            _id: post._id,
-            user: post.user._id,
+        const updatedPostFields = {
             text: input,
-            likes: post.likes,
-            comments: post.comments,
-            createdAt: post.createdAt
         }
 
-        const res = await putPost({ update: updatedPost, token });
+        const res = await putPost({ id: post._id, update: updatedPostFields, token });
 
         if (res.success) {
             setInput(post.text);

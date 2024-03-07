@@ -37,7 +37,7 @@ describe("/users UPDATE", () => {
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-        test("response body should contain updated user and message", async () => {
+        test("response body should contain updated user, message, and success fields", async () => {
             const bodyData = [
                 { username: "updated-username1", password: "password1" },
                 { username: "updated-username2", password: "password2" },
@@ -52,6 +52,7 @@ describe("/users UPDATE", () => {
 
                 expect(response.body.user.username).toBe(data.username);
                 expect(response.body.message).toBeDefined();
+                expect(response.body.success).toBeDefined();
             }
         });
     });

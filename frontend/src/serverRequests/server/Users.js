@@ -1,36 +1,37 @@
 import axios from "axios";
 
-async function getUsers() {
+async function getUsers(reqBody) {
     try {
         const response = await axios.get("/users");
-        return response.data.users;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function getUser(id) {
-    try {
-        const response = await axios.get(`/users/${id}`);
-        return response.data.user;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-async function postUser(credentials) {
-    try {
-        const { username, password } = credentials;
-        const response = await axios.post("/users", { username, password });
         return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function putUser(id, update) {
+async function getUser(reqBody) {
     try {
-        const token = window.localStorage.getItem("token");
+        const { id } = reqBody;
+        const response = await axios.get(`/users/${id}`);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function postUser(reqBody) {
+    try {
+        const { credentials } = reqBody;
+        const response = await axios.post("/users", { credentials });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function putUser(reqBody) {
+    try {
+        const { id, update, token } = reqBody;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -38,15 +39,15 @@ async function putUser(id, update) {
         }
 
         const response = await axios.put(`/users/${id}`, update, config);
-        return response.data.user;
+        return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-async function deleteUser(id) {
+async function deleteUser(reqBody) {
     try {
-        const token = window.localStorage.getItem("token");
+        const { id, token } = reqBody;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`

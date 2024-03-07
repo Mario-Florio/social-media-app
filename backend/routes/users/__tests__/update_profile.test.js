@@ -49,6 +49,7 @@ describe("/users UPDATE_PROFILE", () => {
                 expect(response.body.profile.bio).toBe(data.bio);
                 expect(response.body.profile.picture).toBe(data.picture);
                 expect(response.body.message).toBeDefined();
+                expect(response.body.success).toBeDefined();
             }
         });
     });

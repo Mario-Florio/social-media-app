@@ -44,7 +44,7 @@ async function postUserMock(reqBody) {
 
     for (const user of users) {
         if (user.username === username) {
-            throw new Error("404: User already exists");
+            return { message: "User already exists", success: true };
         }
     }
 
@@ -80,7 +80,7 @@ async function putUserMock(reqBody) {
 
     const { id, update, token } = reqBody;
 
-    const tokenIsValid = validateToken(id);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
@@ -110,7 +110,7 @@ async function deleteUserMock(reqBody) {
 
     const { id, token } = reqBody;
 
-    const tokenIsValid = validateToken(id);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });

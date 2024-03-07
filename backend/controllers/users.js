@@ -3,21 +3,21 @@ const { verifyToken } = require("../authenticate");
 
 async function read_all(req, res, next) {
     const users = await users_dbMethods.getUsers();
-    res.json({ users });
+    res.json({ message: "Request successful", users, success: true });
 } 
 
 async function read_one(req, res, next) {
     const user = await users_dbMethods.getUserById(req.params.id);
-    res.json({ user });
+    res.json({ message: "Request successful", user, success: true });
 }
 
 async function create(req, res, next) {
-    const { username, password } = req.body;
+    const { username, password } = req.body.credentials;
     if (!username || !password) {
         return res.sendStatus(400);
     }
 
-    const sanitizedInput = sanitizeInput(req.body);
+    const sanitizedInput = sanitizeInput(req.body.credentials);
     const isValid = validateInput(sanitizedInput);
     if (!isValid) {
         return res.status(422).json({ message: "Invalid input", success: false });
@@ -35,13 +35,13 @@ async function create(req, res, next) {
 async function update(req, res, next) {
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const userId = req.params.id;
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to update this user" });
+        return res.status(404).json({ message: "You are not authorized to update this user", success });
     }
 
     const sanitizedInput = sanitizeInput(req.body);
@@ -53,7 +53,7 @@ async function update(req, res, next) {
     const responseBody = await users_dbMethods.updateUser(userId, sanitizedInput);
     if (!responseBody.user) {
         const { status, message, user } = responseBody;
-        return res.status(status).json({ message, user });
+        return res.status(status).json({ message, user, success });
     } else {
         return res.json(responseBody);
     }
@@ -62,13 +62,13 @@ async function update(req, res, next) {
 async function remove(req, res, next) {
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const userId = req.params.id;
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to delete this user" });
+        return res.status(404).json({ message: "You are not authorized to delete this user", success });
     }
 
     const responseBody = await users_dbMethods.deleteUser(req.params.id);
@@ -83,13 +83,13 @@ async function remove(req, res, next) {
 async function update_profile(req, res, next) {
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
-        const { status, message } = verifyTokenResBody;
-        return res.status(status).json({ message });
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
     }
     const userId = req.params.id;
-    const { authData } = verifyTokenResBody;
+    const { authData, success } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to update this user" });
+        return res.status(404).json({ message: "You are not authorized to update this user", success });
     }
 
     const sanitizedInput = sanitizeInput(req.body);
@@ -98,8 +98,8 @@ async function update_profile(req, res, next) {
     const { profile } = user;
     const responseBody = await users_dbMethods.updateProfile(profile._id, sanitizedInput);
     if (!responseBody.profile) {
-        const { status, message, profile } = responseBody;
-        return res.status(status).json({ message, profile });
+        const { status, message, profile, success } = responseBody;
+        return res.status(status).json({ message, profile, success });
     } else {
         return res.json(responseBody);
     }

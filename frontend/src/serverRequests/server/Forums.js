@@ -1,8 +1,9 @@
 import axios from "axios";
 
-async function getForum(id) {
+async function getForum(reqBody) {
+    const { id } = reqBody;
     const response = await axios.get(`/forums/${id}`);
-    return response.data.forum;
+    return response.data;
 }
 
 export {
