@@ -40,7 +40,7 @@ import {
 
 import { getComments, postComment } from "../mockServer/Comments";
 
-let mock = false;
+let mock = true;
 let resetCollections = false;
 
 const notSetup = () => {

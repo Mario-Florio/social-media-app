@@ -68,12 +68,17 @@ function Post({ postId }) {
                             <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
                         </Link> :
                         <div className="loadingBGColor profilePic_wrapper"></div> }
-                    <div className="title">
-                        <Link to={ post.user.profile._id && `/profile/${post.user.profile._id}` }>
-                            <h3>{post.user.username}</h3>
-                        </Link>
-                        <span>{ post.createdAt && new Date(post.createdAt).toLocaleString() }</span>
-                    </div>
+                    { !isLoading ? 
+                        <div className="title">
+                            <Link to={ post.user.profile._id && `/profile/${post.user.profile._id}` }>
+                                <h3>{post.user.username}</h3>
+                            </Link>
+                            <span>{ post.createdAt && new Date(post.createdAt).toLocaleString() }</span>
+                        </div> :
+                        <div className="title">
+                            <div className="loadingBGColor" style={{ height: "1rem", width: "150px", marginBottom: ".2rem", borderRadius: "5px" }}></div>
+                            <div className="loadingBGColor" style={{ height: "1rem", width: "100px", borderRadius: "5px" }}></div>
+                        </div> }
                 </div>
                 <div
                     className="options"
@@ -136,12 +141,15 @@ function Post({ postId }) {
 
 function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
     const [likes, setLikes] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        setIsLoading(true);
         (async () => {
             try {
                 const likes = await populateUsers(likeIds);
                 setLikes(likes);
+                setIsLoading(false);
             } catch (err) {
                 console.log(err);
             }
@@ -155,19 +163,31 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
             setSectionIsActive={setLikesSectionIsActive}
         >
             <ul>
-                { likes.map(like =>
-                    <li key={like._id}>
-                        <Link 
-                            to={`/profile/${like.profile._id}`}
-                            onClick={() => setLikesSectionIsActive(false)}
-                        >
+                { isLoading ?
+                    likeIds.map(likeId => 
+                        <li key={likeId}>
                             <div className="profile_wrapper">
-                                <img src={like.profile.picture} alt="users profile pic"/>
-                                <h3>{like.username}</h3>
+                                <div className="loadingBGColor profile-pic_wrapper"></div>
+                                <div className="loadingBGColor" style={{ height: "1rem", width: "40%", borderRadius: "5px" }}></div>
                             </div>
-                        </Link>
-                    </li>
-                ) }
+                        </li>
+                    )
+                        :
+                    likes.map(like =>
+                        <li key={like._id}>
+                            <Link 
+                                to={`/profile/${like.profile._id}`}
+                                onClick={() => setLikesSectionIsActive(false)}
+                            >
+                                <div className="profile_wrapper">
+                                    <div className="profile-pic_wrapper">
+                                        <img src={like.profile.picture} alt="users profile pic"/>
+                                    </div>
+                                    <h3>{like.username}</h3>
+                                </div>
+                            </Link>
+                        </li>
+                    ) }
             </ul>
         </SectionWrapper>
     );

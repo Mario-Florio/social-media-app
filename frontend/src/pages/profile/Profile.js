@@ -60,7 +60,7 @@ function Profile() {
 
 export default Profile;
 
-function ProfileBottom({ profileUser, setProfileUser }) {
+function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
     const { user } = useAuth();
 
     return(
