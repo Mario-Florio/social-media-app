@@ -34,11 +34,12 @@ async function populateProfileUser(profileId) {
 
 // Topbar
 async function searchUsers(input) {
+    if (input.length === 0) return [];
     const { users } = await getUsers();
 
     const results = [];
     users.forEach(user => {
-        if (user.username.toLowerCase().includes(input.toLowerCase())) {
+        if (user.username.toLowerCase().includes(input.toLowerCase().trim())) {
             results.push(user);
         }
     });
