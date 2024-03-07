@@ -33,7 +33,7 @@ export default Timeline;
 function NewPost({ forumId }) {
     const [input, setInput] = useState("");
     const { postIds, setPostIds } = useTimeline();
-    const { user } = useAuth();
+    const { user, token } = useAuth();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -44,9 +44,10 @@ function NewPost({ forumId }) {
 
         const res = await postPost({
             content: {
-                user: user._id, text: input.trim()
+                user: user._id, text: input.trim(),
             },
-            forumId
+            forumId,
+            token
         });
 
         if (res.success) {

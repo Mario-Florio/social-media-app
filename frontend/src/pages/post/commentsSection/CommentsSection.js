@@ -16,7 +16,7 @@ function CommentsSection({ postId }) {
     const [comments, setComments] = useState([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { user } = useAuth();
+    const { user, token } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);
@@ -39,7 +39,7 @@ function CommentsSection({ postId }) {
         e.preventDefault();
 
         try {
-            const res = await postComment({ postId, comment: { user: user._id, text: input } });
+            const res = await postComment({ postId, comment: { user: user._id, text: input }, token });
 
             if (res.success) {
                 const populatedComment = await populateComments([res.comment._id]);

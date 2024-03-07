@@ -21,7 +21,7 @@ function Post({ postId }) {
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
-    const { user } = useAuth();
+    const { user, token } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);
@@ -50,7 +50,7 @@ function Post({ postId }) {
 
     async function likePost() {
         try {
-            const res = await putPostLike({ id: post._id, userId: user._id});
+            const res = await putPostLike({ id: post._id, userId: user._id, token });
             if (res.success) {
                 setPost(res.post);
             }
@@ -128,7 +128,6 @@ function Post({ postId }) {
                 post={post}
                 editSectionIsActive={editSectionIsActive}
                 setEditSectionIsActive={setEditSectionIsActive}
-                // setParentState={setParentState}
                 setPost={setPost}
             /> }
         </article>
@@ -176,11 +175,11 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
 
 function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive, setEditSectionIsActive }) {
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
-    const { user } = useAuth();
+    const { user, token } = useAuth();
     const { postIds, setPostIds } = useTimeline();
 
     async function deletePost() {
-        const res = await requests.posts.deletePost({ id: post._id });
+        const res = await requests.posts.deletePost({ id: post._id, token });
 
         if (res.success) {
             const newPostIds = postIds.filter(postId => postId !== post._id);
@@ -227,6 +226,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
 
 function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPost }) {
     const [input, setInput] = useState(post.text);
+    const { token } = useAuth();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -244,7 +244,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
             createdAt: post.createdAt
         }
 
-        const res = await putPost({ update: updatedPost });
+        const res = await putPost({ update: updatedPost, token });
 
         if (res.success) {
             setInput(post.text);

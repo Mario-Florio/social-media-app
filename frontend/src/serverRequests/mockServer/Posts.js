@@ -43,9 +43,9 @@ async function getPostMock(reqBody) {
 async function postPostMock(reqBody) {
     await delay(ms);
 
-    const { content, forumId } = reqBody;
+    const { content, forumId, token } = reqBody;
 
-    const tokenIsValid = validateToken(content.user);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const posts = getCollection("Posts");
@@ -77,9 +77,9 @@ async function postPostMock(reqBody) {
 async function putPostMock(reqBody) {
     await delay(ms);
 
-    const { update } = reqBody;
+    const { update, token } = reqBody;
 
-    const tokenIsValid = validateToken(update.user);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const posts = getCollection("Posts");
@@ -108,26 +108,24 @@ async function putPostMock(reqBody) {
 async function deletePostMock(reqBody) {
     await delay(ms);
 
-    const { id } = reqBody;
+    const { id, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const posts = getCollection("Posts");
 
     let postFound = false;
-    let userId = null;
     let index = 0;
     for (const post of posts) {
         if (post._id === id) {
             postFound = true;
-            userId = post.user;
             break;
         }
         index++;
     }
 
     if (!postFound) return { message: "Post does not exist", success: false };
-
-    const tokenIsValid = validateToken(userId);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
@@ -150,9 +148,9 @@ async function deletePostMock(reqBody) {
 async function putPostLikeMock(reqBody) {
     await delay(ms);
 
-    const { id, userId } = reqBody;
+    const { id, userId, token } = reqBody;
 
-    const tokenIsValid = validateToken(userId);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const posts = getCollection("Posts");

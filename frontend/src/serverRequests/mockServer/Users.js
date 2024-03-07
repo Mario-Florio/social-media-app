@@ -78,7 +78,7 @@ async function postUserMock(reqBody) {
 async function putUserMock(reqBody) {
     await delay(ms);
 
-    const { id, update } = reqBody;
+    const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(id);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
@@ -108,7 +108,7 @@ async function putUserMock(reqBody) {
 async function deleteUserMock(reqBody) {
     await delay(ms);
 
-    const { id } = reqBody;
+    const { id, token } = reqBody;
 
     const tokenIsValid = validateToken(id);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
@@ -136,9 +136,9 @@ async function deleteUserMock(reqBody) {
 async function putUserFollowMock(reqBody) {
     await delay(ms);
 
-    const { userId, profileUserId, follow } = reqBody;
+    const { userId, profileUserId, follow, token } = reqBody;
 
-    const tokenIsValid = validateToken(userId);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });

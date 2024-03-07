@@ -33,9 +33,9 @@ async function getComments(reqBody) {
 async function postComment(reqBody) {
     await delay(ms);
 
-    const { postId, comment } = reqBody;
+    const { postId, comment, token } = reqBody;
 
-    const tokenIsValid = validateToken(comment.user);
+    const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const comments = getCollection("Comments");
