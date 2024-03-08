@@ -80,14 +80,7 @@ function Post({ postId }) {
                             <div className="loadingBGColor" style={{ height: "1rem", width: "100px", borderRadius: "5px" }}></div>
                         </div> }
                 </div>
-                <div
-                    className="options"
-                    onClick={() => setOptionsSectionIsActive(true)}
-                >
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
+                <OptionsButton setOptionsSectionIsActive={setOptionsSectionIsActive}/>
             </header>
             <p>{post.text}</p>
             <footer>
@@ -136,6 +129,19 @@ function Post({ postId }) {
                 setPost={setPost}
             /> }
         </article>
+    );
+}
+
+function OptionsButton({ setOptionsSectionIsActive }) {
+    return(
+        <div
+            className="options"
+            onClick={() => setOptionsSectionIsActive(true)}
+        >
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     );
 }
 
