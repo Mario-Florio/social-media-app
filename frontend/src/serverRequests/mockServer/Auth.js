@@ -11,14 +11,14 @@ async function getSessionMock(token) {
     const users = getCollection("Users");
 
     const payload = {
-        authData: { user: null },
+        user: null ,
         token: false,
         success: false
     }
 
     for (const user of users) {
         if (token === user._id) {
-            payload.authData.user = user;
+            payload.user = user;
             payload.token = token;
             payload.success = true;
         }

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
             token ? await getSession(token)
                 .then(async data => {
                     if (data.success) {
-                        setUser(data.authData.user);
+                        setUser(data.user);
                     } else {
                         setUser(null);
                         setToken(null);
