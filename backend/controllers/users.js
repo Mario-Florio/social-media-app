@@ -105,6 +105,25 @@ async function update_profile(req, res, next) {
     }
 }
 
+async function follow_profile(req, res, next) {
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+
+    const { userId, follow } = req.body;
+    const peerId = req.params.id;
+
+    const responseBody = await users_dbMethods.followProfile(userId, peerId, follow);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    } else {
+        res.json(responseBody);
+    }
+}
+
 // UTILS
 function sanitizeInput(input) {
     const sanitizedInput = {};
@@ -128,5 +147,6 @@ module.exports = {
     create,
     update,
     remove,
-    update_profile
+    update_profile,
+    follow_profile
 }

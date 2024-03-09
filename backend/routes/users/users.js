@@ -16,4 +16,6 @@ router.delete("/:id", getToken, users_controller.remove);
 
 router.put("/:id/profile", getToken, users_controller.update_profile);
 
+router.put("/:id/profile/follow", getToken, users_controller.follow_profile);
+
 module.exports = router;

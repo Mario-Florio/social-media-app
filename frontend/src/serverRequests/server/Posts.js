@@ -6,6 +6,7 @@ async function getPosts(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -16,6 +17,7 @@ async function getPost(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -37,6 +39,7 @@ async function postPost(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -53,6 +56,7 @@ async function putPost(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -69,6 +73,7 @@ async function deletePost(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 

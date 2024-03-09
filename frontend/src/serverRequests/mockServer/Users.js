@@ -190,8 +190,9 @@ async function putUserFollowMock(reqBody) {
     return {
         message: "Update was successful",
         success: true,
-        profileUser: users[profileUserIndex],
-        user: users[userIndex]
+        peerUser: users[profileUserIndex],
+        clientUser: users[userIndex],
+        token
     };
 }
 

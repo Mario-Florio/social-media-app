@@ -106,6 +106,41 @@ async function updateProfile(id, update) {
     return res;
 }
 
+async function followProfile(userId, peerUserId, follow) {
+    const userExists = await User.findById(userId).populate("profile").exec();
+    const peerUserExists = await User.findById(peerUserId).populate("profile").exec();
+
+    if (!userExists || !peerUserExists) {
+        return { status: 400, message: "User does not exist", success: false };
+    }
+
+    if (follow) {
+        if (!userExists.profile.following.includes(peerUserExists._id) &&
+            !peerUserExists.profile.followers.includes(userExists._id)) {
+            await Profile.findByIdAndUpdate(userExists.profile._id, { $push: { following: peerUserExists._id } }).exec();
+            await Profile.findByIdAndUpdate(peerUserExists.profile._id, { $push: { followers: userExists._id } }).exec();
+        } else {
+            return { status: 404, message: "Already following user", success: false };
+        }
+    }
+
+    if (!follow) {
+        if (userExists.profile.following.includes(peerUserExists._id) &&
+            peerUserExists.profile.followers.includes(userExists._id)) {
+            await Profile.findByIdAndUpdate(userExists.profile._id, { $pull: { following: peerUserExists._id } }).exec();
+            await Profile.findByIdAndUpdate(peerUserExists.profile._id, { $pull: { followers: userExists._id } }).exec();
+        } else {
+            return { status: 404, message: "Already not following user", success: false };
+        }
+    }
+
+    const clientUser = await User.findById(userExists._id).populate("profile").exec();
+    const peerUser = await User.findById(peerUserExists._id).populate("profile").exec();
+    const token = jwt.sign({ user: clientUser }, process.env.SECRET, {expiresIn: "1h"});
+
+    return { message: "Update was successful", clientUser, peerUser, token, success: true };
+}
+
 module.exports = {
     registerUser,
     authorizeUser,
@@ -113,5 +148,6 @@ module.exports = {
     getUserById,
     updateUser,
     deleteUser,
-    updateProfile
+    updateProfile,
+    followProfile
 }

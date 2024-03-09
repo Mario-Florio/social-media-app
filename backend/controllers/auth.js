@@ -4,7 +4,11 @@ const { verifyToken } = require("../authenticate");
 async function read_authData(req, res, next) {
     const responseBody = verifyToken(req.token);
     const { message, authData, success } = responseBody;
-    res.json({ message, user: authData.user, success, token: req.token });
+    if (!success) {
+        return res.json({ message, success });
+    } else {
+        return res.json({ message, user: authData.user, success, token: req.token });
+    }
 }
 
 async function login(req, res, next) {

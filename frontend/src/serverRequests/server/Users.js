@@ -6,6 +6,7 @@ async function getUsers(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -16,6 +17,7 @@ async function getUser(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -26,6 +28,7 @@ async function postUser(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -42,6 +45,7 @@ async function putUser(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -58,6 +62,29 @@ async function deleteUser(reqBody) {
         return response.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
+    }
+}
+
+async function putUserFollow(reqBody) {
+    try {
+        const { profileUserId, userId, follow, token } = reqBody;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const body = {
+            userId,
+            follow
+        }
+
+        const response = await axios.put(`/users/${profileUserId}/profile/follow`, body, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
     }
 }
 
@@ -66,5 +93,6 @@ export {
     getUser,
     postUser,
     putUser,
-    deleteUser
+    deleteUser,
+    putUserFollow
 };

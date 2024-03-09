@@ -11,6 +11,7 @@ async function getSession(token) {
         return session.data;
     } catch (err) {
         console.log(err);
+        return err.response.data;
     }
 }
 
@@ -25,6 +26,7 @@ async function postLogin(credentials) {
         return data;
     } catch(err) {
         console.log(err);
+        return err.response.data;
     }
 }
 

@@ -40,17 +40,12 @@ export const AuthProvider = ({ children }) => {
         navigate("/login", { replace: true });
     }
 
-    const updateUser = async () => {
-        await getSession(token)
-            .then(async data => {
-                if (data.success) {
-                    setUser(data.authData.user);
-                } else {
-                    setUser(null);
-                    setToken(null);
-                }
-            })
-            .catch(err => console.log(err));
+    const updateUser = (user) => {
+        setUser(user);
+    }
+
+    const updateToken = (token) => {
+        setToken(token);
     }
 
     const value = useMemo(() => ({
@@ -58,7 +53,8 @@ export const AuthProvider = ({ children }) => {
         token,
         login,
         logout,
-        updateUser
+        updateUser,
+        updateToken
     }),
     [user, token]);
 

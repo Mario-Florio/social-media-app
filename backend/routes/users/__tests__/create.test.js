@@ -13,16 +13,20 @@ describe("/users CREATE", () => {
 
         test("should return 200 status code and json content type header", async () => {
             const response = await request(app).post("/api/users").send({
-                username: "username",
-                password: "password"
+                    credentials: {
+                    username: "username",
+                    password: "password"
+                }
             });
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
         test("response body has success, message, and user fields defined", async () => {
             const response = await request(app).post("/api/users").send({
-                username: "username",
-                password: "password"
+                    credentials: {
+                    username: "username",
+                    password: "password"
+                }
             });
             expect(response.body.success).toBeDefined();
             expect(response.body.message).toBeDefined();
@@ -35,16 +39,20 @@ describe("/users CREATE", () => {
 
             test("should return 404 status code and json content type header", async () => {
                 const response = await request(app).post("/api/users").send({
-                    username: "username1",
-                    password: "password"
+                        credentials: {
+                        username: "username1",
+                        password: "password"
+                    }
                 });
                 expect(response.statusCode).toBe(404);
                 expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
             });
             test("response body has success and message field defined", async () => {
                 const response = await request(app).post("/api/users").send({
-                    username: "username1",
-                    password: "password"
+                        credentials: {
+                        username: "username1",
+                        password: "password"
+                    }
                 });
                 expect(response.body.success).toBeDefined();
                 expect(response.body.message).toBeDefined();
@@ -55,9 +63,9 @@ describe("/users CREATE", () => {
     describe("missing username and/or password", () => {
         test("should respond with status code 400", async () => {
             const bodyData = [
-                { username: "username" },
-                { password: "password" },
-                {}
+                { credentials: { username: "username" } },
+                { credentials: { password: "password" } },
+                { credentials: {} }
             ];
 
             for (const data of bodyData) {

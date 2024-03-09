@@ -83,7 +83,7 @@ function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
 
 function FollowButton({ profileUser, setProfileUser }) {
     const [isFollowing, setIsFollowing] = useState(false);
-    const { user, updateUser, token } = useAuth();
+    const { user, updateUser, token, updateToken } = useAuth();
 
     useEffect(() => {
         if (user.profile.following.includes(profileUser._id)) {
@@ -102,9 +102,10 @@ function FollowButton({ profileUser, setProfileUser }) {
         });
 
         if (res.success) {
-            setProfileUser(res.profileUser);
+            setProfileUser(res.peerUser);
             setIsFollowing(!isFollowing);
-            await updateUser();
+            updateUser(res.clientUser);
+            updateToken(res.token);
         }
     }
 

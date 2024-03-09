@@ -8,7 +8,8 @@ import {
     getUser,
     postUser,
     putUser,
-    deleteUser
+    deleteUser,
+    putUserFollow
 } from "../server/Users";
 import {
     getUsersMock,
@@ -40,7 +41,7 @@ import {
 
 import { getComments, postComment } from "../mockServer/Comments";
 
-let mock = true;
+let mock = false;
 let resetCollections = false;
 
 const notSetup = () => {
@@ -61,7 +62,8 @@ const requests = {
         postUser: mock ? postUserMock : postUser,
         putUser: mock ? putUserMock : putUser,
         deleteUser: mock ? deleteUserMock : deleteUser,
-        putUserFollow: mock ? putUserFollowMock : notSetup
+        putProfile: mock ? notSetup : notSetup,
+        putUserFollow: mock ? putUserFollowMock : putUserFollow
     },
     forums: {
         getForum: mock ? getForumMock : getForum,
