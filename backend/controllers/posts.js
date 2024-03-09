@@ -98,6 +98,30 @@ async function remove(req, res, next) {
     }
 }
 
+async function like_post(req, res, next) {
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.sendStatus(400);
+    }
+
+    const id = req.params.id;
+    const responseBody = await posts_dbMethods.likePost(id, userId);
+
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    } else {
+        return res.json(responseBody);
+    }
+}
+
 // UTILS
 
 function sanitizeInput(input) {
@@ -121,5 +145,6 @@ module.exports = {
     read_one,
     create,
     update,
-    remove
+    remove,
+    like_post
 }

@@ -77,10 +77,31 @@ async function deletePost(reqBody) {
     }
 }
 
+async function putPostLike(reqBody) {
+    try {
+        const { id, userId, token } = reqBody;
+
+        const body = { userId }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.put(`/posts/${id}/like`, body, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
     getPosts,
     getPost,
     postPost,
     putPost,
-    deletePost
+    deletePost,
+    putPostLike
 };

@@ -1,5 +1,6 @@
 const Post = require("../../models/Post");
 const Forum = require("../../models/Forum");
+const User = require("../../models/User");
 
 async function createPost(data, forumId) {
     const post = await new Post(data).save();
@@ -63,10 +64,30 @@ async function deletePost(id) {
     return res;
 }
 
+async function likePost(id, userId) {
+    const postExists = await Post.findById(id).exec();
+
+    if (!postExists) {
+        return { status: 400, message: "Post does not exist", success: false };
+    }
+
+    if (postExists.likes.includes(userId)) {
+        await Post.findByIdAndUpdate(postExists._id, { $pull: { likes: userId } }).exec();
+    } else {
+        await Post.findByIdAndUpdate(postExists._id, { $push: { likes: userId } }).exec();
+    }
+
+    const post = await Post.findById(postExists._id)
+        .populate({ path: "user", populate: { path: "profile" } }).exec();
+
+    return { message: "Update successful", post, success: true };
+}
+
 module.exports = {
     createPost,
     getPosts,
     getPostById,
     updatePost,
-    deletePost
+    deletePost,
+    likePost
 }

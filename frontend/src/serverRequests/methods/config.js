@@ -28,7 +28,8 @@ import {
     getPost,
     postPost,
     putPost,
-    deletePost
+    deletePost,
+    putPostLike
 } from "../server/Posts";
 import {
     getPostsMock,
@@ -74,7 +75,7 @@ const requests = {
         postPost: mock ? postPostMock : postPost,
         putPost: mock ? putPostMock : putPost,
         deletePost: mock ? deletePostMock : deletePost,
-        putPostLike: mock ? putPostLikeMock :notSetup
+        putPostLike: mock ? putPostLikeMock : putPostLike
     },
     comments: {
         getComments: mock ? getComments : notSetup,

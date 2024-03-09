@@ -14,4 +14,6 @@ router.put("/:id", getToken, posts_controller.update);
 
 router.delete("/:id", getToken, posts_controller.remove);
 
+router.put("/:id/like", getToken, posts_controller.like_post);
+
 module.exports = router;
