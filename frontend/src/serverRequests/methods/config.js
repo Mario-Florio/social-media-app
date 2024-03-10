@@ -40,15 +40,11 @@ import {
     putPostLikeMock
 } from "../mockServer/Posts";
 
-import { getComments, postComment } from "../mockServer/Comments";
+import { getComments, postComment } from "../server/Comments";
+import { getCommentsMock, postCommentMock } from "../mockServer/Comments";
 
-let mock = false;
-let resetCollections = false;
-
-const notSetup = () => {
-    console.log("Not setup");
-    return { message: "", comments: [], success: false };
-}
+let mock = true;
+let resetCollections = true;
 
 resetCollections && populateCollections();
 
@@ -78,9 +74,16 @@ const requests = {
         putPostLike: mock ? putPostLikeMock : putPostLike
     },
     comments: {
-        getComments: mock ? getComments : notSetup,
-        postComment: mock ? postComment : notSetup
+        getComments: mock ? getCommentsMock : getComments,
+        postComment: mock ? postCommentMock : postComment
     }
+}
+
+// UTILS
+
+function notSetup() {
+    console.log("Not setup");
+    return { message: "", success: false };
 }
 
 export default requests;

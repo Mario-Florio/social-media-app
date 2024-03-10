@@ -5,7 +5,7 @@ import validateToken from "./__utils__/validateToken";
 
 const ms = 0;
 
-async function getComments(reqBody) {
+async function getCommentsMock(reqBody) {
     await delay(ms);
 
     const comments = getCollection("Comments");
@@ -30,7 +30,7 @@ async function getComments(reqBody) {
     }
 }
 
-async function postComment(reqBody) {
+async function postCommentMock(reqBody) {
     await delay(ms);
 
     const { postId, comment, token } = reqBody;
@@ -62,6 +62,6 @@ async function postComment(reqBody) {
 }
 
 export {
-    getComments,
-    postComment
+    getCommentsMock,
+    postCommentMock
 };

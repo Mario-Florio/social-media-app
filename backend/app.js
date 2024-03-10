@@ -8,6 +8,7 @@ const authRouter = require("./routes/auth/auth");
 const usersRouter = require("./routes/users/users");
 const forumsRouter = require("./routes/forums/forums");
 const postsRouter = require("./routes/posts/posts");
+const commentsRouter = require("./routes/comments/comments");
 
 const app = express();
 dotenv.config();
@@ -28,5 +29,7 @@ app.use("/api/users", usersRouter);
 app.use("/api/forums", forumsRouter);
 
 app.use("/api/posts", postsRouter);
+
+app.use("/api/comments", commentsRouter);
 
 module.exports = app;
