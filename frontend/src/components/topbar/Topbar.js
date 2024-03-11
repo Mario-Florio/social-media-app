@@ -7,8 +7,14 @@ import { useAuth } from "../../hooks/useAuth";
 
 import { searchUsers } from "../../serverRequests/methods/users";
 
-function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
-    const { user, logout } = useAuth();
+function Topbar({ sideMenuIsActive, setSideMenuIsActive, rightSideMenuIsActive, setRightSideMenuIsActive }) {
+    const { user } = useAuth();
+
+    function toggleRightSideMenu() {
+        sideMenuIsActive && setSideMenuIsActive(false);
+        setRightSideMenuIsActive(!rightSideMenuIsActive);
+    }
+
     return(
         <header className="topbar">
             <Link to="/">
@@ -17,6 +23,7 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
             <HamburgerMenu
                 sideMenuIsActive={sideMenuIsActive}
                 setSideMenuIsActive={setSideMenuIsActive}
+                setRightSideMenuIsActive={setRightSideMenuIsActive}
             />
             <SearchBar/>
             <nav>
@@ -29,25 +36,19 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive }) {
                     </li>
                 </ul>
             </nav>
-            <span
-                style={{
-                    color: "white",
-                    fontWeight: "600",
-                    cursor: "pointer"
-                }}
-                onClick={async () => await logout()}
-            >
-                Logout
-            </span>
+            <div className={ rightSideMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
+                <img onClick={toggleRightSideMenu} src={user.profile.picture} alt="Quick settings"/>
+            </div>
         </header>
     );
 }
 
 export default Topbar;
 
-function HamburgerMenu({ sideMenuIsActive, setSideMenuIsActive }) {
+function HamburgerMenu({ sideMenuIsActive, setSideMenuIsActive, setRightSideMenuIsActive }) {
 
     function handleClick() {
+        setRightSideMenuIsActive(false);
         setSideMenuIsActive(!sideMenuIsActive);
     }
 

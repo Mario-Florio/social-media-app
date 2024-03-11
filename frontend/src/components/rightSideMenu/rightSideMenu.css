@@ -1,0 +1,108 @@
+
+.right-sidemenu {
+    z-index: 1;
+    position: fixed;
+    top: var(--topbar-height);
+    bottom: 0;
+    right: -400px;
+    background-color: rgb(213, 213, 213);
+    padding: 1rem;
+    padding-bottom: 3.5rem;
+    min-height: 100%;
+    width: 400px;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    transition-duration: .2s;
+}
+
+.dark .right-sidemenu {
+    background-color: var(--secondary-dark-background-color);
+}
+
+.right-sidemenu.active {
+    right: 0;
+    transition-duration: .2s;
+}
+
+.right-sidemenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.right-sidemenu li {
+    margin-bottom: .5rem;
+}
+
+.right-sidemenu a {
+    text-decoration: none;
+    color: black;
+}
+
+.right-sidemenu p {
+    margin: 0;
+    padding: .5rem 1rem;
+    border-radius: 5px;
+}
+
+.dark .right-sidemenu p,
+.dark .right-sidemenu span {
+    color: var(--primary-dark-font-color);
+}
+
+.right-sidemenu p:hover {
+    background-color: rgb(174, 174, 174);
+}
+
+.dark .right-sidemenu p:hover {
+    background-color: var(--dark-hover-background-color);
+}
+
+.darkmode-button_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0 1rem;
+}
+
+.right-sidemenu .darkmode-button_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 30px;
+    width: 50px;
+    background-color: rgb(235, 238, 240);
+    border-radius: 100px;
+    transition-duration: .2s;
+}
+
+.right-sidemenu .darkmode-button_container.active {
+    background-color: darkorchid;
+    transition-duration: .2s;
+}
+
+.right-sidemenu .darkmode-button {
+    position: absolute;
+    left: 5px;
+    height: 20px;
+    width: 20px;
+    border: 0;
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px -1px rgb(83, 83, 83);
+    cursor: pointer;
+    transition-duration: .2s;
+}
+
+.right-sidemenu .darkmode-button.active {
+    left: 25px;
+    transition-duration: .2s;
+}
+
+@media all and (min-width: 750px) {
+    .right-sidemenu {
+        top: 70px;
+        padding-bottom: 1rem;
+        height: calc(100vh - 70px);
+    }
+}

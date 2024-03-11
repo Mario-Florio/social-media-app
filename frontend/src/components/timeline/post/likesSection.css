@@ -42,3 +42,7 @@
 .likes-section .profile_wrapper:hover {
     background-color: lightgrey;
 }
+
+.dark .likes-section .profile_wrapper:hover {
+    background-color: var(--dark-hover-background-color);
+}

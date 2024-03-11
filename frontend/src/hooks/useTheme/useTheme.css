@@ -1,0 +1,8 @@
+
+.themeProvider {
+    background-color: rgb(235, 238, 240);
+}
+
+.themeProvider.dark {
+    background-color: black;
+}

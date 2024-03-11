@@ -30,6 +30,13 @@
     transition-duration: .2s;
 }
 
+.dark .section,
+.dark .section a {
+    color: var(--primary-dark-font-color);
+    background-color: var(--primary-dark-background-color);
+    box-shadow: none;
+}
+
 .section.active {
     z-index: 2;
     bottom: 0;
@@ -53,8 +60,16 @@
     cursor: pointer;
 }
 
+.dark .section .close-icon_wrapper {
+    background-color: var(--secondary-dark-background-color);
+}
+
 .section .close-icon_wrapper:hover {
     background-color: grey;
+}
+
+.dark .section .close-icon_wrapper:hover {
+    background-color: var(--dark-hover-background-color);
 }
 
 .section .close-icon_wrapper .bar-1,

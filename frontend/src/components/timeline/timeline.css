@@ -10,7 +10,12 @@
     background-color: rgb(255, 255, 255);
     margin-bottom: 1rem;
     padding: 1rem;
-    box-shadow: 0px 1px 5px gray;
+    box-shadow: 0px 1px 5px var(--box-shadow-color);
+}
+
+.dark .timeline .newPost {
+    background-color: var(--primary-dark-background-color);
+    box-shadow: none;
 }
 
 .timeline .newPost img {
@@ -36,13 +41,22 @@
     resize: none;
 }
 
+.timeline .newPost textarea {
+    color: var(--primary-dark-font-color);
+}
+
 .timeline .newPost button {
     font-weight: 600;
     color: white;
-    background-color: rgb(200, 170, 175);
+    background-color: var(--primary-background-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.dark .timeline .newPost button {
+    color: var(--primary-dark-font-color);
+    background-color: var(--secondary-dark-background-color);
 }
 
 .timeline .feed {

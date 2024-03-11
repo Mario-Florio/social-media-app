@@ -4,11 +4,18 @@
     position: sticky;
     top: 0;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    background-color: rgb(200, 170, 175);
+    background-color: var(--primary-background-color);
     padding: 1rem;
+    min-height: var(--topbar-height);
     width: 100%;
+    transition-duration: .2s;
+}
+
+.dark .topbar {
+    background-color: var(--primary-dark-background-color);
 }
 
 .topbar a {
@@ -18,6 +25,10 @@
 .topbar .logo {
     display: none;
     color: white;
+}
+
+.dark .topbar .logo {
+    color: var(--primary-dark-font-color);
 }
 
 .topbar .hamburger-menu {
@@ -37,10 +48,20 @@
     transition-duration: .2s;
 }
 
+.dark .topbar .hamburger-menu>div {
+    background-color: rgb(80, 80, 80);
+    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
+}
+
 .topbar .hamburger-menu.active>div {
     background-color: rgb(236, 226, 228);
     box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
     transition-duration: .2s;
+}
+
+.dark .topbar .hamburger-menu.active>div {
+    background-color: rgb(121, 121, 121);
+    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
 }
 
 .topbar nav {
@@ -58,6 +79,28 @@
 .topbar nav a {
     font-weight: 600;
     color: white;
+}
+
+.dark .topbar nav a {
+    color: var(--primary-dark-font-color);
+}
+
+.topbar .profilePic_wrapper {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.topbar .profilePic_wrapper.active {
+    border: solid 2px white
+}
+
+.topbar .profilePic_wrapper img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 @media all and (min-width: 750px) {

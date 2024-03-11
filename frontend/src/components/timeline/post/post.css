@@ -1,8 +1,13 @@
 
 .post {
-    background-color: rgb(255, 255, 255);
+    background-color: var(--post-background-color);
     padding: 1rem;
-    box-shadow: 0px 1px 5px gray;
+    box-shadow: 0px 1px 5px var(--box-shadow-color);
+}
+
+.dark .post {
+    background-color: var(--primary-dark-background-color);
+    box-shadow: none;
 }
 
 .post a {
@@ -16,7 +21,11 @@
 }
 
 .post header a {
-    color: black;
+    color: var(--primary-font-color);
+}
+
+.dark .post header a {
+    color: var(--primary-dark-font-color);
 }
 
 .post .details {
@@ -46,8 +55,12 @@
 }
 
 .post .details .title span {
-    color: grey;
+    color: var(--secondary-font-color);
     font-size: .85rem;
+}
+
+.dark .post .details .title span {
+    color: var(--secondary-dark-font-color);
 }
 
 .post .options {
@@ -58,10 +71,18 @@
 }
 
 .post .options div {
-    background-color: grey;
+    background-color: var(--secondary-font-color);
     height: 2px;
     width: 2px;
     border-radius: 2px;
+}
+
+.dark .post .options div {
+    background-color: var(--secondary-dark-font-color);
+}
+
+.dark .post p {
+    color: var(--primary-dark-font-color);
 }
 
 .post footer .top {
@@ -71,12 +92,21 @@
 
 .post footer .top span, 
 .post footer .top a {
-    color: grey;
+    color: var(--secondary-font-color);
     font-size: .75rem;
 }
 
+.dark .post footer .top span, 
+.dark .post footer .top a {
+    color: var(--secondary-dark-font-color);
+}
+
 .post footer hr {
-    border-top: .5px solid rgb(190, 190, 190);
+    border-top: .5px solid var(--secondary-font-color);
+}
+
+.dark .post footer hr {
+    border-top: .5px solid var(--secondary-dark-font-color);
 }
 
 .post footer .bottom {
@@ -86,7 +116,13 @@
 
 .post footer .bottom span,
 .post footer .bottom a {
-    color: grey;
+    color: var(--secondary-font-color);
+    font-size: .9rem;
+}
+
+.dark .post footer .bottom span,
+.dark .post footer .bottom a {
+    color: var(--secondary-dark-font-color);
     font-size: .9rem;
 }
 

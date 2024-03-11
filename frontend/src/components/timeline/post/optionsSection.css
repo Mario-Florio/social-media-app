@@ -16,8 +16,11 @@
 }
 
 .options-section ul li:hover {
-    background-color: rgb(195, 195, 195);
     background-color: lightgrey;
+}
+
+.dark .options-section ul li:hover {
+    background-color: var(--dark-hover-background-color);
 }
 
 .options-section .popup_mask {
@@ -45,6 +48,11 @@
     transform: translateX(-50%);
 }
 
+.dark .options-section .confirm-delete_popup {
+    background-color: var(--primary-dark-background-color);
+    box-shadow: none;
+}
+
 .options-section .popup_mask.active {
     z-index: 0;
     opacity: 1;
@@ -54,12 +62,17 @@
 .options-section .confirm-delete_popup button {
     font-weight: 500;
     color: white;
-    background-color: rgb(200, 170, 175);
+    background-color: var(--primary-background-color);
     margin-right: .5rem;
     padding: .25rem .5rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.dark .options-section .confirm-delete_popup button {
+    color: var(--primary-dark-font-color);
+    background-color: var(--secondary-dark-background-color);
 }
 
 @media all and (min-width: 750px) {

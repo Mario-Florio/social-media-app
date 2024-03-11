@@ -38,6 +38,11 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                             <p>Profile</p>
                         </Link>
                     </li>
+                    <li>
+                        <Link to={"/settings"} onClick={handleClick}>
+                            <p>Settings</p>
+                        </Link>
+                    </li>
                 </ul>
             </nav>
             <hr/>

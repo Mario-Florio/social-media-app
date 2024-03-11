@@ -1,0 +1,31 @@
+
+:root {
+    --sidemenu_width: 100%;
+    --sidemenu_max-width: 100%;
+    --topbar-height: 70px;
+
+    --primary-background-color: rgb(200, 170, 175);
+    --secondary-background-color: rgb(213, 213, 213);
+    --post-background-color: white;
+    --primary-font-color: black;
+    --secondary-font-color: grey;
+    --box-shadow-color: grey;
+    --primary-dark-background-color: rgb(39, 39, 39);
+    --secondary-dark-background-color: rgb(61, 61, 61);
+    --dark-hover-background-color: rgb(86, 86, 86);
+    --post-dark-background-color: rgb(0, 0, 0);
+    --primary-dark-font-color: rgb(189, 195, 199);
+    --secondary-dark-font-color: grey;
+}
+
+@media all and (min-width: 750px) {
+    :root {
+        --sidemenu_max-width: 300px;
+    }
+}
+
+@media all and (min-width: 900px) {
+    :root {
+        --sidemenu_max-width: 400px;
+    }
+}

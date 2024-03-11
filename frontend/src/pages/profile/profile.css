@@ -7,6 +7,10 @@
     padding: 0 1rem;
 }
 
+.dark .profileBottom {
+    color: var(--primary-dark-font-color);
+}
+
 .profileBottom h2 {
     text-align: center;
 }
@@ -27,6 +31,10 @@
     cursor: pointer;
 }
 
+.dark .profileBottom form button {
+    background-color: darkorchid;
+}
+
 .profileBottom .followCount {
     display: flex;
     justify-content: center;
@@ -44,6 +52,10 @@
 .profileBottom p>span {
     font-weight: 300;
     color: rgb(75, 75, 75);
+}
+
+.dark .profileBottom p>span {
+    color: var(--secondary-dark-font-color);
 }
 
 @media all and (min-width: 1045px) {

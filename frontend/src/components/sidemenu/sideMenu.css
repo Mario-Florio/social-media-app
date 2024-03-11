@@ -2,17 +2,22 @@
 .sidemenu {
     z-index: 1;
     position: fixed;
-    top: 3.5rem;
+    top: var(--topbar-height);
     bottom: 0;
     left: -100%;
     background-color: rgb(213, 213, 213);
     padding: 1rem;
-    padding-bottom: 3.5rem;
+    padding-bottom: var(--topbar-height);
     min-height: 100%;
     width: var(--sidemenu_width);
     overflow-x: hidden;
     overflow-y: scroll;
     transition-duration: .2s;
+}
+
+.dark .sidemenu {
+    color: var(--primary-dark-font-color);
+    background-color: var(--secondary-dark-background-color);
 }
 
 .sidemenu.active {
@@ -35,6 +40,10 @@
     color: black;
 }
 
+.dark .sidemenu a {
+    color: var(--primary-dark-font-color);
+}
+
 .sidemenu p {
     margin: 0;
     padding: .5rem 1rem;
@@ -43,6 +52,10 @@
 
 .sidemenu p:hover {
     background-color: rgb(174, 174, 174);
+}
+
+.dark .sidemenu p:hover {
+    background-color: var(--dark-hover-background-color);
 }
 
 .sidemenu article {
@@ -56,6 +69,10 @@
 
 .sidemenu article:hover {
     background-color: rgb(174, 174, 174);
+}
+
+.dark .sidemenu article:hover {
+    background-color: var(--dark-hover-background-color);
 }
 
 .sidemenu article h3 {
@@ -73,9 +90,8 @@
 @media all and (min-width: 750px) {
     .sidemenu {
         position: sticky;
-        top: 70px;
         padding-bottom: 1rem;
-        height: calc(100vh - 70px);
+        height: calc(100vh - var(--topbar-height));
         max-width: var(--sidemenu_max-width);
         transition-duration: 2ms;
     }
