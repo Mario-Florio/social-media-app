@@ -5,15 +5,16 @@ import EntryForm from "./pages/entry-form/EntryForm";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import PostPage from "./pages/post/Post";
+import { TimelineProvider } from "./hooks/useTimeline";
 
 function App() {
     return(
         <Routes>
             <Route path="/login" element={<EntryForm/>}/>
             <Route path="/" element={<ProtectedOutlet/>}>
-                <Route path="" element={<Home/>}/>
-                <Route path="profile/:id" element={<Profile/>}/>
-                <Route path="post/:id" element={<PostPage/>}/>
+                <Route path="" element={<TimelineProvider><Home/></TimelineProvider>}/>
+                <Route path="profile/:id" element={<TimelineProvider><Profile/></TimelineProvider>}/>
+                <Route path="post/:id" element={<TimelineProvider><PostPage/></TimelineProvider>}/>
             </Route>
         </Routes>
     );
