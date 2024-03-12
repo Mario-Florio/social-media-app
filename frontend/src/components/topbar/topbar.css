@@ -16,6 +16,7 @@
 
 .dark .topbar {
     background-color: var(--primary-dark-background-color);
+    border-bottom: 1px solid var(--secondary-dark-background-color);
 }
 
 .topbar a {
