@@ -97,12 +97,19 @@ async function putUserMock(reqBody) {
 
     if (!userFound) return { message: "User does not exist", success: false };
 
-    users[index] = update;
+    for (const key in update) {
+        if (key !== "profile" ||
+            key !== "_id" ||
+            key !== "createdAt") {
+            users[index][key] = update[key];
+        }
+    }
+
     window.localStorage.setItem("Users", JSON.stringify(users));
 
-    delete update.password;
+    delete users[index].password;
 
-    return { message: "Update was successful", user: update, success: true };
+    return { message: "Update was successful", user: users[index], success: true };
 }
 
 async function deleteUserMock(reqBody) {
@@ -131,6 +138,45 @@ async function deleteUserMock(reqBody) {
     window.localStorage.setItem(JSON.stringify(users));
 
     return { message: "Deletion was successful", success: true };
+}
+
+async function putProfileMock(reqBody) {
+    await delay(ms);
+
+    const { id, update, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+
+    const users = getCollection("Users", { showHidden: "password" });
+
+    let userFound = false;
+    let index = 0;
+    for (const user of users) {
+        if (user._id === id) {
+            userFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!userFound) return { message: "User does not exist", success: false };
+
+    for (const key in update) {
+        if (key !== "forum" ||
+            key !== "following" ||
+            key !== "followers" ||
+            key !== "_id" ||
+            key !== "createdAt") {
+            users[index].profile[key] = update[key];
+        }
+    }
+
+    window.localStorage.setItem("Users", JSON.stringify(users));
+
+    delete users[index].password;
+
+    return { message: "Update was successful", user: users[index], success: true };
 }
 
 async function putUserFollowMock(reqBody) {
@@ -202,5 +248,6 @@ export {
     postUserMock,
     putUserMock,
     deleteUserMock,
+    putProfileMock,
     putUserFollowMock
 };

@@ -1,13 +1,12 @@
 import "./form.css";
 import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
+import requests from "../../../serverRequests/methods/config";
 
-async function putUser(reqBody) {
-    return { user: reqBody };
-}
+const { putUser } = requests.users;
 
 function UserForm() {
-    const { user, updateUser } = useAuth();
+    const { user, updateUser, token } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
         username: user.username,
@@ -29,19 +28,18 @@ function UserForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const requestBody = {};
+        const reqBody = { id: user._id, update: {}, token };
         let isEdited = false;
         for (const key in formInput) {
             if (formInput[key] !== "" && key !== "confirmPassword") {
-                requestBody[key] = formInput[key];
+                reqBody.update[key] = formInput[key];
                 isEdited = true;
             }
         }
-        isEdited && putUser(requestBody)
+        isEdited && putUser(reqBody)
             .then(data => {
                 const { user } = data;
-                // updateUser(user);
-                console.log(user);
+                updateUser(user);
                 setFormInput({ username: user.username, password: "", confirmPassword: "" });
             })
             .catch(err => console.log(err));

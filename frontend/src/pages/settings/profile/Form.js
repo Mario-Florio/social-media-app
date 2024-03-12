@@ -1,14 +1,12 @@
 import "./form.css";
 import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
+import requests from "../../../serverRequests/methods/config";
 
-async function putUser(reqBody) {
-    return { user: { profile: reqBody } };
-}
+const { putProfile } = requests.users;
 
 function ProfileForm() {
-    const { user, updateUser } = useAuth();
-    const { profile } = user;
+    const { user, updateUser, token } = useAuth();
     const [formInput, setFormInput] = useState({ bio: user.profile.bio });
 
     function handleChange(e) {
@@ -20,19 +18,18 @@ function ProfileForm() {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const requestBody = {};
+        const requestBody = { id: user._id, update: {}, token };
         let isEdited = false;
         for (const key in formInput) {
             if (formInput[key] !== "") {
-                requestBody[key] = formInput[key];
+                requestBody.update[key] = formInput[key];
                 isEdited = true;
             }
         }
-        isEdited && putUser(requestBody)
+        isEdited && putProfile(requestBody)
             .then(data => {
                 const { user } = data;
-                // updateUser(user);
-                console.log(user.profile);
+                updateUser(user);
                 setFormInput({ bio: user.profile.bio });
             })
             .catch(err => console.log(err));
