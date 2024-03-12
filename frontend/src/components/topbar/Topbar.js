@@ -7,12 +7,12 @@ import { useAuth } from "../../hooks/useAuth";
 
 import { searchUsers } from "../../serverRequests/methods/users";
 
-function Topbar({ sideMenuIsActive, setSideMenuIsActive, rightSideMenuIsActive, setRightSideMenuIsActive }) {
+function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, setDropDownMenuIsActive }) {
     const { user } = useAuth();
 
     function toggleRightSideMenu() {
         sideMenuIsActive && setSideMenuIsActive(false);
-        setRightSideMenuIsActive(!rightSideMenuIsActive);
+        setDropDownMenuIsActive(!dropDownMenuIsActive);
     }
 
     return(
@@ -23,7 +23,7 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, rightSideMenuIsActive, 
             <HamburgerMenu
                 sideMenuIsActive={sideMenuIsActive}
                 setSideMenuIsActive={setSideMenuIsActive}
-                setRightSideMenuIsActive={setRightSideMenuIsActive}
+                setDropDownMenuIsActive={setDropDownMenuIsActive}
             />
             <SearchBar/>
             <nav>
@@ -36,7 +36,7 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, rightSideMenuIsActive, 
                     </li>
                 </ul>
             </nav>
-            <div className={ rightSideMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
+            <div className={ dropDownMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
                 <img onClick={toggleRightSideMenu} src={user.profile.picture} alt="Quick settings"/>
             </div>
         </header>
@@ -45,10 +45,10 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, rightSideMenuIsActive, 
 
 export default Topbar;
 
-function HamburgerMenu({ sideMenuIsActive, setSideMenuIsActive, setRightSideMenuIsActive }) {
+function HamburgerMenu({ sideMenuIsActive, setSideMenuIsActive, setDropDownMenuIsActive }) {
 
     function handleClick() {
-        setRightSideMenuIsActive(false);
+        setDropDownMenuIsActive(false);
         setSideMenuIsActive(!sideMenuIsActive);
     }
 

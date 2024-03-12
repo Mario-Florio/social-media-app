@@ -1,25 +1,25 @@
 import { useState } from "react";
 import Topbar from "../topbar/Topbar";
 import SideMenu from "../sidemenu/SideMenu";
-import RightSideMenu from "../rightSideMenu/rightSideMenu";
+import DropDownMenu from "../dropDownMenu/DropDownMenu";
 import { ThemeProvider } from "../../hooks/useTheme/useTheme";
 
 function PageLayout({ children }) {
     const [sideMenuIsActive, setSideMenuIsActive] = useState(false);
-    const [rightSideMenuIsActive, setRightSideMenuIsActive] = useState(false);
+    const [dropDownMenuIsActive, setDropDownMenuIsActive] = useState(false);
 
     return (
         <ThemeProvider>
             <Topbar
                 sideMenuIsActive={sideMenuIsActive}
                 setSideMenuIsActive={setSideMenuIsActive}
-                rightSideMenuIsActive={rightSideMenuIsActive}
-                setRightSideMenuIsActive={setRightSideMenuIsActive}
+                dropDownMenuIsActive={dropDownMenuIsActive}
+                setDropDownMenuIsActive={setDropDownMenuIsActive}
             />
             <main>
                 <SideMenu sideMenuIsActive={sideMenuIsActive} setSideMenuIsActive={setSideMenuIsActive}/>
                 {children}
-                <RightSideMenu rightSideMenuIsActive={rightSideMenuIsActive} setRightSideMenuIsActive={setRightSideMenuIsActive}/>
+                <DropDownMenu dropDownMenuIsActive={dropDownMenuIsActive} setDropDownMenuIsActive={setDropDownMenuIsActive}/>
             </main>
         </ThemeProvider>
     );

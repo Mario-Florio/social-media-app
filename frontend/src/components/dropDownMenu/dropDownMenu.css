@@ -1,51 +1,62 @@
 
-.right-sidemenu {
+.drop-down-menu {
     z-index: 1;
     position: fixed;
-    top: var(--topbar-height);
-    bottom: 0;
-    right: -400px;
+    top: -120px;
+    right: 1rem;
     background-color: var(--secondary-color);
     padding: 1rem;
-    padding-bottom: 3.5rem;
-    min-height: 100%;
-    width: 400px;
+    width: 300px;
     max-width: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    transition-duration: .2s;
+    border-radius: 5px;
+    opacity: 0;
+    transition-duration: .1s;
 }
 
-.right-sidemenu * {
+.drop-down-menu * {
     color: var(--primary-font-color)
 }
 
-.right-sidemenu.active {
-    right: 0;
-    transition-duration: .2s;
+.drop-down-menu.active {
+    z-index: 4;
+    top: var(--topbar-height);
+    opacity: 1;
+    transition-duration: .1s;
 }
 
-.right-sidemenu ul {
+.drop-down-menu .tail {
+    position: absolute;
+    top: -13px;
+    right: 9.5px;
+    width: 0px;
+    height: 0px;
+    border-style: solid;
+    border-width: 0 7px 14px 7px;
+    border-color: transparent transparent var(--secondary-color) transparent;
+    transform: rotate(0deg);
+}
+
+.drop-down-menu ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
-.right-sidemenu li {
+.drop-down-menu li {
     margin-bottom: .5rem;
 }
 
-.right-sidemenu a {
+.drop-down-menu a {
     text-decoration: none;
 }
 
-.right-sidemenu p {
+.drop-down-menu p {
     margin: 0;
     padding: .5rem 1rem;
     border-radius: 5px;
 }
 
-.right-sidemenu p:hover {
+.drop-down-menu p:hover {
     background-color: var(--hover-color);
 }
 
@@ -56,7 +67,7 @@
     margin: 0 1rem;
 }
 
-.right-sidemenu .darkmode-button_container {
+.drop-down-menu .darkmode-button_container {
     position: relative;
     display: flex;
     align-items: center;
@@ -67,7 +78,7 @@
     transition-duration: .2s;
 }
 
-.right-sidemenu .darkmode-button {
+.drop-down-menu .darkmode-button {
     position: absolute;
     left: 5px;
     height: 20px;
@@ -79,15 +90,13 @@
     transition-duration: .2s;
 }
 
-.right-sidemenu .darkmode-button.active {
+.drop-down-menu .darkmode-button.active {
     left: 25px;
     transition-duration: .2s;
 }
 
-@media all and (min-width: 750px) {
-    .right-sidemenu {
-        top: 70px;
-        padding-bottom: 1rem;
-        height: calc(100vh - var(--topbar-height));
+@media all and (min-width: 900px) {
+    .drop-down-menu {
+        right: 6rem
     }
 }

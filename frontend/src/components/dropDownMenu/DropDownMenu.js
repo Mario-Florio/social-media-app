@@ -1,10 +1,11 @@
-import "./rightSideMenu.css";
+import "./dropDownMenu.css";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme/useTheme";
 
-function RightSideMenu({ rightSideMenuIsActive, setRightSideMenuIsActive }) {
+function DropDownMenu({ dropDownMenuIsActive }) {
     return(
-        <section className={ rightSideMenuIsActive ? "right-sidemenu active" : "right-sidemenu" }>
+        <section className={ dropDownMenuIsActive ? "drop-down-menu active" : "drop-down-menu" }>
+            <div className="tail"/>
             <nav>
                 <ul>
                     <li>
@@ -29,7 +30,7 @@ function RightSideMenu({ rightSideMenuIsActive, setRightSideMenuIsActive }) {
     );
 }
 
-export default RightSideMenu;
+export default DropDownMenu;
 
 function DarkModeButton() {
     const { darkModeIsActive, setDarkModeIsActive } = useTheme();
