@@ -1,0 +1,57 @@
+
+#settings {
+    width: 100%;
+    max-width: 750px;
+}
+
+.dark #settings {
+    color: var(--primary-dark-font-color);
+}
+
+#settings header {
+    display: flex;
+    margin-top: .5rem;
+    padding-left: 1rem;
+}
+
+#settings header span {
+    flex: 2;
+    display: inline-block;
+    text-align: center;
+    background-color: var(--secondary-background-color);
+    padding: .5rem .5rem;
+    border: 1px solid var(--secondary-background-color);
+    border-bottom: none;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+}
+
+.dark #settings header span {
+    background-color: var(--secondary-dark-background-color);
+}
+
+#settings header span.isActive {
+    background-color: transparent;
+}
+
+.dark #settings header span {
+    border-color: var(--secondary-dark-background-color);
+}
+
+#settings header span:hover {
+    background-color: lightgrey;
+}
+
+.dark #settings header span:hover {
+    background-color: var(--dark-hover-background-color);
+}
+
+#settings header div {
+    flex: 2.5;
+    border-bottom: 1px solid var(--secondary-background-color);
+}
+
+.dark #settings header div {
+    border-color: var(--secondary-dark-background-color);
+}
