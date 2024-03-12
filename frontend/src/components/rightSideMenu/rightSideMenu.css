@@ -88,6 +88,6 @@
     .right-sidemenu {
         top: 70px;
         padding-bottom: 1rem;
-        height: calc(100vh - 70px);
+        height: calc(100vh - var(--topbar-height));
     }
 }

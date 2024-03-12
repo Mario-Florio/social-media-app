@@ -1,7 +1,7 @@
 
 main {
     display: flex;
-    max-height: calc(100vh - 70px);
+    max-height: calc(100vh - var(--topbar-height));
     overflow-y: hidden;
 }
 
