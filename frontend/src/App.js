@@ -18,7 +18,9 @@ function App() {
                 <Route path="" element={<TimelineProvider><Home/></TimelineProvider>}/>
                 <Route path="profile/:id" element={<TimelineProvider><Profile/></TimelineProvider>}/>
                 <Route path="post/:id" element={<TimelineProvider><PostPage/></TimelineProvider>}/>
-                <Route path="settings" element={<Settings/>}/>
+                <Route path="settings/" element={<Settings/>}>
+                    <Route path=":selected" element={<Settings/>}/>
+                </Route>
             </Route>
         </Routes>
     );

@@ -13,12 +13,12 @@ function RightSideMenu({ rightSideMenuIsActive, setRightSideMenuIsActive }) {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/settings">
+                        <Link to="/settings/user">
                             <p>User Settings</p>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/settings">
+                        <Link to="/settings/profile">
                             <p>Profile Settings</p>
                         </Link>
                     </li>

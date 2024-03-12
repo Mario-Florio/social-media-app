@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./settings.css";
 import "./forms.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import GeneralForm from "./general/Form";
 import UserForm from "./user/Form";
 import ProfileForm from "./profile/Form";
+import { useParams } from "react-router-dom";
 
 function Settings() {
-    const [selectedForm, setSelectedForm] = useState({ component: <GeneralForm/>, value: "general" });
+    const { selected } = useParams();
+    const [selectedForm, setSelectedForm] = useState( selected === "user" ?
+        { component: <UserForm/>, value: "user" } : selected === "profile" ?
+        { component: <ProfileForm/>, value: "profile" } : { component: <GeneralForm/>, value: "general" } );
+
+    useEffect(() => {
+        setSelectedForm( selected === "user" ?
+        { component: <UserForm/>, value: "user" } : selected === "profile" ?
+        { component: <ProfileForm/>, value: "profile" } : { component: <GeneralForm/>, value: "general" } );
+    }, [selected]);
 
     return(
         <PageLayout>
