@@ -2,7 +2,7 @@
 .topbar .searchbar {
     display: flex;
     align-items: center;
-    background-color: var(--primary-background-color);
+    background-color: var(--primary-color);
     padding: .25rem;
     width: 100%;
     border-radius: 5px;
@@ -12,7 +12,6 @@
 
 .dark .topbar .searchbar {
     background-color: rgb(80, 80, 80);
-    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
 }
 
 .topbar .searchbar.focused {
@@ -22,7 +21,6 @@
 
 .dark .topbar .searchbar.focused {
     background-color: rgb(121, 121, 121);
-    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
 }
 
 .topbar .dropdown {
@@ -67,13 +65,13 @@
     width: calc(100% + .5rem);
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
-    box-shadow: 0px 1px 5px grey;
+    box-shadow: 0px 1px 5px var(--box-shadow-color);
     opacity: 0;
     pointer-events: none;
 }
 
 .dark .topbar .searchbar .dropdown_bottom {
-    background-color: var(--secondary-dark-background-color);
+    background-color: var(--secondary-color);
 }
 
 .topbar .searchbar .dropdown_bottom.active {
@@ -90,7 +88,7 @@
 }
 
 .dark .topbar .searchbar .dropdown_bottom li h5 {
-    color: var(--primary-dark-font-color);
+    color: var(--primary-font-color);
 }
 
 .topbar .searchbar .dropdown_bottom li:not(:last-child) {
@@ -98,11 +96,7 @@
 }
 
 .topbar .searchbar .dropdown_bottom li:hover {
-    background-color: lightgrey;
-}
-
-.dark .topbar .searchbar .dropdown_bottom li:hover {
-    background-color: var(--dark-hover-background-color);
+    background-color: var(--hover-color);
 }
 
 .topbar .searchbar .dropdown_bottom a {
@@ -110,7 +104,7 @@
     align-items: center;
     gap: 1rem;
     text-decoration: none;
-    color: black;
+    color: var(--primary-font-color);
 
 }
 

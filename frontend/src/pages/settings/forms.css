@@ -14,29 +14,21 @@
 }
 
 #settings form .form-field input {
-    background-color: var(--secondary-background-color);
+    color: var(--primary-font-color);
+    background-color: var(--secondary-color);
     padding: .25rem .5rem;
     border: none;
     border-radius: 15px;
 }
 
-.dark #settings form .form-field input {
-    background-color: var(--secondary-background-color);
-}
-
 #settings form button {
     color: white;
-    background-color: var(--primary-background-color);
+    background-color: var(--target-color);
     padding: .5rem 1rem;
     margin-top: 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.dark #settings form button {
-    color: var(--primary-dark-font-color);
-    background-color: var(--primary-dark-background-color);
 }
 
 @media all and (min-width: 750px) {

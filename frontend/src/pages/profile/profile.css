@@ -7,8 +7,9 @@
     padding: 0 1rem;
 }
 
-.dark .profileBottom {
-    color: var(--primary-dark-font-color);
+.profileBottom h2,
+.profileBottom p {
+    color: var(--primary-font-color);
 }
 
 .profileBottom h2 {
@@ -24,15 +25,11 @@
 .profileBottom form button {
     font-weight: 600;
     color: white;
-    background-color: navy;
+    background-color: var(--target-color);
     padding: .3rem 1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.dark .profileBottom form button {
-    background-color: darkorchid;
 }
 
 .profileBottom .followCount {
@@ -51,11 +48,7 @@
 
 .profileBottom p>span {
     font-weight: 300;
-    color: rgb(75, 75, 75);
-}
-
-.dark .profileBottom p>span {
-    color: var(--secondary-dark-font-color);
+    color: var(--secondary-font-color) !important;
 }
 
 @media all and (min-width: 1045px) {

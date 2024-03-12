@@ -1,9 +1,5 @@
 
 .themeProvider {
-    background-color: rgb(235, 238, 240);
+    background-color: var(--background-color);
     min-height: 100vh;
-}
-
-.themeProvider.dark {
-    background-color: black;
 }

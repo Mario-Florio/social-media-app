@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    background-color: var(--primary-background-color);
+    background-color: var(--primary-color);
     padding: 1rem;
     min-height: var(--topbar-height);
     width: 100%;
@@ -15,8 +15,7 @@
 }
 
 .dark .topbar {
-    background-color: var(--primary-dark-background-color);
-    border-bottom: 1px solid var(--secondary-dark-background-color);
+    border-bottom: 1px solid var(--secondary-color);
 }
 
 .topbar a {
@@ -29,7 +28,7 @@
 }
 
 .dark .topbar .logo {
-    color: var(--primary-dark-font-color);
+    color: var(--primary-font-color);
 }
 
 .topbar .hamburger-menu {
@@ -51,7 +50,6 @@
 
 .dark .topbar .hamburger-menu>div {
     background-color: rgb(80, 80, 80);
-    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
 }
 
 .topbar .hamburger-menu.active>div {
@@ -62,7 +60,6 @@
 
 .dark .topbar .hamburger-menu.active>div {
     background-color: rgb(121, 121, 121);
-    box-shadow: inset rgb(100, 100, 100) 0px 0px 20px -12px;
 }
 
 .topbar nav {
@@ -83,7 +80,7 @@
 }
 
 .dark .topbar nav a {
-    color: var(--primary-dark-font-color);
+    color: var(--primary-font-color);
 }
 
 .topbar .profilePic_wrapper {

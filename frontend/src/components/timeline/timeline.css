@@ -7,15 +7,10 @@
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--post-background-color);
     margin-bottom: 1rem;
     padding: 1rem;
     box-shadow: 0px 1px 5px var(--box-shadow-color);
-}
-
-.dark .timeline .newPost {
-    background-color: var(--primary-dark-background-color);
-    box-shadow: none;
 }
 
 .timeline .newPost img {
@@ -34,6 +29,7 @@
 
 .timeline .newPost textarea {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--primary-font-color);
     background-color: transparent;
     width: 100%;
     border: none;
@@ -41,22 +37,13 @@
     resize: none;
 }
 
-.timeline .newPost textarea {
-    color: var(--primary-dark-font-color);
-}
-
 .timeline .newPost button {
     font-weight: 600;
     color: white;
-    background-color: var(--primary-background-color);
+    background-color: var(--target-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.dark .timeline .newPost button {
-    color: var(--primary-dark-font-color);
-    background-color: var(--secondary-dark-background-color);
 }
 
 .timeline .feed {

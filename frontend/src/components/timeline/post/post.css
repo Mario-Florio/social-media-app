@@ -5,11 +5,6 @@
     box-shadow: 0px 1px 5px var(--box-shadow-color);
 }
 
-.dark .post {
-    background-color: var(--primary-dark-background-color);
-    box-shadow: none;
-}
-
 .post a {
     text-decoration: none;
 }
@@ -22,10 +17,6 @@
 
 .post header a {
     color: var(--primary-font-color);
-}
-
-.dark .post header a {
-    color: var(--primary-dark-font-color);
 }
 
 .post .details {
@@ -59,10 +50,6 @@
     font-size: .85rem;
 }
 
-.dark .post .details .title span {
-    color: var(--secondary-dark-font-color);
-}
-
 .post .options {
     display: flex;
     gap: 2px;
@@ -77,12 +64,8 @@
     border-radius: 2px;
 }
 
-.dark .post .options div {
-    background-color: var(--secondary-dark-font-color);
-}
-
-.dark .post p {
-    color: var(--primary-dark-font-color);
+.post p {
+    color: var(--primary-font-color);
 }
 
 .post footer .top {
@@ -94,11 +77,6 @@
 .post footer .top a {
     color: var(--secondary-font-color);
     font-size: .75rem;
-}
-
-.dark .post footer .top span, 
-.dark .post footer .top a {
-    color: var(--secondary-dark-font-color);
 }
 
 .post footer hr {
@@ -117,12 +95,6 @@
 .post footer .bottom span,
 .post footer .bottom a {
     color: var(--secondary-font-color);
-    font-size: .9rem;
-}
-
-.dark .post footer .bottom span,
-.dark .post footer .bottom a {
-    color: var(--secondary-dark-font-color);
     font-size: .9rem;
 }
 

@@ -5,7 +5,7 @@
     top: var(--topbar-height);
     bottom: 0;
     right: -400px;
-    background-color: rgb(213, 213, 213);
+    background-color: var(--secondary-color);
     padding: 1rem;
     padding-bottom: 3.5rem;
     min-height: 100%;
@@ -16,8 +16,8 @@
     transition-duration: .2s;
 }
 
-.dark .right-sidemenu {
-    background-color: var(--secondary-dark-background-color);
+.right-sidemenu * {
+    color: var(--primary-font-color)
 }
 
 .right-sidemenu.active {
@@ -37,7 +37,6 @@
 
 .right-sidemenu a {
     text-decoration: none;
-    color: black;
 }
 
 .right-sidemenu p {
@@ -46,17 +45,8 @@
     border-radius: 5px;
 }
 
-.dark .right-sidemenu p,
-.dark .right-sidemenu span {
-    color: var(--primary-dark-font-color);
-}
-
 .right-sidemenu p:hover {
-    background-color: rgb(174, 174, 174);
-}
-
-.dark .right-sidemenu p:hover {
-    background-color: var(--dark-hover-background-color);
+    background-color: var(--hover-color);
 }
 
 .darkmode-button_wrapper {
@@ -72,13 +62,8 @@
     align-items: center;
     height: 30px;
     width: 50px;
-    background-color: rgb(235, 238, 240);
+    background-color: var(--target-color);
     border-radius: 100px;
-    transition-duration: .2s;
-}
-
-.right-sidemenu .darkmode-button_container.active {
-    background-color: darkorchid;
     transition-duration: .2s;
 }
 

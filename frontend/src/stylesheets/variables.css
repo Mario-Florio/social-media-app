@@ -4,18 +4,27 @@
     --sidemenu_max-width: 100%;
     --topbar-height: 70px;
 
-    --primary-background-color: rgb(200, 170, 175);
-    --secondary-background-color: rgb(213, 213, 213);
+    --background-color: rgb(235, 238, 240);
+    --primary-color: rgb(200, 170, 175);
+    --secondary-color: rgb(213, 213, 213);
+    --target-color: dodgerblue;
+    --hover-color: rgb(174, 174, 174);
     --post-background-color: white;
     --primary-font-color: black;
     --secondary-font-color: grey;
     --box-shadow-color: grey;
-    --primary-dark-background-color: rgb(39, 39, 39);
-    --secondary-dark-background-color: rgb(61, 61, 61);
-    --dark-hover-background-color: rgb(86, 86, 86);
-    --post-dark-background-color: rgb(0, 0, 0);
-    --primary-dark-font-color: rgb(189, 195, 199);
-    --secondary-dark-font-color: grey;
+}
+
+:root .dark {
+    --background-color: black;
+    --primary-color: rgb(39, 39, 39);
+    --secondary-color: rgb(61, 61, 61);
+    --target-color: darkorchid;
+    --hover-color: rgb(86, 86, 86);
+    --post-background-color: var(--primary-color);
+    --primary-font-color: rgb(189, 195, 199);
+    --secondary-font-color: grey;
+    --box-shadow-color: transparent;
 }
 
 @media all and (min-width: 750px) {

@@ -10,7 +10,6 @@
 }
 
 .likes-section a {
-    color: black;
     text-decoration: none;
 }
 
@@ -44,5 +43,5 @@
 }
 
 .dark .likes-section .profile_wrapper:hover {
-    background-color: var(--dark-hover-background-color);
+    background-color: var(--hover-color);
 }

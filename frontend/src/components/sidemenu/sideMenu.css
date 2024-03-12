@@ -5,7 +5,8 @@
     top: var(--topbar-height);
     bottom: 0;
     left: -100%;
-    background-color: rgb(213, 213, 213);
+    color: var(--primary-font-color);
+    background-color: var(--secondary-color);
     padding: 1rem;
     padding-bottom: var(--topbar-height);
     min-height: 100%;
@@ -15,9 +16,8 @@
     transition-duration: .2s;
 }
 
-.dark .sidemenu {
-    color: var(--primary-dark-font-color);
-    background-color: var(--secondary-dark-background-color);
+.sidemenu * {
+    color: var(--primary-font-color);
 }
 
 .sidemenu.active {
@@ -40,10 +40,6 @@
     color: black;
 }
 
-.dark .sidemenu a {
-    color: var(--primary-dark-font-color);
-}
-
 .sidemenu p {
     margin: 0;
     padding: .5rem 1rem;
@@ -51,11 +47,7 @@
 }
 
 .sidemenu p:hover {
-    background-color: rgb(174, 174, 174);
-}
-
-.dark .sidemenu p:hover {
-    background-color: var(--dark-hover-background-color);
+    background-color: var(--hover-color);
 }
 
 .sidemenu article {
@@ -68,11 +60,7 @@
 }
 
 .sidemenu article:hover {
-    background-color: rgb(174, 174, 174);
-}
-
-.dark .sidemenu article:hover {
-    background-color: var(--dark-hover-background-color);
+    background-color: var(--hover-color);
 }
 
 .sidemenu article h3 {

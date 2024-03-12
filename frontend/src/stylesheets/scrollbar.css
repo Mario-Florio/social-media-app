@@ -8,7 +8,7 @@
 }
 
 .dark ::-webkit-scrollbar-track {
-    background-color: black;
+    background-color: var(--background-color);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -16,7 +16,7 @@
 }
 
 .dark ::-webkit-scrollbar-thumb {
-    background: var(--secondary-dark-background-color);
+    background: var(--secondary-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -24,5 +24,5 @@
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-    background: var(--dark-hover-background-color);
+    background: var(--hover-color);
 }

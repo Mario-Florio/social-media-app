@@ -1,7 +1,7 @@
 
 .loader {
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid grey;
+    border: 6px solid var(--secondary-color);
+    border-top: 6px solid var(--target-color);
     border-radius: 50%;
     width: 40px;
     height: 40px;
