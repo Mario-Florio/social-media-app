@@ -1,11 +1,21 @@
 import "./dropDownMenu.css";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../hooks/useTheme/useTheme";
+import { useAuth } from "../../hooks/useAuth";
 
 function DropDownMenu({ dropDownMenuIsActive }) {
+    const { user } = useAuth();
     return(
         <section className={ dropDownMenuIsActive ? "drop-down-menu active" : "drop-down-menu" }>
             <div className="tail"/>
+            <Link to={`/profile/${user.profile._id}`}>
+                <div className="profileCover-wrapper">
+                    <img src={user.profile.coverPicture} alt="profile-cover"/>
+                    <div className="profilePic-wrapper">
+                        <img src={user.profile.picture} alt="profile-pic"/>
+                    </div>
+                </div>
+            </Link>
             <nav>
                 <ul>
                     <li>

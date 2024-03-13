@@ -5,12 +5,13 @@
     top: -120px;
     right: 1rem;
     background-color: var(--secondary-color);
-    padding: 1rem;
+    padding: .5rem;
     width: 300px;
     max-width: 100%;
     border-radius: 5px;
     opacity: 0;
     transition-duration: .1s;
+    pointer-events: none;
 }
 
 .drop-down-menu * {
@@ -22,6 +23,7 @@
     top: var(--topbar-height);
     opacity: 1;
     transition-duration: .1s;
+    pointer-events: inherit;
 }
 
 .drop-down-menu .tail {
@@ -36,9 +38,48 @@
     transform: rotate(0deg);
 }
 
+.drop-down-menu .profileCover-wrapper {
+    position: relative;
+    height: 100px;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.drop-down-menu .profileCover-wrapper:hover {
+    outline: 1px solid white;
+}
+
+.drop-down-menu .profileCover-wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.drop-down-menu .profileCover-wrapper .profilePic-wrapper {
+    position: absolute;
+    left: 40%;
+    bottom: -25%;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+.drop-down-menu .profileCover-wrapper .profilePic-wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .drop-down-menu ul {
     list-style-type: none;
-    margin: 0;
+    margin: .5rem 0 0;
     padding: 0;
 }
 
