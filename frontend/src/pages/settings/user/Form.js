@@ -26,8 +26,7 @@ function UserForm() {
         });
     }
 
-    function handleSubmit(e) {
-        e.preventDefault();
+    function handleSubmit() {
         const reqBody = { id: user._id, update: {}, token };
         let isEdited = false;
         for (const key in formInput) {
@@ -45,8 +44,12 @@ function UserForm() {
             .catch(err => console.log(err));
     }
 
+    function handleDelete() {
+        console.log("Not setup");
+    }
+
     return(
-        <form className="user-form" onSubmit={handleSubmit} action={`/users/${user._id}`} method="PUT">
+        <form className="user-form" onSubmit={(e) => e.preventDefault()} action={`/users/${user._id}`} method="PUT">
             <div className="form-field">
                 <label htmlFor="username">Username</label>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/>
@@ -59,8 +62,8 @@ function UserForm() {
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type="text" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/>
             </div> }
-            <button>Submit</button>
-            <button className="delete-button">Delete Account</button>
+            <button onSubmit={handleSubmit}>Submit</button>
+            <button className="delete-button" onClick={handleDelete}>Delete Account</button>
         </form>
     );
 }
