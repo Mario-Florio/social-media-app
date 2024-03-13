@@ -4,7 +4,7 @@ import { useTheme } from "../../hooks/useTheme/useTheme";
 import { useAuth } from "../../hooks/useAuth";
 
 function DropDownMenu({ dropDownMenuIsActive }) {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     return(
         <section className={ dropDownMenuIsActive ? "drop-down-menu active" : "drop-down-menu" }>
             <div className="tail"/>
@@ -35,6 +35,7 @@ function DropDownMenu({ dropDownMenuIsActive }) {
                     </li>
                 </ul>
             </nav>
+            <p style={{ marginBottom: ".5rem", cursor: "pointer" }} onClick={logout}>Logout</p>
             <DarkModeButton/>
         </section>
     );
