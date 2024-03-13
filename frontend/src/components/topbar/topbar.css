@@ -15,6 +15,7 @@
     border-bottom: 1px solid var(--primary-color);
 }
 
+/* DARK */
 .dark .topbar {
     border-color: var(--secondary-color);
 }
@@ -28,6 +29,7 @@
     color: white;
 }
 
+/* DARK */
 .dark .topbar .logo {
     color: var(--primary-font-color);
 }
@@ -41,26 +43,22 @@
 }
 
 .topbar .hamburger-menu>div {
-    background-color: rgb(184, 154, 159);
+    background-color: var(--primary-color);
     height: 5px;
     width: 35px;
     border-radius: 1px;
-    box-shadow: inset rgb(86, 86, 86) 0px 0px 20px -12px;
+    box-shadow: inset var(--topbar-box-shadow-color) 0px 0px 25px -12px;
     transition-duration: .2s;
-}
-
-.dark .topbar .hamburger-menu>div {
-    background-color: rgb(80, 80, 80);
 }
 
 .topbar .hamburger-menu.active>div {
     background-color: rgb(236, 226, 228);
-    box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
     transition-duration: .2s;
 }
 
+/* DARK */
 .dark .topbar .hamburger-menu.active>div {
-    background-color: rgb(121, 121, 121);
+    background-color: var(--secondary-color);
 }
 
 .topbar nav {
@@ -80,6 +78,7 @@
     color: white;
 }
 
+/* DARK */
 .dark .topbar nav a {
     color: var(--primary-font-color);
 }

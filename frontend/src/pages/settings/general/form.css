@@ -1,0 +1,13 @@
+
+#settings .general-form .form-field input {
+    background-color: transparent;
+    margin-left: 1rem;
+    padding: 0;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+#settings .general-form .reset-button {
+    background-color: rgb(207, 2, 2);
+    margin-left: 1rem;
+}

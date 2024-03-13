@@ -32,7 +32,7 @@ function Settings() {
                     <span
                         className={ selectedForm.value === "profile" ? "isActive" : "" }
                         onClick={() => setSelectedForm({ component: <ProfileForm/>, value: "profile" })}>Profile Settings</span>
-                    <div></div>
+                    <div/>
                 </header>
                 { selectedForm.component }
             </section>

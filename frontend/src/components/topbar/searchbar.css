@@ -6,21 +6,17 @@
     padding: .25rem;
     width: 100%;
     border-radius: 5px;
-    box-shadow: inset rgb(86, 86, 86) 0px 0px 20px -12px;
+    box-shadow: inset var(--topbar-box-shadow-color) 0px 0px 25px -12px;
     transition-duration: .2s;
 }
 
-.dark .topbar .searchbar {
-    background-color: rgb(80, 80, 80);
-}
-
 .topbar .searchbar.focused {
-    background-color: rgb(236, 226, 228);
-    box-shadow: rgb(86, 86, 86) 0px 0px 20px -12px;
+    background-color: rgba(255, 255, 255, 0.514);
 }
 
+/* DARK */
 .dark .topbar .searchbar.focused {
-    background-color: rgb(121, 121, 121);
+    background-color: var(--secondary-color);
 }
 
 .topbar .dropdown {
@@ -49,6 +45,7 @@
 }
 
 .topbar form input {
+    color: var(--primary-font-color);
     background-color: transparent;
     width: 100%;
     border: none;
@@ -60,7 +57,7 @@
     position: absolute;
     top: -70px;
     left: -.25rem;
-    background-color: white;
+    background-color: var(--secondary-color);
     padding: 0;
     width: calc(100% + .5rem);
     border-bottom-left-radius: 2px;
@@ -70,10 +67,6 @@
     pointer-events: none;
 }
 
-.dark .topbar .searchbar .dropdown_bottom {
-    background-color: var(--secondary-color);
-}
-
 .topbar .searchbar .dropdown_bottom.active {
     top: 5px;
     opacity: 1;
@@ -81,14 +74,11 @@
 }
 
 .topbar .searchbar .dropdown_bottom li {
+    color: var(--primary-font-color);
     margin: 0;
     padding: .1rem 0;
     list-style: none;
     cursor: pointer;
-}
-
-.dark .topbar .searchbar .dropdown_bottom li h5 {
-    color: var(--primary-font-color);
 }
 
 .topbar .searchbar .dropdown_bottom li:not(:last-child) {

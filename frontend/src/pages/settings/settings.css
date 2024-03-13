@@ -33,10 +33,6 @@
 }
 
 #settings header span:hover {
-    background-color: lightgrey;
-}
-
-.dark #settings header span:hover {
     background-color: var(--hover-color);
 }
 

@@ -60,6 +60,7 @@ function UserForm() {
                 <input type="text" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/>
             </div> }
             <button>Submit</button>
+            <button className="delete-button">Delete Account</button>
         </form>
     );
 }
