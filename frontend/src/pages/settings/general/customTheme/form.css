@@ -1,0 +1,17 @@
+
+#settings .general-tab .custom-theme-form .form-field label {
+    width: 170px;
+}
+
+#settings .general-tab .custom-theme-form .form-field input {
+    background-color: transparent;
+    margin-left: 1rem;
+    padding: 0;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+#settings .general-tab .custom-theme-form .reset-button {
+    background-color: rgb(207, 2, 2);
+    margin-left: 1rem;
+}

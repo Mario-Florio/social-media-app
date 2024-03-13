@@ -1,7 +1,7 @@
 import "./form.css";
 import { useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
-import requests from "../../../serverRequests/methods/config";
+import { useAuth } from "../../../../hooks/useAuth";
+import requests from "../../../../serverRequests/methods/config";
 
 const { putProfile } = requests.users;
 
@@ -36,7 +36,8 @@ function ProfileForm() {
     }
 
     return(
-        <form className="user-form" onSubmit={handleSubmit} action={`/users/${user._id}`} method="PUT">
+        <form className="profile-form" onSubmit={handleSubmit} action={`/users/${user._id}`} method="PUT">
+            <h3 style={{ fontWeight: "300", color: "var(--secondary-font-color)", borderBottom: ".5px solid var(--secondary-font-color)" }}>Profile</h3>
             <div className="form-field">
                 <label htmlFor="bio">Bio</label>
                 <input type="text" name="bio" id="bio" value={formInput.bio} onChange={handleChange}/>

@@ -1,11 +1,11 @@
 import "./form.css";
 import { useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
-import requests from "../../../serverRequests/methods/config";
+import { useAuth } from "../../../../hooks/useAuth";
+import requests from "../../../../serverRequests/methods/config";
 
 const { putUser } = requests.users;
 
-function UserForm() {
+function AccountForm() {
     const { user, updateUser, token } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
@@ -49,7 +49,8 @@ function UserForm() {
     }
 
     return(
-        <form className="user-form" onSubmit={(e) => e.preventDefault()} action={`/users/${user._id}`} method="PUT">
+        <form className="account-form" onSubmit={(e) => e.preventDefault()} action={`/users/${user._id}`} method="PUT">
+            <h3 style={{ fontWeight: "300", color: "var(--secondary-font-color)", borderBottom: ".5px solid var(--secondary-font-color)" }}>Account</h3>
             <div className="form-field">
                 <label htmlFor="username">Username</label>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/>
@@ -68,4 +69,4 @@ function UserForm() {
     );
 }
 
-export default UserForm;
+export default AccountForm;

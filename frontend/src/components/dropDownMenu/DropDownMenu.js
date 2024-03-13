@@ -28,11 +28,6 @@ function DropDownMenu({ dropDownMenuIsActive }) {
                             <p>User Settings</p>
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/settings/profile">
-                            <p>Profile Settings</p>
-                        </Link>
-                    </li>
                 </ul>
             </nav>
             <p style={{ marginBottom: ".5rem", cursor: "pointer" }} onClick={logout}>Logout</p>

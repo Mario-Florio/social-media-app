@@ -2,21 +2,18 @@ import { useEffect, useState } from "react";
 import "./settings.css";
 import "./forms.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
-import GeneralForm from "./general/Form";
-import UserForm from "./user/Form";
-import ProfileForm from "./profile/Form";
+import GeneralTab from "./general/GeneralTab";
+import UserTab from "./user/UserTab";
 import { useParams } from "react-router-dom";
 
 function Settings() {
     const { selected } = useParams();
-    const [selectedForm, setSelectedForm] = useState( selected === "user" ?
-        { component: <UserForm/>, value: "user" } : selected === "profile" ?
-        { component: <ProfileForm/>, value: "profile" } : { component: <GeneralForm/>, value: "general" } );
+    const [selectedTab, setSelectedTab] = useState( selected === "user" ?
+        { component: <UserTab/>, value: "user" } : { component: <GeneralTab/>, value: "general" } );
 
     useEffect(() => {
-        setSelectedForm( selected === "user" ?
-        { component: <UserForm/>, value: "user" } : selected === "profile" ?
-        { component: <ProfileForm/>, value: "profile" } : { component: <GeneralForm/>, value: "general" } );
+        setSelectedTab( selected === "user" ?
+        { component: <UserTab/>, value: "user" } : { component: <GeneralTab/>, value: "general" } );
     }, [selected]);
 
     return(
@@ -24,17 +21,14 @@ function Settings() {
             <section id="settings" className="main-component">
                 <header>
                     <span
-                        className={ selectedForm.value === "general" ? "isActive" : "" }
-                        onClick={() => setSelectedForm({ component: <GeneralForm/>, value: "general" })}>General Settings</span>
+                        className={ selectedTab.value === "general" ? "isActive" : "" }
+                        onClick={() => setSelectedTab({ component: <GeneralTab/>, value: "general" })}>General</span>
                     <span
-                        className={ selectedForm.value === "user" ? "isActive" : "" }
-                        onClick={() => setSelectedForm({ component: <UserForm/>, value: "user" })}>User Settings</span>
-                    <span
-                        className={ selectedForm.value === "profile" ? "isActive" : "" }
-                        onClick={() => setSelectedForm({ component: <ProfileForm/>, value: "profile" })}>Profile Settings</span>
+                        className={ selectedTab.value === "user" ? "isActive" : "" }
+                        onClick={() => setSelectedTab({ component: <UserTab/>, value: "user" })}>User</span>
                     <div/>
                 </header>
-                { selectedForm.component }
+                { selectedTab.component }
             </section>
         </PageLayout>
     );

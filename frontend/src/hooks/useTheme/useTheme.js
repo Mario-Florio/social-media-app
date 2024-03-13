@@ -4,7 +4,7 @@ import { useLocalStorage } from "../useLocalStorage";
 
 const ThemeContext = createContext();
 
-const darkTheme = {
+const defaultDarkTheme = {
     "--background-color": "#000000",
     "--primary-color": "#272727",
     "--secondary-color": "#3d3d3d",
@@ -32,10 +32,15 @@ const defaultTheme = {
 
 export const ThemeProvider = ({ children }) => {
     const [darkModeIsActive, setDarkModeIsActive] = useLocalStorage("darkmode", false);
+    const [darkTheme, setDarkTheme] = useLocalStorage("dark-theme", defaultDarkTheme);
     const [theme, setTheme] = useLocalStorage("theme", defaultTheme);
 
     function restoreDefault() {
         setTheme(defaultTheme);
+    }
+
+    function restoreDefaultDark() {
+        setDarkTheme(defaultDarkTheme);
     }
 
     const value = {
@@ -43,7 +48,10 @@ export const ThemeProvider = ({ children }) => {
         setDarkModeIsActive,
         theme,
         setTheme,
-        restoreDefault
+        restoreDefault,
+        darkTheme,
+        setDarkTheme,
+        restoreDefaultDark
     };
 
     return(
