@@ -7,8 +7,8 @@ async function getSession(token) {
                 Authorization: `Bearer ${token}`
             }
         }
-        const session = await axios.get("/auth/session", config);
-        return session.data;
+        const response = await axios.get("/auth/session", config);
+        return response.data;
     } catch (err) {
         console.log(err);
         return err.response.data;
@@ -16,14 +16,13 @@ async function getSession(token) {
 }
 
 async function postLogin(credentials) {
-    const { username, password } = credentials;
     try {
-        const res = await axios.post("/auth/login", {
+        const { username, password } = credentials;
+        const response = await axios.post("/auth/login", {
             username,
             password
         });
-        const { data } = res;
-        return data;
+        return response.data;
     } catch(err) {
         console.log(err);
         return err.response.data;

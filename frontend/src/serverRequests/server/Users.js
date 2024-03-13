@@ -91,7 +91,6 @@ async function putUserFollow(reqBody) {
                 Authorization: `Bearer ${token}`
             }
         }
-
         const body = {
             userId,
             follow

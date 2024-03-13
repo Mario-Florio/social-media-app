@@ -17,12 +17,12 @@ async function postComment(reqBody) {
             comment,
             postId
         }
-
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
+
         const response = await axios.post("/comments", body, config);
         return response.data;
     } catch (err) {

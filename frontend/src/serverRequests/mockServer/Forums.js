@@ -1,7 +1,5 @@
 import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
-import uid from "./__utils__/uniqueId";
-import validateToken from "./__utils__/validateToken";
 
 const ms = 0;
 

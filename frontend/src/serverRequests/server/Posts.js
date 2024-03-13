@@ -28,7 +28,6 @@ async function postPost(reqBody) {
             post: content,
             forum: forumId
         }
-
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -80,9 +79,7 @@ async function deletePost(reqBody) {
 async function putPostLike(reqBody) {
     try {
         const { id, userId, token } = reqBody;
-
         const body = { userId }
-
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
