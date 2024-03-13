@@ -40,7 +40,7 @@ function ProfileForm() {
             <h3 style={{ fontWeight: "300", color: "var(--secondary-font-color)", borderBottom: ".5px solid var(--secondary-font-color)" }}>Profile</h3>
             <div className="form-field">
                 <label htmlFor="bio">Bio</label>
-                <input type="text" name="bio" id="bio" value={formInput.bio} onChange={handleChange}/>
+                <textarea name="bio" id="bio" value={formInput.bio} onChange={handleChange}/>
             </div>
             <button>Submit</button>
         </form>
