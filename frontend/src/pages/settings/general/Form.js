@@ -30,13 +30,9 @@ function GeneralForm() {
         });
     }
 
-    function handleReset() {
-        restoreDefault();
-    }
-
-
     return(
         <form className="general-form" onSubmit={(e) => e.preventDefault()}>
+            <h3 style={{ fontWeight: "300", color: "var(--secondary-font-color)", borderBottom: ".5px solid var(--secondary-font-color)" }}>Theme</h3>
             <div className="form-field">
                 <label htmlFor="--background-color">Background Color</label>
                 <input type="color" name="--background-color" id="--background-color" value={formInputs["--background-color"]} onChange={handleChange}/>
