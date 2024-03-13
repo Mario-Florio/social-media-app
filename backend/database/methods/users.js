@@ -93,16 +93,20 @@ async function deleteUser(id) {
     return res;
 }
 
-async function updateProfile(id, update) {
-    await Profile.findByIdAndUpdate(id, update).exec();
-    const profile = await Profile.findById(id).exec();
+async function updateProfile(userId, update) {
+    const userExists = await User.findById(userId).exec();
 
-    if (!profile) {
-        const res = { status: 400, message: "Profile does not exist", profile, success: false };
+    if (!userExists) {
+        const res = { status: 400, message: "User does not exist", success: false };
         return res;
     }
 
-    const res = { profile, message: "Update was successful", success: true };
+    await Profile.findByIdAndUpdate(userExists.profile, update).exec();
+    const profile = await Profile.findById(userExists.profile).exec();
+
+    userExists.profile = profile;
+
+    const res = { user: userExists, message: "Update was successful", success: true };
     return res;
 }
 

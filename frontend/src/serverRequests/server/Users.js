@@ -66,6 +66,23 @@ async function deleteUser(reqBody) {
     }
 }
 
+async function putProfile(reqBody) {
+    try {
+        const { id, token, update } = reqBody;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.put(`/users/${id}/profile`, update, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 async function putUserFollow(reqBody) {
     try {
         const { profileUserId, userId, follow, token } = reqBody;
@@ -94,5 +111,6 @@ export {
     postUser,
     putUser,
     deleteUser,
+    putProfile,
     putUserFollow
 };

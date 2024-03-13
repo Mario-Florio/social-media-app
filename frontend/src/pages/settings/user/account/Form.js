@@ -60,7 +60,10 @@ function AccountForm() {
     }
 
     function handleSubmit() {
-        if (!isValid()) return alert('Form input invalid');
+        if (!isValid()) {
+            console.log(errors);
+            return alert('Form input invalid')
+        };
         const reqBody = { id: user._id, update: {}, token };
         let isEdited = false;
         for (const key in formInput) {
@@ -108,7 +111,7 @@ function AccountForm() {
                     {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
                 </div>
             </div> }
-            <button onSubmit={handleSubmit}>Submit</button>
+            <button onClick={handleSubmit}>Submit</button>
             <button className="delete-button" onClick={handleDelete}>Delete Account</button>
         </form>
     );

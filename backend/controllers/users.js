@@ -50,6 +50,7 @@ async function update(req, res, next) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
 
+    console.log(req.body);
     const responseBody = await users_dbMethods.updateUser(userId, sanitizedInput);
     if (!responseBody.user) {
         const { status, message, user } = responseBody;
@@ -94,12 +95,10 @@ async function update_profile(req, res, next) {
 
     const sanitizedInput = sanitizeInput(req.body);
 
-    const user = await users_dbMethods.getUserById(userId);
-    const { profile } = user;
-    const responseBody = await users_dbMethods.updateProfile(profile._id, sanitizedInput);
-    if (!responseBody.profile) {
-        const { status, message, profile, success } = responseBody;
-        return res.status(status).json({ message, profile, success });
+    const responseBody = await users_dbMethods.updateProfile(userId, sanitizedInput);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
     } else {
         return res.json(responseBody);
     }

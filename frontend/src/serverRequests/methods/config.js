@@ -9,6 +9,7 @@ import {
     postUser,
     putUser,
     deleteUser,
+    putProfile,
     putUserFollow
 } from "../server/Users";
 import {
@@ -60,7 +61,7 @@ const requests = {
         postUser: mock ? postUserMock : postUser,
         putUser: mock ? putUserMock : putUser,
         deleteUser: mock ? deleteUserMock : deleteUser,
-        putProfile: mock ? putProfileMock : notSetup,
+        putProfile: mock ? putProfileMock : putProfile,
         putUserFollow: mock ? putUserFollowMock : putUserFollow
     },
     forums: {

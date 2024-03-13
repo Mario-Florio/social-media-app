@@ -46,8 +46,8 @@ describe("/users UPDATE_PROFILE", () => {
                     .set("Authorization", `Bearer ${token}`)
                     .send(data);
 
-                expect(response.body.profile.bio).toBe(data.bio);
-                expect(response.body.profile.picture).toBe(data.picture);
+                expect(response.body.user.profile.bio).toBe(data.bio);
+                expect(response.body.user.profile.picture).toBe(data.picture);
                 expect(response.body.message).toBeDefined();
                 expect(response.body.success).toBeDefined();
             }
