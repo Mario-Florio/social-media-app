@@ -1,5 +1,5 @@
 import "./useTheme.css";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { useLocalStorage } from "../useLocalStorage";
 
 const ThemeContext = createContext();
@@ -35,6 +35,20 @@ export const ThemeProvider = ({ children }) => {
     const [darkTheme, setDarkTheme] = useLocalStorage("dark-theme", defaultDarkTheme);
     const [theme, setTheme] = useLocalStorage("theme", defaultTheme);
 
+    useEffect(() => {
+        if (darkModeIsActive) {
+            document.body.classList.add("dark");
+            for (const key in darkTheme) {
+                document.body.style.setProperty(key, darkTheme[key]);
+            }
+        } else {
+            document.body.classList.remove("dark");
+            for (const key in theme) {
+                document.body.style.setProperty(key, theme[key]);
+            }
+        }
+    }, [darkModeIsActive, theme, darkTheme]);
+
     function restoreDefault() {
         setTheme(defaultTheme);
     }
@@ -56,14 +70,9 @@ export const ThemeProvider = ({ children }) => {
 
     return(
         <ThemeContext.Provider value={value}>
-            <div
-                id="themeProvider"
-                className={ darkModeIsActive ? "dark" : "" }
-                style={ darkModeIsActive ? darkTheme : theme}
-            >
-                {children}
-            </div>
-        </ThemeContext.Provider>);
+            {children}
+        </ThemeContext.Provider>
+    );
 };
 
 export const useTheme = () => {
