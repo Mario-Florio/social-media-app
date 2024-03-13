@@ -52,6 +52,15 @@
     outline: none;
 }
 
+.topbar form input::-webkit-input-placeholder {
+    color: var(--secondary-color);
+}
+
+/* DARK */
+.dark .topbar form input::-webkit-input-placeholder {
+    color: var(--secondary-font-color);
+}
+
 .topbar .searchbar .dropdown_bottom {
     z-index: 2;
     position: absolute;
