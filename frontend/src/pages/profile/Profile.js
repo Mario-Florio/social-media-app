@@ -105,7 +105,6 @@ function FollowButton({ profileUser, setProfileUser }) {
             setProfileUser(res.peerUser);
             setIsFollowing(!isFollowing);
             updateUser(res.clientUser);
-            updateToken(res.token);
         }
     }
 
