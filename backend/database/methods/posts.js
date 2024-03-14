@@ -16,32 +16,31 @@ async function getPosts() {
 }
 
 async function getPostById(id) {
-    try {
-        const post = await Post.findById(id)
-            .populate({ path: "user", populate: { path: "profile" } }).exec();
-        return post;
-    } catch(err) {
-        return null;
+    const post = await Post.findById(id)
+        .populate({ path: "user", populate: { path: "profile" } }).exec();
+
+    if (!post) {
+        return { status: 400, message: "Post does not exist", success: false };
     }
+    
+    return { message: "Request successful", post, success: true };
 }
 
 async function updatePost(id, update) {
     const postExists = await Post.findById(id).exec();
     if (!postExists) {
-        const res = { status: 400, message: "Post does not exist", post: null };
-        return res;
+        return { status: 400, message: "Post does not exist", post: null };
     }
 
     await Post.findByIdAndUpdate(id, update).exec();
     const post = await Post.findById(id)
         .populate({ path: "user", populate: { path: "profile" } }).exec();
 
-    const res = { success: true, message: "Update was successful", post };
-    return res;
+    return { success: true, message: "Update was successful", post };
 }
 
 async function deletePost(id) {
-    const postExists = await getPostById(id);
+    const postExists = await Post.findById(id).exec();
     if (!postExists) {
         const res = { status: 400, message: "Post does not exist", post: null };
         return res;

@@ -9,45 +9,89 @@ afterAll(async () => await database.disconnect());
 
 describe("/users READ_ONE", () => {
     describe("database has users", () => {
+        let response;
         let user;
-        beforeEach(async () => {
+        beforeAll(async () => {
             await populate.users();
             const users = await User.find().exec();
             user = users[0];
+            response = await request(app).get(`/api/users/${user._id}`);
         });
-        afterEach(async () => {
-            user = null;
+        afterAll(async () => {
             await database.dropCollections();
+            user = null;
+            response = null;
         });
 
         test("should return 200 status code", async () => {
-            const response = await request(app).get(`/api/users/${user._id}`);
-
             expect(response.statusCode).toBe(200);
         });
         test("should specify json in the content type header", async () => {
-            const response = await request(app).get(`/api/users/${user._id}`);
-
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
+        test("response body has truthy success field and message defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
         test("response body has accurate user", async () => {
-            const response = await request(app).get(`/api/users/${user._id}`);
-
             expect(response.body.user).toBeDefined();
             expect(response.body.user._id.toString()).toEqual(user._id.toString());
         });
-        test("should return null if user is not found", async () => {
-            const response = await request(app).get("/api/users/:ksjdnvksjv");
 
-            expect(response.body.user).toBeNull();
+        describe("User does not exist", () => {
+            let response;
+            beforeAll(async () => {
+                const unsavedUser = new User();
+                response = await request(app).get(`/api/users/${unsavedUser._id}`);
+            });
+            afterAll(async () => {
+                response = null;
+            });
+
+            test("should return 400 status code", async () => {
+                expect(response.statusCode).toBe(400);
+            });
+            test("should return false success field and defined message", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
+        });
+    });
+
+    describe("Invalid User ID", () => {
+        let response;
+        beforeAll(async () => {
+            response = await request(app).get("/api/users/s;djvn9prvbn");
+        });
+        afterAll(async () => {
+            response = null;
+        });
+
+        test("should return 500 status code", async () => {
+            expect(response.statusCode).toBe(500);
+        });
+        test("should return false success field and defined message", async () => {
+            expect(response.body.success).toBeFalsy();
+            expect(response.body.message).toBeDefined();
         });
     });
 
     describe("database is empty", () => {
-        test("should return null", async () => {
-            const response = await request(app).get("/api/users/:ksjdnvksjv");
-
-            expect(response.body.user).toBeNull();
+        let response;
+        beforeAll(async () => {
+            const unsavedUser = new User();
+            response = await request(app).get(`/api/users/${unsavedUser._id}`);
         });
-    })
+        afterAll(async () => {
+            response = null;
+        });
+
+        test("should return 400 status code", async () => {
+            expect(response.statusCode).toBe(400);
+        });
+        test("should return false success field and defined message", async () => {
+            expect(response.body.success).toBeFalsy();
+            expect(response.body.message).toBeDefined();
+        });
+    });
 });

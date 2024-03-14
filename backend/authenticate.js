@@ -29,7 +29,7 @@ function getToken(req, res, next) {
         req.token = bearerToken;
         next();
     } else {
-        res.status(404).json({ message: 'Action is forbidden' });
+        res.status(404).json({ message: 'Action is forbidden', success: false });
     }
 }
 

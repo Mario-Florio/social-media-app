@@ -33,6 +33,17 @@ describe("/users UPDATE_PROFILE", () => {
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
+        test("should contain truthy success field and message defined", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    bio: "Updated bio...",
+                    picture: "new pic"
+                });
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
         test("response body should contain updated profile and message", async () => {
             const bodyData = [
                 { bio: "Update bio 1...", picture: "new pic" },
@@ -48,103 +59,131 @@ describe("/users UPDATE_PROFILE", () => {
 
                 expect(response.body.user.profile.bio).toBe(data.bio);
                 expect(response.body.user.profile.picture).toBe(data.picture);
-                expect(response.body.message).toBeDefined();
-                expect(response.body.success).toBeDefined();
             }
         });
+
+        describe("input is invalid", () => {
+            let response;
+            beforeAll(async () => {
+                response = await request(app)
+                    .put(`/api/users/${user._id}/profile`)
+                    .set("Authorization", `Bearer ${token}`)
+                    .send({
+                        bio: "This string is greater than 250 characters... 51xM,qQhRqJk5EFmr4)TPCfSmR_V$_z2)L(KA=){K4CB#V]w-yP,GG8N59R&H&@3S5vh4CDh]C3S0Yckav]UBTd{]:uK8,0gfU9;&u{%*y!.GMt/c&-6E#VU1S.cj]v_q?H0WSDHeRea!r;N*i!KSA00L;V7(._}CcknNkX]99eG,R7=6P/,ST$77qW%-V=hg{yywg28ASN,P4Wdqb,H[-+%7w9ikWDHm5ywzb1h2ka,M34qZ8-ec0x8RZ",
+                        picture: "new pic"
+                    });
+            })
+            test("should respond with status code 422", async () => {
+                expect(response.statusCode).toBe(422);
+            });
+            test("response body has falsy success field and message defined", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
+        });
     });
 
-    describe("client not authorized", () => {
-        let token = null;
-        let user = null;
-        let updateUser = null;
-        beforeEach(async () => {
+    describe("client not authenticated", () => {
+        describe("token not present", () => {
+            let response;
+            beforeAll(async () => {
+                await populate.users();
+                const loginRes = await request(app).post("/api/auth/login").send({
+                    username: "username1",
+                    password: "password"
+                });
+                const user = loginRes.body.user;
+
+                response = await request(app)
+                    .put(`/api/users/${user._id}/profile`)
+                    .send({
+                        bio: "Updated bio...",
+                        picture: "new pic"
+                    });
+            });
+            afterAll(async () => {
+                response = null;
+                await database.dropCollections();
+            });
+
+            test("should return 404 status code and json content type header", async () => {
+                expect(response.statusCode).toBe(404);
+                expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+            });
+            test("should contain falsy success field and message defined", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
+        });
+
+        describe("token invalid (unverified)", () => {
+            let response;
+            beforeAll(async () => {
+                await populate.users();
+                const loginRes = await request(app).post("/api/auth/login").send({
+                    username: "username1",
+                    password: "password"
+                });
+                const token = "unsigned";
+                const user = loginRes.body.user;
+
+                response = await request(app)
+                    .put(`/api/users/${user._id}/profile`)
+                    .set("Authorization", `Bearer ${token}`)
+                    .send({
+                        bio: "Updated bio...",
+                        picture: "new pic"
+                    });
+            });
+            afterAll(async () => { 
+                response = null;
+                await database.dropCollections();
+            });
+            
+            test("should return 400 status code and json content type header", async () => {
+                expect(response.statusCode).toBe(400);
+                expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+            });
+            test("should contain falsy success field and message defined", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
+        });
+    });
+
+    describe("client not authorized (user is not authorized to update specified user)", () => {
+        let response;
+        beforeAll(async () => {
             await populate.users();
             const loginRes = await request(app).post("/api/auth/login").send({
                 username: "username1",
                 password: "password"
             });
-            token = loginRes.body.token;
-            user = loginRes.body.user;
-            updateUser = await User.findOne({ username: "username2" }).exec();
-        });
-        afterEach(async () => {
-            token = null;
-            user = null;
-            updateUser = null;
-            await database.dropCollections();
-        });
+            const token = loginRes.body.token;
+            const user = loginRes.body.user;
 
-        test("should return 404 status code and json content type header", async () => {
-            const response = await request(app)
+            const updateUser = await User.findOne({ username: "username2" }).exec();
+
+            response = await request(app)
                 .put(`/api/users/${updateUser._id}/profile`)
-                .set("Authorization", `Bearer ${token}`);
-                
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    bio: "Updated bio...",
+                    picture: "new pic"
+                });
+        });
+        afterAll(async () => {
+            await database.dropCollections();
+            response = null;
+        });
+    
+        test("should return 404 status code and json content type header", async () => {
             expect(response.statusCode).toBe(404);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-    });
-
-    describe("client not authenticated (token unverified)", () => {
-        let user = null;
-        beforeEach(async () => {
-            await populate.users();
-            const loginRes = await request(app).post("/api/auth/login").send({
-                username: "username1",
-                password: "password"
-            });
-            token = "";
-            user = loginRes.body.user;
-        });
-        afterEach(async () => {
-            user = null;
-            await database.dropCollections();
-        });
-
-        test("should return 404 status code and json content type header", async () => {
-            const response = await request(app)
-                .put(`/api/users/${user._id}/profile`);
-
-            expect(response.statusCode).toBe(404);
-            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
-        });
-    });
-
-    describe("token tampered, not present or otherwise invalid", () => {
-        let token = null;
-        let user = null;
-        beforeEach(async () => {
-            await populate.users();
-            const loginRes = await request(app).post("/api/auth/login").send({
-                username: "username1",
-                password: "password"
-            });
-            token = loginRes.body.token;
-            user = loginRes.body.user;
-        });
-        afterEach(async () => {
-            token = null;
-            user = null;
-            await database.dropCollections();
-        });
-
-        test("should return 404 status code and json content type header", async () => {
-            token = "";
-            const response = await request(app)
-                .put(`/api/users/${user._id}/profile`)
-                .set("Authorization", `Bearer ${token}`);
-
-            expect(response.statusCode).toBe(400);
-            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
-        });
-        test("should return 404 status code and json content type header", async () => {
-            token += "tamper";
-            const response = await request(app)
-                .put(`/api/users/${user._id}/profile`)
-                .set("Authorization", `Bearer ${token}`);
-
-            expect(response.statusCode).toBe(400);
-            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        test("should contain falsy success field and message defined", async () => {
+            expect(response.body.success).toBeFalsy();
+            expect(response.body.message).toBeDefined();
         });
     });
 });

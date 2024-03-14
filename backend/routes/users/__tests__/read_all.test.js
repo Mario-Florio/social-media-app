@@ -8,22 +8,27 @@ afterAll(async () => await database.disconnect());
 
 describe("/users READ_ALL", () => {
     describe("database has users", () => {
-        beforeEach(async () => await populate.users());
-        afterEach(async () => await database.dropCollections());
+        let response;
+        beforeAll(async () => {
+            await populate.users();
+            response = await request(app).get("/api/users");
+        });
+        afterAll(async () => {
+            await database.dropCollections();
+            response = null;
+        });
 
         test("should return 200 status code", async () => {
-            const response = await request(app).get("/api/users");
-
             expect(response.statusCode).toBe(200);
         });
         test("should specify json in the content type header", async () => {
-            const response = await request(app).get("/api/users");
-
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
+        test("response body has truthy success field and message field defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
         test("response body has accurate users array", async () => {
-            const response = await request(app).get("/api/users");
-
             expect(response.body.users).toBeDefined();
             expect(Array.isArray(response.body.users)).toBeTruthy();
             expect(response.body.users[0].username).toEqual("username1");
@@ -32,13 +37,26 @@ describe("/users READ_ALL", () => {
             expect(response.body.users[3].username).toEqual("username4");
         });
     });
-    describe("database is empty", () => {
-        test("should return empty array", async () => {
-            const response = await request(app).get("/api/users");
 
+    describe("database is empty", () => {
+        let response;
+        beforeAll(async () => response = await request(app).get("/api/users"));
+        afterAll(async () => response = null);
+
+        test("should return 200 status code", async () => {
+            expect(response.statusCode).toBe(200);
+        });
+        test("should specify json in the content type header", async () => {
+            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        });
+        test("response body has truthy success field and message field defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
+        test("response body has empty users array", async () => {
             expect(response.body.users).toBeDefined();
             expect(Array.isArray(response.body.users)).toBeTruthy();
             expect(response.body.users.length).toEqual(0);
-        })
-    })
+        });
+    });
 });

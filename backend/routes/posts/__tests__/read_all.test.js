@@ -8,18 +8,25 @@ afterAll(async () => await database.disconnect());
 
 describe("/posts READ_ALL", () => {
     describe("database has posts", () => {
-        beforeEach(async () => await populate.posts());
-        afterEach(async () => await database.dropCollections());
+        let response;
+        beforeEach(async () => {
+            await populate.posts();
+            response = await request(app).get("/api/posts");
+        });
+        afterEach(async () => {
+            await database.dropCollections();
+            response = null;
+        });
 
         test("should return 200 status code and json content type header", async () => {
-            const response = await request(app).get("/api/posts");
-
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
+        test("response body has truthy success field and message field defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
         test("response body has accurate posts", async () => {
-            const response = await request(app).get("/api/posts?profile=hello");
-
             expect(response.body.posts).toBeDefined();
             expect(Array.isArray(response.body.posts)).toBeTruthy();
             expect(response.body.posts.length).toEqual(4);
@@ -27,12 +34,24 @@ describe("/posts READ_ALL", () => {
     });
 
     describe("database is empty", () => {
-        test("should return empty array", async () => {
-            const response = await request(app).get("/api/posts");
+        let response;
+        beforeAll(async () => response = await request(app).get("/api/posts"));
+        afterAll(async () => response = null);
 
+        test("should return 200 status code", async () => {
+            expect(response.statusCode).toBe(200);
+        });
+        test("should specify json in the content type header", async () => {
+            expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+        });
+        test("response body has truthy success field and message field defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        });
+        test("response body has empty users array", async () => {
             expect(response.body.posts).toBeDefined();
             expect(Array.isArray(response.body.posts)).toBeTruthy();
             expect(response.body.posts.length).toEqual(0);
-        })
+        });
     });
 });

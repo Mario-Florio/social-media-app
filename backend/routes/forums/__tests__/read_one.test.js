@@ -9,47 +9,83 @@ afterAll(async () => await database.disconnect());
 
 describe("/forums READ_ONE", () => {
     describe("database has forums", () => {
+        let response;
         let forum;
-        beforeEach(async () => {
+        beforeAll(async () => {
             await populate.users();
             const forums = await Forum.find().exec();
             forum = forums[0];
+
+            response = await request(app).get(`/api/forums/${forum._id}`);
         });
-        afterEach(async () => {
+        afterAll(async () => {
+            response = null;
             forum = null;
             await database.dropCollections();
         });
 
         test("should return 200 status code", async () => {
-            const response = await request(app).get(`/api/forums/${forum._id}`);
-
             expect(response.statusCode).toBe(200);
         });
         test("should specify json in the content type header", async () => {
-            const response = await request(app).get(`/api/forums/${forum._id}`);
-
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-        test("response body has accurate forum, and success and message fields defined", async () => {
-            const response = await request(app).get(`/api/forums/${forum._id}`);
-
+        test("response has truthy success field & message fields defined", async () => {
+            expect(response.body.success).toBeTruthy();
+            expect(response.body.message).toBeDefined();
+        })
+        test("response body has accurate forum", async () => {
             expect(response.body.forum).toBeDefined();
             expect(response.body.forum._id.toString()).toEqual(forum._id.toString());
-            expect(response.body.success).toBeDefined();
-            expect(response.body.message).toBeDefined();
         });
-        test("should return null if forum is not found", async () => {
-            const response = await request(app).get("/api/forums/:ksjdnvksjv");
 
-            expect(response.body.forum).toBeNull();
+        describe("Forum does not exist", () => {
+            let response;
+            beforeAll(async () => {
+                const unsavedForum = new Forum();
+                response = await request(app).get(`/api/forums/${unsavedForum._id}`);
+            });
+            afterAll(async () => {
+                response= null;
+            });
+            test("should return 400 status code", async () => {
+                expect(response.statusCode).toBe(400);
+            });
+            test("should return falsy success field and defined message", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
+        });
+
+        describe("Invalid Forum ID", () => {
+            let response;
+            beforeAll(async () => response = await request(app).get(`/api/forums/kjdfbvepuirhv39obv`));
+            afterAll(async () => response= null);
+            test("should return 500 status code", async () => {
+                expect(response.statusCode).toBe(500);
+            });
+            test("should return false success field and defined message", async () => {
+                expect(response.body.success).toBeFalsy();
+                expect(response.body.message).toBeDefined();
+            });
         });
     });
 
     describe("database is empty", () => {
-        test("should return null", async () => {
-            const response = await request(app).get("/api/forums/:ksjdnvksjv");
-
-            expect(response.body.forum).toBeNull();
+        let response;
+        beforeAll(async () => {
+            const unsavedForum = new Forum();
+            response = await request(app).get(`/api/forums/${unsavedForum._id}`);
+        });
+        afterAll(async () => {
+            response = null;
+        })
+        test("should return status 400", async () => {
+            expect(response.statusCode).toBe(400);
+        });
+        test("should return false success field and defined message", async () => {
+            expect(response.body.success).toBeFalsy();
+            expect(response.body.message).toBeDefined();
         });
     });
 });

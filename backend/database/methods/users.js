@@ -52,12 +52,13 @@ async function getUsers() {
 }
 
 async function getUserById(id) {
-    try {
-        const user = await User.findById(id).populate("profile").exec();
-        return user;
-    } catch(err) {
-        return null;
+    const user = await User.findById(id).populate("profile").exec();
+    
+    if (!user) {
+        return { status: 400, message: "User does not exist", success: false };
     }
+
+    return { message: "Request successful", user, success: true };
 }
 
 async function updateUser(id, update) {
@@ -142,7 +143,7 @@ async function followProfile(userId, peerUserId, follow) {
     const peerUser = await User.findById(peerUserExists._id).populate("profile").exec();
     const token = jwt.sign({ user: clientUser }, process.env.SECRET, {expiresIn: "1h"});
 
-    return { message: "Update was successful", clientUser, peerUser, token, success: true };
+    return { message: "Update was successful", clientUser, peerUser, success: true };
 }
 
 module.exports = {

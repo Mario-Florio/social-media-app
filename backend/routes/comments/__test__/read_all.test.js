@@ -8,20 +8,25 @@ afterAll(async () => await database.disconnect());
 
 describe("/comments READ_ALL", () => {
     describe("database has posts", () => {
-        beforeEach(async () => await populate.posts());
-        afterEach(async () => await database.dropCollections());
+        let response;
+        beforeAll(async () => {
+            await populate.posts();
+            response = await request(app).get("/api/comments");
+        });
+        afterAll(async () => {
+            response = null;
+            await database.dropCollections();
+        });
 
         test("should return 200 status code and json content type header", async () => {
-            const response = await request(app).get("/api/comments");
-
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
-        test("response body has accurate posts and success & message fields defined", async () => {
-            const response = await request(app).get("/api/comments");
-
+        test("response body has truthy success field and message defined", async () => {
             expect(response.body.success).toBeDefined();
             expect(response.body.message).toBeDefined();
+        })
+        test("response body has accurate comments array", async () => {
             expect(response.body.comments).toBeDefined();
             expect(Array.isArray(response.body.comments)).toBeTruthy();
             expect(response.body.comments.length).toEqual(4);
