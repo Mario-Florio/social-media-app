@@ -29,19 +29,18 @@ async function registerUser(credentials) {
 
 async function authorizeUser(credentials) {
     const { username, password } = credentials;
-    const user = await User.findOne({ username }).populate("profile").exec();
+    const user = await User.findOne({ username }).select("+password").populate("profile").exec();
     if (!user) {
-        const res = { status: 400, message: "User does not exist", user: false, success: false };
-        return res;
+        return { status: 400, message: "User does not exist", user: false, success: false };
     } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
             const token = jwt.sign({ user }, process.env.SECRET, {expiresIn: "1h"});
+            user.password = "";
             const res = { message: "Login was successful", user, token, success: true };
             return res;
         } else {
-            const res = { status: 404, message: "Password does not match", user: false, success: false };
-            return res;
+            return { status: 404, message: "Password does not match", user: false, success: false };
         }
     }
 }
