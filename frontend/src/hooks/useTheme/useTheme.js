@@ -36,6 +36,14 @@ export const ThemeProvider = ({ children }) => {
     const [theme, setTheme] = useLocalStorage("theme", defaultTheme);
 
     useEffect(() => {
+        return () => {
+            for (const key in defaultTheme) {
+                document.body.style.removeProperty(key);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
         if (darkModeIsActive) {
             document.body.classList.add("dark");
             for (const key in darkTheme) {

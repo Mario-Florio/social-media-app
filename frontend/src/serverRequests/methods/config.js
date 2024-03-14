@@ -45,7 +45,7 @@ import {
 import { getComments, postComment } from "../server/Comments";
 import { getCommentsMock, postCommentMock } from "../mockServer/Comments";
 
-let mock = false;
+let mock = true;
 let resetCollections = true;
 
 resetCollections && populateCollections();
