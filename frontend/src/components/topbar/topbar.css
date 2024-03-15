@@ -24,17 +24,24 @@
     text-decoration: none;
 }
 
-.topbar .logo {
+.topbar .flexbox-left_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.topbar .flexbox-left_wrapper .logo {
     display: none;
     color: white;
 }
 
 /* DARK */
-.dark .topbar .logo {
+.dark .topbar .flexbox-left_wrapper .logo {
     color: var(--primary-font-color);
 }
 
-.topbar .hamburger-menu {
+.topbar .flexbox-left_wrapper .hamburger-menu {
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -42,7 +49,7 @@
     cursor: pointer;
 }
 
-.topbar .hamburger-menu>div {
+.topbar .flexbox-left_wrapper .hamburger-menu>div {
     background-color: var(--primary-color);
     height: 5px;
     width: 35px;
@@ -51,21 +58,27 @@
     transition-duration: .2s;
 }
 
-.topbar .hamburger-menu.active>div {
+.topbar .flexbox-left_wrapper .hamburger-menu.active>div {
     background-color: rgb(236, 226, 228);
     transition-duration: .2s;
 }
 
 /* DARK */
-.dark .topbar .hamburger-menu.active>div {
+.dark .topbar .flexbox-left_wrapper .hamburger-menu.active>div {
     background-color: var(--secondary-color);
 }
 
-.topbar nav {
+.topbar .flexbox-right_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.topbar .flexbox-right_wrapper nav {
     display: none;
 }
 
-.topbar nav ul {
+.topbar .flexbox-right_wrapper nav ul {
     display: flex;
     gap: 1rem;
     margin: 0;
@@ -73,45 +86,47 @@
     list-style: none;
 }
 
-.topbar nav a {
+.topbar .flexbox-right_wrapper nav a {
     font-weight: 600;
     color: white;
 }
 
 /* DARK */
-.dark .topbar nav a {
+.dark .topbar .flexbox-right_wrapper nav a {
     color: var(--primary-font-color);
 }
 
-.topbar .profilePic_wrapper {
+.topbar .flexbox-right_wrapper .profilePic_wrapper {
     display: flex;
     align-items: center;
+    height: 40px;
     width: 40px;
     border-radius: 50%;
     cursor: pointer;
 }
 
-.topbar .profilePic_wrapper.active {
+.topbar .flexbox-right_wrapper .profilePic_wrapper.active {
     border: solid 2px white
 }
 
-.topbar .profilePic_wrapper img {
+.topbar .flexbox-right_wrapper .profilePic_wrapper img {
+    height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
 
 @media all and (min-width: 750px) {
-    .topbar .logo {
+    .topbar .flexbox-left_wrapper .logo {
         display: initial;
         margin: 0;
     }
 
-    .topbar .hamburger-menu {
+    .topbar .flexbox-left_wrapper .hamburger-menu {
         display: none;
     }
 
-    .topbar nav {
+    .topbar .flexbox-right_wrapper nav {
         display: initial;
     }
 }

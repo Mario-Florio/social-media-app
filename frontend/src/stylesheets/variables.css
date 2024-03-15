@@ -2,7 +2,7 @@
 :root {
     --sidemenu_width: 100%;
     --sidemenu_max-width: 100%;
-    --topbar-height: 71px;
+    --topbar-height: 73px;
 }
 
 @media all and (min-width: 750px) {

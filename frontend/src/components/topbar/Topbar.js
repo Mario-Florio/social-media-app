@@ -17,27 +17,31 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, s
 
     return(
         <header className="topbar">
-            <Link to="/">
-                <h1 className="logo">Logo</h1>
-            </Link>
-            <HamburgerMenu
-                sideMenuIsActive={sideMenuIsActive}
-                setSideMenuIsActive={setSideMenuIsActive}
-                setDropDownMenuIsActive={setDropDownMenuIsActive}
-            />
-            <SearchBar/>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to={`/profile/${user.profile._id}`}>Profile</Link>
-                    </li>
-                </ul>
-            </nav>
-            <div className={ dropDownMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
-                <img onClick={toggleRightSideMenu} src={user.profile.picture} alt="Quick settings"/>
+            <div className="flexbox-left_wrapper">
+                <Link to="/">
+                    <h1 className="logo">Logo</h1>
+                </Link>
+                <HamburgerMenu
+                    sideMenuIsActive={sideMenuIsActive}
+                    setSideMenuIsActive={setSideMenuIsActive}
+                    setDropDownMenuIsActive={setDropDownMenuIsActive}
+                />
+                <SearchBar/>
+            </div>
+            <div className="flexbox-right_wrapper">
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
+                        <li>
+                            <Link to={`/profile/${user.profile._id}`}>Profile</Link>
+                        </li>
+                    </ul>
+                </nav>
+                <div className={ dropDownMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
+                    <img onClick={toggleRightSideMenu} src={user.profile.picture} alt="Quick settings"/>
+                </div>
             </div>
         </header>
     );
