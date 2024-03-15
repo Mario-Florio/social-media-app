@@ -4,12 +4,12 @@ import "./post.css";
 import "./likesSection.css";
 import "./optionsSection.css";
 import "./editSection.css";
-import Loader from "../../loader/Loader";
-import { useAuth } from "../../../hooks/useAuth";
-import { useTimeline } from "../../../hooks/useTimeline";
+import Loader from "../loader/Loader";
+import { useAuth } from "../../hooks/useAuth";
+import { useTimeline } from "../../hooks/useTimeline";
 
-import { populateUsers } from "../../../serverRequests/methods/users";
-import requests from "../../../serverRequests/methods/config";
+import { populateUsers } from "../../serverRequests/methods/users";
+import requests from "../../serverRequests/methods/config";
 import SectionWrapper from "./sectionWrapper/SectionWrapper";
 const { getPost, putPost, putPostLike } = requests.posts;
 

@@ -1,8 +1,8 @@
 import "./sideMenu.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 
-import { populateUsers } from "../../serverRequests/methods/users";
+import { populateUsers } from "../../../serverRequests/methods/users";
 import { useEffect, useState } from "react";
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {

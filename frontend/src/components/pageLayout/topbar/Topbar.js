@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./topbar.css";
 import "./searchbar.css"
-import searchIcon from "../../assets/imgs/search-icon.png";
-import { useAuth } from "../../hooks/useAuth";
+import searchIcon from "../../../assets/imgs/search-icon.png";
+import { useAuth } from "../../../hooks/useAuth";
 
-import { searchUsers } from "../../serverRequests/methods/users";
+import { searchUsers } from "../../../serverRequests/methods/users";
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, setDropDownMenuIsActive }) {
     const { user } = useAuth();

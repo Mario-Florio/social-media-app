@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Topbar from "../topbar/Topbar";
-import SideMenu from "../sidemenu/SideMenu";
-import DropDownMenu from "../dropDownMenu/DropDownMenu";
+import Topbar from "./topbar/Topbar";
+import SideMenu from "./sidemenu/SideMenu";
+import DropDownMenu from "./dropDownMenu/DropDownMenu";
 import { ThemeProvider } from "../../hooks/useTheme/useTheme";
 
 function PageLayout({ children }) {

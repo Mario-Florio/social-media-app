@@ -1,7 +1,7 @@
 import "./dropDownMenu.css";
 import { Link } from "react-router-dom";
-import { useTheme } from "../../hooks/useTheme/useTheme";
-import { useAuth } from "../../hooks/useAuth";
+import { useTheme } from "../../../hooks/useTheme/useTheme";
+import { useAuth } from "../../../hooks/useAuth";
 
 function DropDownMenu({ dropDownMenuIsActive }) {
     const { user, logout } = useAuth();

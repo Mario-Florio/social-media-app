@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./timeline.css";
-import Post from "./post/Post";
+import Post from "../post/Post";
 import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
 import Loader from "../loader/Loader";
