@@ -40,3 +40,9 @@
     flex: 2.5;
     border-bottom: 1px solid var(--secondary-color);
 }
+
+#settings .buttons_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}

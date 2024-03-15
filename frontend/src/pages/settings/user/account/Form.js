@@ -1,11 +1,13 @@
-import "./form.css";
 import { useState } from "react";
+import "./form.css";
+import Loader from "../../../../components/loader/Loader";
 import { useAuth } from "../../../../hooks/useAuth";
 import requests from "../../../../serverRequests/methods/config";
 
 const { putUser, deleteUser } = requests.users;
 
 function AccountForm() {
+    const [isLoading, setIsLoading] = useState(false);
     const { user, updateUser, token, logout } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
@@ -60,9 +62,9 @@ function AccountForm() {
     }
 
     function handleSubmit() {
-        if (!isValid()) {
-            return alert('Form input invalid')
-        };
+        if (!isValid()) return alert('Form input invalid');
+        setIsLoading(true);
+
         const reqBody = { id: user._id, update: {}, token };
         let isEdited = false;
         for (const key in formInput) {
@@ -78,6 +80,8 @@ function AccountForm() {
                 setFormInput({ username: user.username, password: "", confirmPassword: "" });
             })
             .catch(err => console.log(err));
+
+        setIsLoading(false);
     }
 
     async function handleDelete() {
@@ -116,8 +120,12 @@ function AccountForm() {
                     {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
                 </div>
             </div> }
-            <button onClick={handleSubmit}>Submit</button>
-            <button className="delete-button" onClick={handleDelete}>Delete Account</button>
+            <div className="buttons_wrapper">
+                <button disabled={isLoading} onClick={handleSubmit}>
+                    { isLoading ? <Loader color="var(--secondary-color" secondaryColor="white" size={15}/> :
+                    "Submit" }</button>
+                <button className="delete-button" onClick={handleDelete}>Delete Account</button>
+            </div>
         </form>
     );
 }

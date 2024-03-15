@@ -4,6 +4,7 @@ import "./post.css";
 import "./likesSection.css";
 import "./optionsSection.css";
 import "./editSection.css";
+import Loader from "../../loader/Loader";
 import { useAuth } from "../../../hooks/useAuth";
 import { useTimeline } from "../../../hooks/useTimeline";
 
@@ -200,11 +201,14 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
 }
 
 function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSectionIsActive, setEditSectionIsActive }) {
+    const [isLoading, setIsLoading] = useState(false);
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user, token } = useAuth();
     const { postIds, setPostIds } = useTimeline();
 
     async function deletePost() {
+        setIsLoading(true);
+
         const res = await requests.posts.deletePost({ id: post._id, token });
 
         if (res.success) {
@@ -213,6 +217,8 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
             setConfirmDeletePopupIsActive(false);
             setOptionsSectionIsActive(false);
         }
+
+        setIsLoading(false);
     }
 
     async function editPost() {
@@ -242,8 +248,8 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
             <div className={confirmDeletePopupIsActive ? "popup_mask active" : "popup_mask"}>
                 <div className="confirm-delete_popup">
                     <p>Are you sure you want to delete this post?</p>
-                    <button onClick={async () => await deletePost()}>Confirm</button>
-                    <button onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
+                    <button disabled={isLoading} onClick={async () => await deletePost()}>Confirm</button>
+                    <button disabled={isLoading} onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
                 </div>
             </div>
         </SectionWrapper>
@@ -251,6 +257,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
 }
 
 function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPost }) {
+    const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState(post.text);
     const { token } = useAuth();
 
@@ -260,6 +267,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setIsLoading(true);
 
         const updatedPostFields = {
             text: input,
@@ -272,6 +280,8 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
             setEditSectionIsActive(false);
             setPost(res.post);
         }
+
+        setIsLoading(false);
     }
 
     return(
@@ -282,7 +292,10 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
         >
             <form onSubmit={handleSubmit}>
                 <textarea value={input} onChange={handleChange}/>
-                <button>Submit</button>
+                <div className="button_wrapper">
+                    { isLoading && <Loader size={25}/> }
+                    <button disabled={isLoading}>Submit</button>
+                </div>
             </form>
         </SectionWrapper>
     )

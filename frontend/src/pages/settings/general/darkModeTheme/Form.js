@@ -31,8 +31,10 @@ function DarkModeThemeForm() {
                 <label htmlFor="--target-color">Target Color</label>
                 <input type="color" name="--target-color" id="--target-color" value={formInputs["--target-color"]} onChange={handleChange}/>
             </div>
-            <button onClick={handleSubmit}>Submit</button>
-            <button className="reset-button" onClick={restoreDefaultDark}>Restore Defaults</button>
+            <div className="buttons_wrapper">
+                <button onClick={handleSubmit}>Submit</button>
+                <button className="reset-button" onClick={restoreDefaultDark}>Restore Defaults</button>
+            </div>
         </form>
     );
 }

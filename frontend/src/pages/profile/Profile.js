@@ -3,6 +3,7 @@ import "./profile.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import ProfileTop from "./profileTop/ProfileTop";
 import Timeline from "../../components/timeline/Timeline";
+import Loader from "../../components/loader/Loader";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
@@ -82,6 +83,7 @@ function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
 }
 
 function FollowButton({ profileUser, setProfileUser }) {
+    const [isLoading, setIsLoading] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const { user, updateUser, token, updateToken } = useAuth();
 
@@ -93,6 +95,7 @@ function FollowButton({ profileUser, setProfileUser }) {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        setIsLoading(true);
 
         const res = await putUserFollow({
             userId: user._id,
@@ -106,18 +109,24 @@ function FollowButton({ profileUser, setProfileUser }) {
             setIsFollowing(!isFollowing);
             updateUser(res.clientUser);
         }
+        
+        setIsLoading(false);
     }
 
     return(isFollowing ? 
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="unfollow" className="hide">Unfollow</label>
-                <input type="checkbox" name="unfollow" id="unfollow" checked={true} readOnly className="hide"/>
-                <button>Unfollow</button>
-            </form> :
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="follow" className="hide">Follow</label>
-                <input type="checkbox" name="follow" id="follow" checked={true} readOnly className="hide"/>
-                <button>Follow</button>
-            </form>
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="unfollow" className="hide">Unfollow</label>
+            <input type="checkbox" name="unfollow" id="unfollow" checked={true} readOnly className="hide"/>
+            <button disabled={isLoading}>{ isLoading ?
+                        <Loader color="var(--secondary-color)" secondaryColor="white" size={17}/> :
+                        "Unfollow" }</button>
+        </form> :
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="follow" className="hide">Follow</label>
+            <input type="checkbox" name="follow" id="follow" checked={true} readOnly className="hide"/>
+            <button disabled={isLoading}>{ isLoading ?
+                        <Loader color="var(--secondary-color)" secondaryColor="white" size={17}/> :
+                        "Follow" }</button>
+        </form>
     );
 }

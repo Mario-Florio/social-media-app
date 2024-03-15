@@ -4,6 +4,7 @@ import "./timeline.css";
 import Post from "./post/Post";
 import { useAuth } from "../../hooks/useAuth";
 import { useTimeline } from "../../hooks/useTimeline";
+import Loader from "../loader/Loader";
 
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
@@ -31,6 +32,7 @@ function Timeline({ forumId }) {
 export default Timeline;
 
 function NewPost({ forumId }) {
+    const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState("");
     const { postIds, setPostIds } = useTimeline();
     const { user, token } = useAuth();
@@ -41,7 +43,8 @@ function NewPost({ forumId }) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-
+        if (input.trim() < 3) return;
+        setIsLoading(true);
         const res = await postPost({
             content: {
                 user: user._id, text: input.trim(),
@@ -54,6 +57,7 @@ function NewPost({ forumId }) {
             setPostIds([...postIds, res.post._id].reverse());
             setInput("");
         }
+        setIsLoading(false);
     }
 
     return(
@@ -64,7 +68,9 @@ function NewPost({ forumId }) {
             <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>
                 <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
-                <button>Post</button>
+                <button disabled={isLoading}>
+                    { isLoading ? <Loader color="var(--secondary-color)" secondaryColor="white" size={29}/> : "Post" }
+                </button>
             </form>
         </article>
     );

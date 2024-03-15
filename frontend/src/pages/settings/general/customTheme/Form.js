@@ -71,8 +71,10 @@ function CustomThemeForm() {
                 <label htmlFor="--box-shadow-color">Box Shadow Color</label>
                 <input type="color" name="--box-shadow-color" id="--box-shadow-color" value={formInputs["--box-shadow-color"]} onChange={handleChange}/>
             </div>
-            <button onClick={handleSubmit}>Submit</button>
-            <button className="reset-button" onClick={restoreDefault}>Restore Defaults</button>
+            <div className="buttons_wrapper">
+                <button onClick={handleSubmit}>Submit</button>
+                <button className="reset-button" onClick={restoreDefault}>Restore Defaults</button>
+            </div>
         </form>
     );
 }
