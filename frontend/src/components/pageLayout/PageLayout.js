@@ -16,10 +16,10 @@ function PageLayout({ children }) {
                 dropDownMenuIsActive={dropDownMenuIsActive}
                 setDropDownMenuIsActive={setDropDownMenuIsActive}
             />
-            <main>
+            <DropDownMenu dropDownMenuIsActive={dropDownMenuIsActive} setDropDownMenuIsActive={setDropDownMenuIsActive}/>
+            <main onClick={() => setDropDownMenuIsActive(false)}>
                 <SideMenu sideMenuIsActive={sideMenuIsActive} setSideMenuIsActive={setSideMenuIsActive}/>
                 {children}
-                <DropDownMenu dropDownMenuIsActive={dropDownMenuIsActive} setDropDownMenuIsActive={setDropDownMenuIsActive}/>
             </main>
         </ThemeProvider>
     );
