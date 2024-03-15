@@ -84,8 +84,7 @@ const requests = {
 // UTILS
 
 function notSetup() {
-    console.log("Not setup");
-    return { message: "", success: false };
+    return { message: "Not setup", success: false };
 }
 
 export default requests;

@@ -121,21 +121,64 @@ async function deleteUserMock(reqBody) {
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
+    const forums = getCollection("Forums");
+    const posts = getCollection("Posts");
+    const comments = getCollection("Comments");
 
-    let userFound = false;
-    let index = 0;
-    for (const user of users) {
-        if (user._id === id) {
-            userFound = true;
-            break;
-        }
-        index++;
+    const [ user ] = users.filter(user => user._id === id);
+
+    if (!user) return { message: "User does not exist", success: false };
+
+    const filteredUsers = users.filter(user => user._id !== id);
+
+    for (let i = 0; i < filteredUsers.length; i++) {
+        const filteredFollowing = filteredUsers[i].profile.following.filter(userId => userId !== user._id);
+        const filteredFollowers = filteredUsers[i].profile.followers.filter(userId => userId !== user._id);
+        filteredUsers[i].profile.following = filteredFollowing;
+        filteredUsers[i].profile.followers = filteredFollowers;
+
     }
 
-    if (!userFound) return { message: "User does not exist", success: false };
+    const filteredForums = forums.filter(forum => forum._id !== user.profile.forum);
 
-    users.splice(index, 1);
-    window.localStorage.setItem(JSON.stringify(users));
+    for (let i = 0; i < filteredForums.length; i++) {
+        const filteredPosts = filteredForums[i].posts.filter(postId => {
+            let isUser = false;
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]._id === postId) {
+                    isUser = posts[i].user === user._id;
+                    break;
+                }
+            }
+            return !isUser;
+        });
+        filteredForums[i].posts = filteredPosts;
+    }
+
+    const filteredPosts = posts.filter(post => post.user !== user._id);
+
+    for (let i = 0; i < filteredPosts.length; i++) {
+        const filteredLikes = filteredPosts[i].likes.filter(userId => userId !== user._id);
+        const filteredComments = filteredPosts[i].comments.filter(commentId => {
+            let isUser = false;
+            for (let i = 0; i < comments.length; i++) {
+                if (comments[i]._id === commentId) {
+                    isUser = comments[i].user === user._id;
+                    break;
+                }
+            }
+            return !isUser;
+        });
+        filteredPosts[i].likes = filteredLikes;
+        filteredPosts[i].comments = filteredComments;
+    }
+
+    const filteredComments = comments.filter(comment => comment.user !== user._id);
+
+    window.localStorage.setItem("Users", JSON.stringify(filteredUsers));
+    window.localStorage.setItem("Forums", JSON.stringify(filteredForums));
+    window.localStorage.setItem("Posts", JSON.stringify(filteredPosts));
+    window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
 
     return { message: "Deletion was successful", success: true };
 }

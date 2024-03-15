@@ -3,10 +3,10 @@ import { useState } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
 import requests from "../../../../serverRequests/methods/config";
 
-const { putUser } = requests.users;
+const { putUser, deleteUser } = requests.users;
 
 function AccountForm() {
-    const { user, updateUser, token } = useAuth();
+    const { user, updateUser, token, logout } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
         username: user.username,
@@ -61,7 +61,6 @@ function AccountForm() {
 
     function handleSubmit() {
         if (!isValid()) {
-            console.log(errors);
             return alert('Form input invalid')
         };
         const reqBody = { id: user._id, update: {}, token };
@@ -81,8 +80,14 @@ function AccountForm() {
             .catch(err => console.log(err));
     }
 
-    function handleDelete() {
-        console.log("Not setup");
+    async function handleDelete() {
+        const res = await deleteUser({ id: user._id, token });
+
+        if (res.success) {
+            await logout();
+        } else {
+            console.log(res.message);
+        }
     }
 
     return(
