@@ -27,57 +27,67 @@ async function getPostById(id) {
 }
 
 async function updatePost(id, update) {
-    const postExists = await Post.findById(id).exec();
-    if (!postExists) {
+    const post = await Post.findById(id)
+        .populate({ path: "user", populate: { path: "profile" } }).exec();
+
+    if (!post) {
         return { status: 400, message: "Post does not exist", post: null };
     }
 
-    await Post.findByIdAndUpdate(id, update).exec();
-    const post = await Post.findById(id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+    for (const key in update) {
+        if (
+            key !== "_id" ||
+            key !== "user" ||
+            key !== "createdAt" ||
+            key !== "updatedAt" ||
+            key !== "comments" ||
+            key !== "likes"
+        ) {
+            post[key] = update[key];
+        }
+    }
+    await post.save();
 
     return { success: true, message: "Update was successful", post };
 }
 
 async function deletePost(id) {
-    const postExists = await Post.findById(id).exec();
-    if (!postExists) {
-        const res = { status: 400, message: "Post does not exist", post: null };
-        return res;
+    const post = await Post.findByIdAndDelete(id).exec();
+
+    if (!post) {
+        return { status: 400, message: "Post does not exist", post: null };
     }
 
     const forums = await Forum.find().exec();
     for (const forum of forums) {
-        if (forum.posts.includes(postExists._id)) {
+        if (forum.posts.includes(post._id)) {
             await Forum.findByIdAndUpdate(forum._id, {
                 $pullAll: {
-                    posts: [postExists._id]
+                    posts: [post._id]
                 }
             });
         }
     }
 
-    await Post.findByIdAndDelete(id).exec();
-
-    const res = { success: true, message: "Deletion was successful" };
-    return res;
+    return { success: true, message: "Deletion was successful" };
 }
 
 async function likePost(id, userId) {
-    const postExists = await Post.findById(id).exec();
+    const post = await Post.findById(id)
+        .populate({ path: "user", populate: { path: "profile" } }).exec();
 
-    if (!postExists) {
+    if (!post) {
         return { status: 400, message: "Post does not exist", success: false };
     }
 
-    if (postExists.likes.includes(userId)) {
-        await Post.findByIdAndUpdate(postExists._id, { $pull: { likes: userId } }).exec();
+    if (post.likes.includes(userId)) {
+        const filteredLikes = post.likes.filter(likeId => likeId.toString() !== userId.toString());
+        post.likes = filteredLikes;
+        await post.save();
     } else {
-        await Post.findByIdAndUpdate(postExists._id, { $push: { likes: userId } }).exec();
+        post.likes.push(userId);
+        await post.save();
     }
-
-    const post = await Post.findById(postExists._id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
 
     return { message: "Update successful", post, success: true };
 }
