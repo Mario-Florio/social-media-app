@@ -127,17 +127,28 @@ async function deletePostMock(reqBody) {
 
     if (!postFound) return { message: "Post does not exist", success: false };
 
-    posts.splice(index, 1);
+    const [ post ] = posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
+
+    const comments = getCollection("Comments");
+
+    const filteredComments = comments.filter(comment => {
+        let isPost = false;
+        for (let i = 0; i < post.comments.length; i++) {
+            if (post.comments[i] === comment._id) {
+                isPost = true;
+            }
+        }
+        return !isPost;
+    });
+
+    window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
 
     const forums = getCollection("Forums");
 
     for (let i = 0; i < forums.length; i++) {
-        for (let j = 0; j < forums[i].posts.length; j++) {
-            if (forums[i].posts[j] === id) {
-                forums[i].posts.splice(j, 1);
-            }
-        }
+        const filteredPosts = forums[i].posts.filter(postId => postId !== post._id);
+        forums[i].posts = filteredPosts;
     }
 
     window.localStorage.setItem("Forums", JSON.stringify(forums));
