@@ -1,6 +1,8 @@
 const User = require("../../models/User");
 const Profile = require("../../models/Profile");
 const Forum = require("../../models/Forum");
+const Post = require("../../models/Post");
+const Comment = require("../../models/Comment");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -88,16 +90,66 @@ async function updateUser(id, update) {
 }
 
 async function deleteUser(id) {
-    const userExists = await User.findById(id).exec();
-    if (!userExists) {
+    // delete user
+    const user = await User.findByIdAndDelete(id).exec();
+
+    if (!user) {
         const res = { status: 400, message: "User does not exist", user: null, success: false };
         return res;
     }
 
-    await User.findByIdAndDelete(id).exec();
+    // delete users profile
+    const profile = await Profile.findByIdAndDelete(user.profile).exec();
 
-    const res = { success: true, message: "Deletion was successful" };
-    return res;
+    // remove user from any profiles followers or following
+    await Profile.updateMany({ following: user._id }, { $pull: { following: user._id } }).exec();
+    await Profile.updateMany({ followers: user._id }, { $pull: { followers: user._id } }).exec();
+
+    // delete users forum
+    const forum = await Forum.findByIdAndDelete(profile.forum).exec();
+
+    // delete all users posts on others forums
+    const forums = await Forum.find().populate("posts").exec();
+    for (const forum of forums) {
+        for (const post of forum.posts) {
+            if (post.user.toString() === user._id.toString()) {
+                await Forum.findByIdAndUpdate(forum._id, { $pull: { posts: post._id } }).exec();
+            }
+        }
+    }
+
+    // remove comments made by user on any posts
+    const posts = await Post.find().populate("comments").exec();
+    for (const post of posts) {
+        for (const comment of post.comments) {
+            if (comment.user.toString() === user._id.toString()) {
+                await Post.findByIdAndUpdate(post._id, { $pull: { comments: comment._id } }).exec();
+            }
+        }
+    }
+
+    // delete all posts from posts within users forum
+    const commentsFromDeletedPosts = [];
+    for (const postId of forum.posts) {
+        const post = await Post.findByIdAndDelete(postId).exec();
+        commentsFromDeletedPosts.push(...post.comments);
+    }
+
+    // delete any posts made by user
+    await Post.deleteMany({ user: user._id }).exec();
+
+    // remove likes from user on any post
+    await Post.updateMany({ likes: user._id }, { $pull: { likes: user._id } }).exec();
+
+    // delete any comments made by user
+    await Comment.deleteMany({ user: user._id }).exec();
+
+    // delete all comments that existed on deleted posts
+    for (const commentId of commentsFromDeletedPosts) {
+        await Comment.findByIdAndDelete(commentId).exec();
+    }
+
+    return { success: true, message: "Deletion was successful" };
 }
 
 async function updateProfile(userId, update) {

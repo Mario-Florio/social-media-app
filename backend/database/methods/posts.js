@@ -1,6 +1,7 @@
 const Post = require("../../models/Post");
 const Forum = require("../../models/Forum");
 const User = require("../../models/User");
+const Comment = require("../../models/Comment");
 
 async function createPost(data, forumId) {
     const post = await new Post(data).save();
@@ -56,6 +57,10 @@ async function deletePost(id) {
 
     if (!post) {
         return { status: 400, message: "Post does not exist", post: null };
+    }
+
+    for (const commentId of post.comments) {
+        await Comment.findByIdAndDelete(commentId).exec();
     }
 
     const forums = await Forum.find().exec();

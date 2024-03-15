@@ -1,10 +1,10 @@
-const connectDB = require("./connection");
+const connectDB = require("../connection");
 
-const User = require("../models/User");
-const Profile = require("../models/Profile");
-const Forum = require("../models/Forum");
-const Post = require("../models/Post");
-const Comment = require("../models/Comment");
+const User = require("../../models/User");
+const Profile = require("../../models/Profile");
+const Forum = require("../../models/Forum");
+const Post = require("../../models/Post");
+const Comment = require("../../models/Comment");
 
 const bcrypt = require("bcryptjs");
 

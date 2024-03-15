@@ -3,6 +3,10 @@ const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
+const Profile = require("../../../models/Profile");
+const Forum = require("../../../models/Forum");
+const Post = require("../../../models/Post");
+const Comment = require("../../../models/Comment");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -12,7 +16,7 @@ describe("/users REMOVE", () => {
         let response;
         let user;
         beforeAll(async () => {
-            await populate.users();
+            await populate.many();
             const loginRes = await request(app).post("/api/auth/login").send({
                 username: "username1",
                 password: "password"
@@ -40,7 +44,23 @@ describe("/users REMOVE", () => {
         });
         test("user should not exist in databse post request", async () => {
             const userExists = await User.findById(user._id).exec();
+            const userProfileExists = await Profile.findOne({ user: user._id }).exec();
+            const userForumExists = await Forum.findById(user.profile.forum).exec();
+            const usersPosts = await Post.find({ user: user._id }).exec();
+            const usersComments = await Comment.find({ user: user._id }).exec();
+
+            const usersFollows = await Profile.find({ followers: user._id }).exec();
+            const usersFollowings = await Profile.find({ followings: user._id }).exec();
+            const usersLikes = await Post.find({ likes: user._id }).exec();
+
             expect(userExists).toBeFalsy();
+            expect(userProfileExists).toBeFalsy();
+            expect(userForumExists).toBeFalsy();
+            expect(usersPosts.length).toEqual(0);
+            expect(usersComments.length).toEqual(0);
+            expect(usersFollows.length).toEqual(0);
+            expect(usersFollowings.length).toEqual(0);
+            expect(usersLikes.length).toEqual(0);
         });
     });
 
