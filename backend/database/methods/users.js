@@ -97,7 +97,6 @@ async function deleteUser(id) {
         return res;
     }
 
-
     // 1. delete all refs to users comments in posts (i.e. post.comments)
     const posts = await Post.find().populate("comments").exec();
     for (const post of posts) {
