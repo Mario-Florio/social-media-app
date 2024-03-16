@@ -42,13 +42,22 @@ describe("/users REMOVE", () => {
             expect(response.body.success).toBeTruthy();
             expect(response.body.message).toBeDefined();
         });
-        test("user should not exist in databse post request", async () => {
+        test("user should not exist in database post request", async () => {
             const userExists = await User.findById(user._id).exec();
             const userProfileExists = await Profile.findOne({ user: user._id }).exec();
             const userForumExists = await Forum.findById(user.profile.forum).exec();
             const usersPosts = await Post.find({ user: user._id }).exec();
             const usersComments = await Comment.find({ user: user._id }).exec();
 
+            const forumsWithUsersPost = [];
+            const forums = await Forum.find().populate("posts").exec();
+            for (const forum of forums) {
+                for (const post of forum.posts) {
+                    if (post.user === user._id) {
+                        forumsWithUsersPost.push(forum);
+                    }
+                }
+            }
             const usersFollows = await Profile.find({ followers: user._id }).exec();
             const usersFollowings = await Profile.find({ followings: user._id }).exec();
             const usersLikes = await Post.find({ likes: user._id }).exec();
@@ -58,6 +67,8 @@ describe("/users REMOVE", () => {
             expect(userForumExists).toBeFalsy();
             expect(usersPosts.length).toEqual(0);
             expect(usersComments.length).toEqual(0);
+
+            expect(forumsWithUsersPost.length).toEqual(0);
             expect(usersFollows.length).toEqual(0);
             expect(usersFollowings.length).toEqual(0);
             expect(usersLikes.length).toEqual(0);

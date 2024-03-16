@@ -91,34 +91,15 @@ async function updateUser(id, update) {
 
 async function deleteUser(id) {
     // delete user
-    const user = await User.findByIdAndDelete(id).exec();
+    const user = await User.findById(id).exec();
 
     if (!user) {
         const res = { status: 400, message: "User does not exist", user: null, success: false };
         return res;
     }
 
-    // delete users profile
-    const profile = await Profile.findByIdAndDelete(user.profile).exec();
 
-    // remove user from any profiles followers or following
-    await Profile.updateMany({ following: user._id }, { $pull: { following: user._id } }).exec();
-    await Profile.updateMany({ followers: user._id }, { $pull: { followers: user._id } }).exec();
-
-    // delete users forum
-    const forum = await Forum.findByIdAndDelete(profile.forum).exec();
-
-    // delete all users posts on others forums
-    const forums = await Forum.find().populate("posts").exec();
-    for (const forum of forums) {
-        for (const post of forum.posts) {
-            if (post.user.toString() === user._id.toString()) {
-                await Forum.findByIdAndUpdate(forum._id, { $pull: { posts: post._id } }).exec();
-            }
-        }
-    }
-
-    // remove comments made by user on any posts
+    // 1. delete all refs to users comments in posts (i.e. post.comments)
     const posts = await Post.find().populate("comments").exec();
     for (const post of posts) {
         for (const comment of post.comments) {
@@ -128,26 +109,50 @@ async function deleteUser(id) {
         }
     }
 
-    // delete all posts from posts within users forum
-    const commentsFromDeletedPosts = [];
-    for (const postId of forum.posts) {
-        const post = await Post.findByIdAndDelete(postId).exec();
-        commentsFromDeletedPosts.push(...post.comments);
-    }
-
-    // delete any posts made by user
-    await Post.deleteMany({ user: user._id }).exec();
-
-    // remove likes from user on any post
-    await Post.updateMany({ likes: user._id }, { $pull: { likes: user._id } }).exec();
-
-    // delete any comments made by user
+    // 2. delete all comments made by user (i.e. comment.user)
     await Comment.deleteMany({ user: user._id }).exec();
 
-    // delete all comments that existed on deleted posts
-    for (const commentId of commentsFromDeletedPosts) {
+    // 3. delete all refs to user in posts (i.e. post.likes)
+    await Post.updateMany({ likes: user._id }, { $pull: { likes: user._id } }).exec();
+
+    // 4. delete all refs to user in forums (i.e. forums.posts)
+    const forums = await Forum.find().populate("posts").exec();
+    for (const forum of forums) {
+        for (const post of forum.posts) {
+            if (post.user.toString() === user._id.toString()) {
+                await Forum.findByIdAndUpdate(forum._id, { $pull: { posts: post._id } }).exec();
+            }
+        }
+    }
+
+    // 5. delete all posts from Posts ref'd in users forum
+    const usersProfile = await Profile.findById(user.profile).populate("forum").exec();
+    const commentIdsFromDeletedPosts = []; // used in next step
+    for (const postId of usersProfile.forum.posts) {
+        const post = await Post.findByIdAndDelete(postId).exec();
+        commentIdsFromDeletedPosts.push(...post.comments);
+    }
+    
+    // 6. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
+    for (const commentId of commentIdsFromDeletedPosts) {
         await Comment.findByIdAndDelete(commentId).exec();
     }
+
+    // 7. delete any posts made by user
+    await Post.deleteMany({ user: user._id }).exec();
+
+    // 8. delete users forum
+    await Forum.findByIdAndDelete(usersProfile.forum).exec();
+
+    // 9. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
+    await Profile.updateMany({ following: user._id }, { $pull: { following: user._id } }).exec();
+    await Profile.updateMany({ followers: user._id }, { $pull: { followers: user._id } }).exec();
+
+    // 10. delete users profile
+    await Profile.findByIdAndDelete(user.profile).exec();
+
+    // 11. delete user
+    await User.findByIdAndDelete(id).exec();
 
     return { success: true, message: "Deletion was successful" };
 }
