@@ -9,14 +9,9 @@ import { populateComments } from "../../../serverRequests/methods/comments";
 const { getPost } = requests.posts;
 const { postComment } = requests.comments;
 
-const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
-
 function CommentsSection({ postId }) {
-    const [post, setPost] = useState(placeholderPost)
     const [comments, setComments] = useState([]);
-    const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const { user, token } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);
@@ -24,33 +19,12 @@ function CommentsSection({ postId }) {
             const res = await getPost({ id: postId });
             if (res.success) {
                 const comments = await populateComments(res.post.comments.reverse());
-                setPost(res.post);
                 setComments(comments);
             }
             setIsLoading(false);
         })();
     }, [postId]);
 
-    function handleChange(e) {
-        setInput(e.target.value);
-    }
-
-    async function handleSubmit(e) {
-        e.preventDefault();
-
-        try {
-            const res = await postComment({ postId, comment: { user: user._id, text: input }, token });
-
-            if (res.success) {
-                const populatedComment = await populateComments([res.comment._id]);
-                setComments(comments.reverse().concat(populatedComment).reverse());
-            }
-        } catch (err) {
-            console.log(err);
-        }
-
-        setInput("");
-    }
     return(
         <section className="comments-section">
             <ul>
@@ -65,17 +39,7 @@ function CommentsSection({ postId }) {
                 }
             </ul>
             <footer>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="comment" className="hide">Comment</label>
-                    <textarea
-                        name="comment"
-                        id="comment"
-                        placeholder="Write something..."
-                        value={input}
-                        onChange={handleChange}
-                    />
-                    <button>Send</button>
-                </form>
+                <Form postId={postId} comments={comments} setComments={setComments}/>
             </footer>
             <div style={{ height: "1px" }}></div>
         </section>
@@ -83,6 +47,46 @@ function CommentsSection({ postId }) {
 }
 
 export default CommentsSection;
+
+function Form({ postId, comments, setComments }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [input, setInput] = useState("");
+    const { user, token } = useAuth();
+
+    function handleChange(e) {
+        setInput(e.target.value);
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoading(true);
+
+        const res = await postComment({ postId, comment: { user: user._id, text: input }, token });
+
+        if (res.success) {
+            const populatedComment = await populateComments([res.comment._id]);
+            setComments(comments.reverse().concat(populatedComment).reverse());
+        }
+
+        setIsLoading(false);
+        setInput("");
+    }
+    return(
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="comment" className="hide">Comment</label>
+            <textarea
+                name="comment"
+                id="comment"
+                placeholder="Write something..."
+                value={input}
+                onChange={handleChange}
+            />
+            <button disabled={isLoading}>{ isLoading ?
+                <Loader color="white" secondaryColor="var(--secondary-color)" size={32}/> :
+                "Send" }</button>
+        </form>
+    );
+}
 
 function Comment({ comment }) {
     return(
