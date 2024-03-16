@@ -30,6 +30,7 @@
 .post header .details .profilePic_wrapper {
     height: 60px;
     min-width: 60px;
+    max-width: 60px;
     border-radius: 5px;
 }
 
