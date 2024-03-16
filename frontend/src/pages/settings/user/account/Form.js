@@ -8,6 +8,7 @@ const { putUser, deleteUser } = requests.users;
 
 function AccountForm() {
     const [isLoading, setIsLoading] = useState(false);
+    const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false);
     const { user, updateUser, token, logout } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
@@ -124,7 +125,14 @@ function AccountForm() {
                 <button disabled={isLoading} onClick={handleSubmit}>
                     { isLoading ? <Loader color="var(--secondary-color" secondaryColor="white" size={15}/> :
                     "Submit" }</button>
-                <button className="delete-button" onClick={handleDelete}>Delete Account</button>
+                <button className="delete-button" onClick={() => setConfirmDeletePopupIsActive(true)}>Delete Account</button>
+            </div>
+            <div className={confirmDeletePopupIsActive ? "popup_mask active" : "popup_mask"}>
+                <div className="confirm-delete_popup">
+                    <p>Are you sure you want to delete your account?</p>
+                    <button className="delete-button" disabled={isLoading} onClick={async () => await handleDelete()}>Confirm</button>
+                    <button disabled={isLoading} onClick={() => setConfirmDeletePopupIsActive(false)}>Cancel</button>
+                </div>
             </div>
         </form>
     );
