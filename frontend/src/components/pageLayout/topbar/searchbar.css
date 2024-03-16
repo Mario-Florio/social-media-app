@@ -111,6 +111,13 @@
 .topbar .flexbox-left_wrapper .searchbar .dropdown_bottom .profile-pic_wrapper {
     height: 25px;
     min-width: 25px;
+    max-width: 25px;
+}
+
+.topbar .flexbox-left_wrapper .searchbar .dropdown_bottom .profile-pic_wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 .topbar .flexbox-left_wrapper .searchbar .dropdown_bottom h5 {

@@ -10,7 +10,7 @@ import { useTimeline } from "../../hooks/useTimeline";
 
 import { populateUsers } from "../../serverRequests/methods/users";
 import requests from "../../serverRequests/methods/config";
-import SectionWrapper from "./sectionWrapper/SectionWrapper";
+import SectionWrapper from "../sectionWrapper/SectionWrapper";
 const { getPost, putPost, putPostLike } = requests.posts;
 
 const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
