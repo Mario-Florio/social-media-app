@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../../../hooks/useTheme/useTheme";
 import { useAuth } from "../../../hooks/useAuth";
 
-function DropDownMenu({ dropDownMenuIsActive }) {
+function DropDownMenu({ dropDownMenuIsActive, setDropDownMenuIsActive }) {
     const { user, logout } = useAuth();
     return(
         <section className={ dropDownMenuIsActive ? "drop-down-menu active" : "drop-down-menu" }>
             <div className="tail"/>
-            <Link to={`/profile/${user.profile._id}`}>
+            <Link
+                to={`/profile/${user.profile._id}`}
+                onClick={() => setDropDownMenuIsActive(false)}
+            >
                 <div className="profileCover-wrapper">
                     <img src={user.profile.coverPicture} alt="profile-cover"/>
                     <div className="profilePic-wrapper">
@@ -19,12 +22,18 @@ function DropDownMenu({ dropDownMenuIsActive }) {
             <nav>
                 <ul>
                     <li>
-                        <Link to="/settings">
+                        <Link
+                            to="/settings"
+                            onClick={() => setDropDownMenuIsActive(false)}
+                        >
                             <p>General Settings</p>
                         </Link>
                     </li>
                     <li>
-                        <Link to="/settings/user">
+                        <Link
+                            to="/settings/user"
+                            onClick={() => setDropDownMenuIsActive(false)}
+                        >
                             <p>User Settings</p>
                         </Link>
                     </li>
