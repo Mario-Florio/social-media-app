@@ -83,4 +83,8 @@
     .profileBottom .followCount {
         justify-content: flex-end;
     }
+
+    .profileBottom .followCount p {
+        z-index: 0;
+    }
 }
