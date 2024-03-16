@@ -90,7 +90,6 @@ async function updateUser(id, update) {
 }
 
 async function deleteUser(id) {
-    // delete user
     const user = await User.findById(id).exec();
 
     if (!user) {
