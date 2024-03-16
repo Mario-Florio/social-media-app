@@ -19,45 +19,48 @@
     color: var(--primary-font-color);
 }
 
-.post .details {
+.post header .details {
     display: flex;
 }
 
-.post .details .profilePic_wrapper {
+.post header .details .profilePic_wrapper {
     height: 60px;
     width: 60px;
     border-radius: 5px;
 }
 
-.post .details .profilePic_wrapper img {
+.post header .details .profilePic_wrapper img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
 
-.post .details .title {
+.post header .details .title {
     margin-left: 1rem;
 }
 
-.post .details .title h3 {
+.post header .details .title h3 {
     font-size: 1rem;
     margin: .25rem 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.post .details .title span {
+.post header .details .title span {
     color: var(--secondary-font-color);
     font-size: .85rem;
 }
 
-.post .options {
+.post header .options {
     display: flex;
     gap: 2px;
     padding: .5rem .25rem;
     cursor: pointer;
 }
 
-.post .options div {
+.post header .options div {
     background-color: var(--secondary-font-color);
     height: 2px;
     width: 2px;
@@ -81,10 +84,6 @@
 
 .post footer hr {
     border-top: .5px solid var(--secondary-font-color);
-}
-
-.dark .post footer hr {
-    border-top: .5px solid var(--secondary-dark-font-color);
 }
 
 .post footer .bottom {
