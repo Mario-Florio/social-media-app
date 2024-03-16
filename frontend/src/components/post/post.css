@@ -13,6 +13,9 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    /* Vars */
+    --options-width: 18px;
 }
 
 .post header a {
@@ -21,11 +24,12 @@
 
 .post header .details {
     display: flex;
+    width: calc(100% - var(--options-width));
 }
 
 .post header .details .profilePic_wrapper {
     height: 60px;
-    width: 60px;
+    min-width: 60px;
     border-radius: 5px;
 }
 
@@ -38,12 +42,13 @@
 
 .post header .details .title {
     margin-left: 1rem;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .post header .details .title h3 {
     font-size: 1rem;
     margin: .25rem 0;
-    max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
 }

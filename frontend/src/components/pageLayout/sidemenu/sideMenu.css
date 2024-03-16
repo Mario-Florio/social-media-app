@@ -31,7 +31,7 @@
     padding: 0;
 }
 
-.sidemenu li {
+.sidemenu ul li {
     margin-bottom: .5rem;
 }
 
@@ -50,7 +50,7 @@
     background-color: var(--hover-color);
 }
 
-.sidemenu article {
+.sidemenu ul li a article {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -59,16 +59,18 @@
     border-radius: 5px;
 }
 
-.sidemenu article:hover {
+.sidemenu ul li a article:hover {
     background-color: var(--hover-color);
 }
 
-.sidemenu article h3 {
+.sidemenu ul li a article h3 {
     font-size: 1rem;
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.sidemenu article img {
+.sidemenu ul li a article img {
     height: 60px;
     width: 60px;
     object-fit: cover;

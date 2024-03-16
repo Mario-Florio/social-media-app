@@ -24,13 +24,55 @@
     border-color: var(--secondary-color);
 }
 
-.comments-section li {
+.comments-section ul li {
     padding: 1rem;
     border-bottom: solid 1px lightgrey;
 }
 
-.dark .comments-section li {
+.dark .comments-section ul li {
     border-color: var(--secondary-color);
+}
+
+.comments-section ul li .comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    /* Vars */
+    --profile-pic_wrapper-width: 50px;
+}
+
+.comments-section ul li .comment a {
+    text-decoration: none;
+}
+
+.comments-section ul li .comment .profile-pic_wrapper {
+    height: 50px;
+    min-width: 50px;
+}
+
+.comments-section ul li .comment .profile-pic_wrapper img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comments-section ul li .comment div {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.comments-section ul li .comment h4 {
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: .25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comments-section ul li .comment p {
+    margin: 0;
 }
 
 .comments-section footer {
@@ -40,7 +82,7 @@
     max-width: inherit;
 }
 
-.comments-section form {
+.comments-section footer form {
     display: flex;
     gap: 1rem;
     background-color: white;
@@ -50,11 +92,11 @@
     box-shadow: 0px -1px 5px var(--box-shadow-color);
 }
 
-.dark .comments-section form {
+.dark .comments-section footer form {
     background-color: var(--primary-color);
 }
 
-.comments-section textarea {
+.comments-section footer form textarea {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: transparent;
     padding: 5px;
@@ -65,49 +107,17 @@
     resize: none;
 }
 
-.dark .comments-section textarea {
+.dark .comments-section footer form textarea {
     border-color: var(--secondary-color);
 }
 
-.comments-section button {
+.comments-section footer form button {
     font-weight: 600;
     color: white;
     background-color: var(--target-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.comment {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-}
-
-.comment a {
-    text-decoration: none;
-}
-
-.comment .profile-pic_wrapper {
-    height: 50px;
-    width: 50px;
-}
-
-.comment .profile-pic_wrapper img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.comment h4 {
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: .25rem;
-}
-
-.comment p {
-    margin: 0;
 }
 
 @media all and (min-width: 750px) {
@@ -121,7 +131,7 @@
         margin-bottom: 6.5rem;
     }
 
-    .comments-section li {
+    .comments-section ul li {
         padding-left: 3rem;
     }
 
@@ -129,7 +139,7 @@
         padding: 1rem 3rem;
     }
 
-    .comments-section form {
+    .comments-section footer form {
         border-radius: 5px;
     }
 }

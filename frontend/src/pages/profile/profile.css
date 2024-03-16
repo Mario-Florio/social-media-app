@@ -10,6 +10,9 @@
 .profileBottom h2,
 .profileBottom p {
     color: var(--primary-font-color);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .profileBottom h2 {

@@ -110,10 +110,12 @@
 
 .topbar .flexbox-left_wrapper .searchbar .dropdown_bottom .profile-pic_wrapper {
     height: 25px;
-    width: 25px;
+    min-width: 25px;
 }
 
 .topbar .flexbox-left_wrapper .searchbar .dropdown_bottom h5 {
     font-weight: 500;
     margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

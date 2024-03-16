@@ -23,7 +23,7 @@
 
 .likes-section .profile_wrapper .profile-pic_wrapper {
     height: 50px;
-    width: 50px;
+    min-width: 50px;
     border-radius: 50%;
 }
 
@@ -36,6 +36,9 @@
 
 .likes-section .profile_wrapper h3 {
     font-size: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .likes-section .profile_wrapper:hover {
