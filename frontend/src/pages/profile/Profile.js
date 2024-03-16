@@ -11,6 +11,7 @@ import { useTimeline } from "../../hooks/useTimeline";
 import { populateProfileUser } from "../../serverRequests/methods/users";
 
 import requests from "../../serverRequests/methods/config";
+import FollowSection from "./followSection/FollowSection";
 
 const { getForum } = requests.forums;
 const { putUserFollow } = requests.users;
@@ -20,11 +21,17 @@ const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum
 function Profile() {
     const [profileUser, setProfileUser] = useState(placeholderProfileUser);
     const [isLoading, setIsLoading] = useState(false);
+    const [userIds, setUserIds] = useState(profileUser.profile.followers)
+    const [followSectionIsActive, setFollowSectionIsActive] = useState(false);
+    const [isFollowers, setIsFollowers] = useState(true);
     const { id } = useParams();
     const { setPostIds } = useTimeline();
 
     useEffect(() => {
         setIsLoading(true);
+        setUserIds(profileUser.profile.followers);
+        setFollowSectionIsActive(false);
+        setIsFollowers(true);
         (async () => {
             try {
                 const profileUser = await populateProfileUser(id);
@@ -52,8 +59,20 @@ function Profile() {
         <PageLayout>
                 <section id="profile" className="main-component">
                     <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
-                    <ProfileBottom profileUser={profileUser} setProfileUser={setProfileUser}/>
+                    <ProfileBottom
+                        profileUser={profileUser}
+                        setProfileUser={setProfileUser}
+                        setUserIds={setUserIds}
+                        setIsFollowers={setIsFollowers}
+                        setFollowSectionIsActive={setFollowSectionIsActive}
+                    />
                     <Timeline forumId={profileUser.profile.forum._id}/>
+                    { followSectionIsActive && <FollowSection
+                        userIds={userIds}
+                        isFollowers={isFollowers}
+                        followSectionIsActive={followSectionIsActive}
+                        setFollowSectionIsActive={setFollowSectionIsActive}
+                    /> }
                 </section>
         </PageLayout>
     );
@@ -61,8 +80,27 @@ function Profile() {
 
 export default Profile;
 
-function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
+function ProfileBottom({
+    isLoading,
+    profileUser,
+    setProfileUser,
+    setUserIds,
+    setIsFollowers, 
+    setFollowSectionIsActive
+}) {
     const { user } = useAuth();
+
+    function displayFollowers() {
+        setUserIds(profileUser.profile.followers);
+        setIsFollowers(true);
+        setFollowSectionIsActive(true);
+    }
+
+    function displayFollowing() {
+        setUserIds(profileUser.profile.following);
+        setIsFollowers(false);
+        setFollowSectionIsActive(true);
+    }
 
     return(
         <section className="profileBottom">
@@ -73,9 +111,9 @@ function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
                     setProfileUser={setProfileUser}
                 /> }
                 <div className="followCount">
-                    <p>{profileUser.profile.followers.length} <span>followers</span></p>
+                    <p onClick={displayFollowers}>{profileUser.profile.followers.length} <span>followers</span></p>
                     <div>&#x2022;</div>
-                    <p>{profileUser.profile.following.length} <span>following</span></p>
+                    <p onClick={displayFollowing}>{profileUser.profile.following.length} <span>following</span></p>
                 </div>
                 <p>{profileUser.profile.bio}</p>
         </section>
@@ -85,7 +123,7 @@ function ProfileBottom({ isLoading, profileUser, setProfileUser }) {
 function FollowButton({ profileUser, setProfileUser }) {
     const [isLoading, setIsLoading] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
-    const { user, updateUser, token, updateToken } = useAuth();
+    const { user, updateUser, token } = useAuth();
 
     useEffect(() => {
         if (user.profile.following.includes(profileUser._id)) {

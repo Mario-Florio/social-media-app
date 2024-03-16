@@ -1,3 +1,4 @@
+
 .section_mask {
     z-index: -1;
     position: fixed;
@@ -29,6 +30,10 @@
     border-top-left-radius: 5px;
     box-shadow: 0px 1px 5px gray;
     transition-duration: .2s;
+
+    /* Vars */
+    --section-inner-height: calc(350px - 52px);
+    --section-inner-width: calc(100% - 32px);
 }
 
 .section * {
@@ -43,13 +48,14 @@
 
 .section.active {
     z-index: 2;
-    bottom: 0;
+    bottom: 0px;
     transition-duration: .2s;
 }
 
 .section header {
-    display: flex;
-    justify-content: flex-end;
+    position: sticky;
+    top: 0;
+    float: right;
     margin-bottom: .5rem;
 }
 
@@ -93,6 +99,14 @@
     rotate: -45deg;
 }
 
+.section .children_wrapper {
+    position: absolute;
+    bottom: 0;
+    height: var(--section-inner-height);
+    width: var(--section-inner-width);
+    overflow-y: scroll;
+}
+
 @media all and (min-width: 750px) {
     .section_mask {
         left: var(--sidemenu_max-width);
@@ -113,16 +127,16 @@
 @media all and (min-width: 1045px) {
     .section_mask {
         left: 400px;
-        max-width: calc(750px);
+        max-width: 750px;
     }
 
     .section_mask.active {
         left: 400px;
-        max-width: calc(750px);
+        max-width: 750px;
     }
 
     .section {
         left: 400px;
-        max-width: calc(750px);
+        max-width: 750px;
     }
 }

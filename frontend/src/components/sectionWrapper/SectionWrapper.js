@@ -26,7 +26,9 @@ function SectionWrapper({ sectionClassName, sectionIsActive, setSectionIsActive,
                         <div className="bar-2"></div>
                     </div>
                 </header>
-                {children}
+                <div className="children_wrapper">
+                    {children}
+                </div>
             </section>
         </>
     );

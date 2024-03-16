@@ -43,6 +43,7 @@
 
 .profileBottom .followCount p {
     margin: 0;
+    cursor: pointer;
 }
 
 .profileBottom .followCount div {
