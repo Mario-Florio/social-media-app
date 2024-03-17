@@ -113,7 +113,15 @@ async function deleteUser(id) {
     // 3. delete all refs to user in posts (i.e. post.likes)
     await Post.updateMany({ likes: user._id }, { $pull: { likes: user._id } }).exec();
 
-    // 4. delete all refs to user in forums (i.e. forums.posts)
+    // 4. delete all posts from Posts ref'd in users forum
+    const usersProfile = await Profile.findById(user.profile).populate("forum").exec();
+    const commentIdsFromDeletedPosts = []; // used in step 6
+    for (const postId of usersProfile.forum.posts) {
+        const post = await Post.findByIdAndDelete(postId).exec();
+        commentIdsFromDeletedPosts.push(...post.comments);
+    }
+
+    // 5. delete all refs to user in forums (i.e. forums.posts)
     const forums = await Forum.find().populate("posts").exec();
     for (const forum of forums) {
         for (const post of forum.posts) {
@@ -121,14 +129,6 @@ async function deleteUser(id) {
                 await Forum.findByIdAndUpdate(forum._id, { $pull: { posts: post._id } }).exec();
             }
         }
-    }
-
-    // 5. delete all posts from Posts ref'd in users forum
-    const usersProfile = await Profile.findById(user.profile).populate("forum").exec();
-    const commentIdsFromDeletedPosts = []; // used in next step
-    for (const postId of usersProfile.forum.posts) {
-        const post = await Post.findByIdAndDelete(postId).exec();
-        commentIdsFromDeletedPosts.push(...post.comments);
     }
     
     // 6. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))

@@ -129,37 +129,9 @@ async function deleteUserMock(reqBody) {
 
     if (!user) return { message: "User does not exist", success: false };
 
-    const filteredUsers = users.filter(user => user._id !== id);
-
-    for (let i = 0; i < filteredUsers.length; i++) {
-        const filteredFollowing = filteredUsers[i].profile.following.filter(userId => userId !== user._id);
-        const filteredFollowers = filteredUsers[i].profile.followers.filter(userId => userId !== user._id);
-        filteredUsers[i].profile.following = filteredFollowing;
-        filteredUsers[i].profile.followers = filteredFollowers;
-
-    }
-
-    const filteredForums = forums.filter(forum => forum._id !== user.profile.forum);
-
-    for (let i = 0; i < filteredForums.length; i++) {
-        const filteredPosts = filteredForums[i].posts.filter(postId => {
-            let isUser = false;
-            for (let i = 0; i < posts.length; i++) {
-                if (posts[i]._id === postId) {
-                    isUser = posts[i].user === user._id;
-                    break;
-                }
-            }
-            return !isUser;
-        });
-        filteredForums[i].posts = filteredPosts;
-    }
-
-    const filteredPosts = posts.filter(post => post.user !== user._id);
-
-    for (let i = 0; i < filteredPosts.length; i++) {
-        const filteredLikes = filteredPosts[i].likes.filter(userId => userId !== user._id);
-        const filteredComments = filteredPosts[i].comments.filter(commentId => {
+    for (let i = 0; i < posts.length; i++) {
+        // 1. delete all refs to users comments in posts (i.e. post.comments)
+        const filteredComments = posts[i].comments.filter(commentId => {
             let isUser = false;
             for (let i = 0; i < comments.length; i++) {
                 if (comments[i]._id === commentId) {
@@ -169,11 +141,64 @@ async function deleteUserMock(reqBody) {
             }
             return !isUser;
         });
-        filteredPosts[i].likes = filteredLikes;
-        filteredPosts[i].comments = filteredComments;
+
+        // 2. delete all refs to user in posts (i.e. post.likes)
+        const filteredLikes = posts[i].likes.filter(userId => userId !== user._id);
+        
+        posts[i].likes = filteredLikes;
+        posts[i].comments = filteredComments;
     }
 
-    const filteredComments = comments.filter(comment => comment.user !== user._id);
+    // 3. delete all comments made by user (i.e. comment.user)
+    let filteredComments = comments.filter(comment => comment.user !== user._id);
+
+    // 4. delete all posts from Posts ref'd in users forum
+    const [ userForum ] = forums.filter(forum => forum._id === user.profile.forum);
+    const commentIdsFromDeletedPosts = []; // used in next step
+    let filteredPosts = posts.filter(post => {
+        console.log(post._id);
+        console.log(userForum.posts.includes(post._id))
+        if (userForum.posts.includes(post._id)) {
+            commentIdsFromDeletedPosts.push(...post.comments);
+        }
+        return !userForum.posts.includes(post._id)
+    });
+
+    // 5. delete all refs to user in forums (i.e. forums.posts)
+    for (let i = 0; i < forums.length; i++) {
+        const filteredPosts = forums[i].posts.filter(postId => {
+            let isUser = false;
+            for (let i = 0; i < posts.length; i++) {
+                if (posts[i]._id === postId) {
+                    isUser = posts[i].user === user._id;
+                    break;
+                }
+            }
+            return !isUser;
+        });
+        forums[i].posts = filteredPosts;
+    }
+
+    // 6. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
+    filteredComments = filteredComments.filter(comment => !commentIdsFromDeletedPosts.includes(comment._id));
+
+    // 7. delete any posts made by user
+    filteredPosts = filteredPosts.filter(post => post.user !== user._id);
+
+    // 8. delete users forum
+    const filteredForums = forums.filter(forum => forum._id !== user.profile.forum);
+
+    // 9. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
+    for (let i = 0; i < users.length; i++) {
+        const filteredFollowing = users[i].profile.following.filter(userId => userId !== user._id);
+        const filteredFollowers = users[i].profile.followers.filter(userId => userId !== user._id);
+        users[i].profile.following = filteredFollowing;
+        users[i].profile.followers = filteredFollowers;
+    }
+
+    // 10. delete users profile
+    // 11. delete user
+    const filteredUsers = users.filter(user => user._id !== id);
 
     window.localStorage.setItem("Users", JSON.stringify(filteredUsers));
     window.localStorage.setItem("Forums", JSON.stringify(filteredForums));
