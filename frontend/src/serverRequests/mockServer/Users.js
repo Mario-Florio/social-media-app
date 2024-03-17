@@ -54,6 +54,7 @@ async function postUserMock(reqBody) {
         _id,
         username,
         password,
+        createdAt: new Date(),
         profile: {
             _id,
             picture: "../../assets/imgs/default/profile-picture.jpg",

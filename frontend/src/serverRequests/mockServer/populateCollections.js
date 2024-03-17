@@ -32,6 +32,7 @@ function populateUsersCollection() {
             _id: "1",
             username: "Jane Dough",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "1",
                 picture: janeDoughProfilePic,
@@ -46,6 +47,7 @@ function populateUsersCollection() {
             _id: "2",
             username: "Jesus Christ",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "2",
                 picture: jesusChristProfilePic,
@@ -60,6 +62,7 @@ function populateUsersCollection() {
             _id: "3",
             username: "Tyrion Lannister",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "3",
                 picture: tyrionLannisterProfilePic,
@@ -74,6 +77,7 @@ function populateUsersCollection() {
             _id: "4",
             username: "Jinx",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "4",
                 picture: jinxProfilePic,
@@ -88,6 +92,7 @@ function populateUsersCollection() {
             _id: "5",
             username: "Nea Karlsson",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "5",
                 picture: neaKarlssonProfilePic,
@@ -102,6 +107,7 @@ function populateUsersCollection() {
             _id: "6",
             username: "Rust Cohle",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "6",
                 picture: rustCohleProfilePic,
@@ -116,6 +122,7 @@ function populateUsersCollection() {
             _id: "7",
             username: "Ellie Williams",
             password: "password",
+            createdAt: new Date(),
             profile: {
                 _id: "7",
                 picture: ellieWilliamsProfilePic,

@@ -16,7 +16,7 @@ import FollowSection from "./followSection/FollowSection";
 const { getForum } = requests.forums;
 const { putUserFollow } = requests.users;
 
-const placeholderProfileUser = { profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
+const placeholderProfileUser = { username: "", createdAt: new Date(), profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
     const [profileUser, setProfileUser] = useState(placeholderProfileUser);
@@ -57,23 +57,23 @@ function Profile() {
 
     return(
         <PageLayout>
-                <section id="profile" className="main-component">
-                    <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
-                    <ProfileBottom
-                        profileUser={profileUser}
-                        setProfileUser={setProfileUser}
-                        setUserIds={setUserIds}
-                        setIsFollowers={setIsFollowers}
-                        setFollowSectionIsActive={setFollowSectionIsActive}
-                    />
-                    <Timeline forumId={profileUser.profile.forum._id}/>
-                    { followSectionIsActive && <FollowSection
-                        userIds={userIds}
-                        isFollowers={isFollowers}
-                        followSectionIsActive={followSectionIsActive}
-                        setFollowSectionIsActive={setFollowSectionIsActive}
-                    /> }
-                </section>
+            <section id="profile" className="main-component">
+                <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
+                <ProfileBottom
+                    profileUser={profileUser}
+                    setProfileUser={setProfileUser}
+                    setUserIds={setUserIds}
+                    setIsFollowers={setIsFollowers}
+                    setFollowSectionIsActive={setFollowSectionIsActive}
+                />
+                <Timeline forumId={profileUser.profile.forum._id} profileUser={profileUser}/>
+                { followSectionIsActive && <FollowSection
+                    userIds={userIds}
+                    isFollowers={isFollowers}
+                    followSectionIsActive={followSectionIsActive}
+                    setFollowSectionIsActive={setFollowSectionIsActive}
+                /> }
+            </section>
         </PageLayout>
     );
 }

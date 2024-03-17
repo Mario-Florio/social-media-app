@@ -9,7 +9,12 @@ import Loader from "../loader/Loader";
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
 
-function Timeline({ forumId }) {
+function Timeline({ forumId, profileUser }) {
+    const page = (
+        window.location.pathname.includes("profile") ? "profile" :
+        window.location.pathname.includes("post") ? "post" :
+        "home"
+    );
     const { postIds } = useTimeline();
 
     return(
@@ -24,6 +29,48 @@ function Timeline({ forumId }) {
                     <li className="seeMore">
                         <Link style={{ textDecoration: "none", color: "dodgerblue", fontSize: ".9rem" }}>See more...</Link>
                     </li> }
+                { postIds.length === 0 && page === "home" &&
+                    <article style={{ marginTop: "3rem" }}>
+                        <h3
+                            style={{
+                                textAlign: "center",
+                                color: "var(--secondary-font-color)",
+                                fontWeight: "300",
+                            }}
+                        >
+                            Looks like there is no activity
+                        </h3>
+                        <p
+                            style={{
+                                textAlign: "center",
+                                color: "var(--secondary-font-color)",
+                                fontWeight: "300",
+                            }}
+                        >
+                            Try searching for some friends to follow!
+                        </p>
+                    </article> }
+                { page === "profile" && profileUser &&
+                    <article style={{ padding: "1rem", marginBottom: "3rem", borderTop: "1px dashed var(--secondary-color)", borderBottom: "1px dashed var(--secondary-color)" }}>
+                        <h3
+                            style={{
+                                textAlign: "center",
+                                color: "var(--secondary-font-color)",
+                                fontWeight: "300",
+                            }}
+                        >
+                            { new Date(profileUser.createdAt).toLocaleDateString() }
+                        </h3>
+                        <p
+                            style={{
+                                textAlign: "center",
+                                color: "var(--secondary-font-color)",
+                                fontWeight: "300",
+                            }}
+                        >
+                            { `${profileUser.username} created there account!` }
+                        </p>
+                    </article> }
             </ul>
         </section>
     );
