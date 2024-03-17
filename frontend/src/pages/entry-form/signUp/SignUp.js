@@ -1,10 +1,13 @@
 import { useState } from "react";
 import Loader from "../../../components/loader/Loader";
 
+import { useAuth } from "../../../hooks/useAuth";
 import requests from "../../../serverRequests/methods/config";
 const { postUser } = requests.users;
+const { postLogin } = requests.auth;
 
 function SignUp({ isSignIn, setIsSignIn }) {
+    const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formInput, setFormInput] = useState({
         username: "",
@@ -56,26 +59,27 @@ function SignUp({ isSignIn, setIsSignIn }) {
         });
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (!isValid()) return alert('Form input invalid');
         setIsLoading(true);
-        postUser({ credentials: formInput })
-            .then(data => {
-                setIsLoading(false);
-                if (data.success) {
-                    setIsSignIn(true);
-                    setFormInput({
-                        username: "",
-                        password: "",
-                        confirmPassword: ""
-                    });
-                }
-            })
-            .catch(err => {
-                setIsLoading(false);
-                console.error(err);
+
+        const postUserRes = await postUser({ credentials: formInput });
+
+        if (postUserRes.success) {
+            const credentials = { username: postUserRes.user.username, password: formInput.password.trim() };
+            const postLoginRes = await postLogin(credentials);
+
+            if (postLoginRes.success) {
+                await login(postLoginRes);
+            }
+            setFormInput({
+                username: "",
+                password: "",
+                confirmPassword: ""
             });
+        }
+        setIsLoading(false);
     }
 
     return(

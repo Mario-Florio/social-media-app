@@ -44,7 +44,7 @@ async function postUserMock(reqBody) {
 
     for (const user of users) {
         if (user.username === username) {
-            return { message: "User already exists", success: true };
+            return { message: "User already exists", success: false };
         }
     }
 
