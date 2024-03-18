@@ -7,7 +7,6 @@ import EntryForm from "./pages/entry-form/EntryForm";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import PostPage from "./pages/post/Post";
-import { TimelineProvider } from "./hooks/useTimeline";
 import Settings from "./pages/settings/Settings";
 
 function App() {
@@ -15,9 +14,9 @@ function App() {
         <Routes>
             <Route path="/login" element={<EntryForm/>}/>
             <Route path="/" element={<ProtectedOutlet/>}>
-                <Route path="" element={<TimelineProvider><Home/></TimelineProvider>}/>
-                <Route path="profile/:id" element={<TimelineProvider><Profile/></TimelineProvider>}/>
-                <Route path="post/:id" element={<TimelineProvider><PostPage/></TimelineProvider>}/>
+                <Route path="" element={<Home/>}/>
+                <Route path="users/:id" element={<Profile/>}/>
+                <Route path="post/:id" element={<PostPage/>}/>
                 <Route path="settings/" element={<Settings/>}>
                     <Route path=":selected" element={<Settings/>}/>
                 </Route>

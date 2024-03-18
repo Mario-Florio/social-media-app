@@ -2,11 +2,27 @@ import axios from "axios";
 
 async function getPosts(reqBody) {
     try {
-        const response = await axios.get("/posts");
+        const queryString = getQueryString(reqBody.queryBody);
+        const url = queryString ? `/posts${queryString}` : "/posts";
+        const response = await axios.get(url);
         return response.data;
     } catch (err) {
         console.log(err);
         return err.response.data;
+    }
+    function getQueryString(queryBody) {
+        const { userId, timeline, page, limit } = queryBody;
+
+        let queryString = "?";
+        userId ? queryString+=`userId=${userId}&` : queryString+="";
+
+        timeline ? queryString+=`timeline=${timeline}&` : queryString+="";
+
+        page ? queryString+=`page=${page}&` : queryString+="";
+
+        limit ? queryString+=`limit=${limit}` : queryString+="";
+
+        return queryString.length > 1 ? queryString : null;
     }
 }
 

@@ -4,44 +4,42 @@ import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import ProfileTop from "./profileTop/ProfileTop";
 import Timeline from "../../components/timeline/Timeline";
+import { TimelineProvider } from "../../hooks/useTimeline";
+import FollowSection from "./followSection/FollowSection";
 import Loader from "../../components/loader/Loader";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { useTimeline } from "../../hooks/useTimeline";
-
-import { populateProfileUser } from "../../serverRequests/methods/users";
 
 import requests from "../../serverRequests/methods/config";
-import FollowSection from "./followSection/FollowSection";
 
-const { getForum } = requests.forums;
-const { putUserFollow } = requests.users;
+const { getUser, putUserFollow } = requests.users;
+const { getPosts } = requests.posts;
 
 const placeholderProfileUser = { username: "", createdAt: new Date(), profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
-    const [profileUser, setProfileUser] = useState(placeholderProfileUser);
     const [isLoading, setIsLoading] = useState(false);
-    const [userIds, setUserIds] = useState(profileUser.profile.followers)
+    const [profileUser, setProfileUser] = useState(placeholderProfileUser);
+    const { id } = useParams();
+
+    const [userIds, setUserIds] = useState(placeholderProfileUser.profile.followers);
     const [followSectionIsActive, setFollowSectionIsActive] = useState(false);
     const [isFollowers, setIsFollowers] = useState(true);
-    const { id } = useParams();
-    const { setPostIds } = useTimeline();
+
+    const queryBody = {
+        userId: id
+    };
 
     useEffect(() => {
         setIsLoading(true);
-        setUserIds(profileUser.profile.followers);
         setFollowSectionIsActive(false);
         setIsFollowers(true);
+
         (async () => {
             try {
-                const profileUser = await populateProfileUser(id);
-
-                const res = await getForum({ id: profileUser.profile.forum });
-                if (res.success) {
-                    profileUser.profile.forum = res.forum;
-                    setProfileUser(profileUser);
-                    setPostIds(profileUser.profile.forum.posts.reverse());
+                const getUserRes = await getUser({ id });
+                if (getUserRes.success) {
+                    setProfileUser(getUserRes.user);
                 }
                 setIsLoading(false);
             } catch (err) {
@@ -50,13 +48,12 @@ function Profile() {
         })();
 
         return () => {
-            setProfileUser(placeholderProfileUser);
-            setPostIds([]);
+            setProfileUser(null);
             setIsLoading(false);
         }
-    }, [id, setPostIds]);
+    }, [id]);
 
-    return(
+    return(profileUser &&
         <PageLayout>
             <section id="profile" className="main-component">
                 <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
@@ -67,12 +64,14 @@ function Profile() {
                     setIsFollowers={setIsFollowers}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 />
-                <Timeline forumId={profileUser.profile.forum._id}>
-                    <article className="account-created-at_banner">
-                        <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
-                        <p>{ `${profileUser.username} created there account!` }</p>
-                    </article>
-                </Timeline>
+                <TimelineProvider queryBody={queryBody}>
+                    <Timeline forumId={profileUser.profile.forum}>
+                        <article className="account-created-at_banner">
+                            <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
+                            <p>{ `${profileUser.username} created there account!` }</p>
+                        </article>
+                    </Timeline>
+                </TimelineProvider>
                 { followSectionIsActive && <FollowSection
                     userIds={userIds}
                     isFollowers={isFollowers}
@@ -87,7 +86,6 @@ function Profile() {
 export default Profile;
 
 function ProfileBottom({
-    isLoading,
     profileUser,
     setProfileUser,
     setUserIds,

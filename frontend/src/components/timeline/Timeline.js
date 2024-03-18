@@ -10,11 +10,16 @@ import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
 
 function Timeline({ forumId, children }) {
-    const page = (
+    const sitePage = (
         window.location.pathname.includes("profile") ? "profile" :
         window.location.pathname.includes("post") ? "post" : "home"
     );
-    const { postIds } = useTimeline();
+    const { setPage, posts } = useTimeline();
+    const postIds = posts.map(post => post._id);
+
+    function seeMore() {
+        setPage(page => page + 1);
+    }
 
     return(
         <section className="timeline">
@@ -24,12 +29,12 @@ function Timeline({ forumId, children }) {
                     <li key={postId}>
                         <Post postId={postId}/>
                     </li>) }
-                { postIds.length >= 10 && 
+                { postIds.length > 0 && postIds.length % 10 === 0 &&
                     <li className="seeMore">
-                        <span>See more...</span>
+                        <span onClick={seeMore}>See more...</span>
                     </li> }
-                { page !== "home" ? children :
-                    postIds.length === 0 && page === "home" && children }
+                { sitePage !== "home" ? children :
+                    postIds.length === 0 && sitePage === "home" && children }
             </ul>
         </section>
     );
@@ -68,7 +73,7 @@ function NewPost({ forumId }) {
 
     return(
         <article className="newPost">
-            <Link to={`/profile/${user.profile._id}`} className="profilePic-wrapper">
+            <Link to={`/users/${user._id}`} className="profilePic-wrapper">
                 <img src={ user.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="users profile pic"/>
             </Link>
             <form onSubmit={handleSubmit}>

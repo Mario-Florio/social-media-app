@@ -3,9 +3,15 @@ const { verifyToken } = require("../authenticate");
 
 async function read_all(req, res, next) {
     try {
-        const posts = await posts_dbMethods.getPosts();
+        const timeline = req.query.timeline === "true" ? true : false;
+        const userId = req.query.userId && req.query.userId;
+        const page = req.query.page && parseInt(req.query.page, 10);
+        const limit = req.query.limit && parseInt(req.query.limit, 10);
+
+        const posts = await posts_dbMethods.getPosts(limit, page, userId, timeline);
         res.json({ message: "Request successful", posts, success: true });
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -19,6 +25,7 @@ async function read_one(req, res, next) {
         }
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -56,6 +63,7 @@ async function create(req, res, next) {
 
         return res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -92,6 +100,7 @@ async function update(req, res, next) {
         
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -123,6 +132,7 @@ async function remove(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -154,6 +164,7 @@ async function like_post(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }

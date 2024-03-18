@@ -43,7 +43,7 @@ function FollowSection({ userIds, isFollowers, followSectionIsActive, setFollowS
                     users.map(user =>
                         <li key={user._id}>
                             <Link
-                                to={`/profile/${user.profile._id}`}
+                                to={`/users/${user._id}`}
                                 onClick={() => setFollowSectionIsActive(false)}
                             >
                                 <div className="profile_wrapper">

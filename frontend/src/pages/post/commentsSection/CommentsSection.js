@@ -91,11 +91,11 @@ function Form({ postId, comments, setComments }) {
 function Comment({ comment }) {
     return(
         <article className="comment">
-            <Link to={`/profile/${comment.user.profile._id}`} className="profile-pic_wrapper">
+            <Link to={`/users/${comment.user._id}`} className="profile-pic_wrapper">
                 <img src={comment.user.profile.picture} alt="user profile pic"/>
             </Link>
             <div>
-                <Link to={`/profile/${comment.user.profile._id}`}>
+                <Link to={`/users/${comment.user._id}`}>
                     <h4>{comment.user.username}</h4>
                 </Link>
                 <p>{comment.text}</p>

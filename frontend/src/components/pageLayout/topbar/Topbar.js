@@ -35,7 +35,7 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, s
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to={`/profile/${user.profile._id}`}>Profile</Link>
+                            <Link to={`/users/${user._id}`}>Profile</Link>
                         </li>
                     </ul>
                 </nav>
@@ -124,7 +124,7 @@ function SearchBar() {
                     { input.length > 0 && suggestions.map(user =>
                         <li key={user._id}>
                             <Link
-                                to={`/profile/${user.profile._id}`}
+                                to={`/users/${user._id}`}
                                 onClick={() => setInput("")}
                             >
                                 <div className="profile-pic_wrapper">

@@ -29,7 +29,7 @@ describe("/comments READ_ALL", () => {
         test("response body has accurate comments array", async () => {
             expect(response.body.comments).toBeDefined();
             expect(Array.isArray(response.body.comments)).toBeTruthy();
-            expect(response.body.comments.length).toEqual(4);
+            expect(response.body.comments.length).toEqual(19);
         });
     });
 

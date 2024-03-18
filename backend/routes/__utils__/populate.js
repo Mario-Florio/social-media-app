@@ -16,16 +16,26 @@ async function users() {
 }
 
 async function posts() {
-    let user = await User.findOne({ username: "username1" }).exec();
-    if (!user) {
+    let user1 = await User.findOne({ username: "username1" }).exec();
+    if (!user1) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash("password", salt);
         const forum = await new Forum().save();
         const profile = await new Profile({ bio: "This is a bio...", forum }).save();
-        user = await new User({ username: "username", password: hashedPassword, profile }).save();
+        user1 = await new User({ username: "username1", password: hashedPassword, profile }).save();
+    }
+    let user2 = await User.findOne({ username: "username2" }).exec();
+    if (!user2) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash("password", salt);
+        const forum = await new Forum().save();
+        const profile = await new Profile({ bio: "This is a bio...", forum, following: [user1] }).save();
+        user2 = await new User({ username: "username2", password: hashedPassword, profile }).save();
     }
 
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 20; i++) {
+        let user = user1;
+        if (i % 2 === 0) user = user2;
         const comment = await new Comment({ user, text: "This is a comment on post number "+i }).save();
         const post = await new Post({ user: user._id, text: "This is post number "+i, comments: [comment._id] }).save();
         const profile = await Profile.findById(user.profile).exec();

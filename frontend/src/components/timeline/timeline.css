@@ -65,6 +65,7 @@
 .timeline .feed .seeMore span {
     font-size: .9rem;
     color: var(--target-color);
+    cursor: pointer;
 }
 
 @media all and (min-width: 1045px) {

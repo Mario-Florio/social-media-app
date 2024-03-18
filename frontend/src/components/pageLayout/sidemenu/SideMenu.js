@@ -34,7 +34,7 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                         </Link>
                     </li>
                     <li>
-                        <Link to={`/profile/${user.profile._id}`} onClick={handleClick}>
+                        <Link to={`/users/${user._id}`} onClick={handleClick}>
                             <p>Profile</p>
                         </Link>
                     </li>
@@ -51,7 +51,7 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                 {
                     following.map(u => {
                         return <li key={u._id}>
-                            <Link to={`/profile/${u.profile._id}`} onClick={handleClick}>
+                            <Link to={`/users/${u._id}`} onClick={handleClick}>
                                 <article>
                                     <img src={u.profile.picture} alt="Profile pic"/>
                                     <h3>{u.username}</h3>

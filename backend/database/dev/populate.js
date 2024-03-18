@@ -84,7 +84,19 @@ const postsData = [
     { user: "Tyrion Lannister", text: "Hello", likes: [], comments: [] },
     { user: "Tyrion Lannister", text: "Hello", likes: ["Jane Dough", "Jesus Christ"], comments: [] },
     { user: "Tyrion Lannister", text: "Hello", likes: ["Jane Dough"], comments: [] },
-    { user: "Tyrion Lannister", text: "Hello", likes: ["Jesus Christ"], comments: []  }
+    { user: "Tyrion Lannister", text: "Hello", likes: ["Jesus Christ"], comments: []  },
+    { user: "Jinx", text: "Hello", likes: [], comments: [] },
+    { user: "Jinx", text: "Hello", likes: [], comments: [] },
+    { user: "Jinx", text: "Hello", likes: [], comments: [] },
+    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
+    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
+    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
+    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
+    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
+    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
+    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] },
+    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] },
+    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] }
 ];
 
 const commentsData = [
@@ -124,7 +136,7 @@ async function populate() {
         forums.push(forum);
     }
 
-    // populate following/follers
+    // populate following/followers
     for (let i = 0; i < users.length; i++) {
         for (let j = 0; j < users.length; j++) {
             if (users[i]._id.toString() !== users[j]._id.toString()) {

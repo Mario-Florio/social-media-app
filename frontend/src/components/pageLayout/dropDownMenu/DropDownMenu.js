@@ -9,7 +9,7 @@ function DropDownMenu({ dropDownMenuIsActive, setDropDownMenuIsActive }) {
         <section className={ dropDownMenuIsActive ? "drop-down-menu active" : "drop-down-menu" }>
             <div className="tail"/>
             <Link
-                to={`/profile/${user.profile._id}`}
+                to={`/users/${user._id}`}
                 onClick={() => setDropDownMenuIsActive(false)}
             >
                 <div className="profileCover-wrapper">

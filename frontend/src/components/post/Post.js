@@ -11,38 +11,31 @@ import { useTimeline } from "../../hooks/useTimeline";
 import { populateUsers } from "../../serverRequests/methods/users";
 import requests from "../../serverRequests/methods/config";
 import SectionWrapper from "../sectionWrapper/SectionWrapper";
-const { getPost, putPost, putPostLike } = requests.posts;
+const { putPost, putPostLike } = requests.posts;
 
 const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
 
 function Post({ postId }) {
-    const [post, setPost] = useState(placeholderPost);
     const [isLoading, setIsLoading] = useState(true);
+    const [post, setPost] = useState(placeholderPost);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user, token } = useAuth();
+    const { posts } = useTimeline();
 
     useEffect(() => {
         setIsLoading(true);
-        (async () => {
-            try {
-                const res = await getPost({ id: postId });
-                if (res.success) {
-                    setPost(res.post);
-                }
-                setIsLoading(false);
-            } catch (err) {
-                console.log(err);
-            }
-        })();
+        const [ post ] = posts.filter(post => post._id === postId);
+        post && setPost(post);
+        setIsLoading(false);
 
         return () => {
             setIsLoading(true);
             setPost(placeholderPost);
         }
-    }, [postId]);
+    }, [posts, postId]);
 
     function viewLikes() {
         setLikeIds(post.likes);
@@ -65,13 +58,13 @@ function Post({ postId }) {
             <header>
                 <div className="details">
                     { !isLoading ? 
-                        <Link to={`/profile/${post.user.profile._id}`} className="profilePic_wrapper">
+                        <Link to={`/users/${post.user._id}`} className="profilePic_wrapper">
                             <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
                         </Link> :
                         <div className="loadingBGColor profilePic_wrapper"></div> }
                     { !isLoading ? 
                         <div className="title">
-                            <Link to={ post.user.profile._id && `/profile/${post.user.profile._id}` }>
+                            <Link to={ post.user._id && `/users/${post.user._id}` }>
                                 <h3>{post.user.username}</h3>
                             </Link>
                             <span>{ post.createdAt && new Date(post.createdAt).toLocaleString() }</span>
@@ -183,7 +176,7 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
                     likes.map(like =>
                         <li key={like._id}>
                             <Link 
-                                to={`/profile/${like.profile._id}`}
+                                to={`/users/${like._id}`}
                                 onClick={() => setLikesSectionIsActive(false)}
                             >
                                 <div className="profile_wrapper">

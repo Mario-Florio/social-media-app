@@ -10,9 +10,27 @@ async function createPost(data, forumId) {
     return res;
 }
 
-async function getPosts() {
-    const posts = await Post.find()
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+async function getPosts(limit=10, page=0, userId, timeline) {
+    let postIds = [];
+
+    if (userId) {
+        const user = await User.findById(userId).populate({ path: "profile", populate: { path: "forum" } }).exec();
+        if (timeline) {
+            for (const followerId of user.profile.following) {
+                const follower = await User.findById(followerId).populate({ path: "profile", populate: { path: "forum" } }).exec();
+                postIds.push(...follower.profile.forum.posts);
+            }
+        }
+        postIds.push(...user.profile.forum.posts);
+    }
+    const queryObj = postIds.length > 0 ? { _id: { $in: postIds } } : {};
+
+    const posts = await Post.find(queryObj)
+        .limit(limit)
+        .skip(limit * page)
+        .sort({ createdAt: -1 })
+        .populate({ path: "user", populate: { path: "profile" } })
+        .exec();
     return posts;
 }
 
