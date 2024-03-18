@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./profile.css";
+import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import ProfileTop from "./profileTop/ProfileTop";
 import Timeline from "../../components/timeline/Timeline";
@@ -66,7 +67,12 @@ function Profile() {
                     setIsFollowers={setIsFollowers}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 />
-                <Timeline forumId={profileUser.profile.forum._id} profileUser={profileUser}/>
+                <Timeline forumId={profileUser.profile.forum._id}>
+                    <article className="account-created-at_banner">
+                        <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
+                        <p>{ `${profileUser.username} created there account!` }</p>
+                    </article>
+                </Timeline>
                 { followSectionIsActive && <FollowSection
                     userIds={userIds}
                     isFollowers={isFollowers}

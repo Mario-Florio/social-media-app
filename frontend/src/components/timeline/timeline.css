@@ -62,6 +62,11 @@
     margin: 3rem;
 }
 
+.timeline .feed .seeMore span {
+    font-size: .9rem;
+    color: var(--target-color);
+}
+
 @media all and (min-width: 1045px) {
     .timeline .newPost {
         border-radius: 5px;

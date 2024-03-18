@@ -1,0 +1,16 @@
+
+#home .no-activity {
+    margin-top: 3rem;
+}
+
+#home .no-activity h3 {
+    text-align: center;
+    color: var(--secondary-font-color);
+    font-weight: 300;
+}
+
+#home .no-activity p {
+    text-align: center;
+    color: var(--secondary-font-color);
+    font-weight: 300;
+}
