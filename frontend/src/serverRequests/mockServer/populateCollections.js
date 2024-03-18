@@ -149,7 +149,19 @@ function populatePostsCollection() {
         { _id: "7", user: "3", text: "Hello", likes: [], comments: [], createdAt: new Date() },
         { _id: "8", user: "3", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
         { _id: "9", user: "3", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
-        { _id: "10", user: "3", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() }
+        { _id: "11", user: "3", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() },
+        { _id: "12", user: "4", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
+        { _id: "13", user: "4", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
+        { _id: "14", user: "4", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() },
+        { _id: "15", user: "5", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
+        { _id: "16", user: "5", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
+        { _id: "17", user: "5", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() },
+        { _id: "18", user: "6", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
+        { _id: "19", user: "6", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
+        { _id: "20", user: "6", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() },
+        { _id: "21", user: "7", text: "Hello", likes: ["1", "2"], comments: [], createdAt: new Date() },
+        { _id: "22", user: "7", text: "Hello", likes: ["1"], comments: [], createdAt: new Date() },
+        { _id: "23", user: "7", text: "Hello", likes: ["2"], comments: [], createdAt: new Date() }
     ];
 
     window.localStorage.setItem("Posts", JSON.stringify(posts));

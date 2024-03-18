@@ -8,12 +8,38 @@ const ms = 2000;
 async function getPostsMock(reqBody){
     await delay(ms);
 
-    const posts = getCollection("Posts");
+    const { queryBody } = reqBody;
+
+    const limit = queryBody.limit || 10;
+    const page = queryBody.page || 0;
+
+    let posts = getCollection("Posts");
+    posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    if (queryBody.userId && queryBody.timeline) {
+        const users = getCollection("Users");
+        const [ user ] = users.filter((user, i) => user._id === queryBody.userId);
+        posts = posts.filter(post => {
+            let isTimeline = true;
+            if (post.user === user._id) return true;
+            for (let i = 0; i < user.profile.following.length; i++) {
+                if (post.user === user.profile.following[i]) {
+                    isTimeline = true;
+                }
+            }
+            return isTimeline;
+        });
+    }
+
+    if (queryBody.userId && !queryBody.timeline) {
+        posts = posts.filter(post => post.user === queryBody.userId);
+    }
+
+    posts = posts.filter((post, i) => (i+1 > page * limit) && (i+1 <= page * limit + limit));
 
     await populateUsers(posts);
 
     return { message: "Request successful", posts, success: true };
-
 }
 
 async function getPostMock(reqBody) {
@@ -37,7 +63,6 @@ async function getPostMock(reqBody) {
     await populateUsers([postFound]);
 
     return { message: "Request successful", post: postFound, success: true };
-
 }
 
 async function postPostMock(reqBody) {
