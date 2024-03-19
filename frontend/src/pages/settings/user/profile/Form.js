@@ -18,27 +18,38 @@ function ProfileForm() {
         });
     }
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        setIsLoading(true);
-
-        const requestBody = { id: user._id, update: {}, token };
-        let isEdited = false;
-        for (const key in formInput) {
-            if (formInput[key] !== "") {
-                requestBody.update[key] = formInput[key];
-                isEdited = true;
+    async function handleSubmit(e) {
+        try {
+            e.preventDefault();
+            setIsLoading(true);
+    
+            const requestBody = { id: user._id, update: {}, token };
+            let isEdited = false;
+            for (const key in formInput) {
+                if (formInput[key] !== "") {
+                    if (user.profile[key] !== formInput[key]) {
+                        requestBody.update[key] = formInput[key];
+                        isEdited = true;
+                    }
+                }
             }
-        }
-        isEdited && putProfile(requestBody)
-            .then(data => {
-                const { user } = data;
-                updateUser(user);
-                setFormInput({ bio: user.profile.bio });
-            })
-            .catch(err => console.log(err));
+            
+            if (isEdited) {
+                const res = await putProfile(requestBody);
 
-        setIsLoading(false);
+                if (res.success) {
+                    const user = res.user;
+                    updateUser(user);
+                    setFormInput({ bio: user.profile.bio });
+                    alert("Update successful");
+                }
+            }
+        } catch (err) {
+            alert("Update failed: please try again");
+            console.log(err);
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return(
@@ -49,8 +60,8 @@ function ProfileForm() {
                 <textarea name="bio" id="bio" value={formInput.bio} onChange={handleChange}/>
             </div>
             <button disabled={isLoading} onClick={handleSubmit}>
-                    { isLoading ? <Loader color="var(--secondary-color" secondaryColor="white" size={15}/> :
-                    "Submit" }</button>
+                { isLoading ? <Loader color="var(--secondary-color" secondaryColor="white" size={15}/> :
+                "Submit" }</button>
         </form>
     );
 }

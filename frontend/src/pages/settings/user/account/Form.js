@@ -62,27 +62,38 @@ function AccountForm() {
         });
     }
 
-    function handleSubmit() {
-        if (!isValid()) return alert('Form input invalid');
-        setIsLoading(true);
-
-        const reqBody = { id: user._id, update: {}, token };
-        let isEdited = false;
-        for (const key in formInput) {
-            if (formInput[key] !== "" && key !== "confirmPassword") {
-                reqBody.update[key] = formInput[key];
-                isEdited = true;
+    async function handleSubmit() {
+        try {
+            if (!isValid()) return alert('Form input invalid');
+            setIsLoading(true);
+    
+            const reqBody = { id: user._id, update: {}, token };
+            let isEdited = false;
+            for (const key in formInput) {
+                if (formInput[key] !== "" && key !== "confirmPassword") {
+                    if (user[key] !== formInput[key]) {
+                        reqBody.update[key] = formInput[key];
+                        isEdited = true;
+                    }
+                }
             }
-        }
-        isEdited && putUser(reqBody)
-            .then(data => {
-                const { user } = data;
-                updateUser(user);
-                setFormInput({ username: user.username, password: "", confirmPassword: "" });
-            })
-            .catch(err => console.log(err));
+            
+            if (isEdited) {
+                const res = await putUser(reqBody);
 
-        setIsLoading(false);
+                if (res.success) {
+                    const user = res.user;
+                    updateUser(user);
+                    setFormInput({ username: user.username, password: "", confirmPassword: "" });
+                    alert("Update successful");
+                }
+            }
+        } catch (err) {
+            alert("Update failed: please try again");
+            console.log(err);
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     async function handleDelete() {
@@ -123,7 +134,7 @@ function AccountForm() {
             </div> }
             <div className="buttons_wrapper">
                 <button disabled={isLoading} onClick={handleSubmit}>
-                    { isLoading ? <Loader color="var(--secondary-color" secondaryColor="white" size={15}/> :
+                    { isLoading ? <Loader color="var(--secondary-color)" secondaryColor="white" size={15}/> :
                     "Submit" }</button>
                 <button className="delete-button" onClick={() => setConfirmDeletePopupIsActive(true)}>Delete Account</button>
             </div>
