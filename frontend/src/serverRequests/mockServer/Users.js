@@ -3,12 +3,23 @@ import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
-const ms = 1000;
+const ms = 0;
 
-async function getUsersMock(reqBody) {
+async function getUsersMock(reqBody = { queryBody: {} }) {
     await delay(ms);
 
-    const users = getCollection("Users");
+    const { queryBody } = reqBody;
+
+    const limit = queryBody.limit || 10;
+    const page = queryBody.page || 0;
+
+    let users = getCollection("Users");
+
+    if (queryBody.search) {
+        users = users.filter(user => user.username.toLowerCase().includes(queryBody.search.toLowerCase()));
+    }
+
+    users = users.filter((user, i) => (i+1 > page * limit) && (i+1 <= page * limit + limit));
 
     return { message: "Request successful", users, success: true };
 }
