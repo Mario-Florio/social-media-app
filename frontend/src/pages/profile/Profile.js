@@ -13,22 +13,26 @@ import { useAuth } from "../../hooks/useAuth";
 import requests from "../../serverRequests/methods/config";
 
 const { getUser, putUserFollow } = requests.users;
-const { getPosts } = requests.posts;
 
 const placeholderProfileUser = { username: "", createdAt: new Date(), profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
     const [isLoading, setIsLoading] = useState(false);
-    const [profileUser, setProfileUser] = useState(placeholderProfileUser);
+    const [profileUser, setProfileUser] = useState(null);
     const { id } = useParams();
 
-    const [userIds, setUserIds] = useState(placeholderProfileUser.profile.followers);
+    const [userIds, setUserIds] = useState([]);
     const [followSectionIsActive, setFollowSectionIsActive] = useState(false);
     const [isFollowers, setIsFollowers] = useState(true);
 
-    const queryBody = {
-        userId: id
-    };
+    const reqSpecs = {
+        method: "getPosts",
+        reqBody: {
+            queryBody: {
+                userId: id
+            }
+        }
+    }
 
     useEffect(() => {
         setIsLoading(true);
@@ -40,6 +44,7 @@ function Profile() {
                 const getUserRes = await getUser({ id });
                 if (getUserRes.success) {
                     setProfileUser(getUserRes.user);
+                    setUserIds(getUserRes.user.profile.followers);
                 }
                 setIsLoading(false);
             } catch (err) {
@@ -55,7 +60,7 @@ function Profile() {
 
     return(profileUser &&
         <PageLayout>
-            <section id="profile" className="main-component">
+            { <section id="profile" className="main-component">
                 <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
                 <ProfileBottom
                     profileUser={profileUser}
@@ -64,7 +69,7 @@ function Profile() {
                     setIsFollowers={setIsFollowers}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 />
-                <TimelineProvider queryBody={queryBody}>
+                <TimelineProvider reqSpecs={reqSpecs}>
                     <Timeline forumId={profileUser.profile.forum}>
                         <article className="account-created-at_banner">
                             <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
@@ -78,7 +83,7 @@ function Profile() {
                     followSectionIsActive={followSectionIsActive}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 /> }
-            </section>
+            </section> }
         </PageLayout>
     );
 }

@@ -13,23 +13,23 @@ import requests from "../../serverRequests/methods/config";
 import SectionWrapper from "../sectionWrapper/SectionWrapper";
 const { putPost, putPostLike } = requests.posts;
 
-const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
+const placeholderPost = { _id: null, user: { username: "Post unable to load", profile: {} }, text: "", comments: [], likes: [] };
 
 function Post({ postId }) {
-    const [post, setPost] = useState(placeholderPost);
+    const [post, setPost] = useState(null);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user, token } = useAuth();
-    const { posts, isLoading } = useTimeline();
+    const { posts } = useTimeline();
 
     useEffect(() => {
         const [ post ] = posts.filter(post => post._id === postId);
-        post && setPost(post);
+        post ? setPost(post) : setPost(placeholderPost)
 
         return () => {
-            setPost(placeholderPost);
+            setPost(null);
         }
     }, [posts, postId]);
 
@@ -49,16 +49,16 @@ function Post({ postId }) {
         }
     }
 
-    return(
+    return(post &&
         <article className="post">
             <header>
                 <div className="details">
-                    { isLoading ?
+                    { post.loading ?
                         <div className="loadingBGColor profilePic_wrapper"></div> :
                         <Link to={`/users/${post.user._id}`} className="profilePic_wrapper">
                             <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
                         </Link> }
-                    { isLoading ?
+                    { post.loading ?
                         <div className="title">
                             <div className="loadingBGColor" style={{ height: "1rem", width: "150px", marginBottom: ".2rem", borderRadius: "5px" }}></div>
                             <div className="loadingBGColor" style={{ height: "1rem", width: "100px", borderRadius: "5px" }}></div>
