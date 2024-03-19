@@ -14,14 +14,13 @@ import requests from "../../serverRequests/methods/config";
 
 const { getUser, putUserFollow } = requests.users;
 
-const placeholderProfileUser = { username: "", createdAt: new Date(), profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
+const placeholderProfileUser = { username: "Unable to load profile", createdAt: new Date(), profile: { picture: "", coverPicture: "", forum: { posts: [] }, following: [], followers: [] } };
 
 function Profile() {
-    const [isLoading, setIsLoading] = useState(false);
     const [profileUser, setProfileUser] = useState(null);
     const { id } = useParams();
 
-    const [userIds, setUserIds] = useState([]);
+    const [followSectionIds, setFollowSectionIds] = useState([]);
     const [followSectionIsActive, setFollowSectionIsActive] = useState(false);
     const [isFollowers, setIsFollowers] = useState(true);
 
@@ -35,55 +34,52 @@ function Profile() {
     }
 
     useEffect(() => {
-        setIsLoading(true);
-        setFollowSectionIsActive(false);
-        setIsFollowers(true);
-
         (async () => {
             try {
                 const getUserRes = await getUser({ id });
                 if (getUserRes.success) {
                     setProfileUser(getUserRes.user);
-                    setUserIds(getUserRes.user.profile.followers);
+                    setFollowSectionIds(getUserRes.user.profile.followers);
+                } else {
+                    setProfileUser(placeholderProfileUser);
                 }
-                setIsLoading(false);
             } catch (err) {
                 console.log(err);
             }
         })();
-
         return () => {
             setProfileUser(null);
-            setIsLoading(false);
+            setFollowSectionIds(null);
+            setFollowSectionIsActive(false);
         }
     }, [id]);
 
-    return(profileUser &&
+    return(
         <PageLayout>
-            { <section id="profile" className="main-component">
-                <ProfileTop profileUser={profileUser} isLoading={isLoading}/>
-                <ProfileBottom
+            <section id="profile" className="main-component">
+                <ProfileTop profileUser={profileUser}/>
+                { profileUser && <ProfileBottom
                     profileUser={profileUser}
                     setProfileUser={setProfileUser}
-                    setUserIds={setUserIds}
+                    setFollowSectionIds={setFollowSectionIds}
                     setIsFollowers={setIsFollowers}
                     setFollowSectionIsActive={setFollowSectionIsActive}
-                />
-                <TimelineProvider reqSpecs={reqSpecs}>
+                /> }
+                { profileUser && <TimelineProvider reqSpecs={reqSpecs}>
                     <Timeline forumId={profileUser.profile.forum}>
                         <article className="account-created-at_banner">
                             <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
                             <p>{ `${profileUser.username} created there account!` }</p>
                         </article>
                     </Timeline>
-                </TimelineProvider>
+                </TimelineProvider> }
                 { followSectionIsActive && <FollowSection
-                    userIds={userIds}
+                    followSectionIds={followSectionIds}
                     isFollowers={isFollowers}
                     followSectionIsActive={followSectionIsActive}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 /> }
-            </section> }
+            </section>
         </PageLayout>
     );
 }
@@ -93,20 +89,20 @@ export default Profile;
 function ProfileBottom({
     profileUser,
     setProfileUser,
-    setUserIds,
+    setFollowSectionIds,
     setIsFollowers, 
     setFollowSectionIsActive
 }) {
     const { user } = useAuth();
 
     function displayFollowers() {
-        setUserIds(profileUser.profile.followers);
+        setFollowSectionIds(profileUser.profile.followers);
         setIsFollowers(true);
         setFollowSectionIsActive(true);
     }
 
     function displayFollowing() {
-        setUserIds(profileUser.profile.following);
+        setFollowSectionIds(profileUser.profile.following);
         setIsFollowers(false);
         setFollowSectionIsActive(true);
     }

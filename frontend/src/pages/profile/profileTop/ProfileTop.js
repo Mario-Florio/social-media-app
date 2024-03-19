@@ -2,44 +2,44 @@ import { useEffect, useState } from "react";
 import "./profileTop.css";
 import { useAuth } from "../../../hooks/useAuth";
 
-function ProfileTop({ profileUser, isLoading }) {
-    const [picture, setPicture] = useState(profileUser.profile.picture);
+function ProfileTop({ profileUser }) {
+    const [picture, setPicture] = useState(null);
     const [picturePopupIsActive, setPicturePopupIsActive] = useState(false);
-    const [coverPhoto, setCoverPhoto] = useState(profileUser.profile.coverPicture);
+    const [coverPhoto, setCoverPhoto] = useState(null);
     const [coverPhotoPopupIsActive, setCoverPhotoPopupIsActive] = useState(false);
     const { user } = useAuth();
 
     useEffect(() => {
-        setCoverPhoto(profileUser.profile.coverPicture);
-        setPicture(profileUser.profile.picture);
+        profileUser && setCoverPhoto(profileUser.profile.coverPicture);
+        profileUser && setPicture(profileUser.profile.picture);
+        return () => {
+            setCoverPhoto(null);
+            setPicture(null);
+        }
     }, [profileUser]);
 
-    return(
+    return(!profileUser ?
+        <LoaderProfile/> :
         <section className="profileTop">
-            { isLoading ?
-                <div className="coverPhoto_wrapper">
-                    <div className="loadingBGColor coverPhoto"></div>
-                </div> :
-                profileUser._id === user._id ?
+            { profileUser._id === user._id ?
+                <>
                     <div className="coverPhoto_wrapper">
                         <img src={ coverPhoto || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/>
                         <div className="coverPhoto_mask" onClick={() => setCoverPhotoPopupIsActive(true)}></div>
-                    </div> :
-                    <div className="coverPhoto_wrapper">
-                        <img src={ coverPhoto || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/>
-                    </div> }
-            { isLoading ?
-                <div className="profilePic_wrapper">
-                    <div className="loadingBGColor profilePic"></div>
-                </div> :
-                profileUser._id === user._id ?
+                    </div>
                     <div className="profilePic_wrapper">
                         <img src={ picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/>
                         <div className="profilePic_mask" onClick={() => setPicturePopupIsActive(true)}></div>
-                    </div> :
+                    </div>
+                </> :
+                <>
+                    <div className="coverPhoto_wrapper">
+                        <img src={ coverPhoto || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/>
+                    </div>
                     <div className="profilePic_wrapper">
                         <img src={ picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/>
-                    </div> }
+                    </div>
+                </> }
             <PicturePopup
                 isActive={picturePopupIsActive}
                 setIsActive={setPicturePopupIsActive}
@@ -55,6 +55,19 @@ function ProfileTop({ profileUser, isLoading }) {
 }
 
 export default ProfileTop;
+
+function LoaderProfile() {
+    return(
+        <section className="profileTop">
+            <div className="coverPhoto_wrapper">
+                <div className="loadingBGColor coverPhoto"></div>
+            </div>
+            <div className="profilePic_wrapper">
+                <div className="loadingBGColor profilePic"></div>
+            </div>
+        </section>
+    );
+}
 
 function PopupWrapper({ children }) {
     return(

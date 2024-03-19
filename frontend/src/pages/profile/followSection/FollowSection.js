@@ -5,7 +5,7 @@ import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
 import { populateUsers } from "../../../serverRequests/methods/users";
 import { Link } from "react-router-dom";
 
-function FollowSection({ userIds, isFollowers, followSectionIsActive, setFollowSectionIsActive }) {
+function FollowSection({ followSectionIds, isFollowers, followSectionIsActive, setFollowSectionIsActive }) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -13,14 +13,14 @@ function FollowSection({ userIds, isFollowers, followSectionIsActive, setFollowS
         setIsLoading(true);
         (async () => {
             try {
-                const users = await populateUsers(userIds);
+                const users = await populateUsers(followSectionIds);
                 setUsers(users);
             } catch (err) {
                 console.log(err);
             }
             setIsLoading(false);
         })();
-    }, [userIds, followSectionIsActive]);
+    }, [followSectionIds, followSectionIsActive]);
 
     return(
         <SectionWrapper
@@ -31,7 +31,7 @@ function FollowSection({ userIds, isFollowers, followSectionIsActive, setFollowS
             <h3>{ isFollowers ? "Followers" : "Following" }</h3>
             <ul>
             { isLoading ?
-                    userIds.map(userId => 
+                    followSectionIds.map(userId => 
                         <li key={userId}>
                             <div className="profile_wrapper">
                                 <div className="loadingBGColor profile-pic_wrapper"></div>
