@@ -45,8 +45,15 @@ async function authorizeUser(credentials) {
     }
 }
 
-async function getUsers() {
-    const users = await User.find().populate("profile").exec();
+async function getUsers(limit=10, page=0, search) {
+    const queryObj = search ? { username: { $regex: search } } : {};
+    
+    const users = await User.find(queryObj)
+        .limit(limit)
+        .skip(limit * page)
+        .sort({ username: 1 })
+        .populate("profile")
+        .exec();
     return users;
 }
 

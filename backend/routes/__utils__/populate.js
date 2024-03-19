@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 async function users() {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash("password", salt);
-    for (let i = 1; i < 5; i++) {
+    for (let i = 1; i < 20; i++) {
         const forum = await new Forum().save();
         const profile = await new Profile({ bio: "This is a bio...", forum }).save();
         await new User({ username: "username"+i, password: hashedPassword, profile }).save();

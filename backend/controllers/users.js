@@ -3,9 +3,14 @@ const { verifyToken } = require("../authenticate");
 
 async function read_all(req, res, next) {
     try {
-        const users = await users_dbMethods.getUsers();
+        const page = req.query.page && parseInt(req.query.page, 10);
+        const limit = req.query.limit && parseInt(req.query.limit, 10);
+        const search = req.query.search;
+
+        const users = await users_dbMethods.getUsers(limit, page, search);
         res.json({ message: "Request successful", users, success: true });
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 } 
@@ -19,6 +24,7 @@ async function read_one(req, res, next) {
         }
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -48,6 +54,7 @@ async function create(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -79,6 +86,7 @@ async function update(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -104,6 +112,7 @@ async function remove(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -135,6 +144,7 @@ async function update_profile(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
@@ -162,6 +172,7 @@ async function follow_profile(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ message: "Request unsuccessful", success: false });
     }
 }
