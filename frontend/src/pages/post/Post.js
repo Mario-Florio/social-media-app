@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "./post.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import CommentsSection from "./commentsSection/CommentsSection";
