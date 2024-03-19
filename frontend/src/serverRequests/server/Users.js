@@ -5,7 +5,6 @@ async function getUsers(reqBody={}) {
         const queryString = reqBody.queryBody ? getQueryString(reqBody.queryBody) : "";
         const url = queryString ? `/users${queryString}` : "/users";
         const response = await axios.get(url);
-        console.log(response.data);
         return response.data;
     } catch (err) {
         console.log(err);

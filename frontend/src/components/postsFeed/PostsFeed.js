@@ -45,7 +45,7 @@ export default PostsFeed;
 function NewPost({ forumId }) {
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState("");
-    const { postIds, setPostIds } = usePosts();
+    const { posts, setPosts } = usePosts();
     const { user, token } = useAuth();
 
     function handleChange(e) {
@@ -65,7 +65,7 @@ function NewPost({ forumId }) {
         });
 
         if (res.success) {
-            setPostIds([...postIds, res.post._id].reverse());
+            setPosts([res.post, ...posts]);
             setInput("");
         }
         setIsLoading(false);

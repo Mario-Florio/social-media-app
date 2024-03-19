@@ -75,6 +75,7 @@ async function postPostMock(reqBody) {
 
     const posts = getCollection("Posts");
     const forums = getCollection("Forums");
+    const users = getCollection("Users");
 
     const _id = uid();
     const newPost = {
@@ -95,6 +96,9 @@ async function postPostMock(reqBody) {
     posts.push(newPost);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
     window.localStorage.setItem("Forums", JSON.stringify(forums));
+
+    const [ user ] = users.filter(user => user._id === newPost.user);
+    newPost.user = user;
 
     return { message: "Post was successful", success: true, post: newPost };
 }

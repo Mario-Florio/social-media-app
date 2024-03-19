@@ -193,7 +193,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     const [isLoading, setIsLoading] = useState(false);
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user, token } = useAuth();
-    const { postIds, setPostIds } = usePosts();
+    const { posts, setPosts } = usePosts();
 
     async function deletePost() {
         setIsLoading(true);
@@ -201,8 +201,8 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
         const res = await requests.posts.deletePost({ id: post._id, token });
 
         if (res.success) {
-            const newPostIds = postIds.filter(postId => postId !== post._id);
-            setPostIds(newPostIds);
+            const filteredPosts = posts.filter(p => p._id !== post._id);
+            setPosts(filteredPosts);
             setConfirmDeletePopupIsActive(false);
             setOptionsSectionIsActive(false);
         }
