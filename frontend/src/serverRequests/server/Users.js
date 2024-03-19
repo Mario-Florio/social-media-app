@@ -1,12 +1,27 @@
 import axios from "axios";
 
-async function getUsers(reqBody) {
+async function getUsers(reqBody={}) {
     try {
-        const response = await axios.get("/users");
+        const queryString = reqBody.queryBody ? getQueryString(reqBody.queryBody) : "";
+        const url = queryString ? `/users${queryString}` : "/users";
+        const response = await axios.get(url);
+        console.log(response.data);
         return response.data;
     } catch (err) {
         console.log(err);
         return err.response.data;
+    }
+    function getQueryString(queryBody) {
+        const { search, page, limit } = queryBody;
+
+        let queryString = "?";
+        search ? queryString+=`search=${search}&` : queryString+="";
+
+        page ? queryString+=`page=${page}&` : queryString+="";
+
+        limit ? queryString+=`limit=${limit}` : queryString+="";
+
+        return queryString.length > 1 ? queryString : null;
     }
 }
 

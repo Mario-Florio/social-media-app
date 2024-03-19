@@ -5,7 +5,8 @@ import "./searchbar.css"
 import searchIcon from "../../../assets/imgs/search-icon.png";
 import { useAuth } from "../../../hooks/useAuth";
 
-import { searchUsers } from "../../../serverRequests/methods/users";
+import requests from "../../../serverRequests/methods/config";
+const { getUsers } = requests.users;
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, setDropDownMenuIsActive }) {
     const { user } = useAuth();
@@ -71,14 +72,19 @@ function SearchBar() {
     const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
-        (async () => {
+        input.length && (async () => {
             try {
-                const suggestions = await searchUsers(input);
-                setSuggestions(suggestions);
+                const reqBody = { queryBody: { search: input } };
+                const res = await getUsers(reqBody);
+
+                if (res.success) {
+                    setSuggestions(res.users);
+                }
             } catch (err) {
                 console.log(err);
             }
         })();
+        return () => setSuggestions([]);
     }, [input]);
 
     function handleFocus() {
