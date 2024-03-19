@@ -16,23 +16,19 @@ const { putPost, putPostLike } = requests.posts;
 const placeholderPost = { _id: null, user: { profile: {} }, text: "", comments: [], likes: [] };
 
 function Post({ postId }) {
-    const [isLoading, setIsLoading] = useState(true);
     const [post, setPost] = useState(placeholderPost);
     const [likeIds, setLikeIds] = useState([]);
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user, token } = useAuth();
-    const { posts } = useTimeline();
+    const { posts, isLoading } = useTimeline();
 
     useEffect(() => {
-        setIsLoading(true);
         const [ post ] = posts.filter(post => post._id === postId);
         post && setPost(post);
-        setIsLoading(false);
 
         return () => {
-            setIsLoading(true);
             setPost(placeholderPost);
         }
     }, [posts, postId]);
@@ -57,21 +53,21 @@ function Post({ postId }) {
         <article className="post">
             <header>
                 <div className="details">
-                    { !isLoading ? 
+                    { isLoading ?
+                        <div className="loadingBGColor profilePic_wrapper"></div> :
                         <Link to={`/users/${post.user._id}`} className="profilePic_wrapper">
                             <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
-                        </Link> :
-                        <div className="loadingBGColor profilePic_wrapper"></div> }
-                    { !isLoading ? 
+                        </Link> }
+                    { isLoading ?
+                        <div className="title">
+                            <div className="loadingBGColor" style={{ height: "1rem", width: "150px", marginBottom: ".2rem", borderRadius: "5px" }}></div>
+                            <div className="loadingBGColor" style={{ height: "1rem", width: "100px", borderRadius: "5px" }}></div>
+                        </div> :
                         <div className="title">
                             <Link to={ post.user._id && `/users/${post.user._id}` }>
                                 <h3>{post.user.username}</h3>
                             </Link>
                             <span>{ post.createdAt && new Date(post.createdAt).toLocaleString() }</span>
-                        </div> :
-                        <div className="title">
-                            <div className="loadingBGColor" style={{ height: "1rem", width: "150px", marginBottom: ".2rem", borderRadius: "5px" }}></div>
-                            <div className="loadingBGColor" style={{ height: "1rem", width: "100px", borderRadius: "5px" }}></div>
                         </div> }
                 </div>
                 <OptionsButton setOptionsSectionIsActive={setOptionsSectionIsActive}/>

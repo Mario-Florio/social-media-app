@@ -11,7 +11,7 @@ const { postPost } = requests.posts;
 
 function Timeline({ forumId, children }) {
     const sitePage = (
-        window.location.pathname.includes("profile") ? "profile" :
+        window.location.pathname.includes("users") ? "users" :
         window.location.pathname.includes("post") ? "post" : "home"
     );
     const { setPage, posts } = useTimeline();
