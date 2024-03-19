@@ -6,7 +6,7 @@ import "./optionsSection.css";
 import "./editSection.css";
 import Loader from "../loader/Loader";
 import { useAuth } from "../../hooks/useAuth";
-import { useTimeline } from "../../hooks/useTimeline";
+import { usePosts } from "../../hooks/usePosts";
 
 import { populateUsers } from "../../serverRequests/methods/users";
 import requests from "../../serverRequests/methods/config";
@@ -22,7 +22,7 @@ function Post({ postId }) {
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
     const { user, token } = useAuth();
-    const { posts } = useTimeline();
+    const { posts } = usePosts();
 
     useEffect(() => {
         const [ post ] = posts.filter(post => post._id === postId);
@@ -193,7 +193,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     const [isLoading, setIsLoading] = useState(false);
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user, token } = useAuth();
-    const { postIds, setPostIds } = useTimeline();
+    const { postIds, setPostIds } = usePosts();
 
     async function deletePost() {
         setIsLoading(true);

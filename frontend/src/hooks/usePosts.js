@@ -3,9 +3,9 @@ import requests from "../serverRequests/methods/config";
 
 const { getPost, getPosts } = requests.posts;
 
-export const TimelineContext = createContext();
+export const PostsContext = createContext();
 
-export const TimelineProvider = ({ reqSpecs, children }) => {
+export const PostsProvider = ({ reqSpecs, children }) => {
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(0);
     const [loaderPosts, setLoaderPosts] = useState(getLoaderPosts({
@@ -56,11 +56,11 @@ export const TimelineProvider = ({ reqSpecs, children }) => {
         setPage
     };
 
-    return <TimelineContext.Provider value={value}>{children}</TimelineContext.Provider>;
+    return <PostsContext.Provider value={value}>{children}</PostsContext.Provider>;
 };
 
-export const useTimeline = () => {
-    return useContext(TimelineContext);
+export const usePosts = () => {
+    return useContext(PostsContext);
 };
 
 function getLoaderPosts({ amount, postId }) {

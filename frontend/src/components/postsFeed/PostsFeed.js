@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import "./timeline.css";
+import "./postsFeed.css";
 import Post from "../post/Post";
 import { useAuth } from "../../hooks/useAuth";
-import { useTimeline } from "../../hooks/useTimeline";
+import { usePosts } from "../../hooks/usePosts";
 import Loader from "../loader/Loader";
 
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
 
-function Timeline({ forumId, children }) {
+function PostsFeed({ forumId, children }) {
     const sitePage = (
         window.location.pathname.includes("users") ? "users" :
         window.location.pathname.includes("post") ? "post" : "home"
     );
-    const { setPage, posts } = useTimeline();
+    const { setPage, posts } = usePosts();
     const postIds = posts.map(post => post._id);
 
     function seeMore() {
@@ -22,7 +22,7 @@ function Timeline({ forumId, children }) {
     }
 
     return(
-        <section className="timeline">
+        <section className="posts-feed">
             <NewPost forumId={forumId}/>
             <ul className="feed">
                 { postIds.map(postId =>
@@ -40,12 +40,12 @@ function Timeline({ forumId, children }) {
     );
 }
 
-export default Timeline;
+export default PostsFeed;
 
 function NewPost({ forumId }) {
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState("");
-    const { postIds, setPostIds } = useTimeline();
+    const { postIds, setPostIds } = usePosts();
     const { user, token } = useAuth();
 
     function handleChange(e) {

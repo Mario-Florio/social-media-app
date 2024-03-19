@@ -3,8 +3,8 @@ import "./profile.css";
 import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import ProfileTop from "./profileTop/ProfileTop";
-import Timeline from "../../components/timeline/Timeline";
-import { TimelineProvider } from "../../hooks/useTimeline";
+import PostsFeed from "../../components/postsFeed/PostsFeed";
+import { PostsProvider } from "../../hooks/usePosts";
 import FollowSection from "./followSection/FollowSection";
 import Loader from "../../components/loader/Loader";
 import { useParams } from "react-router-dom";
@@ -65,14 +65,14 @@ function Profile() {
                     setIsFollowers={setIsFollowers}
                     setFollowSectionIsActive={setFollowSectionIsActive}
                 /> }
-                { profileUser && <TimelineProvider reqSpecs={reqSpecs}>
-                    <Timeline forumId={profileUser.profile.forum}>
+                { profileUser && <PostsProvider reqSpecs={reqSpecs}>
+                    <PostsFeed forumId={profileUser.profile.forum}>
                         <article className="account-created-at_banner">
                             <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
                             <p>{ `${profileUser.username} created there account!` }</p>
                         </article>
-                    </Timeline>
-                </TimelineProvider> }
+                    </PostsFeed>
+                </PostsProvider> }
                 { followSectionIsActive && <FollowSection
                     followSectionIds={followSectionIds}
                     isFollowers={isFollowers}
