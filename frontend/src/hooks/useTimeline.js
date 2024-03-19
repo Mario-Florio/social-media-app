@@ -32,7 +32,7 @@ export const TimelineProvider = ({ reqSpecs, children }) => {
         reqSpecs.method === "getPosts" && (async () => {
             try {
                 const { reqBody } = reqSpecs;
-                setPosts(loaderPosts)
+                setPosts(loaderPosts);
                 reqBody.queryBody.page = page;
                 const res = await getPosts(reqBody);
                 if (res.success) {
