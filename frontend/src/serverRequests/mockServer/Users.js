@@ -15,6 +15,31 @@ async function getUsersMock(reqBody = { queryBody: {} }) {
 
     let users = getCollection("Users");
 
+    if (queryBody.populate) {
+        const userIds = [];
+        if (queryBody.populate.model === "User") {
+            for (const field of queryBody.populate.fields) {
+                const [ user ] = users.filter(user => user._id === queryBody.populate._id);
+                Array.isArray(user.profile[field]) && userIds.push(...user.profile[field]);
+            }
+        }
+        if (queryBody.populate.model === "Post") {
+            const posts = getCollection("Posts");
+            for (const field of queryBody.populate.fields) {
+                const [ post ] = posts.filter(post => post._id === queryBody.populate._id);
+                Array.isArray(post[field]) && userIds.push(...post[field]);
+            }
+        }
+        users = users.filter(user => {
+            for (let i = 0; i < userIds.length; i++) {
+                if (userIds[i] === user._id) {
+                    return true
+                }
+            }
+            return false;
+        });
+    }
+
     if (queryBody.search) {
         users = users.filter(user => user.username.toLowerCase().includes(queryBody.search.toLowerCase()));
     }
