@@ -6,6 +6,8 @@ const Comment = require("../../models/Comment");
 async function createPost(data, forumId) {
     const post = await new Post(data).save();
     await Forum.findByIdAndUpdate(forumId, { $push: { posts: post } }).exec();
+    const user = await User.findById(post.user).populate("profile").exec();
+    post.user = user;
     const res = { message: "Success: post has been created", post, success: true };
     return res;
 }
