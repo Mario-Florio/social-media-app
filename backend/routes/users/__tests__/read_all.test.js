@@ -2,6 +2,7 @@ const app = require("../../../app");
 const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
+const User = require("../../../models/User");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -184,6 +185,37 @@ describe("/users READ_ALL", () => {
                         expect(Array.isArray(response.body.users)).toBeTruthy();
                         expect(response.body.users.length).toEqual(0);
                     });
+                });
+            });
+
+            describe("populate", () => {
+                let response;
+                beforeAll(async () => {
+                    await populate.many();
+                    const user = await User.findOne({ username: "username1" }).exec();
+                    response = await request(app).get(`/api/users?populate=following:${user._id}`);
+                });
+                afterAll(async () => {
+                    await database.dropCollections();
+                    response = null;
+                });
+    
+                test("should return 200 status code", async () => {
+                    expect(response.statusCode).toBe(200);
+                });
+                test("should specify json in the content type header", async () => {
+                    expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+                });
+                test("response body has truthy success field and message field defined", async () => {
+                    expect(response.body.success).toBeTruthy();
+                    expect(response.body.message).toBeDefined();
+                });
+                test("response body has accurate users array", async () => {
+                    expect(response.body.users).toBeDefined();
+                    expect(Array.isArray(response.body.users)).toBeTruthy();
+                    expect(response.body.users.length).toEqual(2);
+                    expect(response.body.users[0].username).toEqual("username2");
+                    expect(response.body.users[1].username).toEqual("username3");
                 });
             });
         });

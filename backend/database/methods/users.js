@@ -45,9 +45,21 @@ async function authorizeUser(credentials) {
     }
 }
 
-async function getUsers(limit=10, page=0, search) {
-    const queryObj = search ? { username: { $regex: search } } : {};
-    
+async function getUsers(limit=10, page=0, search, populate) {
+    const popObj = {};
+    if (populate) {
+        const userIds = [];
+        for (const key in populate) {
+            const user = await User.findById(populate[key]).populate("profile").exec();
+            Array.isArray(user.profile[key]) && userIds.push(...user.profile[key]);
+        }
+        popObj._id = { $in: userIds };
+    }
+
+    const searchObj = search ? { username: { $regex: search } } : {};
+
+    const queryObj = { ...popObj, ...searchObj };
+
     const users = await User.find(queryObj)
         .limit(limit)
         .skip(limit * page)
