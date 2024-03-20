@@ -5,12 +5,12 @@ import "./likesSection.css";
 import "./optionsSection.css";
 import "./editSection.css";
 import Loader from "../loader/Loader";
+import SectionWrapper from "../sectionWrapper/SectionWrapper";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 
 import { populateUsers } from "../../serverRequests/methods/users";
 import requests from "../../serverRequests/methods/config";
-import SectionWrapper from "../sectionWrapper/SectionWrapper";
 const { putPost, putPostLike } = requests.posts;
 
 const placeholderPost = { _id: null, user: { username: "Post unable to load", profile: {} }, text: "", comments: [], likes: [] };
@@ -145,9 +145,10 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
             try {
                 const likes = await populateUsers(likeIds);
                 setLikes(likes);
-                setIsLoading(false);
             } catch (err) {
                 console.log(err);
+            } finally {
+                setIsLoading(false);
             }
         })();
     }, [likeIds]);
