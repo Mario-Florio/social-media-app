@@ -8,7 +8,7 @@
     color: var(--primary-font-color);
     background-color: var(--secondary-color);
     padding: 1rem;
-    padding-bottom: var(--topbar-height);
+    padding-bottom: calc(1rem + var(--topbar-height));
     min-height: 100%;
     width: var(--sidemenu_width);
     overflow-x: hidden;

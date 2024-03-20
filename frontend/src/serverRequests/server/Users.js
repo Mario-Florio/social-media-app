@@ -11,10 +11,18 @@ async function getUsers(reqBody={}) {
         return err.response.data;
     }
     function getQueryString(queryBody) {
-        const { search, page, limit } = queryBody;
+        const { search, populate, page, limit } = queryBody;
 
         let queryString = "?";
         search ? queryString+=`search=${search}&` : queryString+="";
+
+        if (populate) {
+            queryString+="populate:";
+            for (const key in populate) {
+                queryString+=`${key}:${populate[key]}`
+            }
+            queryString+="&";
+        }
 
         page ? queryString+=`page=${page}&` : queryString+="";
 

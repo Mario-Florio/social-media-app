@@ -1,9 +1,10 @@
+import { useEffect, useState } from "react";
 import "./sideMenu.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
-import { populateUsers } from "../../../serverRequests/methods/users";
-import { useEffect, useState } from "react";
+import requests from "../../../serverRequests/methods/config";
+const { getUsers } = requests.users;
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
     const { user } = useAuth();
@@ -12,8 +13,14 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
     useEffect(() => {
         (async () => {
             try {
-                const followingData = await populateUsers(user.profile.following);
-                setFollowing(followingData);
+                const queryBody = {
+                    populate: { following: user._id }
+                }
+                const res = await getUsers({ queryBody });
+
+                if (res.success) {
+                    setFollowing(res.users);
+                }
             } catch (err) {
                 console.log(err);
             }
