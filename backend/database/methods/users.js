@@ -49,14 +49,22 @@ async function getUsers(limit=10, page=0, search, populate) {
     const popObj = {};
     if (populate) {
         const userIds = [];
-        for (const key in populate) {
-            const user = await User.findById(populate[key]).populate("profile").exec();
-            Array.isArray(user.profile[key]) && userIds.push(...user.profile[key]);
+        if (populate.model === "User") {
+            for (const field of populate.fields) {
+                const user = await User.findById(populate._id).populate("profile").exec();
+                Array.isArray(user.profile[field]) && userIds.push(...user.profile[field]);
+            }
+        }
+        if (populate.model === "Post") {
+            for (const field of populate.fields) {
+                const post = await Post.findById(populate._id).exec();
+                Array.isArray(post[field]) && userIds.push(...post[field]);
+            }
         }
         popObj._id = { $in: userIds };
     }
 
-    const searchObj = search ? { username: { $regex: search } } : {};
+    const searchObj = search ? { username: { $regex: search, $options: "i" } } : {};
 
     const queryObj = { ...popObj, ...searchObj };
 

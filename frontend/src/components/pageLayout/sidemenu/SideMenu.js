@@ -14,7 +14,11 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
         (async () => {
             try {
                 const queryBody = {
-                    populate: { following: user._id }
+                    populate: {
+                        model: "User",
+                        _id: user._id,
+                        fields: ["following"]
+                    }
                 }
                 const res = await getUsers({ queryBody });
 

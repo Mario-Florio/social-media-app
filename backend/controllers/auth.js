@@ -7,7 +7,8 @@ async function read_authData(req, res, next) {
     if (!success) {
         return res.json({ message, success });
     } else {
-        return res.json({ message, user: authData.user, success, token: req.token });
+        const { user } = await users_dbMethods.getUserById(authData.user._id);
+        return res.json({ message, user, success, token: req.token });
     }
 }
 

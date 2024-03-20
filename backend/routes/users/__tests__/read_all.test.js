@@ -3,6 +3,7 @@ const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
+const Post = require("../../../models/Post");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -189,33 +190,75 @@ describe("/users READ_ALL", () => {
             });
 
             describe("populate", () => {
-                let response;
-                beforeAll(async () => {
-                    await populate.many();
-                    const user = await User.findOne({ username: "username1" }).exec();
-                    response = await request(app).get(`/api/users?populate=following:${user._id}`);
+                describe("user", () => {
+                    let response;
+                    beforeAll(async () => {
+                        await populate.many();
+                        const user = await User.findOne({ username: "username1" }).exec();
+                        const popObj = {
+                            model: "User",
+                            _id: user._id,
+                            fields: ["following"]
+                        };
+                        response = await request(app).get(`/api/users?populate=${JSON.stringify(popObj)}`);
+                    });
+                    afterAll(async () => {
+                        await database.dropCollections();
+                        response = null;
+                    });
+        
+                    test("should return 200 status code", async () => {
+                        expect(response.statusCode).toBe(200);
+                    });
+                    test("should specify json in the content type header", async () => {
+                        expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+                    });
+                    test("response body has truthy success field and message field defined", async () => {
+                        expect(response.body.success).toBeTruthy();
+                        expect(response.body.message).toBeDefined();
+                    });
+                    test("response body has accurate users array", async () => {
+                        expect(response.body.users).toBeDefined();
+                        expect(Array.isArray(response.body.users)).toBeTruthy();
+                        expect(response.body.users.length).toEqual(2);
+                        expect(response.body.users[0].username).toEqual("username2");
+                        expect(response.body.users[1].username).toEqual("username3");
+                    });
                 });
-                afterAll(async () => {
-                    await database.dropCollections();
-                    response = null;
-                });
-    
-                test("should return 200 status code", async () => {
-                    expect(response.statusCode).toBe(200);
-                });
-                test("should specify json in the content type header", async () => {
-                    expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
-                });
-                test("response body has truthy success field and message field defined", async () => {
-                    expect(response.body.success).toBeTruthy();
-                    expect(response.body.message).toBeDefined();
-                });
-                test("response body has accurate users array", async () => {
-                    expect(response.body.users).toBeDefined();
-                    expect(Array.isArray(response.body.users)).toBeTruthy();
-                    expect(response.body.users.length).toEqual(2);
-                    expect(response.body.users[0].username).toEqual("username2");
-                    expect(response.body.users[1].username).toEqual("username3");
+
+                describe("post", () => {
+                    let response;
+                    beforeAll(async () => {
+                        await populate.many();
+                        const post = await Post.findOne({ text: "Hello world" }).exec();
+                        const popObj = {
+                            model: "Post",
+                            _id: post._id,
+                            fields: ["likes"]
+                        };
+                        response = await request(app).get(`/api/users?populate=${JSON.stringify(popObj)}`);
+                    });
+                    afterAll(async () => {
+                        await database.dropCollections();
+                        response = null;
+                    });
+        
+                    test("should return 200 status code", async () => {
+                        expect(response.statusCode).toBe(200);
+                    });
+                    test("should specify json in the content type header", async () => {
+                        expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
+                    });
+                    test("response body has truthy success field and message field defined", async () => {
+                        expect(response.body.success).toBeTruthy();
+                        expect(response.body.message).toBeDefined();
+                    });
+                    test("response body has accurate users array", async () => {
+                        expect(response.body.users).toBeDefined();
+                        expect(Array.isArray(response.body.users)).toBeTruthy();
+                        expect(response.body.users.length).toEqual(1);
+                        expect(response.body.users[0].username).toEqual("username1");
+                    });
                 });
             });
         });

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import "./followSection.css";
 import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
-
-import { populateUsers } from "../../../serverRequests/methods/users";
 import { Link } from "react-router-dom";
 
-function FollowSection({ followSectionIds, isFollowers, followSectionIsActive, setFollowSectionIsActive }) {
+import requests from "../../../serverRequests/methods/config";
+const { getUsers } = requests.users;
+
+function FollowSection({ id, followSectionIds, isFollowers, followSectionIsActive, setFollowSectionIsActive }) {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -13,8 +14,18 @@ function FollowSection({ followSectionIds, isFollowers, followSectionIsActive, s
         setIsLoading(true);
         (async () => {
             try {
-                const users = await populateUsers(followSectionIds);
-                setUsers(users);
+                const queryBody = {
+                    populate: {
+                        model: "User",
+                        _id: id,
+                        fields: [isFollowers ? "followers" : "following"]
+                    }
+                }
+                const res = await getUsers({ queryBody });
+
+                if (res.success) {
+                    setUsers(res.users);
+                }
             } catch (err) {
                 console.log(err);
             }

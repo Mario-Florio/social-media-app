@@ -9,9 +9,9 @@ import SectionWrapper from "../sectionWrapper/SectionWrapper";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 
-import { populateUsers } from "../../serverRequests/methods/users";
 import requests from "../../serverRequests/methods/config";
 const { putPost, putPostLike } = requests.posts;
+const { getUsers } = requests.users;
 
 const placeholderPost = { _id: null, user: { username: "Post unable to load", profile: {} }, text: "", comments: [], likes: [] };
 
@@ -101,6 +101,7 @@ function Post({ postId }) {
                 </div>
             </footer>
             { likesSectionIsActive && <LikesSection
+                postId={postId}
                 likeIds={likeIds}
                 likesSectionIsActive={likesSectionIsActive}
                 setLikesSectionIsActive={setLikesSectionIsActive}
@@ -135,7 +136,7 @@ function OptionsButton({ setOptionsSectionIsActive }) {
     );
 }
 
-function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
+function LikesSection({ postId, likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
     const [likes, setLikes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -143,8 +144,17 @@ function LikesSection({ likeIds, likesSectionIsActive, setLikesSectionIsActive }
         setIsLoading(true);
         (async () => {
             try {
-                const likes = await populateUsers(likeIds);
-                setLikes(likes);
+                const queryBody = {
+                    populate: {
+                        model: "Post",
+                        _id: postId,
+                        fields: ["likes"]
+                    }
+                };
+                const res = await getUsers({ queryBody });
+                if (res.success) {
+                    setLikes(res.users);
+                }
             } catch (err) {
                 console.log(err);
             } finally {

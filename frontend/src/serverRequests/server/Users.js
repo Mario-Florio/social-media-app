@@ -16,13 +16,7 @@ async function getUsers(reqBody={}) {
         let queryString = "?";
         search ? queryString+=`search=${search}&` : queryString+="";
 
-        if (populate) {
-            queryString+="populate:";
-            for (const key in populate) {
-                queryString+=`${key}:${populate[key]}`
-            }
-            queryString+="&";
-        }
+        populate ? queryString+=`populate=${JSON.stringify(populate)}&` : queryString+="";
 
         page ? queryString+=`page=${page}&` : queryString+="";
 

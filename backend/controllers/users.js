@@ -6,14 +6,7 @@ async function read_all(req, res, next) {
         const page = req.query.page && parseInt(req.query.page, 10);
         const limit = req.query.limit && parseInt(req.query.limit, 10);
         const search = req.query.search;
-        const populate = req.query.populate && {};
-        if (req.query.populate) {
-            const keyValPairs = req.query.populate.split(",");
-            for (const keyVal of keyValPairs) {
-                const [ key, val ] = keyVal.split(":");
-                populate[key] = val;
-            }
-        }
+        const populate = req.query.populate && JSON.parse(req.query.populate);
 
         const users = await users_dbMethods.getUsers(limit, page, search, populate);
         res.json({ message: "Request successful", users, success: true });

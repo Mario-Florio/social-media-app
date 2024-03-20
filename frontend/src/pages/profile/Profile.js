@@ -74,6 +74,7 @@ function Profile() {
                     </PostsFeed>
                 </PostsProvider> }
                 { followSectionIsActive && <FollowSection
+                    id={id}
                     followSectionIds={followSectionIds}
                     isFollowers={isFollowers}
                     followSectionIsActive={followSectionIsActive}
