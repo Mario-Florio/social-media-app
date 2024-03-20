@@ -7,8 +7,8 @@ const ProfileSchema = new Schema({
     picture: { type: String, default: "../../assets/imgs/default/profile-picture.jpg" },
     coverPicture: { type: String, default: "../../assets/imgs/default/cover-photo.jpg" },
     forum: { type: Schema.Types.ObjectId, ref: "Forum", required: true },
-    followers: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] },
-    following: { type: [Schema.Types.ObjectId], ref: "Profile", default: [] }
+    followers: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
+    following: { type: [Schema.Types.ObjectId], ref: "User", default: [] }
 }, { timestamps: true, virtuals: true });
 
 ProfileSchema.virtual("url").get(function() {
