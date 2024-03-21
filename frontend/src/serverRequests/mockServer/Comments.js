@@ -61,7 +61,74 @@ async function postCommentMock(reqBody) {
     return { message: "Request successful", success: true, comment: newComment };
 }
 
+async function putCommentMock(reqBody) {
+    const { id, update, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+
+    const comments = getCollection("Comments");
+
+    let commentFound = false;
+    let index = 0;
+    for (const comment of comments) {
+        if (comment._id === id) {
+            commentFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!commentFound) return { message: "Comment does not exist", success: false };
+
+    comments[index].text = update.text;
+    window.localStorage.setItem("Comments", JSON.stringify(comments));
+
+    await populateUsers([comments[index]]);
+
+    return { message: "Update successful", comment: comments[index], success: true }
+}
+
+async function deleteCommentMock(reqBody) {
+    const { id, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+
+    const comments = getCollection("Comments");
+    const posts = getCollection("Posts");
+
+    for (const post of posts) {
+        const filteredComments = post.comments.filter(commentId => commentId !== id);
+        post.comments = filteredComments;
+    }
+
+    const filteredComments = comments.filter(comment => comment._id !== id);
+
+    window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
+    window.localStorage.setItem("Posts", JSON.stringify(posts));
+
+    return { message: "Deletion successful", success: true }
+}
+
 export {
     getCommentsMock,
-    postCommentMock
+    postCommentMock,
+    putCommentMock,
+    deleteCommentMock
 };
+
+// UTILS
+async function populateUsers(comments) {
+    const users = getCollection("Users");
+    
+    comments.forEach(async comment => {
+        let userData = null;
+        users.forEach(user => {
+            if (user._id === comment.user) {
+                userData = user;
+            }
+        });
+        comment.user = userData;
+    });
+}
