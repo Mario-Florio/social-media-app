@@ -35,8 +35,8 @@
 
 .comments-section ul li .comment {
     display: flex;
-    align-items: flex-start;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: start;
 
     /* Vars */
     --profile-pic_wrapper-width: 50px;
@@ -46,25 +46,31 @@
     text-decoration: none;
 }
 
-.comments-section ul li .comment .profile-pic_wrapper {
+.comments-section ul li .comment .flexbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.comments-section ul li .comment .flexbox .profile-pic_wrapper {
     height: 50px;
     min-width: 50px;
     max-width: 50px;
 }
 
-.comments-section ul li .comment .profile-pic_wrapper img {
+.comments-section ul li .comment .flexbox .profile-pic_wrapper img {
     height: 100%;
     width: 100%;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.comments-section ul li .comment div {
+.comments-section ul li .comment .flexbox div {
     max-width: 100%;
     overflow: hidden;
 }
 
-.comments-section ul li .comment h4 {
+.comments-section ul li .comment .flexbox h4 {
     font-weight: 600;
     margin-top: 0;
     margin-bottom: .25rem;
@@ -72,8 +78,22 @@
     text-overflow: ellipsis;
 }
 
-.comments-section ul li .comment p {
+.comments-section ul li .comment .flexbox p {
     margin: 0;
+}
+
+.comments-section ul li .comment .options {
+    display: flex;
+    gap: 2px;
+    padding: .5rem .25rem;
+    cursor: pointer;
+}
+    
+.comments-section ul li .comment .options div {
+    background-color: var(--secondary-font-color);
+    height: 2px;
+    width: 2px;
+    border-radius: 2px;
 }
 
 .comments-section footer {

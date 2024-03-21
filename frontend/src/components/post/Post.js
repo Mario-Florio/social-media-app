@@ -298,7 +298,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
                 </div>
             </form>
         </SectionWrapper>
-    )
+    );
 }
 
 export default Post;

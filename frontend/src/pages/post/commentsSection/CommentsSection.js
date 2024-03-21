@@ -2,6 +2,8 @@ import {  useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
+import OptionsSection from "./optionsSection/OptionsSection";
+import EditSection from "./editSection/EditSection";
 import { useAuth } from "../../../hooks/useAuth";
 
 import requests from "../../../serverRequests/methods/config";
@@ -18,7 +20,7 @@ function CommentsSection({ postId }) {
         (async () => {
             const res = await getPost({ id: postId });
             if (res.success) {
-                const comments = await populateComments(res.post.comments.reverse());
+                const comments = await populateComments(res.post.comments);
                 setComments(comments);
             }
             setIsLoading(false);
@@ -34,7 +36,7 @@ function CommentsSection({ postId }) {
                     </div> :
                     comments.map(comment => 
                         <li key={comment._id}>
-                            <Comment comment={comment}/>
+                            <Comment comment={comment} setComments={setComments}/>
                         </li>)
                 }
             </ul>
@@ -47,6 +49,58 @@ function CommentsSection({ postId }) {
 }
 
 export default CommentsSection;
+
+function OptionsButton({ setOptionsSectionIsActive }) {
+    return(
+        <div
+            className="options"
+            onClick={() => setOptionsSectionIsActive(true)}
+        >
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    );
+}
+
+function Comment({ comment, setComments }) {
+    const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
+    const [editSectionIsActive, setEditSectionIsActive] = useState(false);
+
+    const { user } = useAuth();
+    const isUser = comment.user._id === user._id;
+
+    return(
+        <article className="comment">
+            <div className="flexbox">
+                <Link to={`/users/${comment.user._id}`} className="profile-pic_wrapper">
+                    <img src={comment.user.profile.picture} alt="user profile pic"/>
+                </Link>
+                <div>
+                    <Link to={`/users/${comment.user._id}`}>
+                        <h4>{comment.user.username}</h4>
+                    </Link>
+                    <p style={{ color: "var(--secondary-font-color)", fontSize: ".9rem", marginBottom: ".25rem" }}>{new Date(comment.createdAt).toLocaleString()}</p>
+                    <p>{comment.text}</p>
+                </div>
+            </div>
+            { isUser && <OptionsButton setOptionsSectionIsActive={setOptionsSectionIsActive}/> }
+            { optionsSectionIsActive && <OptionsSection
+                comment={comment}
+                setComments={setComments}
+                optionsSectionIsActive={optionsSectionIsActive}
+                setOptionsSectionIsActive={setOptionsSectionIsActive}
+                setEditSectionIsActive={setEditSectionIsActive}
+            /> }
+            { editSectionIsActive && <EditSection
+                comment={comment}
+                setComments={setComments}
+                editSectionIsActive={editSectionIsActive}
+                setEditSectionIsActive={setEditSectionIsActive}
+            /> }
+        </article>
+    );
+}
 
 function Form({ postId, comments, setComments }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -85,21 +139,5 @@ function Form({ postId, comments, setComments }) {
                 <Loader color="white" secondaryColor="var(--secondary-color)" size={32}/> :
                 "Send" }</button>
         </form>
-    );
-}
-
-function Comment({ comment }) {
-    return(
-        <article className="comment">
-            <Link to={`/users/${comment.user._id}`} className="profile-pic_wrapper">
-                <img src={comment.user.profile.picture} alt="user profile pic"/>
-            </Link>
-            <div>
-                <Link to={`/users/${comment.user._id}`}>
-                    <h4>{comment.user.username}</h4>
-                </Link>
-                <p>{comment.text}</p>
-            </div>
-        </article>
     );
 }

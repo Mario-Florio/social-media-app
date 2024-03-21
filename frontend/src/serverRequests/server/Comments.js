@@ -31,7 +31,43 @@ async function postComment(reqBody) {
     }
 }
 
+async function putComment(reqBody) {
+    try {
+        const { id, update, token } = reqBody;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.put(`/comments/${id}`, update, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
+async function deleteComment(reqBody) {
+    try {
+        const { id, token } = reqBody;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.delete(`/comments/${id}`, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
     getComments,
-    postComment
+    postComment,
+    putComment,
+    deleteComment
 }
