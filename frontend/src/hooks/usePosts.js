@@ -22,10 +22,10 @@ export const PostsProvider = ({ reqSpecs, children }) => {
                 if (res.success) {
                     setPosts([res.post]);
                 }
-            } catch (err) {
+            } catch (err) { 
                 console.log(err);
             }
-        })();
+        })()
     }, [reqSpecs]);
 
     useEffect(() => {
@@ -50,10 +50,8 @@ export const PostsProvider = ({ reqSpecs, children }) => {
     }, [page]);
 
     const value = {
-        posts,
-        setPosts,
-        page,
-        setPage
+        posts, setPosts,
+        page, setPage
     };
 
     return <PostsContext.Provider value={value}>{children}</PostsContext.Provider>;

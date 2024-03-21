@@ -1,0 +1,86 @@
+
+.profileBottom {
+    padding: 0 1rem;
+}
+
+.profileBottom h2,
+.profileBottom p {
+    color: var(--primary-font-color);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profileBottom h2 {
+    text-align: center;
+}
+
+.profileBottom form {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
+
+.profileBottom form button {
+    font-weight: 600;
+    color: white;
+    background-color: var(--target-color);
+    padding: .3rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profileBottom .followCount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profileBottom .followCount p {
+    margin: 0;
+    cursor: pointer;
+}
+
+.profileBottom .followCount div {
+    margin: 0 .5rem;
+}
+
+.profileBottom p>span {
+    font-weight: 300;
+    color: var(--secondary-font-color) !important;
+}
+
+@media all and (min-width: 1045px) {
+    .profileBottom {
+        padding: 0;
+        padding-left: 3rem;
+        min-width: calc(500px + 6rem);
+        margin-top: 6rem;
+        margin-right: 6rem;
+    }
+
+    .profileBottom h2 {
+        position: relative;
+        text-align: left;
+        top: 3rem
+    }
+
+    .profileBottom form {
+        justify-content: flex-end;
+        margin-right: 0;
+    }
+
+    .profileBottom form button {
+        z-index: 0;
+        font-size: 1.2rem;
+    }
+
+    .profileBottom .followCount {
+        justify-content: flex-end;
+    }
+
+    .profileBottom .followCount p {
+        z-index: 0;
+    }
+}

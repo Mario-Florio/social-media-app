@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import "./profileTop.css";
 import { useAuth } from "../../../hooks/useAuth";
+import { useProfile } from "../hooks/useProfile";
 
-function ProfileTop({ profileUser }) {
+function ProfileTop() {
+    const { user } = useAuth();
+    const { profileUser } = useProfile();
+
     const [picture, setPicture] = useState(null);
     const [picturePopupIsActive, setPicturePopupIsActive] = useState(false);
+
     const [coverPhoto, setCoverPhoto] = useState(null);
     const [coverPhotoPopupIsActive, setCoverPhotoPopupIsActive] = useState(false);
-    const { user } = useAuth();
 
     useEffect(() => {
         profileUser && setCoverPhoto(profileUser.profile.coverPicture);

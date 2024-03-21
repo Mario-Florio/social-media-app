@@ -79,7 +79,7 @@ function NewPost({ forumId }) {
             <form onSubmit={handleSubmit}>
                 <label htmlFor="newPost" className="hide">New Post</label>
                 <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
-                <button disabled={isLoading}>
+                <button disabled={isLoading || !forumId || posts.filter(post => post.loading).length > 0}>
                     { isLoading ? <Loader color="var(--secondary-color)" secondaryColor="white" size={29}/> : "Post" }
                 </button>
             </form>
