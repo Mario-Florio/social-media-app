@@ -8,4 +8,8 @@ router.get("/", comments_controller.read_all);
 
 router.post("/", getToken, comments_controller.create);
 
+router.put("/:id", getToken, comments_controller.update);
+
+router.delete("/:id", getToken, comments_controller.remove);
+
 module.exports = router;

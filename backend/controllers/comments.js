@@ -48,6 +48,69 @@ async function create(req, res, next) {
     }
 }
 
+async function update(req, res, next) {
+    const { text } = req.body;
+    if (!text) {
+        return res.status(400).json({ message: "Missing fields", success: false });
+    }
+
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+    const comment = await comments_dbMethods.getCommentById(req.params.id);
+    if (!comment) {
+        return res.status(400).json({ message: "Comment does not exist", success: false });
+    }
+
+    const userId = comment.user._id.toString();
+    const { authData } = verifyTokenResBody;
+    if (authData.user._id !== userId) {
+        return res.status(404).json({ message: "You are not authorized to delete this comment", success: false });
+    }
+
+    const sanitizedInput = sanitizeInput(req.body);
+    const isValid = validateInput(sanitizedInput);
+    if (!isValid) {
+        return res.status(422).json({ message: "Invalid input", success: false });
+    }
+
+    const responseBody = await comments_dbMethods.updateComment(req.params.id, sanitizedInput);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    }
+    
+    res.json(responseBody);
+}
+
+async function remove(req, res, next) {
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+    const comment = await comments_dbMethods.getCommentById(req.params.id);
+    if (!comment) {
+        return res.status(400).json({ message: "Comment does not exist", success: false });
+    }
+
+    const userId = comment.user._id.toString();
+    const { authData } = verifyTokenResBody;
+    if (authData.user._id !== userId) {
+        return res.status(404).json({ message: "You are not authorized to delete this comment", success: false });
+    }
+
+    const responseBody = await comments_dbMethods.deleteComment(req.params.id);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    }
+
+    res.json(responseBody);
+}
+ 
 // UTILS
 
 function sanitizeInput(input) {
@@ -68,5 +131,7 @@ function validateInput(input) {
 
 module.exports = {
     read_all,
-    create
+    create,
+    update,
+    remove
 }
