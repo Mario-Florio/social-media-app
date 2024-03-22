@@ -20,7 +20,7 @@ async function getPostsMock(reqBody){
         const users = getCollection("Users");
         const [ user ] = users.filter((user, i) => user._id === queryBody.userId);
         posts = posts.filter(post => {
-            let isTimeline = true;
+            let isTimeline = false;
             if (post.user === user._id) return true;
             for (let i = 0; i < user.profile.following.length; i++) {
                 if (post.user === user.profile.following[i]) {
