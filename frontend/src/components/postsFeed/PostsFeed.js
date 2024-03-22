@@ -5,6 +5,8 @@ import Post from "../post/Post";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 import Loader from "../loader/Loader";
+import attachmentsIcon from "../../assets/imgs/attachments.png";
+import shareIcon from "../../assets/imgs/share.png";
 
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
@@ -73,16 +75,32 @@ function NewPost({ forumId }) {
 
     return(
         <article className="newPost">
-            <Link to={`/users/${user._id}`} className="profilePic-wrapper">
-                <img src={ user.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="users profile pic"/>
-            </Link>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="newPost" className="hide">New Post</label>
-                <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
-                <button disabled={isLoading || !forumId || posts.filter(post => post.loading).length > 0}>
-                    { isLoading ? <Loader color="var(--secondary-color)" secondaryColor="white" size={29}/> : "Post" }
-                </button>
-            </form>
+            <div className="flexbox">
+                <Link to={`/users/${user._id}`} className="profilePic-wrapper">
+                    <img src={ user.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="users profile pic"/>
+                </Link>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="newPost" className="hide">New Post</label>
+                    <textarea name="newPost" id="newPost" onChange={handleChange} value={input} placeholder="Write something..."></textarea>
+                    <button disabled={isLoading || !forumId || posts.filter(post => post.loading).length > 0}>
+                        { isLoading ? <Loader color="var(--secondary-color)" secondaryColor="white" size={29}/> : "Post" }
+                    </button>
+                </form>
+            </div>
+            <footer>
+                <div>
+                    <div className="icon_wrapper">
+                        <img src={shareIcon} alt="Share"/>
+                    </div>
+                    <span>Share</span>
+                </div>
+                <div>
+                    <div className="icon_wrapper">
+                        <img src={attachmentsIcon} alt="Attachments"/>
+                    </div>
+                    <span>Attachments</span>
+                </div>
+            </footer>
         </article>
     );
 }
