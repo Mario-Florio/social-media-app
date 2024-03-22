@@ -3,7 +3,7 @@ import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
-const ms = 0;
+const ms = 2000;
 
 async function getPostsMock(reqBody){
     await delay(ms);

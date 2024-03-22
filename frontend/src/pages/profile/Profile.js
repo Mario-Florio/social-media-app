@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./profile.css";
 import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";

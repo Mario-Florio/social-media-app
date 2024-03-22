@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./profileTop.css";
+import PicturePopup from "./picturePopup/PicturePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 
@@ -44,16 +45,34 @@ function ProfileTop() {
                         <img src={ picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/>
                     </div>
                 </> }
-            <PicturePopup
-                isActive={picturePopupIsActive}
+            { picturePopupIsActive && <PicturePopup
+                name="picture"
                 setIsActive={setPicturePopupIsActive}
                 setPicture={setPicture}
-            />
-            <CoverPhotoPopup
-                isActive={coverPhotoPopupIsActive}
+                options={[
+                    { name: "Jane Dough", value: "../../assets/imgs/janeDough/profile-pic.jpg" },
+                    { name: "Jesus Christ", value: "../../assets/imgs/jesusChrist/profile-pic.jpg" },
+                    { name: "Tyrion Lannister", value: "../../assets/imgs/tyrionLannister/profile-pic.jpg" },
+                    { name: "Jinx", value: "../../assets/imgs/jinx/profile-pic.jpg" },
+                    { name: "Nea Karlsson", value: "../../assets/imgs/neaKarlsson/profile-pic.jpg" },
+                    { name: "Rust Cohle", value: "../../assets/imgs/rustCohle/profile-pic.jpg" },
+                    { name: "Ellie Williams", value: "../../assets/imgs/ellieWilliams/profile-pic.jpg" }
+                ]}
+            /> }
+            { coverPhotoPopupIsActive && <PicturePopup
+                name="coverPicture"
                 setIsActive={setCoverPhotoPopupIsActive}
-                setPhoto={setCoverPhoto}
-            />
+                setPicture={setCoverPhoto}
+                options={[
+                    { name: "Jane Dough", value: "../../assets/imgs/janeDough/cover-photo.jpg" },
+                    { name: "Jesus Christ", value: "../../assets/imgs/jesusChrist/cover-photo.jpg" },
+                    { name: "Tyrion Lannister", value: "../../assets/imgs/tyrionLannister/cover-photo.jpg" },
+                    { name: "Jinx", value: "../../assets/imgs/jinx/cover-photo.jpg" },
+                    { name: "Nea Karlsson", value: "../../assets/imgs/neaKarlsson/cover-photo.jpg" },
+                    { name: "Rust Cohle", value: "../../assets/imgs/rustCohle/cover-photo.jpg" },
+                    { name: "Ellie Williams", value: "../../assets/imgs/ellieWilliams/cover-photo.jpg" }
+                ]}
+            /> }
         </section>
     );
 }
@@ -70,78 +89,5 @@ function LoaderProfile() {
                 <div className="loadingBGColor profilePic"></div>
             </div>
         </section>
-    );
-}
-
-function PopupWrapper({ children }) {
-    return(
-        <div className="popup_mask">
-            <article className="popup">
-                {children}
-            </article>
-        </div>
-    );
-}
-
-function PicturePopup({ isActive, setIsActive, setPicture }) {
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (e.target.children[1].files[0]) {
-            setPicture(URL.createObjectURL(e.target.children[1].files[0]));
-        }
-        setIsActive(false);
-    }
-
-    function handelCancel(e) {
-        e.preventDefault();
-        setIsActive(false)
-    }
-
-    return(isActive &&
-        <PopupWrapper>
-            <form onSubmit={handleSubmit}>
-                    <label htmlFor="picture">Profile Picture</label>
-                    <input
-                        type="file"
-                        name="picture"
-                        id="picture"
-                        accept="image/*"
-                    />
-                    <button>Upload</button>
-                    <button onClick={handelCancel}>Cancel</button>
-                </form>
-        </PopupWrapper>
-    );
-}
-
-function CoverPhotoPopup({ isActive, setIsActive, setPhoto }) {
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        if (e.target.children[1].files[0]) {
-            setPhoto(URL.createObjectURL(e.target.children[1].files[0]));
-        }
-        setIsActive(false);
-    }
-
-    function handelCancel(e) {
-        e.preventDefault();
-        setIsActive(false)
-    }
-
-    return(isActive &&
-        <PopupWrapper>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="cover-picture">Cover Picture</label>
-                <input
-                    type="file"
-                    name="cover-picture"
-                    id="cover-picture"
-                    accept="image/*"
-                />
-                <button>Upload</button>
-                <button onClick={handelCancel}>Cancel</button>
-            </form>
-        </PopupWrapper>
     );
 }

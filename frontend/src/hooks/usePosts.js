@@ -14,6 +14,14 @@ export const PostsProvider = ({ reqSpecs, children }) => {
     }));
 
     useEffect(() => {
+        return () => {
+            setPosts([]);
+            setPage(0);
+            setLoaderPosts([]);
+        }
+    }, []);
+
+    useEffect(() => {
         reqSpecs.method === "getPost" && (async () => {
             try {
                 const { reqBody } = reqSpecs;
@@ -26,10 +34,26 @@ export const PostsProvider = ({ reqSpecs, children }) => {
                 console.log(err);
             }
         })()
+        reqSpecs.method === "getPosts" && (async () => {
+            try {
+                const { reqBody } = reqSpecs;
+                setPosts(loaderPosts);
+                const res = await getPosts(reqBody);
+                if (res.success) {
+                    setPosts(res.posts);
+                    setLoaderPosts([
+                        ...res.posts,
+                        ...getLoaderPosts({ postId: null, amount: 10})
+                    ]);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }, [reqSpecs]);
 
     useEffect(() => {
-        reqSpecs.method === "getPosts" && (async () => {
+        page > 0 && reqSpecs.method === "getPosts" && (async () => {
             try {
                 const { reqBody } = reqSpecs;
                 setPosts(loaderPosts);

@@ -1,0 +1,66 @@
+.profileTop .popup_mask {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.273);
+    transition-duration: .2s;
+}
+
+.profileTop .popup {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    max-width: 250px;
+    color: var(--primary-font-color);
+    background-color: rgb(255, 255, 255);
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0px 1px 5px var(--box-shadow-color);
+    text-overflow: ellipsis;
+    transform: translateX(-50%);
+    transition-duration: .2s;
+}
+
+.dark .profileTop .popup {
+    background-color: var(--primary-color);
+}
+
+.profileTop .popup input::-webkit-file-upload-button {
+    font-weight: 500;
+    color: white;
+    background-color: var(--target-color);
+    padding: .25rem .5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profileTop .popup input {
+    text-overflow: ellipsis;
+    margin: .5rem 0;
+    width: 100%;
+}
+
+.profileTop .popup select {
+    margin: .5rem 0;
+}
+
+.profileTop .popup button {
+    font-weight: 500;
+    color: white;
+    background-color: var(--target-color);
+    padding: .25rem .5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media all and (min-width: 750px) {
+    .profileTop .popup_mask {
+        left: var(--sidemenu_max-width);
+        max-width: calc(100% - var(--sidemenu_max-width));
+    }
+}
