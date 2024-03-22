@@ -14,7 +14,6 @@ async function createPost(data, forumId) {
 
 async function getPosts(limit=10, page=0, userId, timeline) {
     let postIds = [];
-
     if (userId) {
         const user = await User.findById(userId).populate({ path: "profile", populate: { path: "forum" } }).exec();
         if (timeline) {
@@ -25,7 +24,7 @@ async function getPosts(limit=10, page=0, userId, timeline) {
         }
         postIds.push(...user.profile.forum.posts);
     }
-    const queryObj = postIds.length > 0 ? { _id: { $in: postIds } } : {};
+    const queryObj = userId ? { _id: { $in: postIds } } : {};
 
     const posts = await Post.find(queryObj)
         .limit(limit)
