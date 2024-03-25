@@ -14,14 +14,6 @@ export const PostsProvider = ({ reqSpecs, children }) => {
     }));
 
     useEffect(() => {
-        return () => {
-            setPosts([]);
-            setPage(0);
-            setLoaderPosts([]);
-        }
-    }, []);
-
-    useEffect(() => {
         reqSpecs.method === "getPost" && (async () => {
             try {
                 const { reqBody } = reqSpecs;
