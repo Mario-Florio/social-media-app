@@ -161,7 +161,7 @@ function LikesSection({ postId, likeIds, likesSectionIsActive, setLikesSectionIs
                 setIsLoading(false);
             }
         })();
-    }, [likeIds]);
+    }, [postId, likeIds]);
 
     return(
         <SectionWrapper
