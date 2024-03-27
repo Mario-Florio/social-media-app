@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./profile.css";
-import "./tabs.css";
 import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import { ProfileProvider } from "./hooks/useProfile";

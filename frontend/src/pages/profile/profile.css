@@ -2,3 +2,55 @@
 #profile {
     width: 100%;
 }
+
+#profile .tabs {
+    display: flex;
+    color: var(--primary-font-color);
+    margin-top: .5rem;
+    padding-left: 1rem;
+    width: 100%;
+    max-width: 750px;
+}
+
+#profile .tabs .container {
+    flex: 2;
+    display: inline-block;
+    text-align: center;
+    background-color: var(--secondary-color);
+    padding: .25rem .5rem;
+    border: 1px solid var(--secondary-color);
+    border-bottom: none;
+    cursor: pointer;
+    transform: skew(-25deg);
+}
+
+#profile .tabs .container span {
+    display: inline-block;
+    font-size: .9rem;
+    color: var(--secondary-font-color);
+    transform: skew(25deg);
+}
+
+#profile .tabs .container.isActive {
+    background-color: transparent;
+}
+
+.dark #profile .tabs .container {
+    border-color: var(--secondary-color);
+}
+
+#profile .tabs .container:hover {
+    background-color: var(--hover-color);
+}
+
+#profile .tabs .spacer {
+    flex: 2.5;
+    transform: skew(-25deg);
+    border-bottom: 1px solid var(--secondary-color);
+}
+
+#profile .tabs .buttons_wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
