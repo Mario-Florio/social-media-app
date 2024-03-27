@@ -33,14 +33,14 @@ function ProfileBottom() {
         <section className="profileBottom">
             <h2>{profileUser.username}</h2>
             { profileUser._id && (user._id !== profileUser._id) && <FollowButton/> }
-                <div className="followCount">
-                    <p onClick={displayFollowers}>{profileUser.profile.followers.length} <span>followers</span></p>
-                    <div>&#x2022;</div>
-                    <p onClick={displayFollowing}>{profileUser.profile.following.length} <span>following</span></p>
-                </div>
-                <p>{profileUser.profile.bio}</p>
+            <div className="followCount">
+                <p onClick={displayFollowers}>{profileUser.profile.followers.length} <span>followers</span></p>
+                <div>&#x2022;</div>
+                <p onClick={displayFollowing}>{profileUser.profile.following.length} <span>following</span></p>
+            </div>
+            <p>{profileUser.profile.bio}</p>
         </section>
-    )
+    );
 }
 
 export default ProfileBottom;

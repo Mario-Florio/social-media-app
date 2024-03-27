@@ -1,5 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./profile.css";
+import "./tabs.css";
 import "./accountCreatedAtBanner.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import { ProfileProvider } from "./hooks/useProfile";
@@ -13,6 +14,7 @@ import { useParams } from "react-router-dom";
 function Profile() {
     const { id } = useParams();
     const [profileUser, setProfileUser] = useState(null);
+    const [selectedTab, setSelectedTab] = useState("posts");
 
     const reqSpecs = {
         method: "getPosts",
@@ -29,14 +31,19 @@ function Profile() {
                 <section id="profile" className="main-component">
                     <ProfileTop/>
                     <ProfileBottom/>
-                    { profileUser && <PostsProvider reqSpecs={reqSpecs}>
-                        <PostsFeed forumId={profileUser && profileUser.profile.forum}>
-                                <article className="account-created-at_banner">
-                                    <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
-                                    <p>{ `${profileUser.username} created there account!` }</p>
-                                </article>
-                        </PostsFeed>
-                    </PostsProvider> }
+                    <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+                    { profileUser && selectedTab === "posts" ? 
+                        <PostsProvider reqSpecs={reqSpecs}>
+                            <PostsFeed forumId={profileUser && profileUser.profile.forum}>
+                                    <article className="account-created-at_banner">
+                                        <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
+                                        <p>{ `${profileUser.username} created there account!` }</p>
+                                    </article>
+                            </PostsFeed>
+                        </PostsProvider> :
+                        <div>
+                            <h3>Photos</h3>
+                        </div> }
                     <FollowSection/>
                 </section>
             </ProfileProvider>
@@ -45,3 +52,21 @@ function Profile() {
 }
 
 export default Profile;
+
+function Tabs({ selectedTab, setSelectedTab }) {
+    return(
+        <section className="tabs">
+            <div
+                className={ selectedTab === "posts" ? "isActive container" : "container" }
+                onClick={() => setSelectedTab("posts")}>
+                <span>Posts</span>
+            </div>
+            <div
+                className={ selectedTab === "photos" ? "isActive container" : "container" }
+                onClick={() => setSelectedTab("photos")}>
+                <span>Photos</span>
+            </div>
+            <div className="spacer"/>
+        </section>
+    );
+}
