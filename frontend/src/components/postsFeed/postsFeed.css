@@ -54,10 +54,6 @@
     border-top: solid 1px var(--secondary-color);
 }
 
-.posts-feed .newPost footer>div:first-child {
-    border-left: solid 1px var(--secondary-color);
-}
-
 .posts-feed .newPost footer>div:last-child {
     border-right: none;
 }
