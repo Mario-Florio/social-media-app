@@ -1,0 +1,72 @@
+
+.photos {
+    max-width: 750px;
+    padding: 1rem;
+}
+
+.photos * {
+    color: var(--primary-font-color);
+}
+
+.photos ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.photos li a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.photos li a:hover {
+    background-color: var(--hover-color);
+}
+
+.photos li a h4 {
+    margin: 0;
+}
+
+.photos li a .album-preview {
+    position: relative;
+    height: 50px;
+    width: 50px;
+}
+
+.photos li a .album-preview .photo-1 {
+    z-index: 0;
+    position: absolute;
+    top: 5px;
+    transform: rotate(-10deg);
+}
+
+.photos li a .album-preview .photo-2 {
+    z-index: 0;
+    left: 5px;
+    position: absolute;
+}
+
+.photos li a .album-preview .photo-3 {
+    z-index: 0;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    transform: rotate(10deg);
+}
+
+.photos li a .album-preview .img_wrapper {
+    height: 40px;
+    width: 40px;
+}
+
+.photos li a .album-preview .img_wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
