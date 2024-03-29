@@ -24,6 +24,9 @@ export default function populateCollections() {
     populatePostsCollection();
     populateForumsCollection();
     populateCommentsCollection();
+    populatePhotosCollections();
+    populateAlbumsCollections();
+    populateImagesStorage();
 }
 
 function populateUsersCollection() {
@@ -172,10 +175,10 @@ function populateForumsCollection() {
         { _id: "1", posts: ["1", "2", "3"] },
         { _id: "2", posts: ["4", "5", "6"] },
         { _id: "3", posts: ["7", "8", "9", "10"] },
-        { _id: "4", posts: [] },
-        { _id: "5", posts: [] },
-        { _id: "6", posts: [] },
-        { _id: "7", posts: [] },
+        { _id: "4", posts: ["12", "13", "14"] },
+        { _id: "5", posts: ["15", "16", "17"] },
+        { _id: "6", posts: ["18", "19", "20"] },
+        { _id: "7", posts: ["21", "22", "23"] },
     ];
 
     window.localStorage.setItem("Forums", JSON.stringify(forums));
@@ -204,10 +207,74 @@ function populateCommentsCollection() {
     window.localStorage.setItem("Comments", JSON.stringify(comments));
 }
 
-// UTILS
-function uid() {
-    const uid = Date.now().toString(36) +
-        Math.random().toString(36).substring(2).padStart(12, 0);
-        
-    return uid;
+function populatePhotosCollections() {
+    const photos = [
+        { _id: "1", user: "1", pointer: "1", name: "Profile pic", caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh pgosdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh...", createdAt: new Date() },
+        { _id: "2", user: "1", pointer: "2", name: "Cover photo", caption: "caption...", createdAt: new Date() },
+        { _id: "3", user: "2", pointer: "3", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "4", user: "2", pointer: "4", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "5", user: "3", pointer: "5", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "6", user: "3", pointer: "6", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "7", user: "4", pointer: "7", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "8", user: "4", pointer: "8", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "9", user: "5", pointer: "9", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "10", user: "5", pointer: "10", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "11", user: "6", pointer: "11", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "12", user: "6", pointer: "12", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "13", user: "7", pointer: "13", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "14", user: "7", pointer: "14", name: "", caption: "caption...", createdAt: new Date() },
+        { _id: "15", user: "1", pointer: "15", name: "", caption: "caption...", createdAt: new Date() }
+    ];
+    
+    window.localStorage.setItem("Photos", JSON.stringify(photos));
+}
+
+function populateAlbumsCollections() {
+    const albums = [
+        { _id: "1", user: "1", name: "All", photos: ["1", "2", "15"], desc: "", createdAt: new Date() },
+        { _id: "2", user: "1", name: "Profile Pictures", photos: ["1"], desc: "", createdAt: new Date() },
+        { _id: "3", user: "1", name: "Cover Photos", photos: ["2"], desc: "", createdAt: new Date() },
+        { _id: "4", user: "2", name: "All", photos: ["3", "4"], desc: "", createdAt: new Date() },
+        { _id: "5", user: "2", name: "Profile Pictures", photos: ["3"], desc: "", createdAt: new Date() },
+        { _id: "6", user: "2", name: "Cover Photos", photos: ["4"], desc: "", createdAt: new Date() },
+        { _id: "7", user: "3", name: "All", photos: ["5", "6"], desc: "", createdAt: new Date() },
+        { _id: "8", user: "3", name: "Profile Pictures", photos: ["5"], desc: "", createdAt: new Date() },
+        { _id: "9", user: "3", name: "Cover Photos", photos: ["6"], desc: "", createdAt: new Date() },
+        { _id: "10", user: "4", name: "All", photos: ["7", "8"], desc: "", createdAt: new Date() },
+        { _id: "11", user: "4", name: "Profile Pictures", photos: ["7"], desc: "", createdAt: new Date() },
+        { _id: "12", user: "4", name: "Cover Photos", photos: ["8"], desc: "", createdAt: new Date() },
+        { _id: "13", user: "5", name: "All", photos: ["9", "10"], desc: "", createdAt: new Date() },
+        { _id: "14", user: "5", name: "Profile Pictures", photos: ["9"], desc: "", createdAt: new Date() },
+        { _id: "15", user: "5", name: "Cover Photos", photos: ["10"], desc: "", createdAt: new Date() },
+        { _id: "16", user: "6", name: "All", photos: ["11", "12"], desc: "", createdAt: new Date() },
+        { _id: "17", user: "6", name: "Profile Pictures", photos: ["11"], desc: "", createdAt: new Date() },
+        { _id: "18", user: "6", name: "Cover Photos", photos: ["12"], desc: "", createdAt: new Date() },
+        { _id: "19", user: "7", name: "All", photos: ["13", "14"], desc: "", createdAt: new Date() },
+        { _id: "20", user: "7", name: "Profile Pictures", photos: ["13"], desc: "", createdAt: new Date() },
+        { _id: "21", user: "7", name: "Cover Photos", photos: ["14"], desc: "", createdAt: new Date() }
+    ];
+
+    window.localStorage.setItem("Albums", JSON.stringify(albums));
+}
+
+function populateImagesStorage() {
+    const images = [
+        { _id: "1", name: "1", url: janeDoughProfilePic },
+        { _id: "2", name: "2", url: janeDoughCoverPhoto },
+        { _id: "3", name: "3", url: jesusChristProfilePic },
+        { _id: "4", name: "4", url: jesusChristCoverPhoto },
+        { _id: "5", name: "5", url: tyrionLannisterProfilePic },
+        { _id: "6", name: "6", url: tyrionLannisterCoverPhoto },
+        { _id: "7", name: "7", url: jinxProfilePic },
+        { _id: "8", name: "8", url: jinxCoverPhoto },
+        { _id: "9", name: "9", url: neaKarlssonProfilePic },
+        { _id: "10", name: "10", url: neaKarlssonCoverPhoto },
+        { _id: "11", name: "11", url: rustCohleProfilePic },
+        { _id: "12", name: "12", url: rustCohleCoverPhoto },
+        { _id: "13", name: "13", url: ellieWilliamsProfilePic },
+        { _id: "14", name: "14", url: ellieWilliamsCoverPhoto },
+        { _id: "15", name: "15", url: ellieWilliamsCoverPhoto }
+    ];
+
+    window.localStorage.setItem("Images", JSON.stringify(images));
 }

@@ -55,8 +55,10 @@ import {
     deleteCommentMock
 } from "../mockServer/Comments";
 
+import { getAlbumsMock } from "../mockServer/Albums";
+
 let mock = true;
-let resetCollections = false;
+let resetCollections = true;
 
 resetCollections && populateCollections();
 
@@ -90,6 +92,9 @@ const requests = {
         postComment: mock ? postCommentMock : postComment,
         putComment: mock ? putCommentMock : putComment,
         deleteComment: mock ? deleteCommentMock : deleteComment
+    },
+    albums: {
+        getAlbums: mock ? getAlbumsMock : notSetup
     }
 }
 

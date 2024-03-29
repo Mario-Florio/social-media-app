@@ -33,40 +33,63 @@
     margin: 0;
 }
 
-.photos li a .album-preview {
+.photos li .album-preview {
     position: relative;
     height: 50px;
     width: 50px;
 }
 
-.photos li a .album-preview .photo-1 {
+.photos li .album-preview .photo-1 {
     z-index: 0;
     position: absolute;
-    top: 5px;
+    top: 2.5px;
+    left: 5px;
+}
+
+.photos li .album-preview .photo-2 {
+    z-index: 0;
+    position: absolute;
+    bottom: 2.5px;
+    left: 0;
     transform: rotate(-10deg);
 }
 
-.photos li a .album-preview .photo-2 {
-    z-index: 0;
-    left: 5px;
-    position: absolute;
-}
-
-.photos li a .album-preview .photo-3 {
+.photos li .album-preview .photo-3 {
     z-index: 0;
     position: absolute;
-    top: 5px;
-    left: 10px;
+    bottom: 2.5px;
+    right: 0;
     transform: rotate(10deg);
 }
 
-.photos li a .album-preview .img_wrapper {
+.photos li .album-preview .img_wrapper {
     height: 40px;
     width: 40px;
+    box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.3);
 }
 
 .photos li a .album-preview .img_wrapper img {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.photos li .loader-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.photos li .loader-link:hover {
+    background-color: var(--hover-color);
+}
+
+.photos li .loader-link .album-name {
+    height: 1rem;
+    width: 50%;
+    border-radius: 5px;
 }

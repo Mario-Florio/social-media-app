@@ -1,22 +1,15 @@
 import { useEffect, useState } from "react";
 import "./profile.css";
 import "./accountCreatedAtBanner.css";
-import { Link } from "react-router-dom";
 import PageLayout from "../../components/pageLayout/PageLayout";
 import { ProfileProvider } from "./hooks/useProfile";
 import ProfileTop from "./profileTop/ProfileTop";
 import ProfileBottom from "./profileBottom/ProfileBottom";
 import { PostsProvider } from "../../hooks/usePosts";
 import PostsFeed from "../../components/postsFeed/PostsFeed";
+import Photos from "./photos/Photos";
 import FollowSection from "./followSection/FollowSection";
 import { useParams } from "react-router-dom";
-
-// photos
-import "./photos.css";
-import profilePhoto from "../../assets/imgs/janeDough/profile-pic.jpg";
-import coverPhoto from "../../assets/imgs/janeDough/cover-photo.jpg";
-import photo1 from "../../assets/imgs/ellieWilliams/profile-pic.jpg";
-import photo2 from "../../assets/imgs/ellieWilliams/cover-photo.jpg";
 
 function Profile() {
     const { id } = useParams();
@@ -65,48 +58,6 @@ function Profile() {
 }
 
 export default Profile;
-
-function Photos() {
-    return(
-        <section className="photos">
-            <h3>Albums</h3>
-            <ul>
-                <li>
-                    <Link>
-                        <div className="album-preview">
-                            <div className="img_wrapper photo-3">
-                                <img src={photo2}/>
-                            </div>
-                            <div className="img_wrapper photo-2">
-                                <img src={photo1}/>
-                            </div>
-                            <div className="img_wrapper photo-1">
-                                <img src={profilePhoto}/>
-                            </div>
-                        </div>
-                        <h4>Profile Pictures</h4>
-                    </Link>
-                </li>
-                <li>
-                    <Link>
-                        <div className="album-preview">
-                            <div className="img_wrapper photo-3">
-                                <img src={photo2}/>
-                            </div>
-                            <div className="img_wrapper photo-2">
-                                <img src={photo1}/>
-                            </div>
-                            <div className="img_wrapper photo-1">
-                                <img src={coverPhoto}/>
-                            </div>
-                        </div>
-                        <h4>Cover Photos</h4>
-                    </Link>
-                </li>
-            </ul>
-        </section>
-    );
-}
 
 function Tabs({ selectedTab, setSelectedTab }) {
     return(

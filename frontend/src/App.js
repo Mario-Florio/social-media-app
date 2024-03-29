@@ -6,6 +6,7 @@ import ProtectedOutlet from "./components/protectedOutlet/ProtectedOutlet";
 import EntryForm from "./pages/entry-form/EntryForm";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import PhotosPage from "./pages/photos/Photos";
 import PostPage from "./pages/post/Post";
 import Settings from "./pages/settings/Settings";
 
@@ -15,7 +16,8 @@ function App() {
             <Route path="/login" element={<EntryForm/>}/>
             <Route path="/" element={<ProtectedOutlet/>}>
                 <Route path="" element={<Home/>}/>
-                <Route path="users/:id" element={<Profile/>}/>
+                <Route path="users/:id/" element={<Profile/>}/>
+                <Route path="users/:id/photos/:albumId" element={<PhotosPage/>}/>
                 <Route path="post/:id" element={<PostPage/>}/>
                 <Route path="settings/" element={<Settings/>}>
                     <Route path=":selected" element={<Settings/>}/>
