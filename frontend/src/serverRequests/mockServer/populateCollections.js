@@ -223,7 +223,7 @@ function populatePhotosCollections() {
         { _id: "12", user: "6", pointer: "12", name: "", caption: "caption...", createdAt: new Date() },
         { _id: "13", user: "7", pointer: "13", name: "", caption: "caption...", createdAt: new Date() },
         { _id: "14", user: "7", pointer: "14", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "15", user: "1", pointer: "15", name: "", caption: "caption...", createdAt: new Date() }
+        { _id: "15", user: "1", pointer: "15", name: "This is a reallllllly long name!!!!!", caption: "caption...", createdAt: new Date() }
     ];
     
     window.localStorage.setItem("Photos", JSON.stringify(photos));

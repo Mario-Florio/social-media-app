@@ -10,13 +10,15 @@
 #photos header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem;
 }
 
 #photos header h2 {
     margin: 0;
+
 }
 
 #photos header .album-name_loader {
@@ -28,7 +30,6 @@
 #photos header .flexbox {
     display: flex;
     justify-content: flex-end;
-    flex-wrap: wrap;
     gap: 1rem;
 }
 
@@ -112,7 +113,12 @@
 }
 
 #photos ul li .photo_mask h3 {
+    display: block;
     margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 #photos ul li .photo_mask .caption_wrapper {
