@@ -106,7 +106,7 @@
 }
 
 .topbar .flexbox-right_wrapper .profilePic_wrapper.active {
-    border: solid 2px white
+    outline: solid 2px white
 }
 
 .topbar .flexbox-right_wrapper .profilePic_wrapper img {
