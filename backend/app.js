@@ -9,6 +9,7 @@ const usersRouter = require("./routes/users/users");
 const forumsRouter = require("./routes/forums/forums");
 const postsRouter = require("./routes/posts/posts");
 const commentsRouter = require("./routes/comments/comments");
+const photoAlbumsRouter = require("./routes/photo-albums/photo-albums");
 
 const app = express();
 dotenv.config();
@@ -31,5 +32,7 @@ app.use("/api/forums", forumsRouter);
 app.use("/api/posts", postsRouter);
 
 app.use("/api/comments", commentsRouter);
+
+app.use("/api/photo-albums", photoAlbumsRouter);
 
 module.exports = app;

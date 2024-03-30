@@ -3,6 +3,8 @@ const Profile = require("../../models/Profile");
 const Forum = require("../../models/Forum");
 const Post = require("../../models/Post");
 const Comment = require("../../models/Comment");
+const Album = require("../../models/photos/Album");
+const Photo = require("../../models/photos/Photo");
 const bcrypt = require("bcryptjs");
 
 async function users() {
@@ -78,11 +80,22 @@ async function many() {
         const peer1sPost = await new Post({ user: peerUser1._id, text: "Hello world", likes: [user._id], comments: [userComment] }).save()
         await Forum.findByIdAndUpdate(peerUser1.profile.forum, { $push: { posts: [post._id, peer1sPost._id] } }).exec();
     }
+}
 
+async function albums() {
+    let user = await User.findOne({ username: "username1" }).exec();
+    if (!user) {
+        await users();
+        user = await User.findOne({ username: "username1" }).exec();
+    }
+    for (let i = 1; i < 11; i++) {
+        await new Album({ name: `album${i}`, desc: `This is a description for album${i}`, user }).save();
+    }
 }
 
 module.exports = {
     users,
     posts,
-    many
+    many,
+    albums
 };
