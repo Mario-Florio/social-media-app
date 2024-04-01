@@ -3,6 +3,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const logger = require('morgan');
 const cors = require("cors");
+const path = require("path");
 
 const authRouter = require("./routes/auth/auth");
 const usersRouter = require("./routes/users/users");
@@ -18,6 +19,8 @@ app.use(logger("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use("/api/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.get("/api", (req, res, next) => {
     res.json("Hello World");

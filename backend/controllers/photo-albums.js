@@ -2,7 +2,10 @@ const photoAlbums_dbMethods = require("../database/methods/photo-albums");
 const { verifyToken } = require("../authenticate");
 
 async function read_all(req, res, next) {
-    const responseBody = await photoAlbums_dbMethods.getAlbums();
+
+    const userId = req.query.userId && req.query.userId;
+
+    const responseBody = await photoAlbums_dbMethods.getAlbums(userId);
     res.json(responseBody);
 }
 

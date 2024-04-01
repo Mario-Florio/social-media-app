@@ -5,6 +5,9 @@ const Profile = require("../../models/Profile");
 const Forum = require("../../models/Forum");
 const Post = require("../../models/Post");
 const Comment = require("../../models/Comment");
+const Album = require("../../models/photos/Album");
+const Photo = require("../../models/photos/Photo");
+const Image = require("../../models/photos/Image");
 
 const bcrypt = require("bcryptjs");
 
@@ -118,6 +121,66 @@ const commentsData = [
     { id: 16,  user: "Tyrion Lannister", text: "Hello" },
 ];
 
+const albumsData = [
+    { user: "Jane Dough", name: "All", photos: [1, 2, 15], desc: "" },
+    { user: "Jane Dough", name: "Profile Pictures", photos: [1], desc: "" },
+    { user: "Jane Dough", name: "Cover Photos", photos: [2], desc: "" },
+    { user: "Jesus Christ", name: "All", photos: [3, 4], desc: "" },
+    { user: "Jesus Christ", name: "Profile Pictures", photos: [3], desc: "" },
+    { user: "Jesus Christ", name: "Cover Photos", photos: [4], desc: "" },
+    { user: "Tyrion Lannister", name: "All", photos: [5, 6], desc: "" },
+    { user: "Tyrion Lannister", name: "Profile Pictures", photos: [5], desc: "" },
+    { user: "Tyrion Lannister", name: "Cover Photos", photos: [6], desc: "" },
+    { user: "Jinx", name: "All", photos: [7, 8], desc: "" },
+    { user: "Jinx", name: "Profile Pictures", photos: [7], desc: "" },
+    { user: "Jinx", name: "Cover Photos", photos: [8], desc: "" },
+    { user: "Nea Karlsson", name: "All", photos: [9, 10], desc: "" },
+    { user: "Nea Karlsson", name: "Profile Pictures", photos: [9], desc: "" },
+    { user: "Nea Karlsson", name: "Cover Photos", photos: [10], desc: "" },
+    { user: "Rust Cohle", name: "All", photos: [11, 12], desc: "" },
+    { user: "Rust Cohle", name: "Profile Pictures", photos: [11], desc: "" },
+    { user: "Rust Cohle", name: "Cover Photos", photos: [12], desc: "" },
+    { user: "Ellie Williams", name: "All", photos: [13, 14], desc: "" },
+    { user: "Ellie Williams", name: "Profile Pictures", photos: [13], desc: "" },
+    { user: "Ellie Williams", name: "Cover Photos", photos: [14], desc: "" }
+];
+
+const photosData = [
+    { id: 1, user: "Jane Dough", pointer: "1", name: "Profile pic", caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b" },
+    { id: 2, user: "Jane Dough", pointer: "2", name: "Cover photo", caption: "caption..." },
+    { id: 3, user: "Jesus Christ", pointer: "3", name: "", caption: "caption..." },
+    { id: 4, user: "Jesus Christ", pointer: "4", name: "", caption: "caption..." },
+    { id: 5, user: "Tyrion Lannister", pointer: "5", name: "", caption: "caption..." },
+    { id: 6, user: "Tyrion Lannister", pointer: "6", name: "", caption: "caption..." },
+    { id: 7, user: "Jinx", pointer: "7", name: "", caption: "caption..." },
+    { id: 8, user: "Jinx", pointer: "8", name: "", caption: "caption..." },
+    { id: 9, user: "Nea Karlsson", pointer: "9", name: "", caption: "caption..." },
+    { id: 10, user: "Nea Karlsson", pointer: "10", name: "", caption: "caption..." },
+    { id: 11, user: "Rust Cohle", pointer: "11", name: "", caption: "caption..." },
+    { id: 12, user: "Rust Cohle", pointer: "12", name: "", caption: "caption..." },
+    { id: 13, user: "Ellie Williams", pointer: "13", name: "", caption: "caption..." },
+    { id: 14, user: "Ellie Williams", pointer: "14", name: "", caption: "caption..." },
+    { id: 15, user: "Jane Dough", pointer: "15", name: "", caption: "caption..." }
+];
+
+const imagesData = [
+    { name: "1", url: "/janeDough/profile-pic.jpg" },
+    { name: "2", url: "/janeDough/cover-photo.jpg" },
+    { name: "3", url: "/jesusChrist/profile-pic.jpg" },
+    { name: "4", url: "/jesusChrist/cover-photo.jpg" },
+    { name: "5", url: "/tyrionLannister/profile-pic.jpg" },
+    { name: "6", url: "/tyrionLannister/cover-photo.jpg" },
+    { name: "7", url: "/jinx/profile-pic.jpg" },
+    { name: "8", url: "/jinx/cover-photo.jpg" },
+    { name: "9", url: "/neaKarlsson/profile-pic.jpg" },
+    { name: "10", url: "/neaKarlsson/cover-photo.jpg" },
+    { name: "11", url: "/rustCohle/profile-pic.jpg" },
+    { name: "12", url: "/rustCohle/cover-photo.jpg" },
+    { name: "13", url: "/ellieWilliams/profile-pic.jpg" },
+    { name: "14", url: "/ellieWilliams/cover-photo.jpg" },
+    { name: "15", url: "/ellieWilliams/cover-photo.jpg" }
+];
+
 async function populate() {
     const users = [];
     const forums = [];
@@ -200,6 +263,40 @@ async function populate() {
                 }
             }
         }
+    }
+
+    const photos = [];
+    for (let i = 0; i < photosData.length; i++) {
+        const { pointer, name, caption } = photosData[i];
+
+        // populate user
+        const [ user ] = users.filter(u => u.username === albumsData[i].user);
+
+        const photo = new Photo({ user: user._id, pointer, name, caption });
+        await photo.save();
+        photos.push(photo);
+
+        await new Image(imagesData[i]).save();
+    }
+
+    for (let i = 0; i < albumsData.length; i++) {
+        const { name, desc } = albumsData[i];
+
+        // populate user
+        const [ user ] = users.filter(u => u.username === albumsData[i].user);
+
+        // populate album photos
+        const albumPhotoIds = [];
+        for (let j = 0; j < albumsData[i].photos.length; j++) {
+            for (let x = 0; x < photosData.length; x++) {
+                if (photosData[x].id === albumsData[i].photos[j]) {
+                    albumPhotoIds.push(photos[x]._id);
+                }
+            }
+        }
+
+        await new Album({ user: user._id, name, photos: albumPhotoIds, desc }).save();
+
     }
 }
 

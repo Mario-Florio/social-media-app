@@ -1,22 +1,21 @@
 const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
+const Image = require("../../models/photos/Image");
 
-// dotenv
-const dotenv = require("dotenv");
-dotenv.config();
-const bucketName = process.env.BUCKET_NAME;
+async function getAlbums(userId) {
+    const queryObj = {};
+    if (userId) {
+        queryObj.user = userId;
+    }
 
-// crypto
-const crypto = require("crypto");
-const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
+    const albums = await Album.find(queryObj).populate("photos").exec();
 
-// aws-s3
-const s3 = require("../../s3Client");
-const { GetObjectCommand, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-
-async function getAlbums() {
-    const albums = await Album.find().populate("photos").exec();
+    for (const album of albums) {
+        for (const photo of album.photos) {
+            const image = await Image.findOne({ name: photo.pointer }).exec();
+            photo.url = "http://localhost:8000/api/uploads"+image.url;
+        }
+    } 
 
     return { message: "Request successful", albums, success: true }
 }
@@ -25,6 +24,11 @@ async function getAlbumById(id) {
     const album = await Album.findById(id).populate("photos").exec();
     if (!album) {
         return { status: 400, message: "Album does not exist", success: false };
+    }
+
+    for (const photo of album.photos) {
+        const image = await Image.findOne({ name: photo.pointer }).exec();
+        photo.url = image.url;
     }
 
     return { message: "Request successful", album, success: true };
@@ -37,6 +41,10 @@ async function createAlbum(data) {
 
 async function updateAlbum(id, update) {
     const album = await Album.findById(id).populate("photos").exec();
+    for (const photo of album.photos) {
+        const image = await Image.findOne({ name: photo.pointer }).exec();
+        photo.url = image.url;
+    }
 
     if (!album) {
         return { status: 400, message: "Album does not exist", album: null };
