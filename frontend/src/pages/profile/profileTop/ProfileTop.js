@@ -50,13 +50,13 @@ function ProfileTop() {
                 setIsActive={setPicturePopupIsActive}
                 setPicture={setPicture}
                 options={[
-                    { name: "Jane Dough", value: "../../assets/imgs/janeDough/profile-pic.jpg" },
-                    { name: "Jesus Christ", value: "../../assets/imgs/jesusChrist/profile-pic.jpg" },
-                    { name: "Tyrion Lannister", value: "../../assets/imgs/tyrionLannister/profile-pic.jpg" },
-                    { name: "Jinx", value: "../../assets/imgs/jinx/profile-pic.jpg" },
-                    { name: "Nea Karlsson", value: "../../assets/imgs/neaKarlsson/profile-pic.jpg" },
-                    { name: "Rust Cohle", value: "../../assets/imgs/rustCohle/profile-pic.jpg" },
-                    { name: "Ellie Williams", value: "../../assets/imgs/ellieWilliams/profile-pic.jpg" }
+                    { name: "Jane Dough", value: "/assets/imgs/janeDough/profile-pic.jpg" },
+                    { name: "Jesus Christ", value: "/assets/imgs/jesusChrist/profile-pic.jpg" },
+                    { name: "Tyrion Lannister", value: "/assets/imgs/tyrionLannister/profile-pic.jpg" },
+                    { name: "Jinx", value: "/assets/imgs/jinx/profile-pic.jpg" },
+                    { name: "Nea Karlsson", value: "/assets/imgs/neaKarlsson/profile-pic.jpg" },
+                    { name: "Rust Cohle", value: "/assets/imgs/rustCohle/profile-pic.jpg" },
+                    { name: "Ellie Williams", value: "/assets/imgs/ellieWilliams/profile-pic.jpg" }
                 ]}
             /> }
             { coverPhotoPopupIsActive && <PicturePopup
@@ -64,13 +64,13 @@ function ProfileTop() {
                 setIsActive={setCoverPhotoPopupIsActive}
                 setPicture={setCoverPhoto}
                 options={[
-                    { name: "Jane Dough", value: "../../assets/imgs/janeDough/cover-photo.jpg" },
-                    { name: "Jesus Christ", value: "../../assets/imgs/jesusChrist/cover-photo.jpg" },
-                    { name: "Tyrion Lannister", value: "../../assets/imgs/tyrionLannister/cover-photo.jpg" },
-                    { name: "Jinx", value: "../../assets/imgs/jinx/cover-photo.jpg" },
-                    { name: "Nea Karlsson", value: "../../assets/imgs/neaKarlsson/cover-photo.jpg" },
-                    { name: "Rust Cohle", value: "../../assets/imgs/rustCohle/cover-photo.jpg" },
-                    { name: "Ellie Williams", value: "../../assets/imgs/ellieWilliams/cover-photo.jpg" }
+                    { name: "Jane Dough", value: "/assets/imgs/janeDough/cover-photo.jpg" },
+                    { name: "Jesus Christ", value: "/assets/imgs/jesusChrist/cover-photo.jpg" },
+                    { name: "Tyrion Lannister", value: "/assets/imgs/tyrionLannister/cover-photo.jpg" },
+                    { name: "Jinx", value: "/assets/imgs/jinx/cover-photo.jpg" },
+                    { name: "Nea Karlsson", value: "/assets/imgs/neaKarlsson/cover-photo.jpg" },
+                    { name: "Rust Cohle", value: "/assets/imgs/rustCohle/cover-photo.jpg" },
+                    { name: "Ellie Williams", value: "/assets/imgs/ellieWilliams/cover-photo.jpg" }
                 ]}
             /> }
         </section>

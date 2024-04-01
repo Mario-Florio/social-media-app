@@ -3,6 +3,9 @@ import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
+import defaultProfilePic from "../../assets/imgs/default/profile-picture.jpg";
+import defaultCoverPic from "../../assets/imgs/default/cover-photo.jpg";
+
 const ms = 0;
 
 async function getUsersMock(reqBody = { queryBody: {} }) {
@@ -93,8 +96,8 @@ async function postUserMock(reqBody) {
         createdAt: new Date(),
         profile: {
             _id,
-            picture: "../../assets/imgs/default/profile-picture.jpg",
-            coverPicture: "../../assets/imgs/default/cover-photo.jpg",
+            picture: defaultProfilePic,
+            coverPicture: defaultCoverPic,
             bio: "Hello world!",
             followers: [],
             following: [],
