@@ -21,7 +21,7 @@ function PhotosPage() {
         setIsLoading(true);
         (async () => {
             try {
-                const res = await getAlbums({ userId: id });
+                const res = await getAlbums({ queryBody: { userId: id } });
 
                 if (res.success) {
                     setAlbums(res.albums);

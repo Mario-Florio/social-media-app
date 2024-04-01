@@ -1,11 +1,11 @@
 import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
 
-const ms = 2000;
+const ms = 0;
 
-async function getAlbumsMock(reqBody) {
+async function getAlbumsMock(reqBody = { queryBody: {} }) {
     await delay(ms);
-    const { userId } = reqBody;
+    const { userId } = reqBody.queryBody;
 
     const albums = getCollection("Albums");
 
