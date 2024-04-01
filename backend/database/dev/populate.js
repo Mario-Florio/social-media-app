@@ -16,8 +16,8 @@ const usersData = [
         username: "Jane Dough",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/janeDough/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/janeDough/cover-photo.jpg",
+            picture: "/assets/imgs/janeDough/profile-pic.jpg",
+            coverPicture: "/assets/imgs/janeDough/cover-photo.jpg",
             bio: "Hello World!"
         }
     },
@@ -25,8 +25,8 @@ const usersData = [
         username: "Jesus Christ",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/jesusChrist/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/jesusChrist/cover-photo.jpg",
+            picture: "/assets/imgs/jesusChrist/profile-pic.jpg",
+            coverPicture: "/assets/imgs/jesusChrist/cover-photo.jpg",
             bio: "Hello World!"
         }
     },
@@ -34,8 +34,8 @@ const usersData = [
         username: "Tyrion Lannister",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/tyrionLannister/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/tyrionLannister/cover-photo.jpg",
+            picture: "/assets/imgs/tyrionLannister/profile-pic.jpg",
+            coverPicture: "/assets/imgs/tyrionLannister/cover-photo.jpg",
             bio: "Hello World!"
         }
     },
@@ -43,8 +43,8 @@ const usersData = [
         username: "Jinx",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/jinx/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/jinx/cover-photo.jpg",
+            picture: "/assets/imgs/jinx/profile-pic.jpg",
+            coverPicture: "/assets/imgs/jinx/cover-photo.jpg",
             bio: "Hello World!"
         }
     },
@@ -52,8 +52,8 @@ const usersData = [
         username: "Nea Karlsson",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/neaKarlsson/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/neaKarlsson/cover-photo.jpg",
+            picture: "/assets/imgs/neaKarlsson/profile-pic.jpg",
+            coverPicture: "/assets/imgs/neaKarlsson/cover-photo.jpg",
             bio: "Hello World!"
         }
     },
@@ -61,8 +61,8 @@ const usersData = [
         username: "Rust Cohle",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/rustCohle/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/rustCohle/cover-photo.jpg",
+            picture: "/assets/imgs/rustCohle/profile-pic.jpg",
+            coverPicture: "/assets/imgs/rustCohle/cover-photo.jpg",
             bio: "Time is a flat circle, man"
         }
     },
@@ -70,8 +70,8 @@ const usersData = [
         username: "Ellie Williams",
         password: "password",
         profile: {
-            picture: "../../assets/imgs/ellieWilliams/profile-pic.jpg",
-            coverPicture: "../../assets/imgs/ellieWilliams/cover-photo.jpg",
+            picture: "/assets/imgs/ellieWilliams/profile-pic.jpg",
+            coverPicture: "/assets/imgs/ellieWilliams/cover-photo.jpg",
             bio: "Hello!"
         }
     }
