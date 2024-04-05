@@ -1,14 +1,29 @@
 const Comment = require("../../models/Comment");
 const Post = require("../../models/Post");
+const Image = require("../../models/photos/Image");
+const getPhotoUrl = require("./__utils__/getPhotoUrl");
 
 async function getComments() {
     const comments = await Comment.find()
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
+
+    for (const comment of comments) {
+        await getPhotoUrl(comment.user.profile.picture);
+        await getPhotoUrl(comment.user.profile.coverPicture);
+    }
+
     return comments;
 }
 
 async function getCommentById(id) {
-    const comment = await Comment.findById(id).exec();
+    const comment = await Comment.findById(id)
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
+
+    await getPhotoUrl(comment.user.profile.picture);
+    await getPhotoUrl(comment.user.profile.coverPicture);
+
     return comment;
 }
 
@@ -29,7 +44,8 @@ async function createComment(postId, commentData) {
 
 async function updateComment(id, update) {
     const comment = await Comment.findById(id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
 
     if (!comment) {
         return { status: 400, message: "Comment does not exist", comment: null };
@@ -46,6 +62,9 @@ async function updateComment(id, update) {
         }
     }
     await comment.save();
+
+    await getPhotoUrl(comment.user.profile.picture);
+    await getPhotoUrl(comment.user.profile.coverPicture);
 
     return { success: true, message: "Update was successful", comment };
 }

@@ -1,5 +1,6 @@
 const users_dbMethods = require("../database/methods/users");
 const { verifyToken } = require("../authenticate");
+const { defaultImages } = require("../defaultImgs");
 
 async function read_all(req, res, next) {
     try {
@@ -178,6 +179,38 @@ async function follow_profile(req, res, next) {
     }
 }
 
+async function update_profile_defaultImg(req, res, next) {
+    try {
+        const verifyTokenResBody = verifyToken(req.token);
+        if (!verifyTokenResBody.success) {
+            const { status, message, success } = verifyTokenResBody;
+            return res.status(status).json({ message, success });
+        }
+        const userId = req.params.id;
+        const { authData } = verifyTokenResBody;
+        if (authData.user._id !== userId) {
+            return res.status(404).json({ message: "You are not authorized to update this user", success: false });
+        }
+    
+        const sanitizedInput = sanitizeInput(req.body);
+        const isValid = validateInput(sanitizedInput);
+        if (!isValid) {
+            return res.status(422).json({ message: "Invalid input", success: false });
+        }
+    
+        const responseBody = await users_dbMethods.updateProfileDefaultImg(userId, sanitizedInput);
+        if (!responseBody.success) {
+            const { status, message, success } = responseBody;
+            return res.status(status).json({ message, success });
+        }
+
+        res.json(responseBody);
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ message: "Request unsuccessful", success: false });
+    }
+}
+
 // UTILS
 function sanitizeInput(input) {
     const sanitizedInput = {};
@@ -195,7 +228,25 @@ function validateInput(input) {
     if (input.bio && input.bio.length > 250) {
         return false;
     }
+    if (input.picture && !isValidImgName(input.picture)) {
+        return false;
+    }
+    if (input.picture === "") return false;
+    if (input.coverPicture && !isValidImgName(input.coverPicture)) {
+        return false;
+    }
+    if (input.coverPicture === "") return false;
     return true;
+
+    function isValidImgName(imgName) {
+        let isValid = false;
+        for (const img of defaultImages) {
+            if (img.name=== imgName) {
+                isValid = true;
+            }
+        }
+        return isValid;
+    }
 }
 
 module.exports = {
@@ -205,5 +256,6 @@ module.exports = {
     update,
     remove,
     update_profile,
-    follow_profile
+    follow_profile,
+    update_profile_defaultImg
 }

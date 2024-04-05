@@ -8,6 +8,7 @@ import Loader from "../loader/Loader";
 import SectionWrapper from "../sectionWrapper/SectionWrapper";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
+import { defaultProfilePic } from "../../defaultImages/defaultImages";
 
 import requests from "../../serverRequests/methods/config";
 const { putPost, putPostLike } = requests.posts;
@@ -56,7 +57,7 @@ function Post({ postId }) {
                     { post.loading ?
                         <div className="loadingBGColor profilePic_wrapper"></div> :
                         <Link to={`/users/${post.user._id}`} className="profilePic_wrapper">
-                            <img src={ post.user.profile.picture || "../../assets/imgs/default/profile-picture.jpg"} alt="users profile pic"/>
+                            <img src={ post.user.profile.picture ? (post.user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="users profile pic"/>
                         </Link> }
                     { post.loading ?
                         <div className="title">
@@ -188,7 +189,7 @@ function LikesSection({ postId, likeIds, likesSectionIsActive, setLikesSectionIs
                             >
                                 <div className="profile_wrapper">
                                     <div className="profile-pic_wrapper">
-                                        <img src={like.profile.picture} alt="users profile pic"/>
+                                        <img src={ like.profile.picture ? (like.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="users profile pic"/>
                                     </div>
                                     <h3>{like.username}</h3>
                                 </div>

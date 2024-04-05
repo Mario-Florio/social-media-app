@@ -2,6 +2,7 @@ import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
+import getPhotoUrl from "./__utils__/getPhotoUrl";
 
 const ms = 0;
 
@@ -13,21 +14,6 @@ async function getCommentsMock(reqBody) {
     await populateUsers(comments);
 
     return { message: "Request successful", comments, success: true };
-
-    async function populateUsers(comments) {
-        const users = getCollection("Users");
-    
-        comments.forEach(async comment => {
-            let userData = null;
-            users.forEach(user => {
-                if (user._id === comment.user) {
-                    userData = user;
-                }
-            });
-    
-            comment.user = userData;
-        });
-    }
 }
 
 async function postCommentMock(reqBody) {
@@ -129,6 +115,10 @@ async function populateUsers(comments) {
                 userData = user;
             }
         });
+        
+        getPhotoUrl(userData.profile.picture);
+        getPhotoUrl(userData.profile.coverPicture);
+
         comment.user = userData;
     });
 }

@@ -5,6 +5,7 @@ import Loader from "../../../components/loader/Loader";
 import OptionsSection from "./optionsSection/OptionsSection";
 import EditSection from "./editSection/EditSection";
 import { useAuth } from "../../../hooks/useAuth";
+import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
 import requests from "../../../serverRequests/methods/config";
 import { populateComments } from "../../../serverRequests/methods/comments";
@@ -74,7 +75,7 @@ function Comment({ comment, setComments }) {
         <article className="comment">
             <div className="flexbox">
                 <Link to={`/users/${comment.user._id}`} className="profile-pic_wrapper">
-                    <img src={comment.user.profile.picture} alt="user profile pic"/>
+                    <img src={comment.user.profile.picture ? (comment.user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="user profile pic"/>
                 </Link>
                 <div>
                     <Link to={`/users/${comment.user._id}`}>

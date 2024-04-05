@@ -3,6 +3,7 @@ import "./profileTop.css";
 import PicturePopup from "./picturePopup/PicturePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
+import { defaultProfilePic, defaultCoverPhoto, profilePicImages, coverPhotoImages } from "../../../defaultImages/defaultImages";
 
 function ProfileTop() {
     const { user } = useAuth();
@@ -15,8 +16,16 @@ function ProfileTop() {
     const [coverPhotoPopupIsActive, setCoverPhotoPopupIsActive] = useState(false);
 
     useEffect(() => {
-        profileUser && setCoverPhoto(profileUser.profile.coverPicture);
-        profileUser && setPicture(profileUser.profile.picture);
+        profileUser &&
+        profileUser.profile.coverPicture &&
+        profileUser.profile.coverPicture.url &&
+        setCoverPhoto(profileUser.profile.coverPicture.url);
+
+        profileUser &&
+        profileUser.profile.picture &&
+        profileUser.profile.picture.url &&
+        setPicture(profileUser.profile.picture.url);
+
         return () => {
             setCoverPhoto(null);
             setPicture(null);
@@ -29,49 +38,33 @@ function ProfileTop() {
             { profileUser._id === user._id ?
                 <>
                     <div className="coverPhoto_wrapper">
-                        <img src={ coverPhoto || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/>
+                        <img src={ coverPhoto || defaultCoverPhoto.url } alt="cover" className="coverPhoto"/>
                         <div className="coverPhoto_mask" onClick={() => setCoverPhotoPopupIsActive(true)}></div>
                     </div>
                     <div className="profilePic_wrapper">
-                        <img src={ picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/>
+                        <img src={ picture || defaultProfilePic.url } alt="profile" className="profilePic"/>
                         <div className="profilePic_mask" onClick={() => setPicturePopupIsActive(true)}></div>
                     </div>
                 </> :
                 <>
                     <div className="coverPhoto_wrapper">
-                        <img src={ coverPhoto || "../../assets/imgs/default/cover-photo.jpg" } alt="cover" className="coverPhoto"/>
+                        <img src={ coverPhoto || defaultCoverPhoto.url } alt="cover" className="coverPhoto"/>
                     </div>
                     <div className="profilePic_wrapper">
-                        <img src={ picture || "../../assets/imgs/default/profile-picture.jpg" } alt="profile" className="profilePic"/>
+                        <img src={ picture || defaultProfilePic.url } alt="profile" className="profilePic"/>
                     </div>
                 </> }
             { picturePopupIsActive && <PicturePopup
                 name="picture"
                 setIsActive={setPicturePopupIsActive}
                 setPicture={setPicture}
-                options={[
-                    { name: "Jane Dough", value: "/assets/imgs/janeDough/profile-pic.jpg" },
-                    { name: "Jesus Christ", value: "/assets/imgs/jesusChrist/profile-pic.jpg" },
-                    { name: "Tyrion Lannister", value: "/assets/imgs/tyrionLannister/profile-pic.jpg" },
-                    { name: "Jinx", value: "/assets/imgs/jinx/profile-pic.jpg" },
-                    { name: "Nea Karlsson", value: "/assets/imgs/neaKarlsson/profile-pic.jpg" },
-                    { name: "Rust Cohle", value: "/assets/imgs/rustCohle/profile-pic.jpg" },
-                    { name: "Ellie Williams", value: "/assets/imgs/ellieWilliams/profile-pic.jpg" }
-                ]}
+                options={ profilePicImages.map(image => { return { name: image.name.split("-")[0], value: image.name, url: image.url } }) }
             /> }
             { coverPhotoPopupIsActive && <PicturePopup
                 name="coverPicture"
                 setIsActive={setCoverPhotoPopupIsActive}
                 setPicture={setCoverPhoto}
-                options={[
-                    { name: "Jane Dough", value: "/assets/imgs/janeDough/cover-photo.jpg" },
-                    { name: "Jesus Christ", value: "/assets/imgs/jesusChrist/cover-photo.jpg" },
-                    { name: "Tyrion Lannister", value: "/assets/imgs/tyrionLannister/cover-photo.jpg" },
-                    { name: "Jinx", value: "/assets/imgs/jinx/cover-photo.jpg" },
-                    { name: "Nea Karlsson", value: "/assets/imgs/neaKarlsson/cover-photo.jpg" },
-                    { name: "Rust Cohle", value: "/assets/imgs/rustCohle/cover-photo.jpg" },
-                    { name: "Ellie Williams", value: "/assets/imgs/ellieWilliams/cover-photo.jpg" }
-                ]}
+                options={ coverPhotoImages.map(image => { return { name: image.name.split("-")[0], value: image.name, url: image.url } }) }
             /> }
         </section>
     );

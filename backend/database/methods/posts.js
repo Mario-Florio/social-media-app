@@ -2,12 +2,22 @@ const Post = require("../../models/Post");
 const Forum = require("../../models/Forum");
 const User = require("../../models/User");
 const Comment = require("../../models/Comment");
+const Photo = require("../../models/photos/Photo");
+const Image = require("../../models/photos/Image");
+const getPhotoUrl = require("./__utils__/getPhotoUrl");
 
 async function createPost(data, forumId) {
     const post = await new Post(data).save();
     await Forum.findByIdAndUpdate(forumId, { $push: { posts: post } }).exec();
-    const user = await User.findById(post.user).populate("profile").exec();
+    const user = await User.findById(post.user)
+        .populate({ path: "profile", populate: { path: "picture coverPicture" } })
+        .exec();
+
     post.user = user;
+
+    await getPhotoUrl(post.user.profile.picture);
+    await getPhotoUrl(post.user.profile.coverPicture);
+
     const res = { message: "Success: post has been created", post, success: true };
     return res;
 }
@@ -30,25 +40,36 @@ async function getPosts(limit=10, page=0, userId, timeline) {
         .limit(limit)
         .skip(limit * page)
         .sort({ createdAt: -1 })
-        .populate({ path: "user", populate: { path: "profile" } })
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
         .exec();
+
+    for (const post of posts) {
+        await getPhotoUrl(post.user.profile.picture);
+        await getPhotoUrl(post.user.profile.coverPicture);
+    }
+
     return posts;
 }
 
 async function getPostById(id) {
     const post = await Post.findById(id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
 
     if (!post) {
         return { status: 400, message: "Post does not exist", success: false };
     }
+
+    await getPhotoUrl(post.user.profile.picture);
+    await getPhotoUrl(post.user.profile.coverPicture);
     
     return { message: "Request successful", post, success: true };
 }
 
 async function updatePost(id, update) {
     const post = await Post.findById(id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
 
     if (!post) {
         return { status: 400, message: "Post does not exist", post: null };
@@ -67,6 +88,9 @@ async function updatePost(id, update) {
         }
     }
     await post.save();
+
+    await getPhotoUrl(post.user.profile.picture);
+    await getPhotoUrl(post.user.profile.coverPicture);
 
     return { success: true, message: "Update was successful", post };
 }
@@ -98,7 +122,8 @@ async function deletePost(id) {
 
 async function likePost(id, userId) {
     const post = await Post.findById(id)
-        .populate({ path: "user", populate: { path: "profile" } }).exec();
+        .populate({ path: "user", populate: { path: "profile", populate: { path: "picture coverPicture" } } })
+        .exec();
 
     if (!post) {
         return { status: 400, message: "Post does not exist", success: false };
@@ -112,6 +137,9 @@ async function likePost(id, userId) {
         post.likes.push(userId);
         await post.save();
     }
+
+    await getPhotoUrl(post.user.profile.picture);
+    await getPhotoUrl(post.user.profile.coverPicture);
 
     return { message: "Update successful", post, success: true };
 }

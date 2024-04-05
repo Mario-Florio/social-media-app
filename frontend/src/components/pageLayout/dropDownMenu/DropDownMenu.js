@@ -2,6 +2,7 @@ import "./dropDownMenu.css";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../hooks/useTheme/useTheme";
 import { useAuth } from "../../../hooks/useAuth";
+import { defaultProfilePic, defaultCoverPhoto } from "../../../defaultImages/defaultImages";
 
 function DropDownMenu({ dropDownMenuIsActive, setDropDownMenuIsActive }) {
     const { user, logout } = useAuth();
@@ -13,9 +14,9 @@ function DropDownMenu({ dropDownMenuIsActive, setDropDownMenuIsActive }) {
                 onClick={() => setDropDownMenuIsActive(false)}
             >
                 <div className="profileCover-wrapper">
-                    <img src={user.profile.coverPicture} alt="profile-cover"/>
+                    <img src={ user.profile.coverPicture ? (user.profile.coverPicture.url || defaultCoverPhoto.url) : defaultCoverPhoto.url } alt="profile-cover"/>
                     <div className="profilePic-wrapper">
-                        <img src={user.profile.picture} alt="profile-pic"/>
+                        <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="profile-pic"/>
                     </div>
                 </div>
             </Link>

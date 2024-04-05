@@ -1,23 +1,5 @@
-import janeDoughProfilePic from "../../assets/imgs/janeDough/profile-pic.jpg";
-import janeDoughCoverPhoto from "../../assets/imgs/janeDough/cover-photo.jpg";
 
-import jesusChristProfilePic from "../../assets/imgs/jesusChrist/profile-pic.jpg";
-import jesusChristCoverPhoto from "../../assets/imgs/jesusChrist/cover-photo.jpg";
-
-import tyrionLannisterProfilePic from "../../assets/imgs/tyrionLannister/profile-pic.jpg";
-import tyrionLannisterCoverPhoto from "../../assets/imgs/tyrionLannister/cover-photo.jpg";
-
-import jinxProfilePic from "../../assets/imgs/jinx/profile-pic.jpg";
-import jinxCoverPhoto from "../../assets/imgs/jinx/cover-photo.jpg";
-
-import neaKarlssonProfilePic from "../../assets/imgs/neaKarlsson/profile-pic.jpg";
-import neaKarlssonCoverPhoto from "../../assets/imgs/neaKarlsson/cover-photo.jpg";
-
-import rustCohleProfilePic from "../../assets/imgs/rustCohle/profile-pic.jpg";
-import rustCohleCoverPhoto from "../../assets/imgs/rustCohle/cover-photo.jpg";
-
-import ellieWilliamsProfilePic from "../../assets/imgs/ellieWilliams/profile-pic.jpg";
-import ellieWilliamsCoverPhoto from "../../assets/imgs/ellieWilliams/cover-photo.jpg";
+import { images } from "../../defaultImages/defaultImages";
 
 export default function populateCollections() {
     populateUsersCollection();
@@ -26,7 +8,7 @@ export default function populateCollections() {
     populateCommentsCollection();
     populatePhotosCollections();
     populateAlbumsCollections();
-    populateImagesStorage();
+    populateImagesCollection();
 }
 
 function populateUsersCollection() {
@@ -38,8 +20,16 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "1",
-                picture: janeDoughProfilePic,
-                coverPicture: janeDoughCoverPhoto,
+                picture: {
+                    _id: "1",
+                    user: "1",
+                    pointer: "Jane Dough-profilePic",
+                    name: "Profile pic",
+                    caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh pgosdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh...",
+                    url: "",
+                    createdAt: new Date()
+                },
+                coverPicture: { _id: "2", user: "1", pointer: "Jane Dough-coverPhoto", name: "Cover photo", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello World!",
                 following: ["2", "3", "4", "5", "6", "7"],
                 followers: ["2", "3", "4", "5", "6", "7"],
@@ -53,8 +43,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "2",
-                picture: jesusChristProfilePic,
-                coverPicture: jesusChristCoverPhoto,
+                picture: { _id: "3", user: "2", pointer: "Jesus Christ-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "4", user: "2", pointer: "Jesus Christ-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello World!",
                 following: ["1", "3", "4", "5", "6", "7"],
                 followers: ["1", "3", "4", "5", "6", "7"],
@@ -68,8 +58,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "3",
-                picture: tyrionLannisterProfilePic,
-                coverPicture: tyrionLannisterCoverPhoto,
+                picture: { _id: "5", user: "3", pointer: "Tyrion Lannister-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "6", user: "3", pointer: "Tyrion Lannister-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello World!",
                 following: ["1", "2", "4", "5", "6", "7"],
                 followers: ["1", "2", "4", "5", "6", "7"],
@@ -83,8 +73,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "4",
-                picture: jinxProfilePic,
-                coverPicture: jinxCoverPhoto,
+                picture: { _id: "7", user: "4", pointer: "Jinx-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "8", user: "4", pointer: "Jinx-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello World!",
                 following: ["1", "2", "3", "5", "6", "7"],
                 followers: ["1", "2", "3", "5", "6", "7"],
@@ -98,8 +88,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "5",
-                picture: neaKarlssonProfilePic,
-                coverPicture: neaKarlssonCoverPhoto,
+                picture: { _id: "9", user: "5", pointer: "Nea Karlsson-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "10", user: "5", pointer: "Nea Karlsson-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello World!",
                 following: ["1", "2", "3", "4", "6", "7"],
                 followers: ["1", "2", "3", "4", "6", "7"],
@@ -113,8 +103,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "6",
-                picture: rustCohleProfilePic,
-                coverPicture: rustCohleCoverPhoto,
+                picture: { _id: "11", user: "6", pointer: "Rust Cohle-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "12", user: "6", pointer: "Rust Cohle-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Time is a flat circle, man",
                 following: ["1", "2", "3", "4", "5", "7"],
                 followers: ["1", "2", "3", "4", "5", "7"],
@@ -128,8 +118,8 @@ function populateUsersCollection() {
             createdAt: new Date(),
             profile: {
                 _id: "7",
-                picture: ellieWilliamsProfilePic,
-                coverPicture: ellieWilliamsCoverPhoto,
+                picture: { _id: "13", user: "7", pointer: "Ellie Williams-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+                coverPicture: { _id: "14", user: "7", pointer: "Ellie Williams-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
                 bio: "Hello!",
                 following: ["1", "2", "3", "4", "5", "6"],
                 followers: ["1", "2", "3", "4", "5", "6"],
@@ -209,21 +199,20 @@ function populateCommentsCollection() {
 
 function populatePhotosCollections() {
     const photos = [
-        { _id: "1", user: "1", pointer: "1", name: "Profile pic", caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh pgosdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh...", createdAt: new Date() },
-        { _id: "2", user: "1", pointer: "2", name: "Cover photo", caption: "caption...", createdAt: new Date() },
-        { _id: "3", user: "2", pointer: "3", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "4", user: "2", pointer: "4", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "5", user: "3", pointer: "5", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "6", user: "3", pointer: "6", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "7", user: "4", pointer: "7", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "8", user: "4", pointer: "8", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "9", user: "5", pointer: "9", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "10", user: "5", pointer: "10", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "11", user: "6", pointer: "11", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "12", user: "6", pointer: "12", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "13", user: "7", pointer: "13", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "14", user: "7", pointer: "14", name: "", caption: "caption...", createdAt: new Date() },
-        { _id: "15", user: "1", pointer: "15", name: "This is a reallllllly long name!!!!!", caption: "caption...", createdAt: new Date() }
+        { _id: "1", user: "1", pointer: "Jane Dough-profilePic", name: "Profile pic", caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh pgosdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b oerigh i rghi gerghi epwirogh...", url: "", createdAt: new Date() },
+        { _id: "2", user: "1", pointer: "Jane Dough-coverPhoto", name: "Cover photo", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "3", user: "2", pointer: "Jesus Christ-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "4", user: "2", pointer: "Jesus Christ-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "5", user: "3", pointer: "Tyrion Lannister-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "6", user: "3", pointer: "Tyrion Lannister-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "7", user: "4", pointer: "Jinx-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "8", user: "4", pointer: "Jinx-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "9", user: "5", pointer: "Nea Karlsson-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "10", user: "5", pointer: "Nea Karlsson-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "11", user: "6", pointer: "Rust Cohle-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "12", user: "6", pointer: "Rust Cohle-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "13", user: "7", pointer: "Ellie Williams-profilePic", name: "", caption: "caption...", url: "", createdAt: new Date() },
+        { _id: "14", user: "7", pointer: "Ellie Williams-coverPhoto", name: "", caption: "caption...", url: "", createdAt: new Date() }
     ];
     
     window.localStorage.setItem("Photos", JSON.stringify(photos));
@@ -231,7 +220,7 @@ function populatePhotosCollections() {
 
 function populateAlbumsCollections() {
     const albums = [
-        { _id: "1", user: "1", name: "All", photos: ["1", "2", "15"], desc: "", createdAt: new Date() },
+        { _id: "1", user: "1", name: "All", photos: ["1", "2"], desc: "", createdAt: new Date() },
         { _id: "2", user: "1", name: "Profile Pictures", photos: ["1"], desc: "", createdAt: new Date() },
         { _id: "3", user: "1", name: "Cover Photos", photos: ["2"], desc: "", createdAt: new Date() },
         { _id: "4", user: "2", name: "All", photos: ["3", "4"], desc: "", createdAt: new Date() },
@@ -257,24 +246,6 @@ function populateAlbumsCollections() {
     window.localStorage.setItem("Albums", JSON.stringify(albums));
 }
 
-function populateImagesStorage() {
-    const images = [
-        { _id: "1", name: "1", url: janeDoughProfilePic },
-        { _id: "2", name: "2", url: janeDoughCoverPhoto },
-        { _id: "3", name: "3", url: jesusChristProfilePic },
-        { _id: "4", name: "4", url: jesusChristCoverPhoto },
-        { _id: "5", name: "5", url: tyrionLannisterProfilePic },
-        { _id: "6", name: "6", url: tyrionLannisterCoverPhoto },
-        { _id: "7", name: "7", url: jinxProfilePic },
-        { _id: "8", name: "8", url: jinxCoverPhoto },
-        { _id: "9", name: "9", url: neaKarlssonProfilePic },
-        { _id: "10", name: "10", url: neaKarlssonCoverPhoto },
-        { _id: "11", name: "11", url: rustCohleProfilePic },
-        { _id: "12", name: "12", url: rustCohleCoverPhoto },
-        { _id: "13", name: "13", url: ellieWilliamsProfilePic },
-        { _id: "14", name: "14", url: ellieWilliamsCoverPhoto },
-        { _id: "15", name: "15", url: ellieWilliamsCoverPhoto }
-    ];
-
+function populateImagesCollection() {
     window.localStorage.setItem("Images", JSON.stringify(images));
 }

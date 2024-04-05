@@ -1,5 +1,6 @@
 import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
+import getPhotoUrl from "./__utils__/getPhotoUrl";
 
 const ms = 0;
 
@@ -21,6 +22,9 @@ async function getSessionMock(token) {
             payload.success = true;
         }
     }
+
+    getPhotoUrl(payload.user.profile.picture);
+    getPhotoUrl(payload.user.profile.coverPicture);
 
     return payload;
 }
@@ -47,6 +51,9 @@ async function postLoginMock(credentials) {
             break;
         }
     }
+
+    getPhotoUrl(payload.user.profile.picture);
+    getPhotoUrl(payload.user.profile.coverPicture);
 
     return payload;
 }

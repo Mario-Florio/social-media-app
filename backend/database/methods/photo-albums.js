@@ -1,6 +1,7 @@
 const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
+const getPhotoUrl = require("./__utils__/getPhotoUrl");
 
 async function getAlbums(userId) {
     const queryObj = {};
@@ -12,8 +13,7 @@ async function getAlbums(userId) {
 
     for (const album of albums) {
         for (const photo of album.photos) {
-            const image = await Image.findOne({ name: photo.pointer }).exec();
-            photo.url = "http://localhost:8000/api/uploads"+image.url;
+            await getPhotoUrl(photo);
         }
     } 
 
@@ -27,8 +27,7 @@ async function getAlbumById(id) {
     }
 
     for (const photo of album.photos) {
-        const image = await Image.findOne({ name: photo.pointer }).exec();
-        photo.url = image.url;
+        await getPhotoUrl(photo);
     }
 
     return { message: "Request successful", album, success: true };
@@ -42,8 +41,7 @@ async function createAlbum(data) {
 async function updateAlbum(id, update) {
     const album = await Album.findById(id).populate("photos").exec();
     for (const photo of album.photos) {
-        const image = await Image.findOne({ name: photo.pointer }).exec();
-        photo.url = image.url;
+        await getPhotoUrl(photo);
     }
 
     if (!album) {

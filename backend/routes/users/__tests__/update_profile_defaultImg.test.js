@@ -3,11 +3,12 @@ const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
+const { defaultProfileImages, defaultCoverImages } = require("../../../defaultImgs");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/users UPDATE_PROFILE", () => {
+describe("/users UPDATE_PROFILE_DEFAULTIMG", () => {
     describe("client authenticated & authorized", () => {
         let token = null;
         let user = null;
@@ -24,34 +25,49 @@ describe("/users UPDATE_PROFILE", () => {
 
         test("should return 200 status code and json content type header", async () => {
             const response = await request(app)
-                .put(`/api/users/${user._id}/profile`)
+                .put(`/api/users/${user._id}/profile/default-img`)
                 .set("Authorization", `Bearer ${token}`)
-                .send({ bio: "Updated bio..." });
+                .send({ picture: "Default-profilePic" });
             expect(response.statusCode).toBe(200);
             expect(response.headers["content-type"]).toEqual(expect.stringContaining("json"));
         });
         test("should contain truthy success field and message defined", async () => {
             const response = await request(app)
-                .put(`/api/users/${user._id}/profile`)
+                .put(`/api/users/${user._id}/profile/default-img`)
                 .set("Authorization", `Bearer ${token}`)
-                .send({ bio: "Updated bio..." });
+                .send({ picture: "Default-profilePic" });
             expect(response.body.success).toBeTruthy();
             expect(response.body.message).toBeDefined();
         });
-        test("response body should contain updated profile and message", async () => {
-            const bodyData = [
-                { bio: "Update bio 1..." },
-                { bio: "Updated bio 2..." },
-                { bio: "Updated bio 3..." }
-            ];
+        test("response body should contain updated profile", async () => {
+            const profileImgsData = defaultProfileImages.map(image => {
+                const data = {
+                    reqBody: { picture: image.name },
+                    exprectedUrlResponse: image.url
+                }
+                return data;
+            });
+
+            const coverImgsData = defaultCoverImages.map(image => {
+                const data = {
+                    reqBody: { coverPicture: image.name },
+                    exprectedUrlResponse: image.url
+                }
+                return data;
+            });
+
+            const bodyData = [ ...profileImgsData, ...coverImgsData ];
 
             for (const data of bodyData) {
                 const response = await request(app)
-                    .put(`/api/users/${user._id}/profile`)
+                    .put(`/api/users/${user._id}/profile/default-img`)
                     .set("Authorization", `Bearer ${token}`)
-                    .send(data);
+                    .send(data.reqBody);
 
-                expect(response.body.user.profile.bio).toBe(data.bio);
+                expect(
+                    response.body.user.profile.picture && response.body.user.profile.picture.url === data.exprectedUrlResponse ||
+                    response.body.user.profile.coverPicture && response.body.user.profile.coverPicture.url === data.exprectedUrlResponse
+                ).toBeTruthy();
             }
         });
 
@@ -59,9 +75,9 @@ describe("/users UPDATE_PROFILE", () => {
             let response;
             beforeAll(async () => {
                 response = await request(app)
-                    .put(`/api/users/${user._id}/profile`)
+                    .put(`/api/users/${user._id}/profile/default-img`)
                     .set("Authorization", `Bearer ${token}`)
-                    .send({ bio: "This string is greater than 250 characters... 51xM,qQhRqJk5EFmr4)TPCfSmR_V$_z2)L(KA=){K4CB#V]w-yP,GG8N59R&H&@3S5vh4CDh]C3S0Yckav]UBTd{]:uK8,0gfU9;&u{%*y!.GMt/c&-6E#VU1S.cj]v_q?H0WSDHeRea!r;N*i!KSA00L;V7(._}CcknNkX]99eG,R7=6P/,ST$77qW%-V=hg{yywg28ASN,P4Wdqb,H[-+%7w9ikWDHm5ywzb1h2ka,M34qZ8-ec0x8RZ" });
+                    .send({ picture: "" });
             })
             test("should respond with status code 422", async () => {
                 expect(response.statusCode).toBe(422);
@@ -85,8 +101,8 @@ describe("/users UPDATE_PROFILE", () => {
                 const user = loginRes.body.user;
 
                 response = await request(app)
-                    .put(`/api/users/${user._id}/profile`)
-                    .send({ bio: "Updated bio..." });
+                    .put(`/api/users/${user._id}/profile/default-img`)
+                    .send({ picture: "Default-profilePic" });
             });
             afterAll(async () => {
                 response = null;
@@ -115,9 +131,9 @@ describe("/users UPDATE_PROFILE", () => {
                 const user = loginRes.body.user;
 
                 response = await request(app)
-                    .put(`/api/users/${user._id}/profile`)
+                    .put(`/api/users/${user._id}/profile/default-img`)
                     .set("Authorization", `Bearer ${token}`)
-                    .send({ bio: "Updated bio..." });
+                    .send({ picture: "Default-profilePic" });
             });
             afterAll(async () => { 
                 response = null;
@@ -149,9 +165,9 @@ describe("/users UPDATE_PROFILE", () => {
             const updateUser = await User.findOne({ username: "username2" }).exec();
 
             response = await request(app)
-                .put(`/api/users/${updateUser._id}/profile`)
+                .put(`/api/users/${updateUser._id}/profile/default-img`)
                 .set("Authorization", `Bearer ${token}`)
-                .send({ bio: "Updated bio..." });
+                .send({ picture: "Default-profilePic" });
         });
         afterAll(async () => {
             await database.dropCollections();

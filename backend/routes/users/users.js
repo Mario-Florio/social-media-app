@@ -18,4 +18,6 @@ router.put("/:id/profile", getToken, users_controller.update_profile);
 
 router.put("/:id/profile/follow", getToken, users_controller.follow_profile);
 
+router.put("/:id/profile/default-img", getToken, users_controller.update_profile_defaultImg);
+
 module.exports = router;

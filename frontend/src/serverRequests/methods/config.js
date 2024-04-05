@@ -10,7 +10,8 @@ import {
     putUser,
     deleteUser,
     putProfile,
-    putUserFollow
+    putUserFollow,
+    putProfileDefaultImg
 } from "../server/Users";
 import {
     getUsersMock,
@@ -19,7 +20,8 @@ import {
     putUserMock,
     deleteUserMock,
     putProfileMock,
-    putUserFollowMock
+    putUserFollowMock,
+    putProfileDefaultImgMock
 } from "../mockServer/Users";
 
 import { getForum } from "../server/Forums";
@@ -55,12 +57,15 @@ import {
     deleteCommentMock
 } from "../mockServer/Comments";
 
+import { getAlbums } from "../server/Albums";
 import { getAlbumsMock } from "../mockServer/Albums";
 
-let mock = true;
-let resetCollections = true;
+let mock = false;
+let resetCollections = false;
+let clearLocalStorage = false;
 
 resetCollections && populateCollections();
+clearLocalStorage && window.localStorage.clear();
 
 const requests = {
     auth: {
@@ -74,7 +79,8 @@ const requests = {
         putUser: mock ? putUserMock : putUser,
         deleteUser: mock ? deleteUserMock : deleteUser,
         putProfile: mock ? putProfileMock : putProfile,
-        putUserFollow: mock ? putUserFollowMock : putUserFollow
+        putUserFollow: mock ? putUserFollowMock : putUserFollow,
+        putProfileDefaultImg: mock ? putProfileDefaultImgMock : putProfileDefaultImg
     },
     forums: {
         getForum: mock ? getForumMock : getForum,
@@ -94,7 +100,7 @@ const requests = {
         deleteComment: mock ? deleteCommentMock : deleteComment
     },
     albums: {
-        getAlbums: mock ? getAlbumsMock : notSetup
+        getAlbums: mock ? getAlbumsMock : getAlbums
     }
 }
 

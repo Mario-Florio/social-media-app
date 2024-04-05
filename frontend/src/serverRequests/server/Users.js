@@ -120,6 +120,23 @@ async function putUserFollow(reqBody) {
     }
 }
 
+async function putProfileDefaultImg(reqBody) {
+    try {
+        const { id, token, update } = reqBody;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.put(`/users/${id}/profile/default-img`, update, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
     getUsers,
     getUser,
@@ -127,5 +144,6 @@ export {
     putUser,
     deleteUser,
     putProfile,
-    putUserFollow
+    putUserFollow,
+    putProfileDefaultImg
 };

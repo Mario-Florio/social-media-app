@@ -2,9 +2,7 @@ import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
-
-import defaultProfilePic from "../../assets/imgs/default/profile-picture.jpg";
-import defaultCoverPic from "../../assets/imgs/default/cover-photo.jpg";
+import getPhotoUrl from "./__utils__/getPhotoUrl";
 
 const ms = 0;
 
@@ -36,7 +34,7 @@ async function getUsersMock(reqBody = { queryBody: {} }) {
         users = users.filter(user => {
             for (let i = 0; i < userIds.length; i++) {
                 if (userIds[i] === user._id) {
-                    return true
+                    return true;
                 }
             }
             return false;
@@ -48,6 +46,11 @@ async function getUsersMock(reqBody = { queryBody: {} }) {
     }
 
     users = users.filter((user, i) => (i+1 > page * limit) && (i+1 <= page * limit + limit));
+
+    for (const user of users) {
+        getPhotoUrl(user.profile.picture);
+        getPhotoUrl(user.profile.coverPicture);
+    }
 
     return { message: "Request successful", users, success: true };
 }
@@ -69,6 +72,9 @@ async function getUserMock(reqBody) {
     if (!userFound) {
         return { message: "Request failed: User not found", success: false };
     }
+
+    getPhotoUrl(userFound.profile.picture);
+    getPhotoUrl(userFound.profile.coverPicture);
 
     return { message: "Request successful", user: userFound, success: true };
 }
@@ -96,8 +102,8 @@ async function postUserMock(reqBody) {
         createdAt: new Date(),
         profile: {
             _id,
-            picture: defaultProfilePic,
-            coverPicture: defaultCoverPic,
+            picture: null,
+            coverPicture: null,
             bio: "Hello world!",
             followers: [],
             following: [],
@@ -124,6 +130,7 @@ async function putUserMock(reqBody) {
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
+    const images = getCollection("Images");
 
     let userFound = false;
     let index = 0;
@@ -149,6 +156,9 @@ async function putUserMock(reqBody) {
 
     delete users[index].password;
 
+    getPhotoUrl(users[index].profile.picture);
+    getPhotoUrl(users[index].profile.coverPicture);
+
     return { message: "Update was successful", user: users[index], success: true };
 }
 
@@ -164,13 +174,29 @@ async function deleteUserMock(reqBody) {
     const forums = getCollection("Forums");
     const posts = getCollection("Posts");
     const comments = getCollection("Comments");
+    const albums = getCollection("Albums");
+    const photos = getCollection("Photos");
+    const images = getCollection("Images");
 
     const [ user ] = users.filter(user => user._id === id);
 
     if (!user) return { message: "User does not exist", success: false };
 
+    // 1. delete all users albums, photos, and images
+    const filteredAlbums = albums.filter(album => album.user !== user._id);
+    const filteredPhotos = photos.filter(photo => photo.user !== user._id);
+    const filteredImages = images.filter(image => {
+        let isUser = false;
+        for (const photo of photos) {
+            if (photo.user === user) {
+                if (image.name === photo.pointer) isUser = true;
+            }
+        }
+        return !isUser;
+    });
+
     for (let i = 0; i < posts.length; i++) {
-        // 1. delete all refs to users comments in posts (i.e. post.comments)
+        // 2. delete all refs to users comments in posts (i.e. post.comments)
         const filteredComments = posts[i].comments.filter(commentId => {
             let isUser = false;
             for (let i = 0; i < comments.length; i++) {
@@ -182,17 +208,17 @@ async function deleteUserMock(reqBody) {
             return !isUser;
         });
 
-        // 2. delete all refs to user in posts (i.e. post.likes)
+        // 3. delete all refs to user in posts (i.e. post.likes)
         const filteredLikes = posts[i].likes.filter(userId => userId !== user._id);
         
         posts[i].likes = filteredLikes;
         posts[i].comments = filteredComments;
     }
 
-    // 3. delete all comments made by user (i.e. comment.user)
+    // 4. delete all comments made by user (i.e. comment.user)
     let filteredComments = comments.filter(comment => comment.user !== user._id);
 
-    // 4. delete all posts from Posts ref'd in users forum
+    // 5. delete all posts from Posts ref'd in users forum
     const [ userForum ] = forums.filter(forum => forum._id === user.profile.forum);
     const commentIdsFromDeletedPosts = []; // used in next step
     let filteredPosts = posts.filter(post => {
@@ -204,7 +230,7 @@ async function deleteUserMock(reqBody) {
         return !userForum.posts.includes(post._id)
     });
 
-    // 5. delete all refs to user in forums (i.e. forums.posts)
+    // 6. delete all refs to user in forums (i.e. forums.posts)
     for (let i = 0; i < forums.length; i++) {
         const filteredPosts = forums[i].posts.filter(postId => {
             let isUser = false;
@@ -219,16 +245,16 @@ async function deleteUserMock(reqBody) {
         forums[i].posts = filteredPosts;
     }
 
-    // 6. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
+    // 7. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
     filteredComments = filteredComments.filter(comment => !commentIdsFromDeletedPosts.includes(comment._id));
 
-    // 7. delete any posts made by user
+    // 8. delete any posts made by user
     filteredPosts = filteredPosts.filter(post => post.user !== user._id);
 
-    // 8. delete users forum
+    // 9. delete users forum
     const filteredForums = forums.filter(forum => forum._id !== user.profile.forum);
 
-    // 9. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
+    // 10. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
     for (let i = 0; i < users.length; i++) {
         const filteredFollowing = users[i].profile.following.filter(userId => userId !== user._id);
         const filteredFollowers = users[i].profile.followers.filter(userId => userId !== user._id);
@@ -236,14 +262,17 @@ async function deleteUserMock(reqBody) {
         users[i].profile.followers = filteredFollowers;
     }
 
-    // 10. delete users profile
-    // 11. delete user
+    // 11. delete users profile
+    // 12. delete user
     const filteredUsers = users.filter(user => user._id !== id);
 
     window.localStorage.setItem("Users", JSON.stringify(filteredUsers));
     window.localStorage.setItem("Forums", JSON.stringify(filteredForums));
     window.localStorage.setItem("Posts", JSON.stringify(filteredPosts));
     window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
+    window.localStorage.setItem("Albums", JSON.stringify(filteredAlbums));
+    window.localStorage.setItem("Photos", JSON.stringify(filteredPhotos));
+    window.localStorage.setItem("Images", JSON.stringify(filteredImages));
 
     return { message: "Deletion was successful", success: true };
 }
@@ -257,6 +286,8 @@ async function putProfileMock(reqBody) {
     if (!tokenIsValid) return { message: "Request is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
+    const photos = getCollection("Photos");
+    const images = getCollection("Images");
 
     let userFound = false;
     let index = 0;
@@ -271,18 +302,39 @@ async function putProfileMock(reqBody) {
     if (!userFound) return { message: "User does not exist", success: false };
 
     for (const key in update) {
-        if (key !== "forum" ||
-            key !== "following" ||
-            key !== "followers" ||
-            key !== "_id" ||
-            key !== "createdAt") {
+        if (
+            key !== "forum" &&
+            key !== "following" &&
+            key !== "followers" &&
+            key !== "picture" &&
+            key !== "coverPicture" &&
+            key !== "_id" &&
+            key !== "createdAt"
+        ) {
             users[index].profile[key] = update[key];
+        } else if (key === "picture" || key === "coverPicture") {
+
+            const randomImageName = uid();
+
+            const photo = { _id: uid(), pointer: randomImageName, name: "", caption: "", url: "", createdAt: new Date() }
+            const image = { _id: uid(), name: randomImageName, url: update[key], createdAt: new Date() }
+
+            users[index].profile[key] = photo;
+
+            photos.push(photo);
+            images.push(image);
+
+            window.localStorage.setItem("Photos", JSON.stringify(photos));
+            window.localStorage.setItem("Images", JSON.stringify(images));
         }
     }
 
     window.localStorage.setItem("Users", JSON.stringify(users));
 
     delete users[index].password;
+
+    getPhotoUrl(users[index].profile.picture);
+    getPhotoUrl(users[index].profile.coverPicture);
 
     return { message: "Update was successful", user: users[index], success: true };
 }
@@ -341,12 +393,81 @@ async function putUserFollowMock(reqBody) {
     delete users[profileUserIndex].password;
     delete users[userIndex].password;
 
+    getPhotoUrl(users[userIndex].profile.picture);
+    getPhotoUrl(users[userIndex].profile.coverPicture);
+    getPhotoUrl(users[profileUserIndex].profile.picture);
+    getPhotoUrl(users[profileUserIndex].profile.coverPicture);
+
     return {
         message: "Update was successful",
         success: true,
         peerUser: users[profileUserIndex],
         clientUser: users[userIndex]
     };
+}
+
+async function putProfileDefaultImgMock(reqBody) {
+    await delay(ms);
+
+    const { id, update, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+
+    const users = getCollection("Users", { showHidden: "password" });
+    const images = getCollection("Images");
+
+    let userFound = false;
+    let index = 0;
+    for (const user of users) {
+        if (user._id === id) {
+            userFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!userFound) return { message: "User does not exist", success: false };
+
+    for (const key in update) {
+        if (
+            key !== "forum" &&
+            key !== "following" &&
+            key !== "followers" &&
+            key !== "_id" &&
+            key !== "createdAt"
+        ) {
+            const albums = getCollection("Albums");
+            const photos = getCollection("Photos");
+
+            const [ image ] = images.filter(image => image.name === update[key]);
+            const photo = { _id: uid(), pointer: image.name, name: "", caption: "", url: "", createdAt: new Date() }
+
+            users[index].profile[key] = photo;
+
+            photos.push(photo);
+
+            for (const album of albums) {
+                if (album.user === id) {
+                    if (album.name === "All") album.photos.push(photo._id);
+                    if (key === "picture" && album.name === "Profile Pictures") album.photos.push(photo._id);
+                    if (key === "coverPicture" && album.name === "Cover Photos") album.photos.push(photo._id);
+                }
+            }
+
+            window.localStorage.setItem("Photos", JSON.stringify(photos));
+            window.localStorage.setItem("Albums", JSON.stringify(albums));
+        }
+    }
+
+    window.localStorage.setItem("Users", JSON.stringify(users));
+
+    delete users[index].password;
+
+    getPhotoUrl(users[index].profile.picture);
+    getPhotoUrl(users[index].profile.coverPicture);
+
+    return { message: "Update was successful", user: users[index], success: true };
 }
 
 export {
@@ -356,5 +477,6 @@ export {
     putUserMock,
     deleteUserMock,
     putProfileMock,
-    putUserFollowMock
+    putUserFollowMock,
+    putProfileDefaultImgMock
 };

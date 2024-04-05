@@ -3,6 +3,7 @@ import "./followSection.css";
 import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
 import { Link } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
+import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
 import requests from "../../../serverRequests/methods/config";
 const { getUsers } = requests.users;
@@ -66,7 +67,7 @@ function FollowSection() {
                             >
                                 <div className="profile_wrapper">
                                     <div className="profile-pic_wrapper">
-                                        <img src={user.profile.picture} alt="users profile pic"/>
+                                        <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="users profile pic"/>
                                     </div>
                                     <h4>{user.username}</h4>
                                 </div>

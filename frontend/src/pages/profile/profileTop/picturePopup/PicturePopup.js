@@ -5,7 +5,7 @@ import { useProfile } from "../../hooks/useProfile";
 
 import requests from "../../../../serverRequests/methods/config";
 
-const { putProfile } = requests.users;
+const { putProfileDefaultImg } = requests.users;
 
 function PicturePopup({ name, setIsActive, setPicture, options }) {
     function handelCancel() {
@@ -67,13 +67,16 @@ function SelectForm({ setIsActive, name, options }) {
     const { user, updateUser, token } = useAuth();
     const { setProfileUser } = useProfile();
 
+    const [ img ] = options.filter(option => option.value === input);
+    const imgSrc = img.url;
+
     async function handleSubmit(e) {
         try {
             e.preventDefault();
     
             const requestBody = { id: user._id, update: { [name]: input }, token };
             
-            const res = await putProfile(requestBody);
+            const res = await putProfileDefaultImg(requestBody);
 
             if (res.success) {
                 const user = res.user;
@@ -97,11 +100,11 @@ function SelectForm({ setIsActive, name, options }) {
             <label htmlFor={name}>Default Pictures</label>
             <div style={{ display: "flex", alignItems: "center", gap: ".5rem" }}>
                 <select name={name} value={input} onChange={handleChange}>
-                    { options.map((option, i) => 
-                        <option key={i} value={option.value}>{option.name}</option>) }
+                    { options.map((option) => 
+                        <option key={option.value} value={option.value}>{option.name}</option>) }
                 </select>
                 <div style={{ height: "25px", width: "25px" }}>
-                    <img src={input} alt="selected pic" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "5px" }}/>
+                    <img src={imgSrc} alt="selected pic" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "5px" }}/>
                 </div>
             </div>
             <button>Select</button>

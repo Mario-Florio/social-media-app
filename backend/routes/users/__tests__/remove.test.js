@@ -7,6 +7,9 @@ const Profile = require("../../../models/Profile");
 const Forum = require("../../../models/Forum");
 const Post = require("../../../models/Post");
 const Comment = require("../../../models/Comment");
+const Album = require("../../../models/photos/Album");
+const Photo = require("../../../models/photos/Photo");
+const Image = require("../../../models/photos/Image");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -42,12 +45,19 @@ describe("/users REMOVE", () => {
             expect(response.body.success).toBeTruthy();
             expect(response.body.message).toBeDefined();
         });
-        test("user should not exist in database post request", async () => {
+        test("user should not exist in database", async () => {
             const userExists = await User.findById(user._id).exec();
             const userProfileExists = await Profile.findOne({ user: user._id }).exec();
             const userForumExists = await Forum.findById(user.profile.forum).exec();
             const usersPosts = await Post.find({ user: user._id }).exec();
             const usersComments = await Comment.find({ user: user._id }).exec();
+            const usersAlbums = await Album.find({ user: user._id }).exec();
+            const usersPhotos = await Photo.find({ user: user._id }).exec();
+            const usersImages = [];
+            for (const photo of usersPhotos) {
+                const image = await Image.findOne({ name: photo.pointer }).exec();
+                usersImages.push(image);
+            }
 
             const forumsWithUsersPost = [];
             const forums = await Forum.find().populate("posts").exec();
@@ -67,6 +77,9 @@ describe("/users REMOVE", () => {
             expect(userForumExists).toBeFalsy();
             expect(usersPosts.length).toEqual(0);
             expect(usersComments.length).toEqual(0);
+            expect(usersAlbums.length).toEqual(0);
+            expect(usersPhotos.length).toEqual(0);
+            expect(usersImages.length).toEqual(0);
 
             expect(forumsWithUsersPost.length).toEqual(0);
             expect(usersFollows.length).toEqual(0);

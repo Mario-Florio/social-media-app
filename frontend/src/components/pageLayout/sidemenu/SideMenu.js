@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./sideMenu.css";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
+import { defaultProfilePic, defaultCoverPhoto } from "../../../defaultImages/defaultImages";
 
 import requests from "../../../serverRequests/methods/config";
 const { getUsers } = requests.users;
@@ -64,7 +65,7 @@ function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {
                         return <li key={u._id}>
                             <Link to={`/users/${u._id}`} onClick={handleClick}>
                                 <article>
-                                    <img src={u.profile.picture} alt="Profile pic"/>
+                                    <img src={ u.profile.picture ? (u.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="Profile pic"/>
                                     <h3>{u.username}</h3>
                                 </article>
                             </Link>

@@ -8,9 +8,7 @@ async function getAlbumsMock(reqBody = { queryBody: {} }) {
     const { userId } = reqBody.queryBody;
 
     const albums = getCollection("Albums");
-
     const photos = getCollection("Photos");
-
     const images = getCollection("Images");
 
     const usersAlbums = albums.filter(album => album.user === userId);

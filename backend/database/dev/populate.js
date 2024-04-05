@@ -16,8 +16,8 @@ const usersData = [
         username: "Jane Dough",
         password: "password",
         profile: {
-            picture: "/assets/imgs/janeDough/profile-pic.jpg",
-            coverPicture: "/assets/imgs/janeDough/cover-photo.jpg",
+            picture: "1",
+            coverPicture: "2",
             bio: "Hello World!"
         }
     },
@@ -25,8 +25,8 @@ const usersData = [
         username: "Jesus Christ",
         password: "password",
         profile: {
-            picture: "/assets/imgs/jesusChrist/profile-pic.jpg",
-            coverPicture: "/assets/imgs/jesusChrist/cover-photo.jpg",
+            picture: 3,
+            coverPicture: 4,
             bio: "Hello World!"
         }
     },
@@ -34,8 +34,8 @@ const usersData = [
         username: "Tyrion Lannister",
         password: "password",
         profile: {
-            picture: "/assets/imgs/tyrionLannister/profile-pic.jpg",
-            coverPicture: "/assets/imgs/tyrionLannister/cover-photo.jpg",
+            picture: 5,
+            coverPicture: 6,
             bio: "Hello World!"
         }
     },
@@ -43,8 +43,8 @@ const usersData = [
         username: "Jinx",
         password: "password",
         profile: {
-            picture: "/assets/imgs/jinx/profile-pic.jpg",
-            coverPicture: "/assets/imgs/jinx/cover-photo.jpg",
+            picture: 7,
+            coverPicture: 8,
             bio: "Hello World!"
         }
     },
@@ -52,8 +52,8 @@ const usersData = [
         username: "Nea Karlsson",
         password: "password",
         profile: {
-            picture: "/assets/imgs/neaKarlsson/profile-pic.jpg",
-            coverPicture: "/assets/imgs/neaKarlsson/cover-photo.jpg",
+            picture: 9,
+            coverPicture: 10,
             bio: "Hello World!"
         }
     },
@@ -61,8 +61,8 @@ const usersData = [
         username: "Rust Cohle",
         password: "password",
         profile: {
-            picture: "/assets/imgs/rustCohle/profile-pic.jpg",
-            coverPicture: "/assets/imgs/rustCohle/cover-photo.jpg",
+            picture: 11,
+            coverPicture: 12,
             bio: "Time is a flat circle, man"
         }
     },
@@ -70,8 +70,8 @@ const usersData = [
         username: "Ellie Williams",
         password: "password",
         profile: {
-            picture: "/assets/imgs/ellieWilliams/profile-pic.jpg",
-            coverPicture: "/assets/imgs/ellieWilliams/cover-photo.jpg",
+            picture: 13,
+            coverPicture: 14,
             bio: "Hello!"
         }
     }
@@ -190,7 +190,7 @@ async function populate() {
 
         const forum = await new Forum().save();
 
-        const profile = await new Profile({ picture, coverPicture, bio, forum: forum._id }).save();
+        const profile = await new Profile({ bio, forum: forum._id }).save();
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -297,6 +297,17 @@ async function populate() {
 
         await new Album({ user: user._id, name, photos: albumPhotoIds, desc }).save();
 
+    }
+
+    // set profile pictures & cover pictures
+    for (let i = 0; i < users.length; i++) {
+        for (let j = 0; j < usersData.length; j++) {
+            if (users[i].username === usersData[j].username) {
+                const profilePicture = await Photo.findOne({ pointer: usersData[j].profile.picture }).exec();
+                const coverPicture = await Photo.findOne({ pointer: usersData[j].profile.coverPicture }).exec();
+                await Profile.findByIdAndUpdate(users[i].profile._id, { picture: profilePicture, coverPicture }).exec();
+            }
+        }
     }
 }
 

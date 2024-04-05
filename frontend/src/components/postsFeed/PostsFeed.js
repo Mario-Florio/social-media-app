@@ -7,6 +7,7 @@ import { usePosts } from "../../hooks/usePosts";
 import Loader from "../loader/Loader";
 import attachmentsIcon from "../../assets/imgs/attachments.png";
 import shareIcon from "../../assets/imgs/share.png";
+import { defaultProfilePic } from "../../defaultImages/defaultImages";
 
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
@@ -77,7 +78,7 @@ function NewPost({ forumId }) {
         <article className="newPost">
             <div className="flexbox">
                 <Link to={`/users/${user._id}`} className="profilePic-wrapper">
-                    <img src={ user.profile.picture || "../../assets/imgs/default/profile-picture.jpg" } alt="users profile pic"/>
+                    <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="users profile pic"/>
                 </Link>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="newPost" className="hide">New Post</label>

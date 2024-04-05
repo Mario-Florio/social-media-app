@@ -4,17 +4,12 @@ const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema({
     bio: { type: String, maxLength: 250, default: "" },
-    picture: { type: String, default: "../../assets/imgs/default/profile-picture.jpg" },
-    coverPicture: { type: String, default: "../../assets/imgs/default/cover-photo.jpg" },
+    picture: { type: Schema.Types.ObjectId, ref: "Photo", default: null },
+    coverPicture: { type: Schema.Types.ObjectId, ref: "Photo", default: null },
     forum: { type: Schema.Types.ObjectId, ref: "Forum", required: true },
     followers: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
     following: { type: [Schema.Types.ObjectId], ref: "User", default: [] }
-}, { timestamps: true, virtuals: true });
-
-ProfileSchema.virtual("url").get(function() {
-    const url = `/users/${this.user}/profile`;
-    return url;
-});
+}, { timestamps: true });
 
 const Profile = mongoose.model("Profile", ProfileSchema);
 

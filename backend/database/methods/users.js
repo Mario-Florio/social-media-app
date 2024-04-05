@@ -3,8 +3,16 @@ const Profile = require("../../models/Profile");
 const Forum = require("../../models/Forum");
 const Post = require("../../models/Post");
 const Comment = require("../../models/Comment");
+const Album = require("../../models/photos/Album");
+const Photo = require("../../models/photos/Photo");
+const Image = require("../../models/photos/Image");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const getPhotoUrl = require("./__utils__/getPhotoUrl");
+const { defaultImages } = require("../../defaultImgs");
+
+const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
 
 async function registerUser(credentials) {
     const { username, password } = credentials;
@@ -29,14 +37,22 @@ async function registerUser(credentials) {
 
 async function authorizeUser(credentials) {
     const { username, password } = credentials;
-    const user = await User.findOne({ username }).select("+password").populate("profile").exec();
+    const user = await User.findOne({ username })
+        .select("+password")
+        .populate({ path: "profile", populate: { path: "picture coverPicture" } })
+        .exec();
+
     if (!user) {
         return { status: 400, message: "User does not exist", user: false, success: false };
     } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-            const token = jwt.sign({ user }, process.env.SECRET, {expiresIn: "1h"});
             user.password = "";
+            const token = jwt.sign({ user }, process.env.SECRET, {expiresIn: "1h"});
+
+            await getPhotoUrl(user.profile.picture);
+            await getPhotoUrl(user.profile.coverPicture);
+
             const res = { message: "Login was successful", user, token, success: true };
             return res;
         } else {
@@ -72,27 +88,43 @@ async function getUsers(limit=10, page=0, search, populate) {
         .limit(limit)
         .skip(limit * page)
         .sort({ username: 1 })
-        .populate("profile")
+        .populate({ path: "profile", populate: { path: "picture coverPicture" }})
         .exec();
+
+    for (const user of users) {
+        await getPhotoUrl(user.profile.picture);
+        await getPhotoUrl(user.profile.coverPicture);
+    }
+
     return users;
 }
 
 async function getUserById(id) {
-    const user = await User.findById(id).populate("profile").exec();
+    const user = await User.findById(id)
+        .populate({ path: "profile", populate: { path: "picture coverPicture" } })
+        .exec();
     
     if (!user) {
         return { status: 400, message: "User does not exist", success: false };
     }
 
+    await getPhotoUrl(user.profile.picture);
+    await getPhotoUrl(user.profile.coverPicture);
+
     return { message: "Request successful", user, success: true };
 }
 
 async function updateUser(id, update) {
-    const user = await User.findById(id).populate("profile").exec();
+    const user = await User.findById(id)
+        .populate({ path: "profile", populate: { path: "picture coverPicture" } })
+        .exec();
 
     if (!user) {
         return { status: 400, message: "User does not exist", user: null, success: false };
     }
+
+    await getPhotoUrl(user.profile.picture);
+    await getPhotoUrl(user.profile.coverPicture);
 
     if (update.password) {
         const salt = await bcrypt.genSalt(10);
@@ -102,9 +134,9 @@ async function updateUser(id, update) {
 
     for (const key in update) {
         if (
-            key !== "_id" ||
-            key !== "profile" ||
-            key !== "createdAt" ||
+            key !== "_id" &&
+            key !== "profile" &&
+            key !== "createdAt" &&
             key !== "updatedAt"
         ) {
             user[key] = update[key];
@@ -124,7 +156,15 @@ async function deleteUser(id) {
         return res;
     }
 
-    // 1. delete all refs to users comments in posts (i.e. post.comments)
+    // 1. delete all users albums, photos, & images
+    await Album.deleteMany({ user: user._id }).exec();
+    const photos = await Photo.find({ user: user._id }).exec();
+    for (const photo of photos) {
+        await Image.deleteOne({ name: photo.pointer }).exec();
+    }
+    await Photo.deleteMany({ user: user._id }).exec();
+
+    // 2. delete all refs to users comments in posts (i.e. post.comments)
     const posts = await Post.find().populate("comments").exec();
     for (const post of posts) {
         for (const comment of post.comments) {
@@ -134,13 +174,13 @@ async function deleteUser(id) {
         }
     }
 
-    // 2. delete all comments made by user (i.e. comment.user)
+    // 3. delete all comments made by user (i.e. comment.user)
     await Comment.deleteMany({ user: user._id }).exec();
 
-    // 3. delete all refs to user in posts (i.e. post.likes)
+    // 4. delete all refs to user in posts (i.e. post.likes)
     await Post.updateMany({ likes: user._id }, { $pull: { likes: user._id } }).exec();
 
-    // 4. delete all posts from Posts ref'd in users forum
+    // 5. delete all posts from Posts ref'd in users forum
     const usersProfile = await Profile.findById(user.profile).populate("forum").exec();
     const commentIdsFromDeletedPosts = []; // used in step 6
     for (const postId of usersProfile.forum.posts) {
@@ -148,7 +188,7 @@ async function deleteUser(id) {
         commentIdsFromDeletedPosts.push(...post.comments);
     }
 
-    // 5. delete all refs to user in forums (i.e. forums.posts)
+    // 6. delete all refs to user in forums (i.e. forums.posts)
     const forums = await Forum.find().populate("posts").exec();
     for (const forum of forums) {
         for (const post of forum.posts) {
@@ -158,25 +198,25 @@ async function deleteUser(id) {
         }
     }
     
-    // 6. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
+    // 7. delete all comments that existed on users deleted posts (i.e. user.profile.forum.posts.forEach(comment))
     for (const commentId of commentIdsFromDeletedPosts) {
         await Comment.findByIdAndDelete(commentId).exec();
     }
 
-    // 7. delete any posts made by user
+    // 8. delete any posts made by user
     await Post.deleteMany({ user: user._id }).exec();
 
-    // 8. delete users forum
+    // 9. delete users forum
     await Forum.findByIdAndDelete(usersProfile.forum).exec();
 
-    // 9. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
+    // 10. delete all refs to user in Profiles (i.e. profile.following / profile.followers)
     await Profile.updateMany({ following: user._id }, { $pull: { following: user._id } }).exec();
     await Profile.updateMany({ followers: user._id }, { $pull: { followers: user._id } }).exec();
 
-    // 10. delete users profile
+    // 11. delete users profile
     await Profile.findByIdAndDelete(user.profile).exec();
 
-    // 11. delete user
+    // 12. delete user
     await User.findByIdAndDelete(id).exec();
 
     return { success: true, message: "Deletion was successful" };
@@ -194,13 +234,21 @@ async function updateProfile(userId, update) {
             key === "_id" ||
             key === "forum" ||
             key === "createdAt" ||
-            key === "updatedAt"
+            key === "updatedAt" ||
+            key === "picture" ||
+            key === "coverPicture"
         ) {
             delete update[key];
         }
     }
 
-    const profile = await Profile.findByIdAndUpdate(user.profile, update, { new: true }).exec();
+    const profile = await Profile.findByIdAndUpdate(user.profile, update, { new: true })
+        .populate("picture coverPicture")
+        .exec();
+
+    await getPhotoUrl(profile.picture);
+    await getPhotoUrl(profile.coverPicture);
+    
     user.profile = profile;
 
     return { user, message: "Update was successful", success: true };
@@ -221,12 +269,22 @@ async function followProfile(userId, peerUserId, follow) {
         ) {
             const updatedUserProfile = await Profile
                 .findByIdAndUpdate(user.profile._id, { $push: { following: peerUser._id } }, { new: true })
+                .populate("picture coverPicture")
                 .exec();
+
+            await getPhotoUrl(updatedUserProfile.picture);
+            await getPhotoUrl(updatedUserProfile.coverPicture);
+
             user.profile = updatedUserProfile;
 
             const updatedPeerUserProfile = await Profile
                 .findByIdAndUpdate(peerUser.profile._id, { $push: { followers: user._id } }, { new: true })
+                .populate("picture coverPicture")
                 .exec();
+
+            await getPhotoUrl(updatedPeerUserProfile.picture);
+            await getPhotoUrl(updatedPeerUserProfile.coverPicture);
+
             peerUser.profile = updatedPeerUserProfile;
         } else {
             return { status: 404, message: "Already following user", success: false };
@@ -240,12 +298,22 @@ async function followProfile(userId, peerUserId, follow) {
         ) {
             const updatedUserProfile = await Profile
                 .findByIdAndUpdate(user.profile._id, { $pull: { following: peerUser._id } }, { new: true })
+                .populate("picture coverPicture")
                 .exec();
+
+            await getPhotoUrl(updatedUserProfile.picture);
+            await getPhotoUrl(updatedUserProfile.coverPicture);
+
             user.profile = updatedUserProfile;
 
             const updatedPeerUserProfile = await Profile
                 .findByIdAndUpdate(peerUser.profile._id, { $pull: { followers: user._id } }, { new: true })
+                .populate("picture coverPicture")
                 .exec();
+
+            await getPhotoUrl(updatedPeerUserProfile.picture);
+            await getPhotoUrl(updatedPeerUserProfile.coverPicture);
+
             peerUser.profile = updatedPeerUserProfile;
         } else {
             return { status: 404, message: "Already not following user", success: false };
@@ -253,6 +321,47 @@ async function followProfile(userId, peerUserId, follow) {
     }
 
     return { message: "Update was successful", clientUser: user, peerUser, success: true };
+}
+
+async function updateProfileDefaultImg(userId, update) {
+    const user = await User.findById(userId).exec();
+
+    if (!user) {
+        return { status: 400, message: "User does not exist", success: false };
+    }
+
+    for (const key in update) {
+        if (
+            key === "_id" ||
+            key === "forum" ||
+            key === "createdAt" ||
+            key === "updatedAt" ||
+            key === "bio"
+        ) {
+            delete update[key];
+        } else {
+            update[key] = await new Photo({ user: user._id, pointer: update[key], url: getDefaultUrl(update[key]) }).save();
+        }
+    }
+
+    const profile = await Profile.findByIdAndUpdate(user.profile, update, { new: true })
+        .populate("picture coverPicture")
+        .exec();
+
+    await getPhotoUrl(profile.picture);
+    await getPhotoUrl(profile.coverPicture);
+    
+    user.profile = profile;
+
+    return { user, message: "Update was successful", success: true };
+
+    function getDefaultUrl(imgName) {
+        for (const img of defaultImages) {
+            if (imgName === img.name) {
+                return img.url;
+            }
+        }
+    }
 }
 
 module.exports = {
@@ -263,5 +372,6 @@ module.exports = {
     updateUser,
     deleteUser,
     updateProfile,
-    followProfile
+    followProfile,
+    updateProfileDefaultImg
 }
