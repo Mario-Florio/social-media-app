@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import "./photos.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
+import UploadForm from "./uploadForm/UploadForm";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 import requests from "../../serverRequests/methods/config";
+import CreateAlbumForm from "./createAlbumForm/CreateAlbumForm";
 
 const { getAlbums } = requests.albums;
 
@@ -15,7 +17,7 @@ function PhotosPage() {
     const [albums, setAlbums] = useState([]);
     const [selectedAlbum, setSelectedAlbum] = useState({ id: albumId, name: "" });
     const [isLoading, setIsLoading] = useState(false);
-    const loaders = [1, 2, 3, 4, 5, 6, 7, 8 ,9];
+    const loaders = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     useEffect(() => {
         setIsLoading(true);
@@ -63,7 +65,7 @@ function PhotosPage() {
                                     {album.name}
                                 </option>) }
                         </select>
-                        { id === user._id && <button>+</button> }
+                        { id === user._id && <CreateAlbumForm setAlbums={setAlbums}/> }
                     </div>
                 </header>
                 <ul>
@@ -71,6 +73,7 @@ function PhotosPage() {
                         loaders.map(num => <LoaderPhoto key={num}/>) :
                         photos.map(photo => <Photo key={photo._id} data={photo}/>) }
                 </ul>
+                { id === user._id && <UploadForm/> }
             </section>
         </PageLayout>
     );

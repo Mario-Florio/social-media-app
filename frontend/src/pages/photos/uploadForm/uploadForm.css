@@ -1,0 +1,122 @@
+
+#photos .photo-upload-form_wrapper {
+    position: fixed;
+    right: calc(1rem + 5px); /* 1rem + scrollbar width */
+    bottom: 1rem;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    box-shadow: 0px 0px 5px var(--box-shadow-color);
+}
+
+#photos .photo-upload-form_wrapper.active {
+    border-radius: 5px;
+    left: 1rem;
+    padding: 1rem;
+}
+
+#photos .photo-upload-form_wrapper>button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    margin: 0;
+    padding: 1rem;
+    height: 20px;
+    width: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#photos .photo-upload-form_wrapper.active>button {
+    padding: 0;
+}
+
+#photos .photo-upload-form_wrapper>button .bar {
+    background-color: var(--primary-font-color);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#photos .photo-upload-form_wrapper>button .bar.vertical {
+    height: 15px;
+    width: 2px;
+}
+
+#photos .photo-upload-form_wrapper>button .bar.horizontal {
+    height: 2px;
+    width: 15px;
+}
+
+#photos .photo-upload-form_wrapper.active>button .bar.vertical,
+#photos .photo-upload-form_wrapper.active>button .bar.horizontal {
+    transform: rotate(45deg);
+}
+
+#photos .photo-upload-form_wrapper form {
+    width: 100%;
+}
+
+#photos .photo-upload-form_wrapper form input#name {
+    background-color: var(--secondary-color);
+    margin: .25rem 0;
+    padding: .25rem;
+    width: 100%;
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 25px;
+}
+
+#photos .photo-upload-form_wrapper form input::-webkit-file-upload-button {
+    font-weight: 600;
+    color: white;
+    background-color: var(--target-color);
+    margin: .25rem 0;
+    margin-right: .25rem;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#photos .photo-upload-form_wrapper form textarea {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--secondary-color);
+    margin: .25rem 0;
+    padding: .25rem;
+    height: 2rem;
+    width: 100%;
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 5px;
+    resize: none;
+}
+
+#photos .photo-upload-form_wrapper form button {
+    font-weight: 600;
+    color: white;
+    background-color: var(--target-color);
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media all and (min-width: 750px) {
+    #photos .photo-upload-form_wrapper.active {
+        left: calc(var(--sidemenu_max-width) + 1rem);
+    }
+}
+
+@media all and (min-width: 1045px) {
+    #photos .photo-upload-form_wrapper {
+        right: 6rem;
+    }
+
+    #photos .photo-upload-form_wrapper.active {
+        left: calc(var(--sidemenu_max-width) + 3rem);
+    }
+}

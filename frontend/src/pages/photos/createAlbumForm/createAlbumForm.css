@@ -1,0 +1,136 @@
+
+#photos .create-album-form>button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary-color);
+    margin: 0;
+    padding: 1rem;
+    height: 20px;
+    width: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#photos .create-album-form>button .bar {
+    background-color: var(--primary-font-color);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#photos .create-album-form>button .bar.vertical {
+    height: 15px;
+    width: 2px;
+}
+
+#photos .create-album-form>button .bar.horizontal {
+    height: 2px;
+    width: 15px;
+}
+
+#photos .create-album-form .form-popup_mask {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.273);
+    opacity: 0;
+    transition-duration: .2s;
+}
+
+#photos .create-album-form .form-popup_mask.active {
+    z-index: 1;
+    opacity: 1;
+    transition-duration: .2s;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup {
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 5px;
+    width: calc(100% - 4rem);
+    max-width: 300px;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup>button {
+    position: relative;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    height: 20px;
+    width: 20px;
+    border: none;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup>button .bar {
+    background-color: var(--primary-font-color);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup>button .bar.bar.horizontal {
+    height: 15px;
+    width: 2px;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup>button .bar.bar.bar.vertical {
+    height: 2px;
+    width: 15px;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup form input {
+    background-color: var(--secondary-color);
+    margin: .25rem 0;
+    padding: .25rem;
+    width: 100%;
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 25px;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup form textarea {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--secondary-color);
+    margin: .25rem 0;
+    padding: .25rem;
+    height: 2rem;
+    width: 100%;
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 5px;
+    resize: none;
+}
+
+#photos .create-album-form .form-popup_mask .form-popup form button {
+    font-weight: 600;
+    color: white;
+    background-color: var(--target-color);
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media all and (min-width: 750px) {
+    #photos .create-album-form .form-popup_mask {
+        left: calc(var(--sidemenu_max-width));
+    }
+}
+

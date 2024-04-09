@@ -86,6 +86,7 @@ describe("/photo-albums CREATE", () => {
         describe("input is invalid", () => {
             test("should respond with status code 422", async () => {
                 const bodyData = [
+                    { user: user._id, name: "12" }, // less than 3 chars
                     { user: user._id, name: "This string is greater than 25 characters" },
                     { user: user._id, name: "New Album", desc: "This string is greater than 250 characters... 51xM,qQhRqJk5EFmr4)TPCfSmR_V$_z2)L(KA=){K4CB#V]w-yP,GG8N59R&H&@3S5vh4CDh]C3S0Yckav]UBTd{]:uK8,0gfU9;&u{%*y!.GMt/c&-6E#VU1S.cj]v_q?H0WSDHeRea!r;N*i!KSA00L;V7(._}CcknNkX]99eG,R7=6P/,ST$77qW%-V=hg{yywg28ASN,P4Wdqb,H[-+%7w9ikWDHm5ywzb1h2ka,M34qZ8-ec0x8RZ" } // text > 250
                 ];

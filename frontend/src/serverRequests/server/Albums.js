@@ -3,7 +3,7 @@ import axios from "axios";
 async function getAlbums(reqBody) {
     try {
         const queryString = getQueryString(reqBody.queryBody);
-        const url = queryString ? `/photo-albums${queryString}` : "/albums";
+        const url = queryString ? `/photo-albums${queryString}` : "/photo-albums";
         const response = await axios.get(url);
         return response.data;
     } catch (err) {
@@ -26,6 +26,26 @@ async function getAlbums(reqBody) {
     }
 }
 
+async function postAlbum(reqBody = {}) {
+    try {
+        const { album, token } = reqBody;
+
+        const body = album;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.post("/photo-albums", body, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
-    getAlbums
+    getAlbums,
+    postAlbum
 };

@@ -126,7 +126,8 @@ function sanitizeInput(input) {
 
 function validateInput(input) {
     if (input.name &&
-        (input.name.length > 25)) {
+        (input.name.length > 25) ||
+        (input.name.length < 3)) {
         return false;
     }
     if (input.desc &&

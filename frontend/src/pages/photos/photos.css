@@ -30,6 +30,7 @@
 #photos header .flexbox {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -39,20 +40,6 @@
     padding: .25rem;
     border-radius: 15px;
     border: none;
-}
-
-#photos header .flexbox button {
-    font-size: 1.5rem;
-    color: var(--primary-font-color);
-    background-color: var(--secondary-color);
-    padding: 0 .5rem;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-}
-
-#photos header .flexbox button:hover {
-    background-color: var(--hover-color);
 }
 
 #photos ul {
