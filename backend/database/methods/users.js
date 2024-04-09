@@ -341,6 +341,9 @@ async function updateProfileDefaultImg(userId, update) {
             delete update[key];
         } else {
             update[key] = await new Photo({ user: user._id, pointer: update[key], url: getDefaultUrl(update[key]) }).save();
+            await Album.findOneAndUpdate({ user: user._id, name: "All" }, { $push: { photos: update[key] } });
+            if (key === "picture") await Album.findOneAndUpdate({ user: user._id, name: "Profile Pictures" }, { $push: { photos: update[key] } });
+            if (key === "coverPicture") await Album.findOneAndUpdate({ user: user._id, name: "Cover Photos" }, { $push: { photos: update[key] } });
         }
     }
 
