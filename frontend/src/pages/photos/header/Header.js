@@ -49,11 +49,15 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
                 <div className="album-name_loader loadingBGColor"/> :
                 <div className="flexbox-left">
                     <h2>{selectedAlbum.name}</h2>
-                    { id === user._id && <EditAlbumForm selectedAlbum={selectedAlbum}/> }
+                    { id === user._id &&
+                        selectedAlbum.name !== "Profile Pictures" &&
+                        selectedAlbum.name !== "Cover Photos" &&
+                        selectedAlbum.name !== "All" &&
+                        <EditAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/> }
                 </div> }
             <div className="flexbox-right">
                 <label htmlFor="select-album" className="hide">Select Album</label>
-                <select name="select-album" id="select-album" value={selectedAlbum.id} onChange={handleChange}>
+                <select name="select-album" id="select-album" value={selectedAlbum._id} onChange={handleChange}>
                     { albums.map(album => 
                         <option
                             key={album._id}

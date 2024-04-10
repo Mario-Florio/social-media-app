@@ -64,7 +64,37 @@ async function postAlbumMock(reqBody = {}) {
     return { message: "Album created successfully", album: newAlbum, success: true }
 }
 
+async function putAlbumMock(reqBody = {}) {
+    await delay(ms);
+    const { token, id, update } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+
+    const albums = getCollection("Albums");
+
+    let albumFound = false;
+    let index = 0;
+    for (const album of albums) {
+        if (album._id === id) {
+            albumFound = true;
+            break;
+        }
+        index++;
+    }
+
+    if (!albumFound) return { message: "Album does not exist", success: false };
+
+    albums[index].name = update.name;
+    albums[index].desc = update.desc;
+
+    window.localStorage.setItem("Albums", JSON.stringify(albums));
+
+    return { message: "Album created successfully", album: albums[index], success: true }
+}
+
 export {
     getAlbumsMock,
-    postAlbumMock
+    postAlbumMock,
+    putAlbumMock
 }

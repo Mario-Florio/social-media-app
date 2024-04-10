@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import "./editAlbumForm.css";
+import { useAuth } from "../../../../hooks/useAuth";
 
-function EditAlbumForm({ selectedAlbum }) {
+import requests from "../../../../serverRequests/methods/config";
+
+const { putAlbum } = requests.albums;
+
+function EditAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
     const [isActive, setIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
         name: "",
         desc: ""
     });
+    const { token } = useAuth();
 
     useEffect(() => {
         setFormInput({
@@ -22,13 +28,24 @@ function EditAlbumForm({ selectedAlbum }) {
         });
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (formInput.name === selectedAlbum.name && formInput.desc === selectedAlbum.desc) {
             console.log("No Edits");
             return;
         }
-        console.log(formInput);
+
+        const reqBody = {
+            token,
+            id: selectedAlbum._id,
+            update: formInput
+        }
+
+        const res = await putAlbum(reqBody);
+        if (res.success) {
+            setSelectedAlbum(res.album);
+            setAlbums(albums => albums.map(album => album._id === res.album._id ? res.album : album));
+        }
         setIsActive(false);
     }
 

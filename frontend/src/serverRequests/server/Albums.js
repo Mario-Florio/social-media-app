@@ -30,14 +30,31 @@ async function postAlbum(reqBody = {}) {
     try {
         const { album, token } = reqBody;
 
-        const body = album;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
 
-        const response = await axios.post("/photo-albums", body, config);
+        const response = await axios.post("/photo-albums", album, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
+async function putAlbum(reqBody = {}) {
+    try {
+        const { id, update, token } = reqBody;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.put(`/photo-albums/${id}`, update, config);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -47,5 +64,6 @@ async function postAlbum(reqBody = {}) {
 
 export {
     getAlbums,
-    postAlbum
+    postAlbum,
+    putAlbum
 };
