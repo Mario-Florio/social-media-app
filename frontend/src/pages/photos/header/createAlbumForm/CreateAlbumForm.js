@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./createAlbumForm.css";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../../hooks/useAuth";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../../serverRequests/methods/config";
 const { postAlbum } = requests.albums;
 
 function CreateAlbumForm({ setAlbums }) {

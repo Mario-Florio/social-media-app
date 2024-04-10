@@ -1,0 +1,35 @@
+
+#photos header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+#photos header h2 {
+    margin: 0;
+
+}
+
+#photos header .album-name_loader {
+    height: 1.7rem;
+    width: 30%;
+    border-radius: 5px;
+}
+
+#photos header .flexbox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+}
+
+#photos header .flexbox select {
+    color: var(--primary-font-color);
+    background-color: var(--secondary-color);
+    padding: .25rem;
+    border-radius: 15px;
+    border: none;
+}

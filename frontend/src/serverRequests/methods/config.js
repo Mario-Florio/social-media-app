@@ -61,7 +61,7 @@ import { getAlbums, postAlbum } from "../server/Albums";
 import { getAlbumsMock, postAlbumMock } from "../mockServer/Albums";
 
 let mock = true;
-let resetCollections = false;
+let resetCollections = true;
 let clearLocalStorage = false;
 
 mock && resetCollections && populateCollections();
@@ -103,10 +103,9 @@ const requests = {
         getAlbums: mock ? getAlbumsMock : getAlbums,
         postAlbum: mock ? postAlbumMock : postAlbum,
         putAlbum: mock ? notSetup : notSetup,
-        removeAlbum: mock ? notSetup : notSetup,
+        deleteAlbum: mock ? notSetup : notSetup,
         postPhoto: mock ? notSetup : notSetup,
         deletePhoto: mock ? notSetup : notSetup
-
     }
 }
 
