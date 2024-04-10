@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./header.css";
+import EditAlbumForm from "./editAlbumForm/EditAlbumForm";
 import CreateAlbumForm from "./createAlbumForm/CreateAlbumForm";
 import { useAuth } from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
@@ -11,7 +12,7 @@ const { getAlbums } = requests.albums;
 function Header({ isLoading, setIsLoading, setPhotos }) {
     const { id, albumId } = useParams();
     const [albums, setAlbums] = useState([]);
-    const [selectedAlbum, setSelectedAlbum] = useState({ id: albumId, name: "" });
+    const [selectedAlbum, setSelectedAlbum] = useState({ _id: albumId, name: "", photos: [], desc: "" });
     const { user } = useAuth();
 
     useEffect(() => {
@@ -24,7 +25,7 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
                     setAlbums(res.albums);
         
                     const [ album ] = res.albums.filter(album => album._id === albumId);
-                    setSelectedAlbum({ id: album._id, name: album.name });
+                    setSelectedAlbum(album);
             
                     setPhotos(album.photos);
                 }
@@ -38,7 +39,7 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
 
     function handleChange(e) {
         const [ album ] = albums.filter(album => album._id === e.target.value);
-        setSelectedAlbum({ id: e.target.value, name: album.name });
+        setSelectedAlbum(album);
         setPhotos(album.photos);
     }
 
@@ -46,8 +47,11 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
         <header>
             { isLoading ?
                 <div className="album-name_loader loadingBGColor"/> :
-                <h2 onClick={() => console.log("hi")}>{selectedAlbum.name}</h2> }
-            <div className="flexbox">
+                <div className="flexbox-left">
+                    <h2>{selectedAlbum.name}</h2>
+                    { id === user._id && <EditAlbumForm selectedAlbum={selectedAlbum}/> }
+                </div> }
+            <div className="flexbox-right">
                 <label htmlFor="select-album" className="hide">Select Album</label>
                 <select name="select-album" id="select-album" value={selectedAlbum.id} onChange={handleChange}>
                     { albums.map(album => 
