@@ -93,8 +93,25 @@ async function putAlbumMock(reqBody = {}) {
     return { message: "Album created successfully", album: albums[index], success: true }
 }
 
+async function deleteAlbumMock(reqBody = {}) {
+    await delay(ms);
+    const { token, id } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+
+    const albums = getCollection("Albums");
+
+    const filteredAlbums = albums.filter(album => album._id !== id);
+
+    window.localStorage.setItem("Albums", JSON.stringify(filteredAlbums));
+
+    return { message: "Album created successfully", success: true }
+}
+
 export {
     getAlbumsMock,
     postAlbumMock,
-    putAlbumMock
+    putAlbumMock,
+    deleteAlbumMock
 }

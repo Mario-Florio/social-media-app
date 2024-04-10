@@ -6,6 +6,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 
 import requests from "../../../serverRequests/methods/config";
+import DeleteAlbumForm from "./deleteAlbumForm/DeleteAlbumForm";
 
 const { getAlbums } = requests.albums;
 
@@ -53,7 +54,11 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
                         selectedAlbum.name !== "Profile Pictures" &&
                         selectedAlbum.name !== "Cover Photos" &&
                         selectedAlbum.name !== "All" &&
-                        <EditAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/> }
+                        <>
+                            <EditAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
+                            <span>/</span>
+                            <DeleteAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
+                        </> }
                 </div> }
             <div className="flexbox-right">
                 <label htmlFor="select-album" className="hide">Select Album</label>

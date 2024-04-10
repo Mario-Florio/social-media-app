@@ -57,10 +57,20 @@ import {
     deleteCommentMock
 } from "../mockServer/Comments";
 
-import { getAlbums, postAlbum, putAlbum } from "../server/Albums";
-import { getAlbumsMock, postAlbumMock, putAlbumMock } from "../mockServer/Albums";
+import {
+    getAlbums,
+    postAlbum,
+    putAlbum,
+    deleteAlbum
+} from "../server/Albums";
+import {
+    getAlbumsMock,
+    postAlbumMock,
+    putAlbumMock,
+    deleteAlbumMock
+} from "../mockServer/Albums";
 
-let mock = false;
+let mock = true;
 let resetCollections = true;
 let clearLocalStorage = false;
 
@@ -103,7 +113,7 @@ const requests = {
         getAlbums: mock ? getAlbumsMock : getAlbums,
         postAlbum: mock ? postAlbumMock : postAlbum,
         putAlbum: mock ? putAlbumMock : putAlbum,
-        deleteAlbum: mock ? notSetup : notSetup,
+        deleteAlbum: mock ? deleteAlbumMock : deleteAlbum,
         postPhoto: mock ? notSetup : notSetup,
         deletePhoto: mock ? notSetup : notSetup
     }

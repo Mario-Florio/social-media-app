@@ -1,0 +1,95 @@
+
+#photos header .delete-album-form>span {
+    font-size: .9rem;
+    font-weight: 300;
+    color: var(--secondary-font-color);
+    cursor: pointer;
+}
+
+#photos .delete-album-form .form-popup_mask {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.275);
+    opacity: 0;
+    transition-duration: .2s;
+}
+
+#photos .delete-album-form .form-popup_mask.active {
+    z-index: 1;
+    opacity: 1;
+    transition-duration: .2s;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup {
+    background-color: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 5px;
+    width: calc(100% - 4rem);
+    max-width: 300px;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup>button {
+    position: relative;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    height: 20px;
+    width: 20px;
+    border: none;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup>button .bar {
+    background-color: var(--primary-font-color);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup>button .bar.bar.horizontal {
+    height: 15px;
+    width: 2px;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup>button .bar.bar.bar.vertical {
+    height: 2px;
+    width: 15px;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup form .buttons-flexbox {
+    display: flex;
+    gap: 1rem;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup form .buttons-flexbox button {
+    font-weight: 600;
+    color: white;
+    background-color: var(--target-color);
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#photos .delete-album-form .form-popup_mask .form-popup form .buttons-flexbox button.warningBGColor {
+    background-color: rgb(193, 3, 3);
+}
+
+@media all and (min-width: 750px) {
+    #photos .delete-album-form .form-popup_mask {
+        left: calc(var(--sidemenu_max-width));
+    }
+}

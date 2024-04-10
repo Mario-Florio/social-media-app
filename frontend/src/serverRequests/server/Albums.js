@@ -62,8 +62,27 @@ async function putAlbum(reqBody = {}) {
     }
 }
 
+async function deleteAlbum(reqBody = {}) {
+    try {
+        const { id, token } = reqBody;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.delete(`/photo-albums/${id}`, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
     getAlbums,
     postAlbum,
-    putAlbum
+    putAlbum,
+    deleteAlbum
 };
