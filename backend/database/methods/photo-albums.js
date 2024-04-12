@@ -75,6 +75,21 @@ async function deleteAlbum(id) {
 }
 
 async function createPhotos(data, albumId) {
+    const album = Album.findById(albumId).exec();
+
+    if (!album) {
+        return { status: 400, message: "Album does not exist", album: null };
+    }
+
+    const photos = [];
+    for (const image of data.images) {
+        const { images, ...photoData } = data;
+        const photo = await new Photo({ ...photoData, pointer: image.filename }).save();
+        const img = await new Image({ url: image.filename, name: photo.pointer }).save();
+        photo.url = img.url;
+        photos.push(photo);
+    }
+
     return { message: "Success: photos created", photos: [], success: true }
 }
 

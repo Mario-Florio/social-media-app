@@ -108,7 +108,37 @@ async function remove(req, res, next) {
 }
 
 async function create_photos(req, res, next) {
-    res.json({ message: "Request successful", photo: {}, success: true });
+    const { user, name } = req.body;
+    if (!user || !name || !req.files.length) {
+        return res.sendStatus(400);
+    }
+
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+    
+    const userId = user;
+    const { authData } = verifyTokenResBody;
+    if (authData.user._id !== userId) {
+        return res.status(404).json({ message: "Action is forbidden", success: false });
+    }
+
+    const sanitizedInput = sanitizeInput(req.body);
+    const isValid = validateInput(sanitizedInput);
+    if (!isValid) {
+        return res.status(422).json({ message: "Invalid input", success: false });
+    }
+
+    const data = { ...sanitizedInput, images: req.files }
+    const responseBody = await photoAlbums_dbMethods.createPhotos(data, req.params.id);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    }
+
+    res.json(responseBody);
 }
 
 async function remove_photo(req, res, next) {
@@ -132,6 +162,10 @@ function validateInput(input) {
     }
     if (input.desc &&
         (input.desc.length > 250)) {
+        return false
+    }
+    if (input.caption &&
+        (input.caption.length > 250)) {
         return false
     }
     return true;
