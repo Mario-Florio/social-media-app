@@ -13,7 +13,7 @@ router.put("/:id", getToken, photoAlbums_controller.update);
 
 router.delete("/:id", getToken, photoAlbums_controller.remove);
 
-router.post("/:id/photos", getToken, upload.array("photos", 6), photoAlbums_controller.create_photos);
+router.post("/:id/photos", getToken, upload.array("images", 6), photoAlbums_controller.create_photos);
 
 router.delete("/:id/photos/:photoId", getToken, photoAlbums_controller.remove_photo);
 

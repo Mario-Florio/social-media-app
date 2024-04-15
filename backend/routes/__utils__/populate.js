@@ -5,35 +5,42 @@ const Post = require("../../models/Post");
 const Comment = require("../../models/Comment");
 const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
+const Image = require("../../models/photos/Image");
 const bcrypt = require("bcryptjs");
 
-async function users() {
+async function users(amount=19) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash("password", salt);
-    for (let i = 1; i < 20; i++) {
+    for (let i = 1; i < amount+1; i++) {
         const forum = await new Forum().save();
         const profile = await new Profile({ bio: "This is a bio...", forum }).save();
-        await new User({ username: "username"+i, password: hashedPassword, profile }).save();
+        const user = await new User({ username: "username"+i, password: hashedPassword, profile }).save();
+
+        const profileImg = await new Image({ name: "randomName"+i, url: "/uploads/default/profile-pic.jpg" }).save();
+        const profilePic = await new Photo({ pointer: profileImg.name, user: user._id }).save();
+
+        const coverImg = await new Image({ name: "randomName"+i, url: "/uploads/default/cover-photo.jpg" }).save();
+        const coverPic = await new Photo({ pointer: coverImg.name, user: user._id }).save();
+
+        const allAlbum = await new Album({ name: "All", user: user._id, photos: [profilePic, coverPic] }).save();
+        const profilePicsAlbum = await new Album({ name: "Profile Pictures", user: user._id, photos: [profilePic] }).save();
+        const coverPicsAlbum = await new Album({ name: "Cover Photos", user: user._id, photos: [coverPic] }).save();
+
+        profile.picture = profilePic._id;
+        profile.coverPicture = coverPic._id;
+        await profile.save();
     }
 }
 
 async function posts() {
     let user1 = await User.findOne({ username: "username1" }).exec();
     if (!user1) {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash("password", salt);
-        const forum = await new Forum().save();
-        const profile = await new Profile({ bio: "This is a bio...", forum }).save();
-        user1 = await new User({ username: "username1", password: hashedPassword, profile }).save();
+        await users(2);
+        user1 = await User.findOne({ username: "username1" }).exec();
     }
+
     let user2 = await User.findOne({ username: "username2" }).exec();
-    if (!user2) {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash("password", salt);
-        const forum = await new Forum().save();
-        const profile = await new Profile({ bio: "This is a bio...", forum, following: [user1] }).save();
-        user2 = await new User({ username: "username2", password: hashedPassword, profile }).save();
-    }
+    await Profile.findByIdAndUpdate(user2.profile, { $push: { following: user1._id } }).exec();
 
     for (let i = 1; i < 20; i++) {
         let user = user1;
@@ -85,10 +92,13 @@ async function many() {
 async function albums() {
     let user = await User.findOne({ username: "username1" }).exec();
     if (!user) {
-        await users();
+        await users(1);
         user = await User.findOne({ username: "username1" }).exec();
     }
     for (let i = 1; i < 11; i++) {
+        const imgName = `image${i}`;
+        await new Photo({ name: `photo${i}`, pointer: imgName, user }).save();
+        await new Image({ name: imgName, url: imgName+".jpg" }).save();
         await new Album({ name: `album${i}`, desc: `This is a description for album${i}`, user }).save();
     }
 }

@@ -108,9 +108,9 @@ async function remove(req, res, next) {
 }
 
 async function create_photos(req, res, next) {
-    const { user, name } = req.body;
-    if (!user || !name || !req.files.length) {
-        return res.sendStatus(400);
+    const { user } = req.body;
+    if (!user || !req.files.length) {
+        return res.status(400).json({ message: "Request failed: Missing fields", success: false });
     }
 
     const verifyTokenResBody = verifyToken(req.token);
@@ -126,7 +126,7 @@ async function create_photos(req, res, next) {
     }
 
     const sanitizedInput = sanitizeInput(req.body);
-    const isValid = validateInput(sanitizedInput);
+    const isValid = validateInput(sanitizedInput, isPhotos=true);
     if (!isValid) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
@@ -142,7 +142,30 @@ async function create_photos(req, res, next) {
 }
 
 async function remove_photo(req, res, next) {
-    res.json({ message: "Request successful", success: true });
+    const verifyTokenResBody = verifyToken(req.token);
+    if (!verifyTokenResBody.success) {
+        const { status, message, success } = verifyTokenResBody;
+        return res.status(status).json({ message, success });
+    }
+
+    const { album } = await photoAlbums_dbMethods.getAlbumById(req.params.id);
+    if (!album) {
+        return res.status(400).json({ message: "Album does not exist", success: false });
+    }
+
+    const userId = album.user.toString();
+    const { authData } = verifyTokenResBody;
+    if (authData.user._id !== userId) {
+        return res.status(404).json({ message: "You are not authorized to delete this album", success: false });
+    }
+
+    const responseBody = await photoAlbums_dbMethods.deletePhoto(req.params.photoId, req.params.id);
+    if (!responseBody.success) {
+        const { status, message, success } = responseBody;
+        return res.status(status).json({ message, success });
+    }
+
+    res.json(responseBody);
 }
 
 // UTILS

@@ -8,7 +8,6 @@ const path = require("path");
 const crypto = require("crypto");
 
 const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
-const filename = randomImageName();
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());

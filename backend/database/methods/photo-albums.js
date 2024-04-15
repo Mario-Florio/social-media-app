@@ -2,6 +2,7 @@ const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
 const getPhotoUrl = require("./__utils__/getPhotoUrl");
+const path = require("path");
 
 async function getAlbums(userId) {
     const queryObj = {};
@@ -75,7 +76,7 @@ async function deleteAlbum(id) {
 }
 
 async function createPhotos(data, albumId) {
-    const album = Album.findById(albumId).exec();
+    const album = await Album.findById(albumId).exec();
 
     if (!album) {
         return { status: 400, message: "Album does not exist", album: null };
@@ -83,14 +84,21 @@ async function createPhotos(data, albumId) {
 
     const photos = [];
     for (const image of data.images) {
+        const name = path.parse(image.filename).name;
+        const img = await new Image({ url: "/"+image.filename, name }).save();
+
         const { images, ...photoData } = data;
-        const photo = await new Photo({ ...photoData, pointer: image.filename }).save();
-        const img = await new Image({ url: image.filename, name: photo.pointer }).save();
-        photo.url = img.url;
+        const photo = await new Photo({ ...photoData, pointer: img.name }).save();
+        await getPhotoUrl(photo);
         photos.push(photo);
+        
+        // push to apporpriate albums
+        await Album.findOneAndUpdate({ user: data.user, name: "All" }, { $push: { photos: photo._id } }).exec();
+        album.photos.push(photo._id);
+        await album.save();
     }
 
-    return { message: "Success: photos created", photos: [], success: true }
+    return { message: "Success: photos created", photos, success: true }
 }
 
 async function deletePhoto(id) {
