@@ -1,14 +1,35 @@
 import { useState } from "react";
+import { useAuth } from "../../../hooks/useAuth";
 import "./uploadForm.css";
 
-function UploadForm() {
-    const [isActive, setIsActive] = useState(false);
+import requests from "../../../serverRequests/methods/config";
 
-    function handleSubmit(e) {
+const { postPhotos } = requests.albums;
+
+function UploadForm({ albums, userId }) {
+    const [isActive, setIsActive] = useState(false);
+    const [albumId, setAlbumId] = useState(albums[0]._id);
+    const { token } = useAuth();
+
+    function handleChange(e) {
+        setAlbumId(e.target.value);
+    }
+
+    async function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
-        // Do something with formData
-        e.target.reset();
+        const reqBody = {
+            albumId,
+            formData,
+            token
+        }
+        const res = await postPhotos(reqBody);
+        if (res.success) {
+            e.target.reset();
+            setAlbumId(albums[0]._id);
+        } else {
+            alert(res.message);
+        }
     }
 
     return(
@@ -19,12 +40,18 @@ function UploadForm() {
             </button>
             { isActive && <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <h3>Upload Photo</h3>
+                <label>Album</label><br/>
+                <select value={albumId} onChange={handleChange}>
+                    { albums.map(album => <option key={album._id} value={album._id}>{album.name}</option>) }
+                </select><br/>
                 <label htmlFor="name">Name</label><br/>
                 <input name="name" id="name" maxLength={25}/><br/>
-                <label htmlFor="image">Img File</label><br/>
-                <input type="file" name="image" id="image" accept="image/*" required={true}/><br/>
+                <label htmlFor="images">Img Files</label><br/>
+                <input type="file" name="images" id="images" accept="image/*" required={true}/><br/>
                 <label htmlFor="caption">Caption</label><br/>
                 <textarea name="caption" id="caption" maxLength={250}/><br/>
+                <label htmlFor="user" className="hide">User Id</label>
+                <input name="user" id="user" className="hide" value={userId} required readOnly/>
                 <button>Upload</button>
             </form> }
         </div>

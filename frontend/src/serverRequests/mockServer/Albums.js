@@ -109,9 +109,39 @@ async function deleteAlbumMock(reqBody = {}) {
     return { message: "Album created successfully", success: true }
 }
 
+async function postPhotosMock(reqBody = {}) {
+    const { albumId, formData, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+
+    const albums = getCollection("Albums");
+
+    const [ album ] = albums.filter(album => album._id === albumId);
+    if (!album) return { message: "Album does not exist", success: true }
+
+    return { message: "Can not upload photos on this version. Please visit <url here> for full access to this feature.", success: false }
+}
+
+async function deletePhotoMock(reqBody = {}) {
+    const { id, token } = reqBody;
+
+    const tokenIsValid = validateToken(token);
+    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+
+    const photos = getCollection("Photos");
+
+    const [ photo ] = photos.filter(photo => photo._id === id);
+    if (!photo) return { message: "Photo does not exist", success: false }
+
+    return { message: "Can not delete photos on this version. Please visit <url here> for full access to this feature.", success: false }
+}
+
 export {
     getAlbumsMock,
     postAlbumMock,
     putAlbumMock,
-    deleteAlbumMock
+    deleteAlbumMock,
+    postPhotosMock,
+    deletePhotoMock
 }

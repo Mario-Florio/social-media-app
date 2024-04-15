@@ -61,13 +61,16 @@ import {
     getAlbums,
     postAlbum,
     putAlbum,
-    deleteAlbum
+    deleteAlbum,
+    postPhotos
 } from "../server/Albums";
 import {
     getAlbumsMock,
     postAlbumMock,
     putAlbumMock,
-    deleteAlbumMock
+    deleteAlbumMock,
+    postPhotosMock,
+    deletePhotoMock
 } from "../mockServer/Albums";
 
 let mock = true;
@@ -114,8 +117,8 @@ const requests = {
         postAlbum: mock ? postAlbumMock : postAlbum,
         putAlbum: mock ? putAlbumMock : putAlbum,
         deleteAlbum: mock ? deleteAlbumMock : deleteAlbum,
-        postPhoto: mock ? notSetup : notSetup,
-        deletePhoto: mock ? notSetup : notSetup
+        postPhotos: mock ? postPhotosMock : postPhotos,
+        deletePhoto: mock ? deletePhotoMock : notSetup
     }
 }
 

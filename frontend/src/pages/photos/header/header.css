@@ -1,5 +1,5 @@
 
-#photos header {
+#photos>header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,34 +8,34 @@
     padding: 1rem;
 }
 
-#photos header .album-name_loader {
+#photos>header .album-name_loader {
     height: 1.7rem;
     width: 30%;
     border-radius: 5px;
 }
 
-#photos header .flexbox-left {
+#photos>header .flexbox-left {
     display: flex;
     align-items: center;
     gap: .5rem;
 }
 
-#photos header .flexbox-left h2 {
+#photos>header .flexbox-left h2 {
     margin: 0;
 }
 
-#photos header .flexbox-left span:hover {
+#photos>header .flexbox-left span:hover {
     color: var(--primary-font-color);
 }
 
-#photos header .flexbox-right {
+#photos>header .flexbox-right {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 1rem;
 }
 
-#photos header .flexbox-right select {
+#photos>header .flexbox-right select {
     color: var(--primary-font-color);
     background-color: var(--secondary-color);
     padding: .25rem;

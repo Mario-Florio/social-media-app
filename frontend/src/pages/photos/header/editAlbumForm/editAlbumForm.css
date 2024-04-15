@@ -1,5 +1,5 @@
 
-#photos header .edit-album-form>span {
+#photos>header .edit-album-form>span {
     font-size: .9rem;
     font-weight: 300;
     color: var(--secondary-font-color);

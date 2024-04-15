@@ -62,6 +62,15 @@
     width: 100%;
 }
 
+#photos .photo-upload-form_wrapper form select {
+    background-color: var(--secondary-color);
+    margin: .25rem 0;
+    padding: .25rem;
+    width: 100%;
+    border: 1px solid var(--secondary-font-color);
+    border-radius: 25px;
+}
+
 #photos .photo-upload-form_wrapper form input#name {
     background-color: var(--secondary-color);
     margin: .25rem 0;

@@ -80,9 +80,47 @@ async function deleteAlbum(reqBody = {}) {
     }
 }
 
+async function postPhotos(reqBody = {}) {
+    try {
+        const { albumId, formData, token } = reqBody;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.post(`/photo-albums/${albumId}/photos`, formData, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
+async function deletePhoto(reqBody = {}) {
+    try {
+        const { albumId, photoId, token } = reqBody;
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const response = await axios.post(`/photo-albums/${albumId}/photos/${photoId}`, config);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err.response.data;
+    }
+}
+
 export {
     getAlbums,
     postAlbum,
     putAlbum,
-    deleteAlbum
+    deleteAlbum,
+    postPhotos,
+    deletePhoto
 };

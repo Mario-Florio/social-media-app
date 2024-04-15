@@ -10,11 +10,11 @@ import DeleteAlbumForm from "./deleteAlbumForm/DeleteAlbumForm";
 
 const { getAlbums } = requests.albums;
 
-function Header({ isLoading, setIsLoading, setPhotos }) {
+function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums }) {
     const { id, albumId } = useParams();
-    const [albums, setAlbums] = useState([]);
     const [selectedAlbum, setSelectedAlbum] = useState({ _id: albumId, name: "", photos: [], desc: "" });
     const { user } = useAuth();
+
 
     useEffect(() => {
         setIsLoading(true);
@@ -64,12 +64,7 @@ function Header({ isLoading, setIsLoading, setPhotos }) {
                 <label htmlFor="select-album" className="hide">Select Album</label>
                 <select name="select-album" id="select-album" value={selectedAlbum._id} onChange={handleChange}>
                     { albums.map(album => 
-                        <option
-                            key={album._id}
-                            value={album._id}
-                        >
-                            {album.name}
-                        </option>) }
+                        <option key={album._id} value={album._id}>{album.name}</option>) }
                 </select>
                 { id === user._id && <CreateAlbumForm setAlbums={setAlbums}/> }
             </div>
