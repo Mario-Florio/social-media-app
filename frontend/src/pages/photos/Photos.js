@@ -53,7 +53,8 @@ function Photo({ data }) {
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const [maskIsActive, setMaskIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
-    const { token } = useAuth();
+    const { id } = useParams();
+    const { user, token } = useAuth();
 
     async function deletePhoto() {
         setIsLoading(true);
@@ -90,7 +91,7 @@ function Photo({ data }) {
             >
                 <div className="flexbox">
                     <h3>{data.name}</h3>
-                    <OptionsButton setOptionsSectionIsActive={setOptionsSectionIsActive}/>
+                    { id === user._id && <OptionsButton setOptionsSectionIsActive={setOptionsSectionIsActive}/> }
                 </div>
                 <div className="caption_wrapper">
                     <p>{data.caption}</p>
