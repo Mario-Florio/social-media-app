@@ -23,7 +23,7 @@ describe("/photo-albums UPDATE", () => {
             user = loginRes.body.user;
 
             await populate.albums();
-            album = await Album.findOne({ user: user._id }).exec();
+            album = await Album.findOne({ name: "album1" }).exec();
         });
         afterEach(async () => {
             token = null;
@@ -104,6 +104,40 @@ describe("/photo-albums UPDATE", () => {
                         .put(`/api/photo-albums/${album._id}`)
                         .set("Authorization", `Bearer ${token}`)
                         .send(data);
+                    expect(response.body.success).toBeFalsy();
+                    expect(response.body.message).toBeDefined();
+                }
+            });
+        });
+
+        describe("default albums", () => {
+            test("should respond with status code 400", async () => {
+                const allAlbum = await Album.findOne({ user: user._id, name: "All" }).exec();
+                const profilePicsAlbum = await Album.findOne({ user: user._id, name: "Profile Pictures" }).exec();
+                const coverPicsAlbum = await Album.findOne({ user: user._id, name: "Cover Photos" }).exec();
+
+                const albums = [ allAlbum, profilePicsAlbum, coverPicsAlbum ];
+
+                for (const album of albums) {
+                    const response = await request(app).put(`/api/photo-albums/${album._id}`)
+                        .send({ name: "Update name" })
+                        .set("Authorization", `Bearer ${token}`);
+
+                        expect(response.statusCode).toBe(404);
+                }
+            });
+            test("response body has falsy success field and message defined", async () => {
+                const allAlbum = await Album.findOne({ user: user._id, name: "All" }).exec();
+                const profilePicsAlbum = await Album.findOne({ user: user._id, name: "Profile Pictures" }).exec();
+                const coverPicsAlbum = await Album.findOne({ user: user._id, name: "Cover Photos" }).exec();
+
+                const albums = [ allAlbum, profilePicsAlbum, coverPicsAlbum ];
+
+                for (const album of albums) {
+                    const response = await request(app).put(`/api/photo-albums/${album._id}`)
+                        .send({ name: "Update name" })
+                        .set("Authorization", `Bearer ${token}`);
+
                     expect(response.body.success).toBeFalsy();
                     expect(response.body.message).toBeDefined();
                 }

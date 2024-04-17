@@ -113,6 +113,40 @@ describe("/photo-albums CREATE", () => {
                 }
             });
         });
+
+        describe("default albums", () => {
+            test("should respond with status code 400", async () => {
+                const bodyData = [
+                    { user: user._id, name: "All" },
+                    { user: user._id, name: "Profile Pictures" },
+                    { user: user._id, name: "Cover Photos" }
+                ];
+
+                for (const data of bodyData) {
+                    const response = await request(app)
+                        .post("/api/photo-albums/")
+                        .set("Authorization", `Bearer ${token}`)
+                        .send(data);
+                    expect(response.status).toBe(404);
+                }
+            });
+            test("response body has falsy success field and message defined", async () => {
+                const bodyData = [
+                    { user: user._id, name: "All" },
+                    { user: user._id, name: "Profile Pictures" },
+                    { user: user._id, name: "Cover Photos" }
+                ];
+
+                for (const data of bodyData) {
+                    const response = await request(app)
+                        .post("/api/photo-albums/")
+                        .set("Authorization", `Bearer ${token}`)
+                        .send(data);
+                    expect(response.body.success).toBeFalsy();
+                    expect(response.body.message).toBeDefined();
+                }
+            });
+        });
     });
 
     describe("client not authenticated", () => {

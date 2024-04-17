@@ -35,12 +35,18 @@ async function getAlbumById(id) {
 }
 
 async function createAlbum(data) {
+    if (data.name === "All" || data.name === "Profile Pictures" || data.name === "Cover Photos") {
+        return { status: 404, message: "Request forbidden: cannot use default album names", success: false }
+    }
     const album = await new Album(data).save();
     return { message: "Success: album has been created", album, success: true }
 }
 
 async function updateAlbum(id, update) {
     const album = await Album.findById(id).populate("photos").exec();
+    if (album.name === "All" || album.name === "Profile Pictures" || album.name === "Cover Photos") {
+        return { status: 404, message: `Request forbidden: cannot edit "${album.name}" album`, success: false }
+    }
     for (const photo of album.photos) {
         await getPhotoUrl(photo);
     }
