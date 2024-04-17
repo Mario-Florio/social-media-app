@@ -1,8 +1,13 @@
 const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
+const User = require("../../models/User");
 const getPhotoUrl = require("./__utils__/getPhotoUrl");
+const dotenv = require("dotenv");
 const path = require("path");
+const fs = require("fs");
+
+dotenv.config();
 
 async function getAlbums(userId) {
     const queryObj = {};
@@ -107,7 +112,36 @@ async function createPhotos(data, albumId) {
     return { message: "Success: photos created", photos, success: true }
 }
 
-async function deletePhoto(id) {
+async function deletePhoto(id, albumId) {
+    const album = await Album.findByIdAndUpdate(albumId, { $pull: { photos: id } }, { new: true }).exec();
+
+    if (album.name === "All") {
+        const userAlbums = await Album.find({ user: album.user._id }).exec();
+        const user = await User.findById(album.user._id).populate("profile").exec();
+
+        if (user.profile.picture === id) {
+            user.profile.picture = null;
+            await user.save();
+        }
+
+        if (user.profile.coverPicture === id) {
+            user.profile.coverPicture = null;
+            await user.save();
+        }
+
+        for (const album of userAlbums) {
+            await Album.findByIdAndUpdate(album._id, { $pull: { photos: id } }).exec();
+        }
+
+        const photo = await Photo.findByIdAndDelete(id).exec();
+    
+        const image = await Image.findOneAndDelete({ name: photo.pointer }).exec();
+    
+        if (fs.existsSync(process.env.ROOT+"/uploads/"+image.url)) {
+            fs.rmSync(process.env.ROOT+"/uploads/"+image.url);
+        }
+    }
+
     return { message: "Deletion successful", success: true }
 }
 

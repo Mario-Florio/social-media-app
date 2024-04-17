@@ -97,9 +97,10 @@ async function albums() {
     }
     for (let i = 1; i < 11; i++) {
         const imgName = `image${i}`;
-        await new Photo({ name: `photo${i}`, pointer: imgName, user }).save();
+        const photo = await new Photo({ name: `photo${i}`, pointer: imgName, user }).save();
         await new Image({ name: imgName, url: imgName+".jpg" }).save();
-        await new Album({ name: `album${i}`, desc: `This is a description for album${i}`, user }).save();
+        await new Album({ name: `album${i}`, desc: `This is a description for album${i}`, photos: [photo], user }).save();
+        await Album.findOneAndUpdate({ user: user._id, name: "All" }, { $push: { photos: photo } }).exec();
     }
 }
 

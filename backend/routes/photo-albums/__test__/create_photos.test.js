@@ -4,6 +4,7 @@ const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
 const Album = require("../../../models/photos/Album");
+const Photo = require("../../../models/photos/Photo");
 const path = require("path");
 const crypto = require("crypto");
 
@@ -66,7 +67,7 @@ describe("/photo-albums CREATE_PHOTOS", () => {
             });
 
             test("new photos exists and response body contains it", async () => {
-
+                expect(response.body.photos).toBeDefined();
             });
         });
 
