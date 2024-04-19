@@ -6,7 +6,7 @@ import requests from "../../../serverRequests/methods/config";
 
 const { postPhotos } = requests.albums;
 
-function UploadForm({ albums, userId }) {
+function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
     const [isActive, setIsActive] = useState(false);
     const [albumId, setAlbumId] = useState(albums[0]._id);
     const { token } = useAuth();
@@ -27,6 +27,8 @@ function UploadForm({ albums, userId }) {
         if (res.success) {
             e.target.reset();
             setAlbumId(albums[0]._id);
+            setAlbums(prevState => prevState.map(album => album._id === albumId ? album.photos = res.photos : album));
+            selectedAlbum._id === albumId && setPhotos(res.photos);
         } else {
             alert(res.message);
         }

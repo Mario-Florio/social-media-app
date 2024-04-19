@@ -120,21 +120,60 @@ async function postPhotosMock(reqBody = {}) {
     const [ album ] = albums.filter(album => album._id === albumId);
     if (!album) return { message: "Album does not exist", success: true }
 
-    return { message: "Can not upload photos on this version. Please visit <url here> for full access to this feature.", success: false }
+    return { message: "Can not upload photos on this version.", success: false }
 }
 
 async function deletePhotoMock(reqBody = {}) {
-    const { id, token } = reqBody;
+    const { photoId, albumId, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request is forbidden", success: false }
 
-    const photos = getCollection("Photos");
+    let albums = getCollection("Albums");
+    let photos = getCollection("Photos");
+    let users = getCollection("Users");
 
-    const [ photo ] = photos.filter(photo => photo._id === id);
-    if (!photo) return { message: "Photo does not exist", success: false }
+    const [ album ] = albums.filter(album => album._id === albumId);
+    if (!album) return { message: "Album does not exist", success: false }
 
-    return { message: "Can not delete photos on this version. Please visit <url here> for full access to this feature.", success: false }
+    if (album.name === "All") {
+        const userId = album.user;
+
+        albums = albums.map(album => {
+            if (album.user === userId) {
+                const filteredPhotos = album.photos.filter(photo => photo !== photoId);
+                album.photos = filteredPhotos;
+            }
+            return album;
+        });
+
+        users = users.map(user => {
+            if (user._id === userId) {
+                if (user.profile.picture && user.profile.picture._id === photoId) user.profile.picture = null;
+                if (user.profile.coverPicture && user.profile.coverPicture._id === photoId) user.profile.picture = null;
+            }
+            return user;
+        });
+
+        const [ photo ] = photos.filter(photo => photo._id === photoId);
+        if (!photo) return { message: "Photo does not exist", success: false }
+
+        photos = photos.filter(photo => photo._id !== photoId);
+    } else {
+        albums = albums.map(album => {
+            if (album._id === albumId) {
+                const filteredAlbumPhotos = album.photos.filter(photo => photo !== photoId);
+                album.photos = filteredAlbumPhotos;
+            }
+            return album;
+        });
+    }
+
+    window.localStorage.setItem("Users", JSON.stringify(users));
+    window.localStorage.setItem("Albums", JSON.stringify(albums));
+    window.localStorage.setItem("photos", JSON.stringify(photos));
+
+    return { message: "Deletion successful", success: true }
 }
 
 export {

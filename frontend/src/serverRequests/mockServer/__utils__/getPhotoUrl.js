@@ -1,6 +1,7 @@
 import getCollection from "./getCollection";
 
 function getPhotoUrl(photo) {
+    if (!photo) return;
     const images = getCollection("Images");
 
     for (const image of images) {

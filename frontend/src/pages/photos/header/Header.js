@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./header.css";
 import EditAlbumForm from "./editAlbumForm/EditAlbumForm";
 import CreateAlbumForm from "./createAlbumForm/CreateAlbumForm";
@@ -10,11 +10,9 @@ import DeleteAlbumForm from "./deleteAlbumForm/DeleteAlbumForm";
 
 const { getAlbums } = requests.albums;
 
-function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums }) {
+function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums, selectedAlbum, setSelectedAlbum }) {
     const { id, albumId } = useParams();
-    const [selectedAlbum, setSelectedAlbum] = useState({ _id: albumId, name: "", photos: [], desc: "" });
     const { user } = useAuth();
-
 
     useEffect(() => {
         setIsLoading(true);
@@ -69,7 +67,7 @@ function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums }) {
                 { id === user._id && <CreateAlbumForm setAlbums={setAlbums}/> }
             </div>
         </header>
-    )
+    );
 }
 
 export default Header;
