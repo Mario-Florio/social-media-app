@@ -41,7 +41,7 @@ async function getPostsMock(reqBody){
 
     await populateUsers(posts);
 
-    return { message: "Request successful", posts, success: true };
+    return { message: "Request Successful", posts, success: true };
 }
 
 async function getPostMock(reqBody) {
@@ -59,12 +59,12 @@ async function getPostMock(reqBody) {
     }
 
     if (!postFound) {
-        return { message: "Request failed: Post not found", success: false };
+        return { message: "Request Failed: Post not found", success: false };
     }
 
     await populateUsers([postFound]);
 
-    return { message: "Request successful", post: postFound, success: true };
+    return { message: "Request Successful", post: postFound, success: true };
 }
 
 async function postPostMock(reqBody) {
@@ -73,7 +73,7 @@ async function postPostMock(reqBody) {
     const { content, forumId, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const posts = getCollection("Posts");
     const forums = getCollection("Forums");
@@ -101,7 +101,7 @@ async function postPostMock(reqBody) {
 
     await populateUsers([newPost]);
 
-    return { message: "Post was successful", success: true, post: newPost };
+    return { message: "Request Successful", success: true, post: newPost };
 }
 
 async function putPostMock(reqBody) {
@@ -110,7 +110,7 @@ async function putPostMock(reqBody) {
     const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const posts = getCollection("Posts");
 
@@ -124,14 +124,14 @@ async function putPostMock(reqBody) {
         index++;
     }
 
-    if (!postFound) return { message: "Post does not exist", success: false };
+    if (!postFound) return { message: "Request Failed: Post does not exist", success: false };
 
     posts[index].text = update.text;
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
     await populateUsers([posts[index]]);
 
-    return { message: "Update was successful", success: true, post: posts[index]};
+    return { message: "Update Successful", success: true, post: posts[index]};
 
 }
 
@@ -141,7 +141,7 @@ async function deletePostMock(reqBody) {
     const { id, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const posts = getCollection("Posts");
 
@@ -155,7 +155,7 @@ async function deletePostMock(reqBody) {
         index++;
     }
 
-    if (!postFound) return { message: "Post does not exist", success: false };
+    if (!postFound) return { message: "Request Failed: Post does not exist", success: false };
 
     const [ post ] = posts.splice(index, 1);
     window.localStorage.setItem("Posts", JSON.stringify(posts));
@@ -183,7 +183,7 @@ async function deletePostMock(reqBody) {
 
     window.localStorage.setItem("Forums", JSON.stringify(forums));
 
-    return { message: "Deletion was successful", success: true };
+    return { message: "Deletion Successful", success: true };
 }
 
 async function putPostLikeMock(reqBody) {
@@ -192,7 +192,7 @@ async function putPostLikeMock(reqBody) {
     const { id, userId, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const posts = getCollection("Posts");
 
@@ -206,7 +206,7 @@ async function putPostLikeMock(reqBody) {
         index++;
     }
 
-    if (!postFound) return { message: "Post does not exist", success: false };
+    if (!postFound) return { message: "Request Failed: Post does not exist", success: false };
 
     posts[index].likes.includes(userId) ?
         posts[index].likes.splice(posts[index].likes.indexOf(userId), 1) :
@@ -217,7 +217,7 @@ async function putPostLikeMock(reqBody) {
 
     await populateUsers([post]);
 
-    return { message: "Update was successful", post, success: true };
+    return { message: "Update Successful", post, success: true };
 }
 
 export {

@@ -37,7 +37,7 @@ async function getAlbumsMock(reqBody = { queryBody: {} }) {
         });
     });
 
-    return { message: "Request successful", albums: populatedAlbums, success: true }
+    return { message: "Request Successful", albums: populatedAlbums, success: true }
 }
 
 async function postAlbumMock(reqBody = {}) {
@@ -45,7 +45,7 @@ async function postAlbumMock(reqBody = {}) {
     const { token, album } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false }
 
     const albums = getCollection("Albums");
 
@@ -62,7 +62,7 @@ async function postAlbumMock(reqBody = {}) {
 
     window.localStorage.setItem("Albums", JSON.stringify(albums));
 
-    return { message: "Album created successfully", album: newAlbum, success: true }
+    return { message: "Request Successful: Album created successfully", album: newAlbum, success: true }
 }
 
 async function putAlbumMock(reqBody = {}) {
@@ -70,7 +70,7 @@ async function putAlbumMock(reqBody = {}) {
     const { token, id, update } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false }
 
     const albums = getCollection("Albums");
 
@@ -84,14 +84,14 @@ async function putAlbumMock(reqBody = {}) {
         index++;
     }
 
-    if (!albumFound) return { message: "Album does not exist", success: false };
+    if (!albumFound) return { message: "Request Failed: Album does not exist", success: false };
 
     albums[index].name = update.name;
     albums[index].desc = update.desc;
 
     window.localStorage.setItem("Albums", JSON.stringify(albums));
 
-    return { message: "Album created successfully", album: albums[index], success: true }
+    return { message: "Request Successful: Album created successfully", album: albums[index], success: true }
 }
 
 async function deleteAlbumMock(reqBody = {}) {
@@ -99,7 +99,7 @@ async function deleteAlbumMock(reqBody = {}) {
     const { token, id } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false }
 
     const albums = getCollection("Albums");
 
@@ -107,19 +107,19 @@ async function deleteAlbumMock(reqBody = {}) {
 
     window.localStorage.setItem("Albums", JSON.stringify(filteredAlbums));
 
-    return { message: "Album created successfully", success: true }
+    return { message: "Request Successful: Album created successfully", success: true }
 }
 
 async function postPhotoMock(reqBody = {}) {
     const { albumId, formData, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false }
 
     const albums = getCollection("Albums");
 
     const [ album ] = albums.filter(album => album._id === albumId);
-    if (!album) return { message: "Album does not exist", success: true }
+    if (!album) return { message: "Request Failed: Album does not exist", success: true }
 
     const name = formData.get("name");
     const caption = formData.get("caption");
@@ -133,21 +133,21 @@ async function postPhotoMock(reqBody = {}) {
         url: URL.createObjectURL(image)
     }
 
-    return { message: "Upload successful", photo, success: true }
+    return { message: "Upload Successful", photo, success: true }
 }
 
 async function deletePhotoMock(reqBody = {}) {
     const { photoId, albumId, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false }
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false }
 
     let albums = getCollection("Albums");
     let photos = getCollection("Photos");
     let users = getCollection("Users");
 
     const [ album ] = albums.filter(album => album._id === albumId);
-    if (!album) return { message: "Album does not exist", success: false }
+    if (!album) return { message: "Request Failed: Album does not exist", success: false }
 
     if (album.name === "All") {
         const userId = album.user;
@@ -169,7 +169,7 @@ async function deletePhotoMock(reqBody = {}) {
         });
 
         const [ photo ] = photos.filter(photo => photo._id === photoId);
-        if (!photo) return { message: "Photo does not exist", success: false }
+        if (!photo) return { message: "Request Failed: Photo does not exist", success: false }
 
         photos = photos.filter(photo => photo._id !== photoId);
     } else {
@@ -186,7 +186,7 @@ async function deletePhotoMock(reqBody = {}) {
     window.localStorage.setItem("Albums", JSON.stringify(albums));
     window.localStorage.setItem("photos", JSON.stringify(photos));
 
-    return { message: "Deletion successful", success: true }
+    return { message: "Deletion Successful", success: true }
 }
 
 export {

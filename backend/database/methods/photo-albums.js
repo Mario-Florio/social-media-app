@@ -23,41 +23,41 @@ async function getAlbums(userId) {
         }
     } 
 
-    return { message: "Request successful", albums, success: true }
+    return { message: "Request Successful", albums, success: true }
 }
 
 async function getAlbumById(id) {
     const album = await Album.findById(id).populate("photos").exec();
     if (!album) {
-        return { status: 400, message: "Album does not exist", success: false };
+        return { status: 400, message: "Request Failed: Album does not exist", success: false };
     }
 
     for (const photo of album.photos) {
         await getPhotoUrl(photo);
     }
 
-    return { message: "Request successful", album, success: true };
+    return { message: "Request Successful", album, success: true };
 }
 
 async function createAlbum(data) {
     if (data.name === "All" || data.name === "Profile Pictures" || data.name === "Cover Photos") {
-        return { status: 404, message: "Request forbidden: cannot use default album names", success: false }
+        return { status: 404, message: "Request Forbidden: Cannot use default album names", success: false }
     }
     const album = await new Album(data).save();
-    return { message: "Success: album has been created", album, success: true }
+    return { message: "Request Successful: Album has been created", album, success: true }
 }
 
 async function updateAlbum(id, update) {
     const album = await Album.findById(id).populate("photos").exec();
     if (album.name === "All" || album.name === "Profile Pictures" || album.name === "Cover Photos") {
-        return { status: 404, message: `Request forbidden: cannot edit "${album.name}" album`, success: false }
+        return { status: 404, message: `Request Forbidden: cannot edit "${album.name}" album`, success: false }
     }
     for (const photo of album.photos) {
         await getPhotoUrl(photo);
     }
 
     if (!album) {
-        return { status: 400, message: "Album does not exist", album: null };
+        return { status: 400, message: "Request Failed: Album does not exist", album: null };
     }
 
     for (const key in update) {
@@ -73,24 +73,24 @@ async function updateAlbum(id, update) {
     }
     await album.save();
 
-    return { success: true, message: "Update was successful", album };
+    return { success: true, message: "Update Successful", album };
 }
 
 async function deleteAlbum(id) {
     const album = await Album.findByIdAndDelete(id).exec();
 
     if (!album) {
-        return { status: 400, message: "Album does not exist", album: null };
+        return { status: 400, message: "Request Failed: Album does not exist", album: null };
     }
 
-    return { success: true, message: "Deletion was successful" };
+    return { success: true, message: "Deletion Successful" };
 }
 
 async function createPhoto(data, albumId) {
     const album = await Album.findById(albumId).exec();
 
     if (!album) {
-        return { status: 400, message: "Album does not exist", album: null };
+        return { status: 400, message: "Request Failed: Album does not exist", album: null };
     }
 
         const name = path.parse(data.image.filename).name;
@@ -107,7 +107,7 @@ async function createPhoto(data, albumId) {
         album.photos.push(photo._id);
         await album.save();
 
-    return { message: "Upload Successful: photo created", photo, success: true }
+    return { message: "Upload Successful: Photo created", photo, success: true }
 }
 
 async function deletePhoto(id, albumId) {
@@ -140,7 +140,7 @@ async function deletePhoto(id, albumId) {
         }
     }
 
-    return { message: "Deletion successful", success: true }
+    return { message: "Deletion Successful", success: true }
 }
 
 module.exports = {

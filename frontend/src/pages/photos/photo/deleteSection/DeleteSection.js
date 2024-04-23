@@ -133,8 +133,6 @@ function ConfirmDeletePopup({ data, albums, setAlbums, selectedAlbum, setSelecte
                 setPhotos(updatedSelectedAlbum.photos);
                 setIsActive(false);
                 setSectionIsActive(false);
-            } else {
-                console.log(res.message);
             }
         } catch (err) {
             console.log(err);

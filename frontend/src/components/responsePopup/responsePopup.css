@@ -1,0 +1,94 @@
+
+.response-popup {
+    z-index: 3;
+    position: fixed;
+    bottom: -300px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding: 1rem;
+    width: 300px;
+    max-width: calc(100vw - 2rem);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px black;
+    transition-duration: .2s;
+}
+
+.response-popup.active {
+    bottom: 65vh;
+    transition-duration: .2s;
+}
+
+.response-popup.successful {
+    background-color: rgb(146, 209, 146);
+}
+
+.response-popup.failed {
+    background-color: rgb(198, 153, 153);
+}
+
+.response-popup .closeout-icon_wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.response-popup .closeout-icon_wrapper>button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.367);
+    margin: 0;
+    padding: 0;
+    height: 20px;
+    width: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.response-popup .closeout-icon_wrapper>button:hover {
+    background-color: rgba(255, 255, 255, 0.681);
+}
+
+.response-popup .closeout-icon_wrapper>button .bar {
+    background-color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.response-popup .closeout-icon_wrapper>button .bar.vertical {
+    height: 15px;
+    width: 2px;
+}
+
+.response-popup .closeout-icon_wrapper>button .bar.horizontal {
+    height: 2px;
+    width: 15px;
+}
+
+.response-popup .closeout-icon_wrapper>button .bar.vertical,
+.response-popup .closeout-icon_wrapper>button .bar.horizontal {
+    transform: rotate(45deg);
+}
+
+.response-popup .message {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.response-popup .message h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.response-popup .message p {
+    font-size: .9rem;
+    margin: 0;
+}

@@ -18,7 +18,7 @@ async function registerUser(credentials) {
     const { username, password } = credentials;
     const userExists = await User.findOne({ username }).exec();
     if (userExists) {
-        return { status: 404, message: "User already exists", success: false };
+        return { status: 404, message: "Request Failed: User already exists", success: false };
     } else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -31,7 +31,7 @@ async function registerUser(credentials) {
             profile
         }).save();
 
-        return { message: "Success: user has been created", user, success: true };
+        return { message: "Request Successful: User has been created", user, success: true };
     }
 }
 
@@ -43,7 +43,7 @@ async function authorizeUser(credentials) {
         .exec();
 
     if (!user) {
-        return { status: 400, message: "User does not exist", user: false, success: false };
+        return { status: 400, message: "Request Failed: User does not exist", user: false, success: false };
     } else {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
@@ -53,10 +53,10 @@ async function authorizeUser(credentials) {
             await getPhotoUrl(user.profile.picture);
             await getPhotoUrl(user.profile.coverPicture);
 
-            const res = { message: "Login was successful", user, token, success: true };
+            const res = { message: "Login Successful", user, token, success: true };
             return res;
         } else {
-            return { status: 404, message: "Password does not match", user: false, success: false };
+            return { status: 404, message: "Request Failed: Password does not match", user: false, success: false };
         }
     }
 }
@@ -105,13 +105,13 @@ async function getUserById(id) {
         .exec();
     
     if (!user) {
-        return { status: 400, message: "User does not exist", success: false };
+        return { status: 400, message: "Request Failed: User does not exist", success: false };
     }
 
     await getPhotoUrl(user.profile.picture);
     await getPhotoUrl(user.profile.coverPicture);
 
-    return { message: "Request successful", user, success: true };
+    return { message: "Request Successful", user, success: true };
 }
 
 async function updateUser(id, update) {
@@ -120,7 +120,7 @@ async function updateUser(id, update) {
         .exec();
 
     if (!user) {
-        return { status: 400, message: "User does not exist", user: null, success: false };
+        return { status: 400, message: "Request Failed: User does not exist", user: null, success: false };
     }
 
     await getPhotoUrl(user.profile.picture);
@@ -145,14 +145,14 @@ async function updateUser(id, update) {
 
     await user.save();
 
-    return { user, message: "Update was successful", success: true };
+    return { user, message: "Update Successful", success: true };
 }
 
 async function deleteUser(id) {
     const user = await User.findById(id).exec();
 
     if (!user) {
-        const res = { status: 400, message: "User does not exist", user: null, success: false };
+        const res = { status: 400, message: "Request Failed: User does not exist", user: null, success: false };
         return res;
     }
 
@@ -219,14 +219,14 @@ async function deleteUser(id) {
     // 12. delete user
     await User.findByIdAndDelete(id).exec();
 
-    return { success: true, message: "Deletion was successful" };
+    return { success: true, message: "Deletion Successful" };
 }
 
 async function updateProfile(userId, update) {
     const user = await User.findById(userId).exec();
 
     if (!user) {
-        return { status: 400, message: "User does not exist", success: false };
+        return { status: 400, message: "Request Failed: User does not exist", success: false };
     }
 
     for (const key in update) {
@@ -251,7 +251,7 @@ async function updateProfile(userId, update) {
     
     user.profile = profile;
 
-    return { user, message: "Update was successful", success: true };
+    return { user, message: "Update Successful", success: true };
 }
 
 async function followProfile(userId, peerUserId, follow) {
@@ -259,7 +259,7 @@ async function followProfile(userId, peerUserId, follow) {
     const peerUser = await User.findById(peerUserId).populate("profile").exec();
 
     if (!user || !peerUser) {
-        return { status: 400, message: "User does not exist", success: false };
+        return { status: 400, message: "Request Failed: User does not exist", success: false };
     }
 
     if (follow) {
@@ -287,7 +287,7 @@ async function followProfile(userId, peerUserId, follow) {
 
             peerUser.profile = updatedPeerUserProfile;
         } else {
-            return { status: 404, message: "Already following user", success: false };
+            return { status: 404, message: "Request Failed: Already following user", success: false };
         }
     }
 
@@ -316,18 +316,18 @@ async function followProfile(userId, peerUserId, follow) {
 
             peerUser.profile = updatedPeerUserProfile;
         } else {
-            return { status: 404, message: "Already not following user", success: false };
+            return { status: 404, message: "Request Failed: Already not following user", success: false };
         }
     }
 
-    return { message: "Update was successful", clientUser: user, peerUser, success: true };
+    return { message: "Update Successful", clientUser: user, peerUser, success: true };
 }
 
 async function updateProfileDefaultImg(userId, update) {
     const user = await User.findById(userId).exec();
 
     if (!user) {
-        return { status: 400, message: "User does not exist", success: false };
+        return { status: 400, message: "Request Failed: User does not exist", success: false };
     }
 
     for (const key in update) {
@@ -356,7 +356,7 @@ async function updateProfileDefaultImg(userId, update) {
     
     user.profile = profile;
 
-    return { user, message: "Update was successful", success: true };
+    return { user, message: "Update Successful", success: true };
 
     function getDefaultUrl(imgName) {
         for (const img of defaultImages) {

@@ -4,9 +4,9 @@ const { verifyToken } = require("../authenticate");
 async function read_all(req, res, next) {
     try {
         const comments = await comments_dbMethods.getComments();
-        res.json({ message: "Request successful", comments, success: true });
+        res.json({ message: "Request Successful", comments, success: true });
     } catch (err) {
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -15,7 +15,7 @@ async function create(req, res, next) {
         const { postId } = req.body;
         const { user, text } = req.body.comment;
         if (!user || !text || !postId) {
-            return res.status(400).json({ message: "Missing fields", success: false });
+            return res.status(400).json({ message: "Request Failed: Missing fields", success: false });
         }
     
         const verifyTokenResBody = verifyToken(req.token);
@@ -27,13 +27,13 @@ async function create(req, res, next) {
         const userId = user;
         const { authData } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "Action is forbidden", success: false });
+            return res.status(404).json({ message: "Request Failed: Action is forbidden", success: false });
         }
     
         const sanitizedInput = sanitizeInput(req.body.comment);
         const isValid = validateInput(sanitizedInput);
         if (!isValid) {
-            return res.status(422).json({ message: "Invalid input", success: false });
+            return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
         }
     
         const responseBody = await comments_dbMethods.createComment(postId, sanitizedInput);
@@ -44,14 +44,14 @@ async function create(req, res, next) {
 
         res.json(responseBody);
     } catch (err) {
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
 async function update(req, res, next) {
     const { text } = req.body;
     if (!text) {
-        return res.status(400).json({ message: "Missing fields", success: false });
+        return res.status(400).json({ message: "Request Failed: Missing fields", success: false });
     }
 
     const verifyTokenResBody = verifyToken(req.token);
@@ -61,19 +61,19 @@ async function update(req, res, next) {
     }
     const comment = await comments_dbMethods.getCommentById(req.params.id);
     if (!comment) {
-        return res.status(400).json({ message: "Comment does not exist", success: false });
+        return res.status(400).json({ message: "Request Failed: Comment does not exist", success: false });
     }
 
     const userId = comment.user._id.toString();
     const { authData } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to delete this comment", success: false });
+        return res.status(404).json({ message: "Request Failed: You are not authorized to delete this comment", success: false });
     }
 
     const sanitizedInput = sanitizeInput(req.body);
     const isValid = validateInput(sanitizedInput);
     if (!isValid) {
-        return res.status(422).json({ message: "Invalid input", success: false });
+        return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
     }
 
     const responseBody = await comments_dbMethods.updateComment(req.params.id, sanitizedInput);
@@ -93,13 +93,13 @@ async function remove(req, res, next) {
     }
     const comment = await comments_dbMethods.getCommentById(req.params.id);
     if (!comment) {
-        return res.status(400).json({ message: "Comment does not exist", success: false });
+        return res.status(400).json({ message: "Request Failed: Comment does not exist", success: false });
     }
 
     const userId = comment.user._id.toString();
     const { authData } = verifyTokenResBody;
     if (authData.user._id !== userId) {
-        return res.status(404).json({ message: "You are not authorized to delete this comment", success: false });
+        return res.status(404).json({ message: "Request Failed: You are not authorized to delete this comment", success: false });
     }
 
     const responseBody = await comments_dbMethods.deleteComment(req.params.id);

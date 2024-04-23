@@ -18,7 +18,7 @@ async function createPost(data, forumId) {
     await getPhotoUrl(post.user.profile.picture);
     await getPhotoUrl(post.user.profile.coverPicture);
 
-    const res = { message: "Success: post has been created", post, success: true };
+    const res = { message: "Request Successful: post has been created", post, success: true };
     return res;
 }
 
@@ -57,13 +57,13 @@ async function getPostById(id) {
         .exec();
 
     if (!post) {
-        return { status: 400, message: "Post does not exist", success: false };
+        return { status: 400, message: "Request Failed: Post does not exist", success: false };
     }
 
     await getPhotoUrl(post.user.profile.picture);
     await getPhotoUrl(post.user.profile.coverPicture);
     
-    return { message: "Request successful", post, success: true };
+    return { message: "Request Successful", post, success: true };
 }
 
 async function updatePost(id, update) {
@@ -72,7 +72,7 @@ async function updatePost(id, update) {
         .exec();
 
     if (!post) {
-        return { status: 400, message: "Post does not exist", post: null };
+        return { status: 400, message: "Request Failed: Post does not exist", post: null };
     }
 
     for (const key in update) {
@@ -92,14 +92,14 @@ async function updatePost(id, update) {
     await getPhotoUrl(post.user.profile.picture);
     await getPhotoUrl(post.user.profile.coverPicture);
 
-    return { success: true, message: "Update was successful", post };
+    return { success: true, message: "Update Successful", post };
 }
 
 async function deletePost(id) {
     const post = await Post.findByIdAndDelete(id).exec();
 
     if (!post) {
-        return { status: 400, message: "Post does not exist", post: null };
+        return { status: 400, message: "Request Failed: Post does not exist", post: null };
     }
 
     for (const commentId of post.comments) {
@@ -117,7 +117,7 @@ async function deletePost(id) {
         }
     }
 
-    return { success: true, message: "Deletion was successful" };
+    return { success: true, message: "Deletion Successful" };
 }
 
 async function likePost(id, userId) {
@@ -126,7 +126,7 @@ async function likePost(id, userId) {
         .exec();
 
     if (!post) {
-        return { status: 400, message: "Post does not exist", success: false };
+        return { status: 400, message: "Request Failed: Post does not exist", success: false };
     }
 
     if (post.likes.includes(userId)) {
@@ -141,7 +141,7 @@ async function likePost(id, userId) {
     await getPhotoUrl(post.user.profile.picture);
     await getPhotoUrl(post.user.profile.coverPicture);
 
-    return { message: "Update successful", post, success: true };
+    return { message: "Update Successful", post, success: true };
 }
 
 module.exports = {

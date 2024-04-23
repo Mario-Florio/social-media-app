@@ -13,7 +13,7 @@ async function getCommentsMock(reqBody) {
 
     await populateUsers(comments);
 
-    return { message: "Request successful", comments, success: true };
+    return { message: "Request Successful", comments, success: true };
 }
 
 async function postCommentMock(reqBody) {
@@ -22,7 +22,7 @@ async function postCommentMock(reqBody) {
     const { postId, comment, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const comments = getCollection("Comments");
     const posts = getCollection("Posts");
@@ -44,14 +44,14 @@ async function postCommentMock(reqBody) {
     window.localStorage.setItem("Comments", JSON.stringify(comments));
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    return { message: "Request successful", success: true, comment: newComment };
+    return { message: "Request Successful", success: true, comment: newComment };
 }
 
 async function putCommentMock(reqBody) {
     const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const comments = getCollection("Comments");
 
@@ -65,7 +65,7 @@ async function putCommentMock(reqBody) {
         index++;
     }
 
-    if (!commentFound) return { message: "Comment does not exist", success: false };
+    if (!commentFound) return { message: "Request Failed: Comment does not exist", success: false };
 
     comments[index].text = update.text;
     window.localStorage.setItem("Comments", JSON.stringify(comments));
@@ -79,7 +79,7 @@ async function deleteCommentMock(reqBody) {
     const { id, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const comments = getCollection("Comments");
     const posts = getCollection("Posts");
@@ -94,7 +94,7 @@ async function deleteCommentMock(reqBody) {
     window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
     window.localStorage.setItem("Posts", JSON.stringify(posts));
 
-    return { message: "Deletion successful", success: true }
+    return { message: "Deletion Successful", success: true }
 }
 
 export {

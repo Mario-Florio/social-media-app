@@ -9,7 +9,7 @@ async function read_one(req, res, next) {
         }
         res.json(responseBody);
     } catch (err) {
-        res.status(500).json({ message: "Request unsuccesful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 

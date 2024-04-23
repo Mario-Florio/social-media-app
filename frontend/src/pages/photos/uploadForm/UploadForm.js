@@ -1,14 +1,17 @@
 import { useState } from "react";
+import ResponsePopup from "../../../components/responsePopup/ResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import "./uploadForm.css";
 
 import requests from "../../../serverRequests/methods/config";
 
-const { postPhotos } = requests.albums;
+const { postPhoto } = requests.albums;
 
 function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
     const [isActive, setIsActive] = useState(false);
     const [albumId, setAlbumId] = useState(albums[0]._id);
+    const [responsePopupIsActive, setResponsePopupIsActive] = useState(false);
+    const [responsePopupData, setResponsePopupData] = useState({ message: "", success: true });
     const { token } = useAuth();
 
     function handleChange(e) {
@@ -24,7 +27,7 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
             formData,
             token
         }
-        const res = await postPhotos(reqBody);
+        const res = await postPhoto(reqBody);
         if (res.success) {
             if (albumId === selectedAlbum._id) setPhotos(prevState => [...prevState, res.photo]);
 
@@ -70,6 +73,11 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
             setAlbumId(albums[0]._id);
             setIsActive(false);
         }
+        setResponsePopupData({
+            message: res.message,
+            success: res.success
+        });
+        setResponsePopupIsActive(true);
     }
 
     return(
@@ -94,6 +102,12 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
                 <input name="user" id="user" className="hide" value={userId} required readOnly/>
                 <button>Upload</button>
             </form> }
+            { responsePopupIsActive &&
+                <ResponsePopup
+                    message={responsePopupData.message}
+                    success={responsePopupData.success}
+                    setParentsIsActive={setResponsePopupIsActive}
+                /> }
         </div>
     );
 }

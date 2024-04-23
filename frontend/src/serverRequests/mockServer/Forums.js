@@ -18,10 +18,10 @@ async function getForumMock(reqBody) {
     });
 
     if (!returnForum) {
-        return { message: "Request failed", success: false };
+        return { message: "Request Failed: Forum does not exist", success: false };
     }
     
-    return { message: "Request successful", forum: returnForum, success: true };
+    return { message: "Request Successful", forum: returnForum, success: true };
 }
 
 export {

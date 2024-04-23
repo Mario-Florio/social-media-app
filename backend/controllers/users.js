@@ -10,10 +10,10 @@ async function read_all(req, res, next) {
         const populate = req.query.populate && JSON.parse(req.query.populate);
 
         const users = await users_dbMethods.getUsers(limit, page, search, populate);
-        res.json({ message: "Request successful", users, success: true });
+        res.json({ message: "Request Successful", users, success: true });
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 } 
 
@@ -27,7 +27,7 @@ async function read_one(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -35,17 +35,17 @@ async function create(req, res, next) {
     try {
         const { credentials } = req.body;
         if (!credentials) {
-            return res.status(400).json({ message: "Missing fields", success: false });
+            return res.status(400).json({ message: "Request Failed: Missing fields", success: false });
         }
         const { username, password } = req.body.credentials;
         if (!username || !password) {
-            return res.status(400).json({ message: "Missing fields", success: false });
+            return res.status(400).json({ message: "Request Failed: Missing fields", success: false });
         }
     
         const sanitizedInput = sanitizeInput(req.body.credentials);
         const isValid = validateInput(sanitizedInput);
         if (!isValid) {
-            return res.status(422).json({ message: "Invalid input", success: false });
+            return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
         }
     
         const responseBody = await users_dbMethods.registerUser(sanitizedInput);
@@ -57,7 +57,7 @@ async function create(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -71,13 +71,13 @@ async function update(req, res, next) {
         const userId = req.params.id;
         const { authData, success } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "You are not authorized to update this user", success: false });
+            return res.status(404).json({ message: "Request Forbidden: You are not authorized to update this user", success: false });
         }
     
         const sanitizedInput = sanitizeInput(req.body);
         const isValid = validateInput(sanitizedInput);
         if (!isValid) {
-            return res.status(422).json({ message: "Invalid input", success: false });
+            return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
         }
     
         const responseBody = await users_dbMethods.updateUser(userId, sanitizedInput);
@@ -89,7 +89,7 @@ async function update(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -103,7 +103,7 @@ async function remove(req, res, next) {
         const userId = req.params.id;
         const { authData, success } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "You are not authorized to delete this user", success: false });
+            return res.status(404).json({ message: "Request Forbidden: You are not authorized to delete this user", success: false });
         }
     
         const responseBody = await users_dbMethods.deleteUser(req.params.id);
@@ -115,7 +115,7 @@ async function remove(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -129,13 +129,13 @@ async function update_profile(req, res, next) {
         const userId = req.params.id;
         const { authData } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "You are not authorized to update this user", success: false });
+            return res.status(404).json({ message: "Request Forbidden: You are not authorized to update this user", success: false });
         }
     
         const sanitizedInput = sanitizeInput(req.body);
         const isValid = validateInput(sanitizedInput);
         if (!isValid) {
-            return res.status(422).json({ message: "Invalid input", success: false });
+            return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
         }
     
         const responseBody = await users_dbMethods.updateProfile(userId, sanitizedInput);
@@ -147,7 +147,7 @@ async function update_profile(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -161,7 +161,7 @@ async function follow_profile(req, res, next) {
         const { userId } = req.body;
         const { authData } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "You are not authorized to update this user", success: false });
+            return res.status(404).json({ message: "Request Forbidden: You are not authorized to update this user", success: false });
         }
     
         const { follow } = req.body;
@@ -175,7 +175,7 @@ async function follow_profile(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 
@@ -189,13 +189,13 @@ async function update_profile_defaultImg(req, res, next) {
         const userId = req.params.id;
         const { authData } = verifyTokenResBody;
         if (authData.user._id !== userId) {
-            return res.status(404).json({ message: "You are not authorized to update this user", success: false });
+            return res.status(404).json({ message: "Request Forbidden: You are not authorized to update this user", success: false });
         }
     
         const sanitizedInput = sanitizeInput(req.body);
         const isValid = validateInput(sanitizedInput);
         if (!isValid) {
-            return res.status(422).json({ message: "Invalid input", success: false });
+            return res.status(422).json({ message: "Request Failed: Invalid input", success: false });
         }
     
         const responseBody = await users_dbMethods.updateProfileDefaultImg(userId, sanitizedInput);
@@ -207,7 +207,7 @@ async function update_profile_defaultImg(req, res, next) {
         res.json(responseBody);
     } catch (err) {
         console.log(err.message);
-        res.status(500).json({ message: "Request unsuccessful", success: false });
+        res.status(500).json({ message: "Request Failed", success: false });
     }
 }
 

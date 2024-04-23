@@ -31,7 +31,7 @@ async function createComment(postId, commentData) {
     const postExists = await Post.findById(postId).exec();
 
     if (!postExists) {
-        return { status: 400, message: "Post does not exist", success: false };
+        return { status: 400, message: "Request Failed: Post does not exist", success: false };
     }
 
     const comment = await new Comment(commentData).save();
@@ -39,7 +39,7 @@ async function createComment(postId, commentData) {
     postExists.comments.push(comment._id);
     await postExists.save();
 
-    return { message: "Request successful", success: true, comment };
+    return { message: "Request Successful", success: true, comment };
 }
 
 async function updateComment(id, update) {
@@ -48,7 +48,7 @@ async function updateComment(id, update) {
         .exec();
 
     if (!comment) {
-        return { status: 400, message: "Comment does not exist", comment: null };
+        return { status: 400, message: "Request Failed: Comment does not exist", comment: null };
     }
 
     for (const key in update) {
@@ -66,14 +66,14 @@ async function updateComment(id, update) {
     await getPhotoUrl(comment.user.profile.picture);
     await getPhotoUrl(comment.user.profile.coverPicture);
 
-    return { success: true, message: "Update was successful", comment };
+    return { success: true, message: "Update Successful", comment };
 }
 
 async function deleteComment(id) {
     const comment = await Comment.findByIdAndDelete(id).exec();
 
     if (!comment) {
-        return { status: 400, message: "Comment does not exist", comment: null };
+        return { status: 400, message: "Request Failed: Comment does not exist", comment: null };
     }
 
     const posts = await Post.find().exec();
@@ -87,7 +87,7 @@ async function deleteComment(id) {
         }
     }
 
-    return { success: true, message: "Deletion was successful" };
+    return { success: true, message: "Deletion Successful" };
 }
 
 module.exports = {

@@ -52,7 +52,7 @@ async function getUsersMock(reqBody = { queryBody: {} }) {
         getPhotoUrl(user.profile.coverPicture);
     }
 
-    return { message: "Request successful", users, success: true };
+    return { message: "Request Successful", users, success: true };
 }
 
 async function getUserMock(reqBody) {
@@ -70,13 +70,13 @@ async function getUserMock(reqBody) {
     }
 
     if (!userFound) {
-        return { message: "Request failed: User not found", success: false };
+        return { message: "Request Failed: User not found", success: false };
     }
 
     getPhotoUrl(userFound.profile.picture);
     getPhotoUrl(userFound.profile.coverPicture);
 
-    return { message: "Request successful", user: userFound, success: true };
+    return { message: "Request Successful", user: userFound, success: true };
 }
 
 async function postUserMock(reqBody) {
@@ -89,7 +89,7 @@ async function postUserMock(reqBody) {
 
     for (const user of users) {
         if (user.username === username) {
-            return { message: "User already exists", success: false };
+            return { message: "Request Failed: User already exists", success: false };
         }
     }
 
@@ -118,7 +118,7 @@ async function postUserMock(reqBody) {
 
     delete newUser.password;
 
-    return { message: "Success: user has been created", user: newUser, success: true };
+    return { message: "Request Successful: User has been created", user: newUser, success: true };
 }
 
 async function putUserMock(reqBody) {
@@ -127,7 +127,7 @@ async function putUserMock(reqBody) {
     const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
     const images = getCollection("Images");
@@ -142,7 +142,7 @@ async function putUserMock(reqBody) {
         index++;
     }
 
-    if (!userFound) return { message: "User does not exist", success: false };
+    if (!userFound) return { message: "Request Failed: User does not exist", success: false };
 
     for (const key in update) {
         if (key !== "profile" ||
@@ -159,7 +159,7 @@ async function putUserMock(reqBody) {
     getPhotoUrl(users[index].profile.picture);
     getPhotoUrl(users[index].profile.coverPicture);
 
-    return { message: "Update was successful", user: users[index], success: true };
+    return { message: "Update Successful", user: users[index], success: true };
 }
 
 async function deleteUserMock(reqBody) {
@@ -168,7 +168,7 @@ async function deleteUserMock(reqBody) {
     const { id, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
     const forums = getCollection("Forums");
@@ -180,7 +180,7 @@ async function deleteUserMock(reqBody) {
 
     const [ user ] = users.filter(user => user._id === id);
 
-    if (!user) return { message: "User does not exist", success: false };
+    if (!user) return { message: "Request Failed: User does not exist", success: false };
 
     // 1. delete all users albums, photos, and images
     const filteredAlbums = albums.filter(album => album.user !== user._id);
@@ -274,7 +274,7 @@ async function deleteUserMock(reqBody) {
     window.localStorage.setItem("Photos", JSON.stringify(filteredPhotos));
     window.localStorage.setItem("Images", JSON.stringify(filteredImages));
 
-    return { message: "Deletion was successful", success: true };
+    return { message: "Deletion Successful", success: true };
 }
 
 async function putProfileMock(reqBody) {
@@ -283,7 +283,7 @@ async function putProfileMock(reqBody) {
     const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
     const photos = getCollection("Photos");
@@ -299,7 +299,7 @@ async function putProfileMock(reqBody) {
         index++;
     }
 
-    if (!userFound) return { message: "User does not exist", success: false };
+    if (!userFound) return { message: "Request Failed: User does not exist", success: false };
 
     for (const key in update) {
         if (
@@ -336,7 +336,7 @@ async function putProfileMock(reqBody) {
     getPhotoUrl(users[index].profile.picture);
     getPhotoUrl(users[index].profile.coverPicture);
 
-    return { message: "Update was successful", user: users[index], success: true };
+    return { message: "Update Successful", user: users[index], success: true };
 }
 
 async function putUserFollowMock(reqBody) {
@@ -345,7 +345,7 @@ async function putUserFollowMock(reqBody) {
     const { userId, profileUserId, follow, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
 
@@ -366,7 +366,7 @@ async function putUserFollowMock(reqBody) {
         index++;
     }
 
-    if (!userFound || !profileUserFound) return { message: "User does not exist", success: false };
+    if (!userFound || !profileUserFound) return { message: "Request Failed: User does not exist", success: false };
 
     if (follow) {
         if (!users[userIndex].profile.following.includes(profileUserId) &&
@@ -374,7 +374,7 @@ async function putUserFollowMock(reqBody) {
                 users[userIndex].profile.following.push(profileUserId);
                 users[profileUserIndex].profile.followers.push(userId);
         } else {
-            return { message: "Already following user", success: false };
+            return { message: "Request Failed: Already following user", success: false };
         }
     }
 
@@ -384,7 +384,7 @@ async function putUserFollowMock(reqBody) {
                 users[userIndex].profile.following.splice(users[userIndex].profile.following.indexOf(profileUserId), 1);
                 users[profileUserIndex].profile.followers.splice(users[profileUserIndex].profile.followers.indexOf(userId), 1);
         } else {
-            return { message: "Already not following user", success: false };
+            return { message: "Request Failed: Already not following user", success: false };
         }
     }
 
@@ -399,7 +399,7 @@ async function putUserFollowMock(reqBody) {
     getPhotoUrl(users[profileUserIndex].profile.coverPicture);
 
     return {
-        message: "Update was successful",
+        message: "Update Successful",
         success: true,
         peerUser: users[profileUserIndex],
         clientUser: users[userIndex]
@@ -412,7 +412,7 @@ async function putProfileDefaultImgMock(reqBody) {
     const { id, update, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
-    if (!tokenIsValid) return { message: "Request is forbidden", success: false };
+    if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
     const users = getCollection("Users", { showHidden: "password" });
     const images = getCollection("Images");
@@ -427,7 +427,7 @@ async function putProfileDefaultImgMock(reqBody) {
         index++;
     }
 
-    if (!userFound) return { message: "User does not exist", success: false };
+    if (!userFound) return { message: "Request Failed: User does not exist", success: false };
 
     for (const key in update) {
         if (
@@ -467,7 +467,7 @@ async function putProfileDefaultImgMock(reqBody) {
     getPhotoUrl(users[index].profile.picture);
     getPhotoUrl(users[index].profile.coverPicture);
 
-    return { message: "Update was successful", user: users[index], success: true };
+    return { message: "Update Successful", user: users[index], success: true };
 }
 
 export {
