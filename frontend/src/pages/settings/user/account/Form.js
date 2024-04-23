@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./form.css";
 import Loader from "../../../../components/loader/Loader";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 import requests from "../../../../serverRequests/methods/config";
 
@@ -9,6 +10,7 @@ const { putUser, deleteUser } = requests.users;
 function AccountForm() {
     const [isLoading, setIsLoading] = useState(false);
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, updateUser, token, logout } = useAuth();
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
@@ -85,11 +87,12 @@ function AccountForm() {
                     const user = res.user;
                     updateUser(user);
                     setFormInput({ username: user.username, password: "", confirmPassword: "" });
-                    alert("Update successful");
                 }
+
+                setResponsePopupData({ message: res.message, success: res.success });
+                setResponsePopupIsActive(true);
             }
         } catch (err) {
-            alert("Update failed: please try again");
             console.log(err);
         } finally {
             setIsLoading(false)

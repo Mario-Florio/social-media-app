@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./deleteSection.css";
 import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 import requests from "../../../../serverRequests/methods/config";
@@ -89,6 +90,7 @@ function FieldSet({ deleteEverywhere, setDeleteEverywhere }) {
 function ConfirmDeletePopup({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPhotos, isActive, setIsActive, setSectionIsActive, deleteEverywhere, albumId }) {
     const [isLoading, setIsLoading] = useState(false);
 
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { token, user, updateUser } = useAuth();
 
     async function deletePhoto() {
@@ -134,6 +136,9 @@ function ConfirmDeletePopup({ data, albums, setAlbums, selectedAlbum, setSelecte
                 setIsActive(false);
                 setSectionIsActive(false);
             }
+
+            setResponsePopupData({ message: res.message, success: res.success });
+            setResponsePopupIsActive(true);
         } catch (err) {
             console.log(err);
         } finally {

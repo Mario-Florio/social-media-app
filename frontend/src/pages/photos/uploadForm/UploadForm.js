@@ -106,7 +106,7 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
                 <ResponsePopup
                     message={responsePopupData.message}
                     success={responsePopupData.success}
-                    setParentsIsActive={setResponsePopupIsActive}
+                    setIsMounted={setResponsePopupIsActive}
                 /> }
         </div>
     );

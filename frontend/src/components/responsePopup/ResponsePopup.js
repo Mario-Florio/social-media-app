@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
 import "./responsePopup.css";
 
-function ResponsePopup({ message="", success=true, setParentsIsActive }) {
+function ResponsePopup({ message="", success=true, setIsMounted }) {
     const [isActive, setIsActive] = useState(false);
     const [title, setTitle] = useState(message.includes(":") ? message.split(":")[0].trim() : message);
     const [body, setBody] = useState(message.includes(":") ? message.split(":")[1].trim() : "");
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsActive(true);
-        }, 0);
-        setTimeout(() => {
-            setParentsIsActive(false);
-        }, 5000);
-        return () => setIsActive(false);
+        const intitialAnimation = setTimeout(() => setIsActive(true), 250);
+        const departingAnimation = setTimeout(() => setIsActive(false), 5250);
+        const unmount = setTimeout(() => setIsMounted(false), 5550);
+
+        return () => {
+            clearTimeout(intitialAnimation);
+            clearTimeout(departingAnimation);
+            clearTimeout(unmount);
+        }
     }, []);
+
+    function handleClick() {
+        setIsActive(false);
+        setTimeout(() => setIsMounted(false), 250);
+    }
 
     return(
         <div className={
@@ -24,7 +31,7 @@ function ResponsePopup({ message="", success=true, setParentsIsActive }) {
             (!isActive && !success) && "response-popup failed"
         }>
             <div className="closeout-icon_wrapper">
-                <button onClick={() => setIsActive(false)}>
+                <button onClick={handleClick}>
                     <div className="bar vertical"/>
                     <div className="bar horizontal"/>
                 </button>

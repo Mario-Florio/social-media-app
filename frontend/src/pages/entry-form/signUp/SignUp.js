@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Loader from "../../../components/loader/Loader";
-
+import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import requests from "../../../serverRequests/methods/config";
 const { postUser } = requests.users;
 const { postLogin } = requests.auth;
 
 function SignUp({ isSignIn, setIsSignIn }) {
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formInput, setFormInput] = useState({
@@ -80,6 +81,8 @@ function SignUp({ isSignIn, setIsSignIn }) {
             });
         }
         setIsLoading(false);
+        setResponsePopupData({ message: postUserRes.message, success: postUserRes.success });
+        setResponsePopupIsActive(true);
     }
 
     return(

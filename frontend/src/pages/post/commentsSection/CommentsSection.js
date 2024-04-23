@@ -4,6 +4,7 @@ import "./commentsSection.css";
 import Loader from "../../../components/loader/Loader";
 import OptionsSection from "./optionsSection/OptionsSection";
 import EditSection from "./editSection/EditSection";
+import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
@@ -107,6 +108,7 @@ function Form({ postId, comments, setComments }) {
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState("");
     const { user, token } = useAuth();
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -121,6 +123,9 @@ function Form({ postId, comments, setComments }) {
         if (res.success) {
             const populatedComment = await populateComments([res.comment._id]);
             setComments(comments.reverse().concat(populatedComment).reverse());
+        } else {
+            setResponsePopupData({ message: res.message, success: res.success });
+            setResponsePopupIsActive(true);
         }
 
         setIsLoading(false);

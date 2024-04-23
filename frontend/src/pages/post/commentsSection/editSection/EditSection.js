@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./editSection.css";
 import Loader from "../../../../components/loader/Loader";
-import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper";
+import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper"
 import requests from "../../../../serverRequests/methods/config";
-
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 const { putComment } = requests.comments;
@@ -11,6 +11,7 @@ const { putComment } = requests.comments;
 function EditSection({ comment, setComments, editSectionIsActive, setEditSectionIsActive }) {
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState(comment.text);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { token } = useAuth();
 
     function handleChange(e) {
@@ -34,6 +35,8 @@ function EditSection({ comment, setComments, editSectionIsActive, setEditSection
         }
 
         setIsLoading(false);
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
     }
 
     return(

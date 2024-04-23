@@ -3,13 +3,15 @@ import "./optionsSection.css";
 import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper";
 import requests from "../../../../serverRequests/methods/config";
 
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 const { deleteComment } = requests.comments;
 
 function OptionsSection({ comment, setComments, optionsSectionIsActive, setOptionsSectionIsActive, setEditSectionIsActive }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
+    const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, token } = useAuth();
 
     async function removeComment() {
@@ -22,6 +24,8 @@ function OptionsSection({ comment, setComments, optionsSectionIsActive, setOptio
             setOptionsSectionIsActive(false);
         }
         setIsLoading(false);
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
     }
 
     async function editComment() {

@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./postsFeed.css";
 import Post from "../post/Post";
+import Loader from "../loader/Loader";
+import { useResponsePopup } from "../../hooks/useResponsePopup";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
-import Loader from "../loader/Loader";
 import attachmentsIcon from "../../assets/imgs/attachments.png";
 import shareIcon from "../../assets/imgs/share.png";
 import { defaultProfilePic } from "../../defaultImages/defaultImages";
@@ -50,6 +51,7 @@ function NewPost({ forumId }) {
     const [input, setInput] = useState("");
     const { posts, setPosts } = usePosts();
     const { user, token } = useAuth();
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -70,6 +72,9 @@ function NewPost({ forumId }) {
         if (res.success) {
             setPosts([res.post, ...posts]);
             setInput("");
+        } else {
+            setResponsePopupData({ message: res.message, success: res.success });
+            setResponsePopupIsActive(true);
         }
         setIsLoading(false);
     }

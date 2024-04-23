@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./form.css";
 import Loader from "../../../../components/loader/Loader";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 import requests from "../../../../serverRequests/methods/config";
 
@@ -8,6 +9,7 @@ const { putProfile } = requests.users;
 
 function ProfileForm() {
     const [isLoading, setIsLoading] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, updateUser, token } = useAuth();
     const [formInput, setFormInput] = useState({ bio: user.profile.bio });
 
@@ -41,11 +43,12 @@ function ProfileForm() {
                     const user = res.user;
                     updateUser(user);
                     setFormInput({ bio: user.profile.bio });
-                    alert("Update successful");
                 }
+
+                setResponsePopupData({ message: res.message, success: res.success });
+                setResponsePopupIsActive(true);
             }
         } catch (err) {
-            alert("Update failed: please try again");
             console.log(err);
         } finally {
             setIsLoading(false)

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./editAlbumForm.css";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 import requests from "../../../../serverRequests/methods/config";
@@ -12,6 +13,7 @@ function EditAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
         name: "",
         desc: ""
     });
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { token } = useAuth();
 
     useEffect(() => {
@@ -31,7 +33,8 @@ function EditAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
     async function handleSubmit(e) {
         e.preventDefault();
         if (formInput.name === selectedAlbum.name && formInput.desc === selectedAlbum.desc) {
-            console.log("No Edits");
+            setResponsePopupData({ message: "Request Failed: You must edit album", success: false });
+            setResponsePopupIsActive(true);
             return;
         }
 
@@ -46,6 +49,9 @@ function EditAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
             setSelectedAlbum(res.album);
             setAlbums(albums => albums.map(album => album._id === res.album._id ? res.album : album));
         }
+
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
         setIsActive(false);
     }
 

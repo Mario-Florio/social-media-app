@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./createAlbumForm.css";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 import requests from "../../../../serverRequests/methods/config";
@@ -11,6 +12,7 @@ function CreateAlbumForm({ setAlbums }) {
         name: "",
         desc: ""
     });
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, token } = useAuth();
 
     function handleChange(e) {
@@ -42,6 +44,9 @@ function CreateAlbumForm({ setAlbums }) {
                 });
                 setIsActive(false);
             }
+
+            setResponsePopupData({ message: res.message, success: res.success });
+            setResponsePopupIsActive(true);
         } catch (err) {
             console.log(err);
         }

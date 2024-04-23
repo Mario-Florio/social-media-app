@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Loader from "../../../components/loader/Loader";
+import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 
 import requests from "../../../serverRequests/methods/config";
@@ -12,6 +13,7 @@ function SignIn({ isSignIn, setIsSignIn }) {
         password: "",
     });
     const { login } = useAuth();
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     function handleClick() {
         setIsSignIn(!isSignIn);
@@ -30,12 +32,15 @@ function SignIn({ isSignIn, setIsSignIn }) {
         postLogin(formInput)
             .then(async data => {
                 setIsLoading(false);
-                if (data.user) {
+                if (data.success) {
                     await login(data);
                     setFormInput({
                         username: "",
                         password: ""
                     });
+                } else {
+                    setResponsePopupData({ message: data.message, success: data.success });
+                    setResponsePopupIsActive(true);
                 }
             })
             .catch(err => {

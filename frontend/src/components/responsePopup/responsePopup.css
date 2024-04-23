@@ -15,8 +15,8 @@
 }
 
 .response-popup.active {
-    bottom: 65vh;
-    transition-duration: .2s;
+    bottom: 1rem;
+    transition-duration: .6s;
 }
 
 .response-popup.successful {

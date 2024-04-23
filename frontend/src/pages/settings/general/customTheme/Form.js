@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./form.css";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useTheme } from "../../../../hooks/useTheme/useTheme";
 
 function CustomThemeForm() {
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { theme, setTheme, restoreDefault } = useTheme();
     const [formInputs, setFormInputs] = useState(theme);
 
@@ -30,6 +32,9 @@ function CustomThemeForm() {
             "--secondary-font-color": formInputs["--secondary-font-color"],
             "--box-shadow-color": formInputs["--box-shadow-color"]
         });
+        
+        setResponsePopupData({ message: "Update Successful", success: true });
+        setResponsePopupIsActive(true);
     }
 
     return(

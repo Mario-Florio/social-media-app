@@ -91,7 +91,7 @@ async function putAlbumMock(reqBody = {}) {
 
     window.localStorage.setItem("Albums", JSON.stringify(albums));
 
-    return { message: "Request Successful: Album created successfully", album: albums[index], success: true }
+    return { message: "Update Successful", album: albums[index], success: true }
 }
 
 async function deleteAlbumMock(reqBody = {}) {
@@ -107,7 +107,7 @@ async function deleteAlbumMock(reqBody = {}) {
 
     window.localStorage.setItem("Albums", JSON.stringify(filteredAlbums));
 
-    return { message: "Request Successful: Album created successfully", success: true }
+    return { message: "Deletion Successful", success: true }
 }
 
 async function postPhotoMock(reqBody = {}) {

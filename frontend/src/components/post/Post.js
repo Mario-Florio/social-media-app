@@ -6,6 +6,7 @@ import "./optionsSection.css";
 import "./editSection.css";
 import Loader from "../loader/Loader";
 import SectionWrapper from "../sectionWrapper/SectionWrapper";
+import { useResponsePopup } from "../../hooks/useResponsePopup";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 import { defaultProfilePic } from "../../defaultImages/defaultImages";
@@ -22,6 +23,7 @@ function Post({ postId }) {
     const [likesSectionIsActive, setLikesSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [editSectionIsActive, setEditSectionIsActive] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, token } = useAuth();
     const { posts } = usePosts();
 
@@ -44,6 +46,9 @@ function Post({ postId }) {
             const res = await putPostLike({ id: post._id, userId: user._id, token });
             if (res.success) {
                 setPost(res.post);
+            } else {
+                setResponsePopupData({ message: res.message, success: res.success });
+                setResponsePopupIsActive(true);
             }
         } catch (err) {
             console.log(err);
@@ -140,6 +145,7 @@ function OptionsButton({ setOptionsSectionIsActive }) {
 function LikesSection({ postId, likeIds, likesSectionIsActive, setLikesSectionIsActive }) {
     const [likes, setLikes] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     useEffect(() => {
         setIsLoading(true);
@@ -155,6 +161,9 @@ function LikesSection({ postId, likeIds, likesSectionIsActive, setLikesSectionIs
                 const res = await getUsers({ queryBody });
                 if (res.success) {
                     setLikes(res.users);
+                } else {
+                    setResponsePopupData({ message: res.message, success: res.success });
+                    setResponsePopupIsActive(true);
                 }
             } catch (err) {
                 console.log(err);
@@ -206,6 +215,7 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
     const [confirmDeletePopupIsActive, setConfirmDeletePopupIsActive] = useState(false)
     const { user, token } = useAuth();
     const { posts, setPosts } = usePosts();
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     async function deletePost() {
         setIsLoading(true);
@@ -220,6 +230,8 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
         }
 
         setIsLoading(false);
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
     }
 
     async function editPost() {
@@ -261,6 +273,7 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState(post.text);
     const { token } = useAuth();
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
 
     function handleChange(e) {
         setInput(e.target.value);
@@ -283,6 +296,8 @@ function EditSection({ post, editSectionIsActive, setEditSectionIsActive, setPos
         }
 
         setIsLoading(false);
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
     }
 
     return(

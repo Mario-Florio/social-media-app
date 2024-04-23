@@ -90,6 +90,7 @@ async function deleteCommentMock(reqBody) {
     }
 
     const filteredComments = comments.filter(comment => comment._id !== id);
+    if (filteredComments.length === comments.length) return { message: "Request Failed: Comment not found", success: false }
 
     window.localStorage.setItem("Comments", JSON.stringify(filteredComments));
     window.localStorage.setItem("Posts", JSON.stringify(posts));

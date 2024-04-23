@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./deleteAlbumForm.css";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
 import requests from "../../../../serverRequests/methods/config";
@@ -8,7 +9,7 @@ const { deleteAlbum } = requests.albums;
 
 function DeleteAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
     const [isActive, setIsActive] = useState(false);
-
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { token } = useAuth();
 
     async function handleSubmit(e) {
@@ -30,6 +31,9 @@ function DeleteAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {
             setSelectedAlbum(albums[0]);
             setIsActive(false);
         }
+
+        setResponsePopupData({ message: res.message, success: res.success });
+        setResponsePopupIsActive(true);
     }
 
     return(

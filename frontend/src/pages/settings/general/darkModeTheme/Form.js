@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./form.css";
+import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useTheme } from "../../../../hooks/useTheme/useTheme";
 
 function DarkModeThemeForm() {
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { darkTheme, setDarkTheme, restoreDefaultDark } = useTheme();
     const [formInputs, setFormInputs] = useState(darkTheme);
 
@@ -22,6 +24,9 @@ function DarkModeThemeForm() {
             ...darkTheme,
             "--target-color": formInputs["--target-color"]
         });
+
+        setResponsePopupData({ message: "Update Successful", success: true });
+        setResponsePopupIsActive(true);
     }
 
     return(

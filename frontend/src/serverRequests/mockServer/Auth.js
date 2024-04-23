@@ -39,6 +39,7 @@ async function postLoginMock(credentials) {
     const payload = {
         success: false,
         user: null,
+        message: "Login Failed",
         token: null
     }
 
@@ -46,14 +47,14 @@ async function postLoginMock(credentials) {
         if (user.username === username && user.password === password) {
             delete user.password;
             payload.user = user;
+            payload.message = "Login Successful";
             payload.success = true;
             payload.token = user._id;
+            getPhotoUrl(payload.user.profile.picture);
+            getPhotoUrl(payload.user.profile.coverPicture);
             break;
         }
     }
-
-    getPhotoUrl(payload.user.profile.picture);
-    getPhotoUrl(payload.user.profile.coverPicture);
 
     return payload;
 }

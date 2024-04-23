@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./profileBottom.css";
 import Loader from "../../../components/loader/Loader";
+import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 
@@ -49,6 +50,7 @@ function FollowButton() {
     const { profileUser, setProfileUser } = useProfile()
     const [isLoading, setIsLoading] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
+    const { setResponsePopupIsActive, setResponsePopupData } = useResponsePopup();
     const { user, updateUser, token } = useAuth();
 
     useEffect(() => {
@@ -72,6 +74,9 @@ function FollowButton() {
             setProfileUser(res.peerUser);
             setIsFollowing(!isFollowing);
             updateUser(res.clientUser);
+        } else {
+            setResponsePopupData({ message: res.message, success: res.success });
+            setResponsePopupIsActive(true);
         }
         
         setIsLoading(false);
