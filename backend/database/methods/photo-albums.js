@@ -86,30 +86,28 @@ async function deleteAlbum(id) {
     return { success: true, message: "Deletion was successful" };
 }
 
-async function createPhotos(data, albumId) {
+async function createPhoto(data, albumId) {
     const album = await Album.findById(albumId).exec();
 
     if (!album) {
         return { status: 400, message: "Album does not exist", album: null };
     }
 
-    const photos = [];
-    for (const image of data.images) {
-        const name = path.parse(image.filename).name;
-        const img = await new Image({ url: "/"+image.filename, name }).save();
+        const name = path.parse(data.image.filename).name;
+        const img = await new Image({ url: "/"+data.image.filename, name }).save();
 
         const { images, ...photoData } = data;
         const photo = await new Photo({ ...photoData, pointer: img.name }).save();
         await getPhotoUrl(photo);
-        photos.push(photo);
-        
+
         // push to apporpriate albums
-        await Album.findOneAndUpdate({ user: data.user, name: "All" }, { $push: { photos: photo._id } }).exec();
+        if (album.name !== "All") {
+            await Album.findOneAndUpdate({ user: data.user, name: "All" }, { $push: { photos: photo._id } }).exec();
+        }
         album.photos.push(photo._id);
         await album.save();
-    }
 
-    return { message: "Success: photos created", photos, success: true }
+    return { message: "Upload Successful: photo created", photo, success: true }
 }
 
 async function deletePhoto(id, albumId) {
@@ -151,6 +149,6 @@ module.exports = {
     createAlbum,
     updateAlbum,
     deleteAlbum,
-    createPhotos,
+    createPhoto,
     deletePhoto
 }

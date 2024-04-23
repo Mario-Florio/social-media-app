@@ -80,7 +80,7 @@ async function deleteAlbum(reqBody = {}) {
     }
 }
 
-async function postPhotos(reqBody = {}) {
+async function postPhoto(reqBody = {}) {
     try {
         const { albumId, formData, token } = reqBody;
 
@@ -121,6 +121,6 @@ export {
     postAlbum,
     putAlbum,
     deleteAlbum,
-    postPhotos,
+    postPhoto,
     deletePhoto
 };

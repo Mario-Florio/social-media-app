@@ -5,7 +5,6 @@ const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
 const Album = require("../../../models/photos/Album");
 const Photo = require("../../../models/photos/Photo");
-const path = require("path");
 const crypto = require("crypto");
 
 const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
@@ -15,13 +14,12 @@ afterAll(async () => await database.disconnect());
 
 jest.mock("multer", () => {
     const multer = () => ({
-        array: () => {
+        single: () => {
             return (req, res, next) => {
-                req.files = [
+                req.file =
                     {
                         filename: randomImageName()+".jpg"
                     }
-                ]
                 return next();
             }
         }
@@ -30,7 +28,7 @@ jest.mock("multer", () => {
     return multer;
 });
 
-describe("/photo-albums CREATE_PHOTOS", () => {
+describe("/photo-albums CREATE_PHOTO", () => {
     describe("client authenticated & authorized", () => {
         let response = null;
         beforeAll(async () => {
@@ -67,7 +65,7 @@ describe("/photo-albums CREATE_PHOTOS", () => {
             });
 
             test("new photos exists and response body contains it", async () => {
-                expect(response.body.photos).toBeDefined();
+                expect(response.body.photo).toBeDefined();
             });
         });
 

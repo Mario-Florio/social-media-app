@@ -62,7 +62,7 @@ import {
     postAlbum,
     putAlbum,
     deleteAlbum,
-    postPhotos,
+    postPhoto,
     deletePhoto
 } from "../server/Albums";
 import {
@@ -70,7 +70,7 @@ import {
     postAlbumMock,
     putAlbumMock,
     deleteAlbumMock,
-    postPhotosMock,
+    postPhotoMock,
     deletePhotoMock
 } from "../mockServer/Albums";
 
@@ -118,7 +118,7 @@ const requests = {
         postAlbum: mock ? postAlbumMock : postAlbum,
         putAlbum: mock ? putAlbumMock : putAlbum,
         deleteAlbum: mock ? deleteAlbumMock : deleteAlbum,
-        postPhotos: mock ? postPhotosMock : postPhotos,
+        postPhoto: mock ? postPhotoMock : postPhoto,
         deletePhoto: mock ? deletePhotoMock : deletePhoto
     }
 }

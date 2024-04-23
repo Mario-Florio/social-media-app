@@ -1,5 +1,6 @@
 import delay from "./__utils__/delay";
 import getCollection from "./__utils__/getCollection";
+import getPhotoUrl from "./__utils__/getPhotoUrl";
 import uid from "./__utils__/uniqueId";
 import validateToken from "./__utils__/validateToken";
 
@@ -109,7 +110,7 @@ async function deleteAlbumMock(reqBody = {}) {
     return { message: "Album created successfully", success: true }
 }
 
-async function postPhotosMock(reqBody = {}) {
+async function postPhotoMock(reqBody = {}) {
     const { albumId, formData, token } = reqBody;
 
     const tokenIsValid = validateToken(token);
@@ -120,7 +121,19 @@ async function postPhotosMock(reqBody = {}) {
     const [ album ] = albums.filter(album => album._id === albumId);
     if (!album) return { message: "Album does not exist", success: true }
 
-    return { message: "Can not upload photos on this version.", success: false }
+    const name = formData.get("name");
+    const caption = formData.get("caption");
+    const image = formData.get("image")
+
+    const photo = {
+        _id: uid(),
+        name,
+        caption,
+        pointer: "",
+        url: URL.createObjectURL(image)
+    }
+
+    return { message: "Upload successful", photo, success: true }
 }
 
 async function deletePhotoMock(reqBody = {}) {
@@ -181,6 +194,6 @@ export {
     postAlbumMock,
     putAlbumMock,
     deleteAlbumMock,
-    postPhotosMock,
+    postPhotoMock,
     deletePhotoMock
 }

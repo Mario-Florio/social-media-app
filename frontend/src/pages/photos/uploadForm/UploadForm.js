@@ -18,6 +18,7 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
     async function handleSubmit(e) {
         e.preventDefault();
         const formData = new FormData(e.target);
+
         const reqBody = {
             albumId,
             formData,
@@ -25,12 +26,49 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
         }
         const res = await postPhotos(reqBody);
         if (res.success) {
+            if (albumId === selectedAlbum._id) setPhotos(prevState => [...prevState, res.photo]);
+
+            const [ album ] = albums.filter(album => album._id === albumId);
+            if (album.name === "All") {
+                const updatedAlbums = [];
+                for (const album of albums) {
+                    const albumClone = {};
+                    for (const key in album) {
+                        if (key === "photos") {
+                            albumClone[key] = [...album[key]];
+                            albumClone[key].push(res.photo);
+                        } else {
+                            albumClone[key] = album[key];
+                        }
+                    }
+                    updatedAlbums.push(albumClone);
+                }
+                setAlbums(updatedAlbums);
+                
+            } else {
+                const updatedAlbums = [];
+                for (const album of albums) {
+                    if (album._id === albumId) {
+                        const albumClone = {};
+                        for (const key in album) {
+                            if (key === "photos") {
+                                albumClone[key] = [...album[key]];
+                                albumClone[key].push(res.photo);
+                            } else {
+                                albumClone[key] = album[key];
+                            }
+                        }
+                        updatedAlbums.push(albumClone);
+                    } else {
+                        updatedAlbums.push(album);
+                    }
+                }
+                setAlbums(updatedAlbums);
+            }
+
             e.target.reset();
             setAlbumId(albums[0]._id);
-            setAlbums(prevState => prevState.map(album => album._id === albumId ? album.photos = res.photos : album));
-            selectedAlbum._id === albumId && setPhotos(res.photos);
-        } else {
-            alert(res.message);
+            setIsActive(false);
         }
     }
 
@@ -48,8 +86,8 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
                 </select><br/>
                 <label htmlFor="name">Name</label><br/>
                 <input name="name" id="name" maxLength={25}/><br/>
-                <label htmlFor="images">Img Files</label><br/>
-                <input type="file" name="images" id="images" accept="image/*" required={true}/><br/>
+                <label htmlFor="image">Img File</label><br/>
+                <input type="file" name="image" id="image" accept="image/*" required={true}/><br/>
                 <label htmlFor="caption">Caption</label><br/>
                 <textarea name="caption" id="caption" maxLength={250}/><br/>
                 <label htmlFor="user" className="hide">User Id</label>

@@ -107,9 +107,9 @@ async function remove(req, res, next) {
     res.json(responseBody);
 }
 
-async function create_photos(req, res, next) {
+async function create_photo(req, res, next) {
     const { user } = req.body;
-    if (!user || !req.files.length) {
+    if (!user || !req.file) {
         return res.status(400).json({ message: "Request failed: Missing fields", success: false });
     }
 
@@ -131,8 +131,8 @@ async function create_photos(req, res, next) {
         return res.status(422).json({ message: "Invalid input", success: false });
     }
 
-    const data = { ...sanitizedInput, images: req.files }
-    const responseBody = await photoAlbums_dbMethods.createPhotos(data, req.params.id);
+    const data = { ...sanitizedInput, image: req.file }
+    const responseBody = await photoAlbums_dbMethods.createPhoto(data, req.params.id);
     if (!responseBody.success) {
         const { status, message, success } = responseBody;
         return res.status(status).json({ message, success });
@@ -199,6 +199,6 @@ module.exports = {
     create,
     update,
     remove,
-    create_photos,
+    create_photo,
     remove_photo
 }
