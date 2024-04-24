@@ -20,11 +20,10 @@ async function getSessionMock(token) {
             payload.user = user;
             payload.token = token;
             payload.success = true;
+            getPhotoUrl(payload.user.profile.picture);
+            getPhotoUrl(payload.user.profile.coverPicture);
         }
     }
-
-    getPhotoUrl(payload.user.profile.picture);
-    getPhotoUrl(payload.user.profile.coverPicture);
 
     return payload;
 }
