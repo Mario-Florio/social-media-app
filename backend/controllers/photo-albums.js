@@ -142,7 +142,6 @@ async function create_photo(req, res, next) {
 }
 
 async function remove_photo(req, res, next) {
-    console.log("hit")
     const verifyTokenResBody = verifyToken(req.token);
     if (!verifyTokenResBody.success) {
         const { status, message, success } = verifyTokenResBody;

@@ -3,6 +3,7 @@ const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
 const User = require("../../models/User");
 const getPhotoUrl = require("./__utils__/getPhotoUrl");
+const { defaultImages } = require("../../defaultImgs")
 const dotenv = require("dotenv");
 const path = require("path");
 const fs = require("fs");
@@ -133,8 +134,14 @@ async function deletePhoto(id, albumId) {
 
         const photo = await Photo.findByIdAndDelete(id).exec();
     
+        for (const img of defaultImages) {
+            if (photo.pointer === img.name) {
+                return { message: "Deletion Successful", success: true }
+            }
+        }
+
         const image = await Image.findOneAndDelete({ name: photo.pointer }).exec();
-    
+        
         if (fs.existsSync(process.env.ROOT+"/uploads/"+image.url)) {
             fs.rmSync(process.env.ROOT+"/uploads/"+image.url);
         }
