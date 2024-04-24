@@ -31,6 +31,10 @@ async function registerUser(credentials) {
             profile
         }).save();
 
+        await new Album({ user: user._id, name: "All" }).save();
+        await new Album({ user: user._id, name: "Profile Pictures" }).save();
+        await new Album({ user: user._id, name: "Cover Photos" }).save();
+
         return { message: "Request Successful: User has been created", user, success: true };
     }
 }

@@ -108,7 +108,7 @@ async function deletePhoto(reqBody = {}) {
             }
         }
 
-        const response = await axios.post(`/photo-albums/${albumId}/photos/${photoId}`, config);
+        const response = await axios.delete(`/photo-albums/${albumId}/photos/${photoId}`, config);
         return response.data;
     } catch (err) {
         console.log(err);

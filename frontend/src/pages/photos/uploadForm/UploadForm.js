@@ -29,7 +29,7 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
         }
         const res = await postPhoto(reqBody);
         if (res.success) {
-            if (albumId === selectedAlbum._id) setPhotos(prevState => [...prevState, res.photo]);
+            if (albumId === selectedAlbum._id || selectedAlbum.name === "All") setPhotos(prevState => [...prevState, res.photo]);
 
             const [ album ] = albums.filter(album => album._id === albumId);
             if (album.name === "All") {
@@ -51,7 +51,7 @@ function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {
             } else {
                 const updatedAlbums = [];
                 for (const album of albums) {
-                    if (album._id === albumId) {
+                    if (album._id === albumId || album.name === "All") {
                         const albumClone = {};
                         for (const key in album) {
                             if (key === "photos") {
