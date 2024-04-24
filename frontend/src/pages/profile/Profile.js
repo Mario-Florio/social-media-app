@@ -44,7 +44,7 @@ function Profile() {
                             <PostsFeed forumId={profileUser && profileUser.profile.forum}>
                                     <article className="account-created-at_banner">
                                         <h3>{ new Date(profileUser.createdAt).toLocaleDateString() }</h3>
-                                        <p>{ `${profileUser.username} created there account!` }</p>
+                                        <p>{ `${profileUser.username} created their account!` }</p>
                                     </article>
                             </PostsFeed>
                         </PostsProvider> :
