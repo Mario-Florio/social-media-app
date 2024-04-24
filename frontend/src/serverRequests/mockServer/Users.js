@@ -86,6 +86,7 @@ async function postUserMock(reqBody) {
 
     const users = getCollection("Users", { showHidden: "password" });
     const forums = getCollection("Forums");
+    const albums = getCollection("Albums");
 
     for (const user of users) {
         if (user.username === username) {
@@ -111,10 +112,39 @@ async function postUserMock(reqBody) {
         }
     }
 
+    const allAlbum = {
+        _id: uid(),
+        user: newUser._id,
+        name: "All",
+        desc: "",
+        photos: [],
+        createdAt: new Date(),
+    }
+
+    const profilePicsAlbum = {
+        _id: uid(),
+        user: newUser._id,
+        name: "Profile Pictures",
+        desc: "",
+        photos: [],
+        createdAt: new Date(),
+    }
+
+    const coverPhotosAlbum = {
+        _id: uid(),
+        user: newUser._id,
+        name: "CoverPhotos",
+        desc: "",
+        photos: [],
+        createdAt: new Date(),
+    }
+
     users.push(newUser);
     window.localStorage.setItem("Users", JSON.stringify(users));
     forums.push(newForum);
     window.localStorage.setItem("Forums", JSON.stringify(forums));
+    albums.push(allAlbum, profilePicsAlbum, coverPhotosAlbum);
+    window.localStorage.setItem("Albums", JSON.stringify(albums));
 
     delete newUser.password;
 
