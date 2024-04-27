@@ -13,12 +13,12 @@ const bcrypt = require("bcryptjs");
 
 const usersData = [
     {
-        username: "Jane Dough",
+        username: "Siddhartha Guatama",
         password: "password",
         profile: {
             picture: "1",
             coverPicture: "2",
-            bio: "Hello World!"
+            bio: "No one saves us but ourselves. No one can and no one may. We ourselves must walk the path."
         }
     },
     {
@@ -27,158 +27,156 @@ const usersData = [
         profile: {
             picture: 3,
             coverPicture: 4,
-            bio: "Hello World!"
+            bio: "I am the way and the truth and the life. No one comes to the Father except through me."
         }
     },
     {
-        username: "Tyrion Lannister",
+        username: "Aristotle",
         password: "password",
         profile: {
             picture: 5,
             coverPicture: 6,
-            bio: "Hello World!"
+            bio: "Happiness does not consist in pastimes and amusements but in virtuous activities."
         }
     },
     {
-        username: "Jinx",
+        username: "Plato",
         password: "password",
         profile: {
             picture: 7,
             coverPicture: 8,
-            bio: "Hello World!"
+            bio: "Reality is created by the mind, we can change our reality by changing our mind."
         }
     },
     {
-        username: "Nea Karlsson",
+        username: "Charles Darwin",
         password: "password",
         profile: {
             picture: 9,
             coverPicture: 10,
-            bio: "Hello World!"
+            bio: "It is not the strongest of the species that survives, not the most intelligent that survives. It is the one that is the most adaptable to change."
         }
     },
     {
-        username: "Rust Cohle",
+        username: "Carl Jung",
         password: "password",
         profile: {
             picture: 11,
             coverPicture: 12,
-            bio: "Time is a flat circle, man"
+            bio: "Until you make the unconscious conscious, it will direct your life and you will call it fate."
         }
     },
     {
-        username: "Ellie Williams",
+        username: "Laozi",
         password: "password",
         profile: {
             picture: 13,
             coverPicture: 14,
-            bio: "Hello!"
+            bio: "Simplicity, patience, compassion. These three are your greatest treasures."
         }
     }
 ];
 
 const postsData = [
-    { user: "Jane Dough", text: "Hello", likes: ["Jesus Christ", "Tyrion Lannister"], comments: [2, 3, 5, 6, 11, 12, 13, 14, 15, 16] },
-    { user: "Jane Dough", text: "Hello", likes: ["Tyrion Lannister"], comments: [4, 7] },
-    { user: "Jane Dough", text: "Hello", likes: [], comments: [1] },
-    { user: "Jesus Christ", text: "Hello", likes: ["Jane Dough", "Tyrion Lannister"], comments: [8, 9] },
-    { user: "Jesus Christ", text: "Hello", likes: ["Jane Dough"], comments: [10] },
-    { user: "Jesus Christ", text: "Hello", likes: ["Tyrion Lannister"], comments: [] },
-    { user: "Tyrion Lannister", text: "Hello", likes: [], comments: [] },
-    { user: "Tyrion Lannister", text: "Hello", likes: ["Jane Dough", "Jesus Christ"], comments: [] },
-    { user: "Tyrion Lannister", text: "Hello", likes: ["Jane Dough"], comments: [] },
-    { user: "Tyrion Lannister", text: "Hello", likes: ["Jesus Christ"], comments: []  },
-    { user: "Jinx", text: "Hello", likes: [], comments: [] },
-    { user: "Jinx", text: "Hello", likes: [], comments: [] },
-    { user: "Jinx", text: "Hello", likes: [], comments: [] },
-    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
-    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
-    { user: "Nea Karlsson", text: "Hello", likes: [], comments: [] },
-    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
-    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
-    { user: "Rust Cohle", text: "Hello", likes: [], comments: [] },
-    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] },
-    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] },
-    { user: "Ellie Williams", text: "Hello", likes: [], comments: [] }
+    { user: "Siddhartha Guatama", text: "However many holy words you read, however many you speak, what good will they do you if you do not act on upon them?", likes: ["Jesus Christ", "Aristotle"], comments: [2, 3, 5, 6, 11, 12, 13, 14, 15, 16] },
+    { user: "Siddhartha Guatama", text: "All that we are is the result of what we have thought: it is founded on our thoughts and made up of our thoughts. If a man speak or act with an evil thought, suffering follows him as the wheel follows the hoof of the beast that draws the wagon.... If a man speak or act with a good thought, happiness follows him like a shadow that never leaves him.", likes: ["Plato", "Aristotle"], comments: [4, 7] },
+    { user: "Siddhartha Guatama", text: "Doubt everything. Find your own light.", likes: [], comments: [1] },
+    { user: "Jesus Christ", text: "As you wish that others would do to you, do so to them.", likes: ["Siddhartha Guatama", "Aristotle"], comments: [8, 9] },
+    { user: "Jesus Christ", text: "You are the light of the world. A city set on a hill cannot be hidden. Nor do people light a lamp and put it under a basket, but on a stand, and it gives light to all in the house.", likes: ["Siddhartha Guatama"], comments: [10] },
+    { user: "Jesus Christ", text: "Blessed are the pure in heart, for they shall see God.", likes: ["Aristotle"], comments: [] },
+    { user: "Aristotle", text: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution; it represents the wise choice of many alternatives - choice, not chance, determines your destiny.", likes: [], comments: [] },
+    { user: "Aristotle", text: "Happiness is a quality of the soul...not a function of one's material circumstances.", likes: ["Siddhartha Guatama", "Jesus Christ"], comments: [] },
+    { user: "Aristotle", text: "Be a free thinker and don't accept everything you hear as truth. Be critical and evaluate what you believe in.", likes: ["Siddhartha Guatama"], comments: [] },
+    { user: "Aristotle", text: "The most important relationship we can all have is the one you have with yourself, the most important journey you can take is one of self-discovery. To know yourself, you must spend time with yourself, you must not be afraid to be alone. Knowing yourself is the beginning of all wisdom.", likes: ["Siddhartha Guatama"], comments: []  },
+    { user: "Plato", text: "The right question is usually more important than the right answer.", likes: [], comments: [] },
+    { user: "Plato", text: "The first and the best victory is to conquer self.", likes: ["Siddhartha Guatama"], comments: [] },
+    { user: "Plato", text: "The one who learns and learns and doesn't practice is like the one who plows and plows and never plants.", likes: [], comments: [] },
+    { user: "Charles Darwin", text: "We must, however, acknowledge, as it seems to me, that man with all his noble qualities... still bears in his bodily frame the indelible stamp of his lowly origin.", likes: [], comments: [] },
+    { user: "Charles Darwin", text: "The mystery of the beginning of all things is insoluble by us; and I for one must be content to remain an agnostic.", likes: [], comments: [] },
+    { user: "Charles Darwin", text: "The highest possible stage in moral culture is when we recognize that we ought to control our thoughts.", likes: [], comments: [] },
+    { user: "Carl Jung", text: "The privilege of a lifetime is to become who you truly are.", likes: [], comments: [] },
+    { user: "Carl Jung", text: "The most terrifying thing is to accept oneself completely.", likes: [], comments: [] },
+    { user: "Carl Jung", text: "No tree, it is said, can grow to heaven unless its roots reach down to hell.", likes: [], comments: [] },
+    { user: "Laozi", text: "The journey of a thousand miles begins with a single step.", likes: [], comments: [] },
+    { user: "Laozi", text: "Life is a series of natural and spontaneous changes. Don't resist them; that only creates sorrow. Let reality be reality. Let things flow naturally forward in whatever way they like.", likes: [], comments: [] },
+    { user: "Laozi", text: "Nature does not hurry, yet everything is accomplished.", likes: [], comments: [] }
 ];
 
 const commentsData = [
-    { id: 1,  user: "Jane Dough", text: "Hello" },
+    { id: 1,  user: "Siddhartha Guatama", text: "Hello" },
     { id: 2,  user: "Jesus Christ", text: "Hello" },
-    { id: 3,  user: "Tyrion Lannister", text: "Hello" },
-    { id: 4,  user: "Tyrion Lannister", text: "Hello" },
-    { id: 5,  user: "Jane Dough", text: "Hello" },
+    { id: 3,  user: "Aristotle", text: "Hello" },
+    { id: 4,  user: "Aristotle", text: "Hello" },
+    { id: 5,  user: "Siddhartha Guatama", text: "Hello" },
     { id: 6,  user: "Jesus Christ", text: "Hello" },
-    { id: 7,  user: "Jane Dough", text: "Hello" },
-    { id: 8,  user: "Jane Dough", text: "Hello" },
+    { id: 7,  user: "Siddhartha Guatama", text: "Hello" },
+    { id: 8,  user: "Siddhartha Guatama", text: "Hello" },
     { id: 9,  user: "Jesus Christ", text: "Hello" },
-    { id: 10,  user: "Tyrion Lannister", text: "Hello" },
-    { id: 11,  user: "Tyrion Lannister", text: "Hello" },
+    { id: 10,  user: "Aristotle", text: "Hello" },
+    { id: 11,  user: "Aristotle", text: "Hello" },
     { id: 12,  user: "Jesus Christ", text: "Hello" },
-    { id: 13,  user: "Jane Dough", text: "Hello" },
-    { id: 14,  user: "Jane Dough", text: "Hello" },
+    { id: 13,  user: "Siddhartha Guatama", text: "Hello" },
+    { id: 14,  user: "Siddhartha Guatama", text: "Hello" },
     { id: 15,  user: "Jesus Christ", text: "Hello" },
-    { id: 16,  user: "Tyrion Lannister", text: "Hello" },
+    { id: 16,  user: "Aristotle", text: "Hello" },
 ];
 
 const albumsData = [
-    { user: "Jane Dough", name: "All", photos: [1, 2, 15], desc: "" },
-    { user: "Jane Dough", name: "Profile Pictures", photos: [1], desc: "" },
-    { user: "Jane Dough", name: "Cover Photos", photos: [2], desc: "" },
+    { user: "Siddhartha Guatama", name: "All", photos: [1, 2], desc: "" },
+    { user: "Siddhartha Guatama", name: "Profile Pictures", photos: [1], desc: "" },
+    { user: "Siddhartha Guatama", name: "Cover Photos", photos: [2], desc: "" },
     { user: "Jesus Christ", name: "All", photos: [3, 4], desc: "" },
     { user: "Jesus Christ", name: "Profile Pictures", photos: [3], desc: "" },
     { user: "Jesus Christ", name: "Cover Photos", photos: [4], desc: "" },
-    { user: "Tyrion Lannister", name: "All", photos: [5, 6], desc: "" },
-    { user: "Tyrion Lannister", name: "Profile Pictures", photos: [5], desc: "" },
-    { user: "Tyrion Lannister", name: "Cover Photos", photos: [6], desc: "" },
-    { user: "Jinx", name: "All", photos: [7, 8], desc: "" },
-    { user: "Jinx", name: "Profile Pictures", photos: [7], desc: "" },
-    { user: "Jinx", name: "Cover Photos", photos: [8], desc: "" },
-    { user: "Nea Karlsson", name: "All", photos: [9, 10], desc: "" },
-    { user: "Nea Karlsson", name: "Profile Pictures", photos: [9], desc: "" },
-    { user: "Nea Karlsson", name: "Cover Photos", photos: [10], desc: "" },
-    { user: "Rust Cohle", name: "All", photos: [11, 12], desc: "" },
-    { user: "Rust Cohle", name: "Profile Pictures", photos: [11], desc: "" },
-    { user: "Rust Cohle", name: "Cover Photos", photos: [12], desc: "" },
-    { user: "Ellie Williams", name: "All", photos: [13, 14], desc: "" },
-    { user: "Ellie Williams", name: "Profile Pictures", photos: [13], desc: "" },
-    { user: "Ellie Williams", name: "Cover Photos", photos: [14], desc: "" }
+    { user: "Aristotle", name: "All", photos: [5, 6], desc: "" },
+    { user: "Aristotle", name: "Profile Pictures", photos: [5], desc: "" },
+    { user: "Aristotle", name: "Cover Photos", photos: [6], desc: "" },
+    { user: "Plato", name: "All", photos: [7, 8], desc: "" },
+    { user: "Plato", name: "Profile Pictures", photos: [7], desc: "" },
+    { user: "Plato", name: "Cover Photos", photos: [8], desc: "" },
+    { user: "Charles Darwin", name: "All", photos: [9, 10], desc: "" },
+    { user: "Charles Darwin", name: "Profile Pictures", photos: [9], desc: "" },
+    { user: "Charles Darwin", name: "Cover Photos", photos: [10], desc: "" },
+    { user: "Carl Jung", name: "All", photos: [11, 12], desc: "" },
+    { user: "Carl Jung", name: "Profile Pictures", photos: [11], desc: "" },
+    { user: "Carl Jung", name: "Cover Photos", photos: [12], desc: "" },
+    { user: "Laozi", name: "All", photos: [13, 14], desc: "" },
+    { user: "Laozi", name: "Profile Pictures", photos: [13], desc: "" },
+    { user: "Laozi", name: "Cover Photos", photos: [14], desc: "" }
 ];
 
 const photosData = [
-    { id: 1, user: "Jane Dough", pointer: "1", name: "Profile pic", caption: "caption skjdvbo sdv dkvj fdivn fvjd f sgj eqgj a fdjvbb fvj fv fvef vetb ioion oi nroir oir ori b" },
-    { id: 2, user: "Jane Dough", pointer: "2", name: "Cover photo", caption: "caption..." },
-    { id: 3, user: "Jesus Christ", pointer: "3", name: "", caption: "caption..." },
-    { id: 4, user: "Jesus Christ", pointer: "4", name: "", caption: "caption..." },
-    { id: 5, user: "Tyrion Lannister", pointer: "5", name: "", caption: "caption..." },
-    { id: 6, user: "Tyrion Lannister", pointer: "6", name: "", caption: "caption..." },
-    { id: 7, user: "Jinx", pointer: "7", name: "", caption: "caption..." },
-    { id: 8, user: "Jinx", pointer: "8", name: "", caption: "caption..." },
-    { id: 9, user: "Nea Karlsson", pointer: "9", name: "", caption: "caption..." },
-    { id: 10, user: "Nea Karlsson", pointer: "10", name: "", caption: "caption..." },
-    { id: 11, user: "Rust Cohle", pointer: "11", name: "", caption: "caption..." },
-    { id: 12, user: "Rust Cohle", pointer: "12", name: "", caption: "caption..." },
-    { id: 13, user: "Ellie Williams", pointer: "13", name: "", caption: "caption..." },
-    { id: 14, user: "Ellie Williams", pointer: "14", name: "", caption: "caption..." },
-    { id: 15, user: "Jane Dough", pointer: "15", name: "", caption: "caption..." }
+    { id: 1, user: "Siddhartha Guatama", pointer: "1", name: "", caption: "" },
+    { id: 2, user: "Siddhartha Guatama", pointer: "2", name: "", caption: "" },
+    { id: 3, user: "Jesus Christ", pointer: "3", name: "", caption: "" },
+    { id: 4, user: "Jesus Christ", pointer: "4", name: "", caption: "" },
+    { id: 5, user: "Aristotle", pointer: "5", name: "", caption: "" },
+    { id: 6, user: "Aristotle", pointer: "6", name: "", caption: "There must be an eternal circular motion and this is confirmed by the fixed stars which are moved by the eternal actual substance that's purely actual." },
+    { id: 7, user: "Plato", pointer: "7", name: "", caption: "" },
+    { id: 8, user: "Plato", pointer: "8", name: "", caption: "\"Behold! human beings living in a underground den, which has a mouth open towards the light and reaching all along the den... what he saw before was an illusion... \" - Socrates" },
+    { id: 9, user: "Charles Darwin", pointer: "9", name: "", caption: "" },
+    { id: 10, user: "Charles Darwin", pointer: "10", name: "", caption: "Whilst Man, however well-behaved, At best is but a monkey shaved!" },
+    { id: 11, user: "Carl Jung", pointer: "11", name: "", caption: "" },
+    { id: 12, user: "Carl Jung", pointer: "12", name: "", caption: "My speech is imperfect. Not because I want to shine with words, but out of the impossibility of finding those words, I speak in images. With nothing else can I express the words from the depths." },
+    { id: 13, user: "Laozi", pointer: "13", name: "", caption: "" },
+    { id: 14, user: "Laozi", pointer: "14", name: "", caption: "All things carry yin and embrace yang. They reach harmony by blending with the vital breath." }
 ];
 
 const imagesData = [
-    { name: "1", url: "/janeDough/profile-pic.jpg" },
-    { name: "2", url: "/janeDough/cover-photo.jpg" },
+    { name: "1", url: "/siddharthaGuatama/profile-pic.jpg" },
+    { name: "2", url: "/siddharthaGuatama/cover-photo.jpg" },
     { name: "3", url: "/jesusChrist/profile-pic.jpg" },
     { name: "4", url: "/jesusChrist/cover-photo.jpg" },
-    { name: "5", url: "/tyrionLannister/profile-pic.jpg" },
-    { name: "6", url: "/tyrionLannister/cover-photo.jpg" },
-    { name: "7", url: "/jinx/profile-pic.jpg" },
-    { name: "8", url: "/jinx/cover-photo.jpg" },
-    { name: "9", url: "/neaKarlsson/profile-pic.jpg" },
-    { name: "10", url: "/neaKarlsson/cover-photo.jpg" },
-    { name: "11", url: "/rustCohle/profile-pic.jpg" },
-    { name: "12", url: "/rustCohle/cover-photo.jpg" },
-    { name: "13", url: "/ellieWilliams/profile-pic.jpg" },
-    { name: "14", url: "/ellieWilliams/cover-photo.jpg" },
-    { name: "15", url: "/ellieWilliams/cover-photo.jpg" }
+    { name: "5", url: "/aristotle/profile-pic.jpg" },
+    { name: "6", url: "/aristotle/cover-photo.jpg" },
+    { name: "7", url: "/plato/profile-pic.jpg" },
+    { name: "8", url: "/plato/cover-photo.jpg" },
+    { name: "9", url: "/charlesDarwin/profile-pic.jpg" },
+    { name: "10", url: "/charlesDarwin/cover-photo.jpg" },
+    { name: "11", url: "/carlJung/profile-pic.jpg" },
+    { name: "12", url: "/carlJung/cover-photo.jpg" },
+    { name: "13", url: "/laozi/profile-pic.jpg" },
+    { name: "14", url: "/laozi/cover-photo.jpg" },
 ];
 
 async function populate() {

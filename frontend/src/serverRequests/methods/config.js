@@ -74,8 +74,8 @@ import {
     deletePhotoMock
 } from "../mockServer/Albums";
 
-let mock = false;
-let resetCollections = false;
+let mock = true;
+let resetCollections = true;
 let clearLocalStorage = false;
 
 mock && resetCollections && populateCollections();
