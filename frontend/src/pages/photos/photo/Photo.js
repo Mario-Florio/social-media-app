@@ -16,10 +16,6 @@ function Photo({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPh
     const { user } = useAuth();
 
     useEffect(() => {
-        console.log(optionsSectionIsActive);
-    }, [optionsSectionIsActive]);
-
-    useEffect(() => {
         deleteSectionIsActive && setOptionsSectionIsActive(false);
     }, [deleteSectionIsActive]);
 
