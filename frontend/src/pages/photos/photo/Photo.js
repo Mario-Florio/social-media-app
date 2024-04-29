@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import "./photo.css";
 import DeleteSection from "./deleteSection/DeleteSection";
+import ViewPhotoSection from "./viewPhotoSection/ViewPhotoSection";
 import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
 function Photo({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPhotos }) {
     const [maskIsActive, setMaskIsActive] = useState(false);
+    const [viewPhotoSectionIsActive, setViewPhotoSectionIsActive] = useState(false);
     const [optionsSectionIsActive, setOptionsSectionIsActive] = useState(false);
     const [deleteSectionIsActive, setDeleteSectionIsActive] = useState(false);
 
@@ -26,6 +28,7 @@ function Photo({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPh
                 className={maskIsActive ? "photo_mask active" : "photo_mask"}
                 onMouseEnter={() => setMaskIsActive(true)}
                 onMouseLeave={() => setMaskIsActive(false)}
+                onClick={() => setViewPhotoSectionIsActive(true)}
             >
                 <div className="flexbox">
                     <h3>{data.name}</h3>
@@ -35,6 +38,12 @@ function Photo({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPh
                     <p>{data.caption}</p>
                 </div>
             </div>
+            { viewPhotoSectionIsActive &&
+                <ViewPhotoSection
+                    photoData={data}
+                    sectionIsActive={viewPhotoSectionIsActive}
+                    setSectionIsActive={setViewPhotoSectionIsActive}
+                /> }
             { optionsSectionIsActive &&
                 <OptionsSection
                     sectionIsActive={optionsSectionIsActive}
