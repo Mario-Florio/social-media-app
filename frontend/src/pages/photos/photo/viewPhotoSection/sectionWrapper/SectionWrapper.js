@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./sectionWrapper.css";
 
-function SectionWrapper({ sectionClassName, sectionIsActive, setSectionIsActive, children }) {
+function SectionWrapper({ sectionIsActive, setSectionIsActive, children }) {
     const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
@@ -15,8 +15,8 @@ function SectionWrapper({ sectionClassName, sectionIsActive, setSectionIsActive,
 
     return(
         <>
-            <div className={ isActive ? "section_mask active" : "section_mask" }></div>
-            <section className={ isActive ? `${sectionClassName} section active` : `${sectionClassName} section` }>
+            <div className={ isActive ? "view-photo-section_mask active" : "view-photo-section_mask" }></div>
+            <section className={ isActive ? "view-photo-section active" : "view-photo-section section" }>
                 <header>
                     <div
                         onClick={handleClick}

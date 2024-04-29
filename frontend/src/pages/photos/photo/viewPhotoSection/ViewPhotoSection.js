@@ -4,7 +4,6 @@ import SectionWrapper from "./sectionWrapper/SectionWrapper";
 function ViewPhotoSection({ photoData, sectionIsActive, setSectionIsActive, setDeleteSectionIsActive }) {
     return(
         <SectionWrapper
-            sectionClassName={"view-photo-section"}
             sectionIsActive={sectionIsActive}
             setSectionIsActive={setSectionIsActive}
         >
