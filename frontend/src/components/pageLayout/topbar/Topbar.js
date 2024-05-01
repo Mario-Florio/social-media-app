@@ -119,7 +119,7 @@ function SearchBar() {
                         type="text"
                         name="search"
                         id="search"
-                        placeholder="Search something..."
+                        placeholder="Search users..."
                         value={input}
                         onChange={handleChange}
                         onFocus={handleFocus}
