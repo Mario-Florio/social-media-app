@@ -79,10 +79,11 @@ function SignUp({ isSignIn, setIsSignIn }) {
                 password: "",
                 confirmPassword: ""
             });
+        } else {
+            setResponsePopupData({ message: postUserRes.message, success: postUserRes.success });
+            setResponsePopupIsActive(true);
         }
         setIsLoading(false);
-        setResponsePopupData({ message: postUserRes.message, success: postUserRes.success });
-        setResponsePopupIsActive(true);
     }
 
     return(
