@@ -95,11 +95,11 @@ function SignUp({ isSignIn, setIsSignIn }) {
                 {errors.username.minLength.status && isDirty.username && <><span className="err-msg">{errors.username.minLength.message}</span><br/></>}
                 {errors.username.maxLength.status && isDirty.username && <><span className="err-msg">{errors.username.maxLength.message}</span><br/></>}
                 <label htmlFor="password">Password</label><br/>
-                <input type="text" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>
+                <input type="password" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>
                 {errors.password.minLength.status && isDirty.password && <><span className="err-msg">{errors.password.minLength.message}</span><br/></>}
                 {errors.password.maxLength.status && isDirty.password && <><span className="err-msg">{errors.password.maxLength.message}</span><br/></>}
                 <label htmlFor="confirmPassword">Confirm Password</label><br/>
-                <input type="text" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/><br/>
+                <input type="password" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/><br/>
                 {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
                 <button>Submit</button>
                 {isLoading && <Loader/>}

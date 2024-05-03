@@ -56,7 +56,7 @@ function SignIn({ isSignIn, setIsSignIn }) {
                 <label htmlFor="username">Username</label><br/>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange} required/><br/>
                 <label htmlFor="password">Password</label><br/>
-                <input type="text" name="password" id="password" value={formInput.password} onChange={handleChange} required/><br/>
+                <input type="password" name="password" id="password" value={formInput.password} onChange={handleChange} required/><br/>
                 <button>Submit</button>
                 {isLoading && <Loader/>}
             </form>
