@@ -75,7 +75,7 @@ import {
 } from "../mockServer/Albums";
 
 let mock = true;
-let resetCollections = false;
+let resetCollections = true;
 let clearLocalStorage = false;
 
 mock && resetCollections && populateCollections();
