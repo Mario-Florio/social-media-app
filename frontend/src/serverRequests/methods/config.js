@@ -75,11 +75,11 @@ import {
 } from "../mockServer/Albums";
 
 let mock = true;
+let clearLocalStorage = true;
 let resetCollections = true;
-let clearLocalStorage = false;
 
-mock && resetCollections && populateCollections();
 mock && clearLocalStorage && window.localStorage.clear();
+mock && resetCollections && populateCollections();
 
 const requests = {
     auth: {

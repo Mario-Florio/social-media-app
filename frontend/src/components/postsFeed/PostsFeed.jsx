@@ -93,20 +93,6 @@ function NewPost({ forumId }) {
                     </button>
                 </form>
             </div>
-            <footer>
-                <div>
-                    <div className="icon_wrapper">
-                        <img src={shareIcon} alt="Share"/>
-                    </div>
-                    <span>Share</span>
-                </div>
-                <div>
-                    <div className="icon_wrapper">
-                        <img src={attachmentsIcon} alt="Attachments"/>
-                    </div>
-                    <span>Attachments</span>
-                </div>
-            </footer>
         </article>
     );
 }

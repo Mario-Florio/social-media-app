@@ -90,7 +90,6 @@ function Post({ postId }) {
                     <Link to={post._id && `/post/${post._id}`}>
                         {post.comments.length} comments
                     </Link>
-                    <span># shares</span>
                 </div>
                 <hr/>
                 <div className="bottom">
@@ -103,7 +102,6 @@ function Post({ postId }) {
                     <Link to={post._id && `/post/${post._id}`}>
                         Comment
                     </Link>
-                    <span>Share</span>
                 </div>
             </footer>
             { likesSectionIsActive && <LikesSection
