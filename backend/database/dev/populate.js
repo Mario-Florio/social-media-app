@@ -79,7 +79,7 @@ const usersData = [
 
 const postsData = [
     { user: "Siddhartha Guatama", text: "However many holy words you read, however many you speak, what good will they do you if you do not act on upon them?", likes: ["Jesus Christ", "Aristotle"], comments: [2, 3, 5, 6, 11, 12, 13, 14, 15, 16] },
-    { user: "Siddhartha Guatama", text: "All that we are is the result of what we have thought: it is founded on our thoughts and made up of our thoughts. If a man speak or act with an evil thought, suffering follows him as the wheel follows the hoof of the beast that draws the wagon.... If a man speak or act with a good thought, happiness follows him like a shadow that never leaves him.", likes: ["Plato", "Aristotle"], comments: [4, 7] },
+    { user: "Siddhartha Guatama", text: "All that we are is the result of what we have thought: it is founded on our thoughts and made up of our thoughts. If a man speak or act with an evil thought, suffering follows him as the wheel follows the hoof of the beast that draws the wagon.", likes: ["Plato", "Aristotle"], comments: [4, 7] },
     { user: "Siddhartha Guatama", text: "Doubt everything. Find your own light.", likes: [], comments: [1] },
     { user: "Jesus Christ", text: "As you wish that others would do to you, do so to them.", likes: ["Siddhartha Guatama", "Aristotle"], comments: [8, 9] },
     { user: "Jesus Christ", text: "You are the light of the world. A city set on a hill cannot be hidden. Nor do people light a lamp and put it under a basket, but on a stand, and it gives light to all in the house.", likes: ["Siddhartha Guatama"], comments: [10] },
@@ -87,7 +87,7 @@ const postsData = [
     { user: "Aristotle", text: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution; it represents the wise choice of many alternatives - choice, not chance, determines your destiny.", likes: [], comments: [] },
     { user: "Aristotle", text: "Happiness is a quality of the soul...not a function of one's material circumstances.", likes: ["Siddhartha Guatama", "Jesus Christ"], comments: [] },
     { user: "Aristotle", text: "Be a free thinker and don't accept everything you hear as truth. Be critical and evaluate what you believe in.", likes: ["Siddhartha Guatama"], comments: [] },
-    { user: "Aristotle", text: "The most important relationship we can all have is the one you have with yourself, the most important journey you can take is one of self-discovery. To know yourself, you must spend time with yourself, you must not be afraid to be alone. Knowing yourself is the beginning of all wisdom.", likes: ["Siddhartha Guatama"], comments: []  },
+    { user: "Aristotle", text: "The most important relationship we can all have is the one you have with yourself, the most important journey you can take is one of self-discovery. To know yourself, you must spend time with yourself, you must not be afraid to be alone.", likes: ["Siddhartha Guatama"], comments: []  },
     { user: "Plato", text: "The right question is usually more important than the right answer.", likes: [], comments: [] },
     { user: "Plato", text: "The first and the best victory is to conquer self.", likes: ["Siddhartha Guatama"], comments: [] },
     { user: "Plato", text: "The one who learns and learns and doesn't practice is like the one who plows and plows and never plants.", likes: [], comments: [] },
