@@ -1,0 +1,18 @@
+
+#feed {
+    display: none;
+    padding-bottom: 3rem;
+    width: 100%;
+    max-width: 750px;
+}
+
+#feed.active {
+    display: initial;
+}
+
+@media all and (min-width: 1250px) {
+    #feed {
+        display: initial;
+        padding-bottom: 0rem;
+    }
+}

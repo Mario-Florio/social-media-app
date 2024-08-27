@@ -10,6 +10,12 @@ main {
     overflow-y: hidden;
 }
 
+.pseudo-main {
+    display: flex;
+    max-height: calc(100vh - var(--topbar-height));
+    overflow-y: hidden;
+}
+
 .loadingBGColor {
     background-color: lightgray;
     animation-name: color;
