@@ -11,7 +11,7 @@ function Home() {
         <PageLayout>
             <section id="home">
                 <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
-                <div className="pseudo-main" style={{ display: "flex", width: "100%" }}>
+                <div className="pseudo-main">
                     <Feed selectedTab={selectedTab}/>
                     <Featured selectedTab={selectedTab}/>
                 </div>
