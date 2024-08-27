@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./featured.css";
 import { Link } from "react-router-dom";
 import requests from "../../../serverRequests/methods/config";
+import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
 const { getUsers } = requests.users;
 
@@ -33,7 +34,7 @@ function Users() {
                     <Link to={`/users/${user._id}`}>
                         <div className="user">
                             <div className="profilePic-wrapper">
-                                <img src={user.profile.picture.url}/>
+                                <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url }/>
                             </div>
                             <h4>{user.username}</h4>
                         </div>
