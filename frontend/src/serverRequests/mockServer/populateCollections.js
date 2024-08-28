@@ -5,7 +5,6 @@ export default function populateCollections() {
     populateUsersCollection();
     populatePostsCollection();
     populateForumsCollection();
-    populateCommentsCollection();
     populatePhotosCollections();
     populateAlbumsCollections();
     populateImagesCollection();
@@ -133,11 +132,11 @@ function populateUsersCollection() {
 
 function populatePostsCollection() {
     const posts = [
-        { _id: "1", user: "1", text: "However many holy words you read, however many you speak, what good will they do you if you do not act on upon them?", likes: ["2", "3"], comments: ["2", "3", "5", "6", "11", "12", "13", "14", "15", "16"], createdAt: new Date() },
-        { _id: "2", user: "1", text: "All that we are is the result of what we have thought: it is founded on our thoughts and made up of our thoughts. If a man speak or act with an evil thought, suffering follows him as the wheel follows the hoof of the beast that draws the wagon.... If a man speak or act with a good thought, happiness follows him like a shadow that never leaves him.", likes: ["4", "3"], comments: ["4", "7"], createdAt: new Date() },
-        { _id: "3", user: "1", text: "Doubt everything. Find your own light.", likes: [], comments: ["1"], createdAt: new Date() },
+        { _id: "1", user: "1", text: "However many holy words you read, however many you speak, what good will they do you if you do not act on upon them?", likes: ["2", "3"], comments: [], createdAt: new Date() },
+        { _id: "2", user: "1", text: "All that we are is the result of what we have thought: it is founded on our thoughts and made up of our thoughts. If a man speak or act with an evil thought, suffering follows him as the wheel follows the hoof of the beast that draws the wagon.... If a man speak or act with a good thought, happiness follows him like a shadow that never leaves him.", likes: ["4", "3"], comments: [], createdAt: new Date() },
+        { _id: "3", user: "1", text: "Doubt everything. Find your own light.", likes: [], comments: [], createdAt: new Date() },
         { _id: "4", user: "2", text: "As you wish that others would do to you, do so to them.", likes: ["1", "3"], comments: ["8", "9"], createdAt: new Date() },
-        { _id: "5", user: "2", text: "You are the light of the world. A city set on a hill cannot be hidden. Nor do people light a lamp and put it under a basket, but on a stand, and it gives light to all in the house.", likes: ["1"], comments: ["10"], createdAt: new Date() },
+        { _id: "5", user: "2", text: "You are the light of the world. A city set on a hill cannot be hidden. Nor do people light a lamp and put it under a basket, but on a stand, and it gives light to all in the house.", likes: ["1"], comments: [], createdAt: new Date() },
         { _id: "6", user: "2", text: "Blessed are the pure in heart, for they shall see God.", likes: ["3"], comments: [], createdAt: new Date() },
         { _id: "7", user: "3", text: "Excellence is never an accident. It is always the result of high intention, sincere effort, and intelligent execution; it represents the wise choice of many alternatives - choice, not chance, determines your destiny.", likes: [], comments: [], createdAt: new Date() },
         { _id: "8", user: "3", text: "Happiness is a quality of the soul...not a function of one's material circumstances.", likes: ["1", "2"], comments: [], createdAt: new Date() },
@@ -172,29 +171,6 @@ function populateForumsCollection() {
     ];
 
     window.localStorage.setItem("Forums", JSON.stringify(forums));
-}
-
-function populateCommentsCollection() {
-    const comments = [
-        { _id: "1", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "2", user: "2", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "3", user: "3", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "4", user: "3", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "5", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "6", user: "2", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "7", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "8", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "9", user: "2", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "10", user: "3", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "11", user: "3", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "12", user: "2", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "13", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "14", user: "1", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "15", user: "2", post: "0", text: "Hello", createdAt: new Date() },
-        { _id: "16", user: "3", post: "0", text: "Hello", createdAt: new Date() },
-    ];
-
-    window.localStorage.setItem("Comments", JSON.stringify(comments));
 }
 
 function populatePhotosCollections() {
