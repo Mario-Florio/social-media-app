@@ -10,7 +10,7 @@
     display: initial;
 }
 
-@media all and (min-width: 1250px) {
+@media all and (min-width: 1200px) {
     #feed {
         display: initial;
         padding-bottom: 0rem;

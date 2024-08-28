@@ -22,7 +22,8 @@ function Users() {
 
     useEffect(() => {
         (async () => {
-            const res = await getUsers();
+            const reqBody = { queryBody: { limit: 7 } };
+            const res = await getUsers(reqBody);
             if (res.success) setUsers(res.users);
         })();
     }, []);
