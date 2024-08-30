@@ -148,7 +148,7 @@ Once an album is opened, assuming the user is the owner of the album, the user c
 
 <img src="./readme-imgs/user-manual/features/uploading-photos/photo-uploader.png" width=500 style="margin-bottom: 2rem"/>
 
-Upon successful upload the image will appear in the users photo album and be available for others to see. **(Note: demo version will not be able to upload images to a database, so any changes that occur will be temporary and reset upon leaving the page.)**
+Upon successful upload the image will appear in the users photo album and be available for others to see. **(Note: Demo version will not be able to upload images to a database, so any changes that occur will be temporary and reset upon leaving the page.)**
 
 <img src="./readme-imgs/user-manual/features/uploading-photos/uploaded-image.png" width=700/>
 
@@ -165,7 +165,7 @@ The following will cover "General" settings. To learn more about "User" settings
 
 The general settings allow user to adjust the color theme displayed on the UI. This includes the background color, the primary color (I.e. the top bar), and target color (e.g. button & link colors) amongst other components. The default theme can also be restored easily enough using the "Restore Defaults" button.
 
-**Note: General settings are saved to *local storage*. Thus, it follows that if local storage data is cleared for whatever reason (e.g. clearing cookies, refreshing demo version of app, etc) settings will be lost.**
+##### Note: General settings are saved to *local storage*. Thus, it follows that if local storage data is cleared for whatever reason (e.g. clearing cookies, refreshing demo version of app, etc) settings will be lost.
 
 <img src="./readme-imgs/user-manual/features/adjusting-settings/general-settings.png" width=700/>
 
@@ -221,7 +221,7 @@ In general, the path should look as such:
 [your machines root]/[path from root to social-media-app]/social-media-app/backend
 ```
 
-**Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. If error is suspected, check direcctory to see if photos are being deleted.**
+##### Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. If error is suspected, check direcctory to see if photos are being deleted.
 
 #### ```SECRET```
 *Secret* is a reference to *secret key* and is used for *signing* [JSON Web Tokens](https://jwt.io/introduction/). The signature is used to insure the integrity of the token, thus it should remain secret.
