@@ -206,7 +206,7 @@ Create a file ```./backend/.env``` with the variables:
 #### ```PORT```
 The *port variable* is simply a reference to the port number the backend will serve from. This variable will ultimately effect the [*host name variable*](#host_name) and the *frontends* [*proxy variable*](#frontend). 
 
-Declare variable as simple a string (e.g. ```"8000"```).
+Any available port will work——simply declare port as simple a string (e.g. ```"8000"```).
 
 #### ```HOST_NAME```
 The *host name variable* refers to the host name of the server (e.g. ```http://localhost:8000```, ```192.168.0.0/16:80```, ```www.yourdomain.com```, etc.). It is used by the [*getPhotoUrl*](https://github.com/Mario-Florio/social-media-app/blob/main/backend/database/methods/__utils__/getPhotoUrl.js) function to create a url for the client (e.g. the *frontend*). These urls allow the client to reach photo uploads stored on the server.
