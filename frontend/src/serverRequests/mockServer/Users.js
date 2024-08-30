@@ -133,7 +133,7 @@ async function postUserMock(reqBody) {
     const coverPhotosAlbum = {
         _id: uid(),
         user: newUser._id,
-        name: "CoverPhotos",
+        name: "Cover Photos",
         desc: "",
         photos: [],
         createdAt: new Date(),
