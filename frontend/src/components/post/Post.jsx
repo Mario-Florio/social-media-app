@@ -254,7 +254,6 @@ function OptionsSection({ likePost, post, optionsSectionIsActive, setOptionsSect
                         View Comments
                     </li>
                 </Link>
-                <li>Share Post</li>
             </ul>
             <div className={confirmDeletePopupIsActive ? "popup_mask active" : "popup_mask"}>
                 <div className="confirm-delete_popup">
