@@ -4,6 +4,7 @@ import { images } from "../../defaultImages/defaultImages";
 export default function populateCollections() {
     populateUsersCollection();
     populatePostsCollection();
+    populateCommentsCollection();
     populateForumsCollection();
     populatePhotosCollections();
     populateAlbumsCollections();
@@ -157,6 +158,12 @@ function populatePostsCollection() {
     ];
 
     window.localStorage.setItem("Posts", JSON.stringify(posts));
+}
+
+function populateCommentsCollection() {
+    const comments = [];
+
+    window.localStorage.setItem("Comments", JSON.stringify(comments));
 }
 
 function populateForumsCollection() {
