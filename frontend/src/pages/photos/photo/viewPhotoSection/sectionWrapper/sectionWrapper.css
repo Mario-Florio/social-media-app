@@ -2,7 +2,7 @@
 #photos .view-photo-section_mask {
     z-index: -1;
     position: fixed;
-    top: 0;
+    top: var(--topbar-height);
     bottom: 0;
     left: 0;
     right: 0;

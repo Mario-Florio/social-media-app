@@ -80,6 +80,7 @@
 @media all and (min-width: 750px) {
     .sidemenu {
         position: sticky;
+        top: 0;
         padding-bottom: 1rem;
         height: calc(100vh - var(--topbar-height));
         max-width: var(--sidemenu_max-width);

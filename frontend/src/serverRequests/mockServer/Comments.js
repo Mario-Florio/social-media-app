@@ -31,6 +31,7 @@ async function postCommentMock(reqBody) {
         _id: uid(),
         user: comment.user,
         text: comment.text,
+        createdAt: new Date(),
     }
 
     comments.push(newComment);

@@ -1,37 +1,41 @@
+import { useState } from "react";
 import "./home.css";
-import "./noActivity.css";
 import PageLayout from "../../components/pageLayout/PageLayout";
-import PostsFeed from "../../components/postsFeed/PostsFeed";
-import { PostsProvider } from "../../hooks/usePosts";
-import { useAuth } from "../../hooks/useAuth";
+import Feed from "./feed/Feed";
+import Featured from "./featured/Featured";
 
 function Home() {
-    const { user } = useAuth();
-
-    const reqSpecs = {
-        method: "getPosts",
-        reqBody: {
-            queryBody: {
-                userId: user._id,
-                timeline: true
-            }
-        }
-    };
+    const [selectedTab, setSelectedTab] = useState("feed");
 
     return(
         <PageLayout>
-            <section id="home" className="main-component">
-                <PostsProvider reqSpecs={reqSpecs}>
-                    <PostsFeed forumId={user.profile.forum}>
-                        <article className="no-activity">
-                            <h3>Looks like there is no activity</h3>
-                            <p>Try searching for some friends to follow!</p>
-                        </article>
-                    </PostsFeed>
-                </PostsProvider>
+            <section id="home">
+                <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+                <div className="pseudo-main">
+                    <Feed selectedTab={selectedTab}/>
+                    <Featured selectedTab={selectedTab}/>
+                </div>
             </section>
         </PageLayout>
     );
 }
 
 export default Home;
+
+function Tabs({ selectedTab, setSelectedTab }) {
+    return(
+        <section className="tabs">
+            <div
+                className={ selectedTab === "feed" ? "isActive container" : "container" }
+                onClick={() => setSelectedTab("feed")}>
+                <span>Feed</span>
+            </div>
+            <div
+                className={ selectedTab === "featured" ? "isActive container" : "container" }
+                onClick={() => setSelectedTab("featured")}>
+                <span>Featured</span>
+            </div>
+            <div className="spacer"/>
+        </section>
+    );
+}

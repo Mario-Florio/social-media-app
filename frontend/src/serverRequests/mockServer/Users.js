@@ -133,7 +133,7 @@ async function postUserMock(reqBody) {
     const coverPhotosAlbum = {
         _id: uid(),
         user: newUser._id,
-        name: "CoverPhotos",
+        name: "Cover Photos",
         desc: "",
         photos: [],
         createdAt: new Date(),
@@ -252,8 +252,6 @@ async function deleteUserMock(reqBody) {
     const [ userForum ] = forums.filter(forum => forum._id === user.profile.forum);
     const commentIdsFromDeletedPosts = []; // used in next step
     let filteredPosts = posts.filter(post => {
-        console.log(post._id);
-        console.log(userForum.posts.includes(post._id))
         if (userForum.posts.includes(post._id)) {
             commentIdsFromDeletedPosts.push(...post.comments);
         }
