@@ -204,27 +204,32 @@ Create a file ```./backend/.env``` with the variables:
 - [```MONGODBURL```](#mongodburl)
 
 #### ```PORT```
-The *port variable* is simply a reference to the port number the backend will serve from. This variable will ultimately effect the [*host name variable*](#host_name) and the *frontends* [*proxy variable*](#frontend). Format variable as a string (e.g. ```"8000"```).
+The *port variable* is simply a reference to the port number the backend will serve from. This variable will ultimately effect the [*host name variable*](#host_name) and the *frontends* [*proxy variable*](#frontend). 
+
+Declare variable as simple a string (e.g. ```"8000"```).
 
 #### ```HOST_NAME```
-The *host name variable* refers to the host name of the server (e.g. ```http://localhost:8000```, ```192.168.0.0/16:80```, ```www.yourdomain.com```, etc.). It is used by the [*getPhotoUrl*]((https://github.com/Mario-Florio/social-media-app/blob/main/backend/database/methods/__utils__/getPhotoUrl.js)) function to create a url for the client (e.g. the *frontend*). These urls allow the client to reach photo uploads stored on the server.
+The *host name variable* refers to the host name of the server (e.g. ```http://localhost:8000```, ```192.168.0.0/16:80```, ```www.yourdomain.com```, etc.). It is used by the [*getPhotoUrl*](https://github.com/Mario-Florio/social-media-app/blob/main/backend/database/methods/__utils__/getPhotoUrl.js) function to create a url for the client (e.g. the *frontend*). These urls allow the client to reach photo uploads stored on the server.
 
 That considered, any host name which the client can use to reach the server will be supported, whether that be a *localhost*, a private IP address for a private network, or a public facing domain name.
 
 #### ```ROOT```
-The *root variable* represents the root from which the node js *File System* module will use to find files. In particular, the *deletePhoto* function (found [here](https://github.com/Mario-Florio/social-media-app/blob/main/backend/database/methods/photo-albums.js), line 114) uses [*existsSync*](https://nodejs.org/api/fs.html#fsexistssyncpath) and [*rmSync*](https://nodejs.org/api/fs.html#fsrmsyncpath-options).
+The *root variable* represents the path from your local machines root to the ```./backend``` directory. The node js *File System* module will use this path to find images within the ```./backend/uploads``` directory.
 
-Appropriate definition of ```ROOT``` should take these methods into consideration.
+In general, the path should look as such:
+```env
+[your machines root]/[path from root to social-media-app]/social-media-app/backend
+```
 
 **Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. If error is suspected, check direcctory to see if photos are being deleted.**
 
 #### ```SECRET```
-*Secret* is a reference to *secret key* and is used for *signing* [JSON Web Tokens](https://jwt.io/introduction/). The signature is used to insure the integrity of the token and thus should remain secret.
+*Secret* is a reference to *secret key* and is used for *signing* [JSON Web Tokens](https://jwt.io/introduction/). The signature is used to insure the integrity of the token, thus it should remain secret.
 
 A randomly generated string will be enough to get the application running, but a more intelligent key generation may be used if security is a particular concern.
 
 #### ```MONGODBURL```
-The *mongodburl variable* is a reference to the [MongoDB Connection String](https://www.mongodb.com/docs/v6.3/reference/connection-string/) that will be used to connect the server to the database. Connection strings require no further formatting when declared.
+The *mongodburl variable* is a reference to the [MongoDB Connection String](https://www.mongodb.com/docs/v6.3/reference/connection-string/) that will be used to connect the server to the database. The connection string can be as is used for the *mongodburl variable*.
 
 ## Frontend
 In the *frontend directory*, run:
@@ -240,6 +245,6 @@ Create file ```./frontend/.env```:
 VITE_PROXY = "[insert host name]/api"
 ```
 
-...where "[insert host name]" refers to the host name which the backend api is accessible THROUGH (likely equivalent to the [*backends host name variable*](#host_name)).
+...where "[insert host name]" refers to the host name which the backend api is accessible through (likely equivalent to the [*backends host name variable*](#host_name)).
 
 This variable is used for configuration on the *axios* object (see *[./frontend/src/index.jsx](https://github.com/Mario-Florio/social-media-app/blob/main/frontend/src/index.jsx), line 10*). This axios object will be used to make subsequent calls to the backend.
