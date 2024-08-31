@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./header.css";
 import EditAlbumForm from "./editAlbumForm/EditAlbumForm";
 import CreateAlbumForm from "./createAlbumForm/CreateAlbumForm";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 
@@ -9,10 +10,26 @@ import requests from "../../../serverRequests/methods/config";
 import DeleteAlbumForm from "./deleteAlbumForm/DeleteAlbumForm";
 
 const { getAlbums } = requests.albums;
+const { getUser } = requests.users;
 
 function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums, selectedAlbum, setSelectedAlbum }) {
+    const [profileUser, setProfileUser] = useState(null);
     const { id, albumId } = useParams();
     const { user } = useAuth();
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await getUser({ id });
+
+                if (res.success) {
+                    setProfileUser(res.user);
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [id]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -47,16 +64,19 @@ function Header({ isLoading, setIsLoading, setPhotos, albums, setAlbums, selecte
             { isLoading ?
                 <div className="album-name_loader loadingBGColor"/> :
                 <div className="flexbox-left">
-                    <h2>{selectedAlbum.name}</h2>
-                    { id === user._id &&
-                        selectedAlbum.name !== "Profile Pictures" &&
-                        selectedAlbum.name !== "Cover Photos" &&
-                        selectedAlbum.name !== "All" &&
-                        <>
-                            <EditAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
-                            <span>/</span>
-                            <DeleteAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
-                        </> }
+                    <div>
+                        { profileUser && <span><Link to={`/users/${profileUser._id}`}>{profileUser.username}</Link>/photo-albums/</span> }
+                        <h2>{selectedAlbum.name}</h2>
+                        { id === user._id &&
+                            selectedAlbum.name !== "Profile Pictures" &&
+                            selectedAlbum.name !== "Cover Photos" &&
+                            selectedAlbum.name !== "All" &&
+                            <div style={{ display: "flex", gap: ".5rem" }}>
+                                <EditAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
+                                <span>-</span>
+                                <DeleteAlbumForm selectedAlbum={selectedAlbum} setSelectedAlbum={setSelectedAlbum} setAlbums={setAlbums}/>
+                            </div> }
+                    </div>
                 </div> }
             <div className="flexbox-right">
                 <label htmlFor="select-album" className="hide">Select Album</label>
