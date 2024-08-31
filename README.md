@@ -35,38 +35,38 @@ Once starting the application, users are presented with a sign in form. Users ca
 ### Creating an Account
 If the user chooses to create a new account, upon clicking the sign up link they will be presented with a new form titled "Sign Up". The user can now enter their desired credentials.
 
-While doing so, the sign up form provides the user with basic, inline form validation to assist with meeting program requirments prior to submission.
+While doing so, the sign up form provides the user with basic, inline form validation to assist with meeting form-field requirments prior to submission.
 
 <img src="./readme-imgs/user-manual/getting-started/creating-an-account/sign-up.png" width=500 style="margin-bottom: 2rem"/>
 
 Once successfully signed up the user will be automatically signed in.
 
 ### Finding friends
-Since a social media app is about socializing, the user will first want to find others on the platform to connect with. The "Featured" section provides a quickway for users to do so, displaying several users who are already on the app (if user is on a mobile device, the featured section will be accessible via tab).
+Since a social media app is about socializing the user will first want to find others on the platform to connect with. The "Featured" section provides a quickway for users to do so, displaying several other users who are on the available on the platform (if user is on a mobile device, the featured section will be accessible via tab).
 
 <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem">
     <img src="./readme-imgs/user-manual/getting-started/finding-friends/logged-in.png" width=700/>
     <img src="./readme-imgs/user-manual/getting-started/finding-friends/featured-mobile.png" width=200/>
 </div>
 
-Users can also choose to search for other users using the search bar. Upon typing, the search bar will display any users whos name contains the queried input. User can than select any of the displayed users to then go and visit their profile.
+Users can also choose to search for other users using the search bar. Upon typing, the search bar will display any users whos name contains the queried input. User can then select any of the displayed users——doing so will redirect them to the said users profile.
 
 <img src="./readme-imgs/user-manual/getting-started/finding-friends/search-bar.png" width=500 style="margin-bottom: 2rem"/>
 
-Once at the desired users profile the ability to follow said user will become available via a "Follow" button...
+Once at the selected users profile, the ability to follow that user will become available via a "Follow" button:
 
 <img src="./readme-imgs/user-manual/getting-started/finding-friends/follow.png" width=700 style="margin-bottom: 2rem"/>
 
-and once followed this user will appear in the sidemenu of the user who followed, and their posts will appear in the feed on the home page.
+...and once followed, this user will appear in the sidemenu and their posts will appear in the feed of the home page of the user who followed them.
 
 <img src="./readme-imgs/user-manual/getting-started/finding-friends/first-friend-completed.png" width=700/>
 
 ### Your first post
-Being able to express yourself is a crucial part of social media applications. The major feature given to users to do so is posting. Posting is easy to do and is almost always accessible to the user. To post, all a user has to do is locate the post component (located at the top of the pages feed), type out a desired message, and click "Post".
+Being able to express yourself is a crucial part of social media applications. The major feature given to users to do so is *posting*. Posting is easy to do and is almost always available to the user. To post, all a user has to do is locate the post component (located at the top of the pages feed), input a message and click "Post".
 
 <img src="./readme-imgs/user-manual/getting-started/your-first-post/first-post.png" width=700 style="margin-bottom: 2rem"/>
 
-Upon doing so, the post will then be published and availble for all of the users followers to read and interact with (e.g. like & comment). **(Note: if you post on a users profile, it will be visible on their profile feed——that is, the feed which is displayed on their profile.)**
+Upon doing so the post will be published and availble for all of the users followers to read and interact with (e.g. like & comment). **(Note: if you post on a users profile, it will be visible on their profile feed——that is, the feed which is displayed on their profile.)**
 
 ## Features
 - [Dark Mode](#dark-mode)
@@ -78,7 +78,7 @@ Upon doing so, the post will then be published and availble for all of the users
 - [Changing Account Credentials](#changing-account-credentials)
 
 ### Dark Mode
-Dark mode can be accessed by activating the user drop-down menu found top-right corner (I.e. the user profile picture icon). Once the drop-down is activated, the dark mode button can be found at the bottom and toggled.
+Dark mode can be accessed by clicking on the user drop-down menu found in the top-right corner of the page (I.e. the user profile picture icon). Once the drop-down is activated the dark mode button can be found at the bottom and toggled.
 
 <img src="./readme-imgs/user-manual/features/dark-mode/dark-mode-toggle.png" width=700/>
 
@@ -87,29 +87,29 @@ Dark Mode active:
 <img src="./readme-imgs/user-manual/features/dark-mode/dark-mode.png" width=700 style="margin-bottom: 2rem"/>
 
 ### Editing and Deleting Posts
-The ability to edit and delete posts can be found within the posts options menu (an icon at the top-right corner of the post, marked by three dots).
+The ability to edit and delete posts can be found within the posts options menu (an icon found at the top-right corner of the post, marked by three dots).
 
 <img src="./readme-imgs/user-manual/features/editing-and-deleting-posts/options-icon.png" width=500 style="margin-bottom: 2rem"/>
 
-Once activated, the posts options menu will give access to the "Edit Post" and "Delete Post" options.
+Once activated the posts options menu will give access to the "Edit Post" and "Delete Post" options.
 
 <img src="./readme-imgs/user-manual/features/editing-and-deleting-posts/options-menu.png" width=700/>
 
 #### Editing
-Selecting the edit option will open a text box with the post body within it. The user can then edit the post body as desired, then press submit when done. The edits will then be published.
+Selecting the edit option will open a text box with the post body within it. The user can then edit the post body as desired, pressing submit when done. The edits will then be published.
 
 <img src="./readme-imgs/user-manual/features/editing-and-deleting-posts/edit-text-box.png" width=700/>
 
 #### Deleting
-Select the delete option will open a window asking user to confirm deletion. This confirmation will be proposed via a button labeled "Confirm". The user can also choose to cancel from here as well.
+Selecting the delete option will open a window asking the user to confirm deletion. This confirmation will be proposed via a button labeled "Confirm". The user can also choose to cancel from here as well.
 
 <img src="./readme-imgs/user-manual/features/editing-and-deleting-posts/confirmation-popup.png" width=400/>
 
 ### Likes and Comments
-Likes and comments can be accessed via the posts option menu, but they can also be accessed more convieniently on the post component itself.
+Likes and comments can be accessed via the posts option menu (see [Editing and Deleting Posts](#editing-and-deleting-posts)), but they can also be accessed more convieniently on the post component itself.
 
 #### Likes
-Liking a post can be done simply by clicking on the "Like" link (found in bottom-left of post component). Similarly, all of the posts current likes can be accessed via the "[insert amount] likes" link (found in bottom-left of post component, above the "Like" link).
+Liking a post can be done by simply clicking on the "Like" link (found in bottom-left of post component). Similarly, all of the posts current likes can be accessed via the "[insert amount] likes" link (found in bottom-left of post component, above the "Like" link).
 
 <img src="./readme-imgs/user-manual/features/likes-and-comments/post-like-links.png" width=500/>
 
@@ -118,7 +118,7 @@ Comments can also be accessed through the post component via both the "Comment" 
 
 <img src="./readme-imgs/user-manual/features/likes-and-comments/post-comments-link.png" width=500 style="margin-bottom: 2rem"/>
 
-Upon doing so the user will be redirected to a page dedicated to the post which displays all the posts comments. From here the user can comment on the post by typing the desired comment into the text box located at the bottom of the screen and finally pressing the "Send" button to upload it.
+Upon doing so the user will be redirected to a page dedicated to the post which displays all the posts comments. From here the user can comment on the post by typing the desired comment into the text box located at the bottom of the screen and finally pressing the "Send" button to publish it.
 
 <img src="./readme-imgs/user-manual/features/likes-and-comments/post-page.png" width=700/>
 
@@ -135,16 +135,16 @@ The users bio can be edited in [settings](#adjusting-settings) within the "User"
 <img src="./readme-imgs/user-manual/features/editing-profile/edit-profile-bio.png" width=700/>
 
 #### Profile Picture & Cover Photo
-To edit the profile picture & cover photo, the user must go to their profile and click on either of said items. Once clicked, an uploader popup will appear and allow them to either upload a new image or choose from a default selection. Once the selection is made, the change will be made and the image will be uploaded to the users [photo albums](#uploading-photos).
+To edit the profile picture & cover photo, the user must go to their profile and click on either of said items. Once clicked an uploader popup will appear and allow them to either upload a new image or choose from a default selection. With the upload or selection made, the user can then click the respective button to make the edit ("Upload" button for uploading; "Select" button for selecting). Now the profile will be updated and the image will be uploaded to the users [photo albums](#uploading-photos).
 
 <img src="./readme-imgs/user-manual/features/editing-profile/profile-image-uploader.png" width=300/>
 
 ### Uploading Photos
-A users photo albums can be found on their profile. To access the photos, click the tab labeled "Photos". This will display the users photo albums, at which point any of the albums can be opened to display their photos.
+A users photo albums can be found on their profile. To access the photos click the tab labeled "Photos". This will display the users photo albums, at which point any of the albums can be opened to display their photos.
 
 <img src="./readme-imgs/user-manual/features/uploading-photos/profile-photos-tab.png" width=700 style="margin-bottom: 2rem"/>
 
-Once an album is opened, assuming the user is the owner of the album, the user can upload photos. To do so they can click the add icon in the bottom-right corner of the page. Doing so will prompt a upload form to open, at which point the user will need to select which album they are uploading to, the image they would like to upload, as well as any "Name" or "Caption" they may like to assign to it.
+Once an album is opened, assuming the user is the owner of the album, the user can upload photos. To do so they can click the add icon in the bottom-right corner of the page. Doing so will prompt an upload form to open, at which point the user will need to select which album they are uploading to, the image they would like to upload, as well as a "Name" and any "Caption" they may like to assign to it.
 
 <img src="./readme-imgs/user-manual/features/uploading-photos/photo-uploader.png" width=500 style="margin-bottom: 2rem"/>
 
@@ -153,7 +153,7 @@ Upon successful upload the image will appear in the users photo album and be ava
 <img src="./readme-imgs/user-manual/features/uploading-photos/uploaded-image.png" width=700/>
 
 ### Adjusting Settings
-Links to the settings page can be found in user drop-down menu.
+Links to the settings page can be found in the user drop-down menu.
 
 <img src="./readme-imgs/user-manual/features/adjusting-settings/setting-links.png" width=300 style="margin-bottom: 2rem"/>
 
@@ -161,9 +161,11 @@ Settings has two main sections:
 - General
 - User
 
-The following will cover "General" settings. To learn more about "User" settings see [Changing Account Credentials](#changing-account-credentials) and [Editing Profile: Bio](#bio).
+The following will cover *General* settings. To learn more about *User* settings see [Changing Account Credentials](#changing-account-credentials) and [Editing Profile: Bio](#bio).
 
-The general settings allow user to adjust the color theme displayed on the UI. This includes the background color, the primary color (I.e. the top bar), and target color (e.g. button & link colors) amongst other components. The default theme can also be restored easily enough using the "Restore Defaults" button.
+#### General
+
+The general settings allow the user to adjust the color theme displayed on the UI. This includes the background color, the primary color (I.e. the top bar), and target color (e.g. button & link colors) amongst other components and their attributes. The default theme can also be restored easily enough using the "Restore Defaults" button.
 
 ##### Note: General settings are saved to *local storage*. Thus, it follows that if local storage data is cleared for whatever reason (e.g. clearing cookies, refreshing demo version of app, etc) settings will be lost.
 
@@ -179,9 +181,9 @@ The user will be prompted with inline error validation upon entering information
 <img src="./readme-imgs/user-manual/features/adjusting-settings/account-inline-error.png" width=500 style="margin-bottom: 3rem"/>
 
 # Setup
-The following is a guide for seting up the application on a local machine. For a guide on the use of the application, please see the [*User Manual*](#user-manual).
+The following is a guide for setting up the application on a local machine. For a guide on the use of the application, please see the [*User Manual*](#user-manual).
 
-This guide will cover the following:
+This guide will cover the following sections:
 - [Backend](#backend)
 - [Frontend](#frontend)
 
@@ -214,14 +216,14 @@ The *host name variable* refers to the host name of the server (e.g. ```http://l
 That considered, any host name which the client can use to reach the server will be supported, whether that be a *localhost*, a private IP address for a private network, or a public facing domain name.
 
 #### ```ROOT```
-The *root variable* represents the path from your local machines root to the ```./backend``` directory. The node js *File System* module will use this path to find images within the ```./backend/uploads``` directory.
+The *root variable* represents the path from your local machines root to the ```./backend``` directory. The node js [*File System*](https://nodejs.org/api/fs.html) module will use this path to find images within the ```./backend/uploads``` directory.
 
 In general, the path should look as such:
 ```env
-[your machines root]/[path from root to social-media-app]/social-media-app/backend
+/[path from root to social-media-app]/backend
 ```
 
-##### Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. If error is suspected, check direcctory to see if photos are being deleted.
+##### Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. This error will occur quietly. Therefore, if error is suspected, survey *uploads* directory to see if photos are avoiding deletion.
 
 #### ```SECRET```
 *Secret* is a reference to *secret key* and is used for *signing* [JSON Web Tokens](https://jwt.io/introduction/). The signature is used to insure the integrity of the token, thus it should remain secret.
@@ -231,8 +233,26 @@ A randomly generated string will be enough to get the application running, but a
 #### ```MONGODBURL```
 The *mongodburl variable* is a reference to the [MongoDB Connection String](https://www.mongodb.com/docs/v6.3/reference/connection-string/) that will be used to connect the server to the database. The connection string can be as is used for the *mongodburl variable*.
 
+### Running Server
+In the *backend* directory, run:
+```bash
+npm run start
+```
+
+Upon successful launch, the terminal should output:
+```
+Listening on port [insert PORT value]
+Database connected
+```
+
+#### Developer Server
+For a developer server using [*nodemon*](), run:
+```bash
+npm run devstart
+```
+
 ## Frontend
-In the *frontend directory*, run:
+In the *frontend* directory, run:
 ```bash
 npm install
 ```
@@ -248,3 +268,10 @@ VITE_PROXY = "[insert host name]/api"
 ...where "[insert host name]" refers to the host name which the backend api is accessible through (likely equivalent to the [*backends host name variable*](#host_name)).
 
 This variable is used for configuration on the *axios* object (see *[./frontend/src/index.jsx](https://github.com/Mario-Florio/social-media-app/blob/main/frontend/src/index.jsx), line 10*). This axios object will be used to make subsequent calls to the backend.
+
+### Running Client
+##### (Note: *Backend* server must be running prior to starting *frontend*. For instructions on setting up the backend, see [Backend](#backend).)
+In the *frontend* directory, run:
+```bash
+npm run start
+```
