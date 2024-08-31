@@ -20,11 +20,21 @@
     gap: .5rem;
 }
 
+#photos>header>.flexbox-left>div>span {
+    font-size: .8rem;
+    color: var(--secondary-font-color);
+}
+
+#photos>header>.flexbox-left>div>span>a {
+    text-decoration: none;
+    color: var(--target-color);
+}
+
 #photos>header .flexbox-left h2 {
     margin: 0;
 }
 
-#photos>header .flexbox-left span:hover {
+#photos>header .flexbox-left>div>div span:hover {
     color: var(--primary-font-color);
 }
 

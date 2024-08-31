@@ -15,7 +15,7 @@ function PhotosPage() {
     const [photos, setPhotos] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const loaders = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    
+
     return(
         <PageLayout>
             <section id="photos" className="main-component">
