@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./topbar.css";
 import "./searchbar.css"
-import searchIcon from "../../../assets/imgs/search-icon.png";
 import { useAuth } from "../../../hooks/useAuth";
 import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
@@ -112,9 +111,6 @@ function SearchBar() {
             <div className="dropdown">
                 <form className="dropdown_top">
                     <label htmlFor="search" className="hide">Search</label>
-                    <button>
-                        <img src={searchIcon} alt="Search"/>
-                    </button>
                     <input
                         type="text"
                         name="search"
