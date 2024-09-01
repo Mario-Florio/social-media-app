@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./signUp.css";
 import Loader from "../../../components/loader/Loader";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
@@ -21,17 +22,17 @@ function SignUp({ isSignIn, setIsSignIn }) {
         confirmPassword: false
     });
     const errors = {
-        username: {
-            maxLength: { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' },
-            minLength: { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' }
-        },
-        password: {
-            maxLength: { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' },
-            minLength: { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' }
-        },
-        confirmPassword: {
-            isMatch: { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'}
-        }
+        username: [
+            { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
+            { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
+        ],
+        password: [
+            { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
+            { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
+        ],
+        confirmPassword: [
+            { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'} // matches password
+        ]
     };
 
     function handleClick() { // sign in link
@@ -92,15 +93,22 @@ function SignUp({ isSignIn, setIsSignIn }) {
             <form action="/login" method="POST" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label><br/>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/><br/>
-                {errors.username.minLength.status && isDirty.username && <><span className="err-msg">{errors.username.minLength.message}</span><br/></>}
-                {errors.username.maxLength.status && isDirty.username && <><span className="err-msg">{errors.username.maxLength.message}</span><br/></>}
+                <ul>
+                    { errors.username.map((error, i) => 
+                        error.status && isDirty.username && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <label htmlFor="password">Password</label><br/>
                 <input type="password" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>
-                {errors.password.minLength.status && isDirty.password && <><span className="err-msg">{errors.password.minLength.message}</span><br/></>}
-                {errors.password.maxLength.status && isDirty.password && <><span className="err-msg">{errors.password.maxLength.message}</span><br/></>}
+                <ul>
+                    { errors.password.map((error, i) => 
+                        error.status && isDirty.password && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <label htmlFor="confirmPassword">Confirm Password</label><br/>
                 <input type="password" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/><br/>
-                {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
+                <ul>
+                    { errors.confirmPassword.map((error, i) => 
+                        error.status && isDirty.confirmPassword && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <button>Submit</button>
                 {isLoading && <Loader/>}
             </form>

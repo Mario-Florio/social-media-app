@@ -1,0 +1,9 @@
+
+.entryForm-wrapper ul {
+    padding: 0;
+    margin: 0;
+}
+
+.entryForm-wrapper li {
+    list-style-type: none;
+}
