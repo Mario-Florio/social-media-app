@@ -201,7 +201,7 @@ npm install
 Create a file ```./backend/.env``` with the variables:
 - [```PORT```](#port)
 - [```HOST_NAME```](#host_name)
-- [```ROOT```](#root)
+- [```UPLOADS``` *optional*](#uploads)
 - [```SECRET```](#secret)
 - [```MONGODBURL```](#mongodburl)
 
@@ -213,17 +213,16 @@ Any available port will work——simply declare port as a string (e.g. ```"8000
 #### ```HOST_NAME```
 The *host name variable* refers to the host name of the server (e.g. ```http://localhost:8000```, ```192.168.0.0/16:80```, ```www.yourdomain.com```, etc.). It is used by the [*getPhotoUrl*](https://github.com/Mario-Florio/social-media-app/blob/main/backend/database/methods/__utils__/getPhotoUrl.js) function to create a url for the client (e.g. the *frontend*). These urls allow the client to reach photo uploads stored on the server.
 
-That considered, any host name which the client can use to reach the server will be supported, whether that be a *localhost*, a private IP address for a private network, or a public facing domain name.
+That considered, any host name which the client can use to reach the server will be supported, whether that be a *localhost*, a private IP address for a private network, or a public facing domain name. **Note: It should not include a final *forward slash*.**
 
-#### ```ROOT```
-The *root variable* represents the path from your local machines root to the ```./backend``` directory. The node js [*File System*](https://nodejs.org/api/fs.html) module will use this path to find images within the ```./backend/uploads``` directory.
+#### ```UPLOADS``` *optional*
+The *uploads variable* represents the path from the root of the *backend directory* to the *uploads directory* where image uploads are stored. Declaration is optional and by default, this variable will resolve to ```./uploads/```.
 
-In general, the path should look as such:
-```env
-/[path from root to social-media-app]/backend
-```
+If specification of uploads is desired, the *uploads variable* should be formated as follows:
 
-##### Note: Improper definition of the *root variable* will ultimately lead to uploaded photos not being deleted from the [*uploads*](https://github.com/Mario-Florio/social-media-app/tree/main/backend/uploads) directory. This error will occur quietly. Therefore, if error is suspected, survey *uploads* directory to see if photos are avoiding deletion.
+```./[path to desired folder]/```
+
+where "." resolves to the root of the *backend directory*.
 
 #### ```SECRET```
 *Secret* is a reference to *secret key* and is used for *signing* [JSON Web Tokens](https://jwt.io/introduction/). The signature is used to insure the integrity of the token, thus it should remain secret.
