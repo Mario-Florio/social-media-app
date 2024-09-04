@@ -36,7 +36,7 @@ function Profile() {
         <PageLayout>
             <ProfileProvider id={id} profileUser={profileUser} setProfileUser={setProfileUser}>
                 <section id="profile" className="main-component">
-                    <ProfileTop/>
+                    <ProfileTop profileUser={profileUser}/>
                     <ProfileBottom/>
                     { profileUser && <Tabs selectedTab={selectedTab} setSelectedTab={setSelectedTab}/> }
                     { profileUser && selectedTab === "posts" ? 

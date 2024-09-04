@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import "./topbar.css";
 import "./searchbar.css"
+import { Link } from "react-router-dom";
+import ImgHandler from "../../imgHandler/ImgHandler";
+import photoExists from "../../imgHandler/__utils__/photoExists";
 import { useAuth } from "../../../hooks/useAuth";
-import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
 import requests from "../../../serverRequests/methods/config";
 const { getUsers } = requests.users;
@@ -40,8 +41,8 @@ function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, s
                         </li>
                     </ul>
                 </nav>
-                <div className={ dropDownMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
-                    <img onClick={toggleRightSideMenu} src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="Quick settings"/>
+                <div onClick={toggleRightSideMenu} className={ dropDownMenuIsActive ? "profilePic_wrapper active" : "profilePic_wrapper"}>
+                    <ImgHandler src={photoExists(user.profile.picture)} type="profile"/>
                 </div>
             </div>
         </header>
@@ -131,7 +132,7 @@ function SearchBar() {
                                 onClick={() => setInput("")}
                             >
                                 <div className="profile-pic_wrapper">
-                                    <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="user profile pic"/>
+                                    <ImgHandler src={photoExists(user.profile.picture)} type="profile"/>
                                 </div>
                                 <h5>{user.username}</h5>
                             </Link>

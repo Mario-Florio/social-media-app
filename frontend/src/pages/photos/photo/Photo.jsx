@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./photo.css";
+import ImgHandler from "../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import DeleteSection from "./deleteSection/DeleteSection";
 import ViewPhotoSection from "./viewPhotoSection/ViewPhotoSection";
 import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
@@ -22,7 +24,7 @@ function Photo({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPh
     return(
         <li>
             <div className="img_wrapper">
-                <img src={data.url} alt={data.name}/>
+                <ImgHandler src={photoExists(data)} type="photo"/>
             </div>
             <div
                 className={maskIsActive ? "photo_mask active" : "photo_mask"}

@@ -1,57 +1,51 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./profileTop.css";
+import ImgHandler from "../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import PicturePopup from "./picturePopup/PicturePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
-import { defaultProfilePic, defaultCoverPhoto, profilePicImages, coverPhotoImages } from "../../../defaultImages/defaultImages";
+import { profilePicImages, coverPhotoImages } from "../../../defaultImages/defaultImages";
 
 function ProfileTop() {
-    const { user } = useAuth();
     const { profileUser } = useProfile();
 
-    const [picture, setPicture] = useState(null);
+    return(!profileUser ?
+        <Loader/> :
+        <Loaded profileUser={profileUser}/>
+    );
+}
+
+export default ProfileTop;
+
+function Loaded({ profileUser }) {
+    const { user } = useAuth();
+
+    const [picture, setPicture] = useState(photoExists(profileUser.profile.picture));
     const [picturePopupIsActive, setPicturePopupIsActive] = useState(false);
 
-    const [coverPhoto, setCoverPhoto] = useState(null);
+    const [coverPhoto, setCoverPhoto] = useState(photoExists(profileUser.profile.coverPicture));
     const [coverPhotoPopupIsActive, setCoverPhotoPopupIsActive] = useState(false);
 
-    useEffect(() => {
-        profileUser &&
-        profileUser.profile.coverPicture &&
-        profileUser.profile.coverPicture.url &&
-        setCoverPhoto(profileUser.profile.coverPicture.url);
-
-        profileUser &&
-        profileUser.profile.picture &&
-        profileUser.profile.picture.url &&
-        setPicture(profileUser.profile.picture.url);
-
-        return () => {
-            setCoverPhoto(null);
-            setPicture(null);
-        }
-    }, [profileUser]);
-
-    return(!profileUser ?
-        <LoaderProfile/> :
+    return(
         <section className="profileTop">
             { profileUser._id === user._id ?
                 <>
                     <div className="coverPhoto_wrapper">
-                        <img src={ coverPhoto || defaultCoverPhoto.url } alt="cover" className="coverPhoto"/>
+                        <ImgHandler src={coverPhoto} type="cover" classes="coverPhoto"/>
                         <div className="coverPhoto_mask" onClick={() => setCoverPhotoPopupIsActive(true)}></div>
                     </div>
                     <div className="profilePic_wrapper">
-                        <img src={ picture || defaultProfilePic.url } alt="profile" className="profilePic"/>
+                        <ImgHandler src={picture} type="profile" classes="profilePic"/>
                         <div className="profilePic_mask" onClick={() => setPicturePopupIsActive(true)}></div>
                     </div>
                 </> :
                 <>
                     <div className="coverPhoto_wrapper">
-                        <img src={ coverPhoto || defaultCoverPhoto.url } alt="cover" className="coverPhoto"/>
+                        <ImgHandler src={coverPhoto} type="cover" classes="coverPhoto"/>
                     </div>
                     <div className="profilePic_wrapper">
-                        <img src={ picture || defaultProfilePic.url } alt="profile" className="profilePic"/>
+                        <ImgHandler src={picture} type="profile" classes="profilePic"/>
                     </div>
                 </> }
             { picturePopupIsActive && <PicturePopup
@@ -67,12 +61,10 @@ function ProfileTop() {
                 options={ coverPhotoImages.map(image => { return { name: image.name.split("-")[0], value: image.name, url: image.url } }) }
             /> }
         </section>
-    );
+    )
 }
 
-export default ProfileTop;
-
-function LoaderProfile() {
+function Loader() {
     return(
         <section className="profileTop">
             <div className="coverPhoto_wrapper">

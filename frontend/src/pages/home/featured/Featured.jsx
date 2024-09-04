@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./featured.css";
 import { Link } from "react-router-dom";
+import ImgHandler from "../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import requests from "../../../serverRequests/methods/config";
-import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
 const { getUsers } = requests.users;
 
@@ -35,7 +36,7 @@ function Users() {
                     <Link to={`/users/${user._id}`}>
                         <div className="user">
                             <div className="profilePic-wrapper">
-                                <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url }/>
+                                <ImgHandler src={photoExists(user.profile.picture)} type="profile"/>
                             </div>
                             <h4>{user.username}</h4>
                         </div>

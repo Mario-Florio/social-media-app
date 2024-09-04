@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import "./postsFeed.css";
+import { Link } from "react-router-dom";
+import ImgHandler from "../imgHandler/ImgHandler";
+import photoExists from "../imgHandler/__utils__/photoExists";
 import Post from "../post/Post";
 import Loader from "../loader/Loader";
 import { useResponsePopup } from "../../hooks/useResponsePopup";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
-import attachmentsIcon from "../../assets/imgs/attachments.png";
-import shareIcon from "../../assets/imgs/share.png";
-import { defaultProfilePic } from "../../defaultImages/defaultImages";
 
 import requests from "../../serverRequests/methods/config";
 const { postPost } = requests.posts;
@@ -83,7 +82,7 @@ function NewPost({ forumId }) {
         <article className="newPost">
             <div className="flexbox">
                 <Link to={`/users/${user._id}`} className="profilePic-wrapper">
-                    <img src={ user.profile.picture ? (user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="users profile pic"/>
+                    <ImgHandler src={photoExists(user.profile.picture)} type="profile"/>
                 </Link>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="newPost" className="hide">New Post</label>
