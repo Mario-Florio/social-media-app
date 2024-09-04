@@ -1,13 +1,10 @@
 const Image = require("../../../models/photos/Image");
-const { defaultImages } = require("../../../defaultImgs");
-const dotenv = require("dotenv");
-
-dotenv.config();
+const { defaultImages } = require("../../../globals/defaultImgs");
 
 async function getPhotoUrl(photo) {
     if (photo && !isDefaultImg(photo.pointer)) {
         const photoImage = await Image.findOne({ name: photo.pointer }).exec();
-        photo.url = process.env.HOST_NAME+"uploads"+photoImage.url;
+        photo.url = `${process.env.HOST_NAME}api/uploads${photoImage.url}`;
     }
 }
 

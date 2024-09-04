@@ -10,7 +10,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const getPhotoUrl = require("./__utils__/getPhotoUrl");
-const { defaultImages } = require("../../defaultImgs");
+const { defaultImages } = require("../../globals/defaultImgs");
 
 const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
 

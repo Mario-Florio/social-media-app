@@ -1,5 +1,5 @@
 const posts_dbMethods = require("../database/methods/posts");
-const { verifyToken } = require("../authenticate");
+const { verifyToken } = require("../globals/authenticate");
 
 async function read_all(req, res, next) {
     try {

@@ -1,5 +1,5 @@
 const users_dbMethods = require("../database/methods/users");
-const { verifyToken } = require("../authenticate");
+const { verifyToken } = require("../globals/authenticate");
 
 async function read_authData(req, res, next) {
     const responseBody = verifyToken(req.token);

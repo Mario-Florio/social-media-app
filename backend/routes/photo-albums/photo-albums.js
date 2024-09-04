@@ -1,7 +1,7 @@
 const express = require("express");
 const photoAlbums_controller = require("../../controllers/photo-albums");
-const { getToken } = require("../../authenticate");
-const upload = require("../../multer");
+const { getToken } = require("../../globals/authenticate");
+const upload = require("../../globals/multer");
 
 const router = express.Router();
 

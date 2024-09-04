@@ -1,6 +1,6 @@
 const users_dbMethods = require("../database/methods/users");
-const { verifyToken } = require("../authenticate");
-const { defaultImages } = require("../defaultImgs");
+const { verifyToken } = require("../globals/authenticate");
+const { defaultImages } = require("../globals/defaultImgs");
 
 async function read_all(req, res, next) {
     try {

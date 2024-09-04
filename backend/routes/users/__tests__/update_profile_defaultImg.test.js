@@ -3,7 +3,7 @@ const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
-const { defaultProfileImages, defaultCoverImages } = require("../../../defaultImgs");
+const { defaultProfileImages, defaultCoverImages } = require("../../../globals/defaultImgs");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());

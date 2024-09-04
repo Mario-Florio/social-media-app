@@ -1,5 +1,5 @@
 const comments_dbMethods = require("../database/methods/comments");
-const { verifyToken } = require("../authenticate");
+const { verifyToken } = require("../globals/authenticate");
 
 async function read_all(req, res, next) {
     try {
