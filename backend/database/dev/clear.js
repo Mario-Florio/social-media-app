@@ -9,6 +9,9 @@ const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 async function dropCollections(mongoServer) {
     await User.collection.drop();
     await Profile.collection.drop();
