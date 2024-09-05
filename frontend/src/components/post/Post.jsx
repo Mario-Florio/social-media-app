@@ -12,7 +12,7 @@ import { useResponsePopup } from "../../hooks/useResponsePopup";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 
-import requests from "../../serverRequests/methods/config";
+import requests from "../../serverRequests/requests";
 const { putPost, putPostLike } = requests.posts;
 const { getUsers } = requests.users;
 

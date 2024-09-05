@@ -6,7 +6,7 @@ import ImgHandler from "../../imgHandler/ImgHandler";
 import photoExists from "../../imgHandler/__utils__/photoExists";
 import { useAuth } from "../../../hooks/useAuth";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../serverRequests/requests";
 const { getUsers } = requests.users;
 
 function Topbar({ sideMenuIsActive, setSideMenuIsActive, dropDownMenuIsActive, setDropDownMenuIsActive }) {

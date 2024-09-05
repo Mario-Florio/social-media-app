@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-import requests from "../../../serverRequests/methods/config";
-
+import requests from "../../../serverRequests/requests";
 const { getUser } = requests.users;
 
 const ProfileContext = createContext();

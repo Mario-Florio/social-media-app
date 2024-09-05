@@ -5,7 +5,7 @@ import photoExists from "../../imgHandler/__utils__/photoExists";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../serverRequests/requests";
 const { getUsers } = requests.users;
 
 function SideMenu({ sideMenuIsActive, setSideMenuIsActive }) {

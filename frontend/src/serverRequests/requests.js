@@ -1,7 +1,7 @@
-import populateCollections from "../mockServer/populateCollections";
+import { mock } from "./config";
 
-import { getSession, postLogin } from "../server/Auth";
-import { getSessionMock, postLoginMock } from "../mockServer/Auth";
+import { getSession, postLogin } from "./server/Auth";
+import { getSessionMock, postLoginMock } from "./mockServer/Auth";
 
 import {
     getUsers,
@@ -12,7 +12,7 @@ import {
     putProfile,
     putUserFollow,
     putProfileDefaultImg
-} from "../server/Users";
+} from "./server/Users";
 import {
     getUsersMock,
     getUserMock,
@@ -22,10 +22,10 @@ import {
     putProfileMock,
     putUserFollowMock,
     putProfileDefaultImgMock
-} from "../mockServer/Users";
+} from "./mockServer/Users";
 
-import { getForum } from "../server/Forums";
-import { getForumMock } from "../mockServer/Forums";
+import { getForum } from "./server/Forums";
+import { getForumMock } from "./mockServer/Forums";
 
 import {
     getPosts,
@@ -34,7 +34,7 @@ import {
     putPost,
     deletePost,
     putPostLike
-} from "../server/Posts";
+} from "./server/Posts";
 import {
     getPostsMock,
     getPostMock,
@@ -42,20 +42,20 @@ import {
     putPostMock,
     deletePostMock,
     putPostLikeMock
-} from "../mockServer/Posts";
+} from "./mockServer/Posts";
 
 import {
     getComments,
     postComment,
     putComment,
     deleteComment
-} from "../server/Comments";
+} from "./server/Comments";
 import {
     getCommentsMock,
     postCommentMock,
     putCommentMock,
     deleteCommentMock
-} from "../mockServer/Comments";
+} from "./mockServer/Comments";
 
 import {
     getAlbums,
@@ -64,7 +64,7 @@ import {
     deleteAlbum,
     postPhoto,
     deletePhoto
-} from "../server/Albums";
+} from "./server/Albums";
 import {
     getAlbumsMock,
     postAlbumMock,
@@ -72,14 +72,7 @@ import {
     deleteAlbumMock,
     postPhotoMock,
     deletePhotoMock
-} from "../mockServer/Albums";
-
-let mock = false;
-let clearLocalStorage = false;
-let resetCollections = false;
-
-mock && clearLocalStorage && window.localStorage.clear();
-mock && resetCollections && populateCollections();
+} from "./mockServer/Albums";
 
 const requests = {
     auth: {

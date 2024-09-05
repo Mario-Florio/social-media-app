@@ -5,10 +5,9 @@ import CreateAlbumForm from "./createAlbumForm/CreateAlbumForm";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
-
-import requests from "../../../serverRequests/methods/config";
 import DeleteAlbumForm from "./deleteAlbumForm/DeleteAlbumForm";
 
+import requests from "../../../serverRequests/requests";
 const { getAlbums } = requests.albums;
 const { getUser } = requests.users;
 

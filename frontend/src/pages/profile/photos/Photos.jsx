@@ -5,8 +5,7 @@ import ImgHandler from "../../../components/imgHandler/ImgHandler";
 import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import { useParams } from "react-router-dom";
 
-import requests from "../../../serverRequests/methods/config";
-
+import requests from "../../../serverRequests/requests";
 const { getAlbums } = requests.albums;
 
 function Photos() {

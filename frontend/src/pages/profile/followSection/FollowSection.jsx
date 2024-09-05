@@ -3,11 +3,10 @@ import "./followSection.css";
 import SectionWrapper from "../../../components/sectionWrapper/SectionWrapper";
 import { Link } from "react-router-dom";
 import { useProfile } from "../hooks/useProfile";
-import { defaultProfilePic } from "../../../defaultImages/defaultImages";
-
-import requests from "../../../serverRequests/methods/config";
 import ImgHandler from "../../../components/imgHandler/ImgHandler";
 import photoExists from "../../../components/imgHandler/__utils__/photoExists";
+
+import requests from "../../../serverRequests/requests";
 const { getUsers } = requests.users;
 
 function FollowSection() {

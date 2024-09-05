@@ -9,7 +9,7 @@ import { useResponsePopup } from "../../hooks/useResponsePopup";
 import { useAuth } from "../../hooks/useAuth";
 import { usePosts } from "../../hooks/usePosts";
 
-import requests from "../../serverRequests/methods/config";
+import requests from "../../serverRequests/requests";
 const { postPost } = requests.posts;
 
 function PostsFeed({ forumId, children }) {

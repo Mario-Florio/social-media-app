@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import requests from "../serverRequests/methods/config";
 
+import requests from "../serverRequests/requests";
 const { getPost, getPosts } = requests.posts;
 
 export const PostsContext = createContext();

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import "./optionsSection.css";
 import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper";
-import requests from "../../../../serverRequests/methods/config";
-
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
+import requests from "../../../../serverRequests/requests";
 const { deleteComment } = requests.comments;
 
 function OptionsSection({ comment, setComments, optionsSectionIsActive, setOptionsSectionIsActive, setEditSectionIsActive }) {

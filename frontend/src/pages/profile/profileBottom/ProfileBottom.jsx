@@ -5,8 +5,7 @@ import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import { useProfile } from "../hooks/useProfile";
 
-import requests from "../../../serverRequests/methods/config";
-
+import requests from "../../../serverRequests/requests";
 const { putUserFollow } = requests.users;
 
 function ProfileBottom() {

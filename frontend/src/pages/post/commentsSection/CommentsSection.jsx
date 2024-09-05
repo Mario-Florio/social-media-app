@@ -9,9 +9,8 @@ import EditSection from "./editSection/EditSection";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../serverRequests/requests";
 import { populateComments } from "../../../serverRequests/methods/comments";
-
 const { getPost } = requests.posts;
 const { postComment } = requests.comments;
 

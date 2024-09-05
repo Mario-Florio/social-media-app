@@ -1,4 +1,4 @@
-import requests from "./config";
+import requests from "../requests";
 
 const { getComments } = requests.comments;
 

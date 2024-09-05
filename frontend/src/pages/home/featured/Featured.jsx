@@ -3,8 +3,8 @@ import "./featured.css";
 import { Link } from "react-router-dom";
 import ImgHandler from "../../../components/imgHandler/ImgHandler";
 import photoExists from "../../../components/imgHandler/__utils__/photoExists";
-import requests from "../../../serverRequests/methods/config";
 
+import requests from "../../../serverRequests/requests";
 const { getUsers } = requests.users;
 
 function Featured({ selectedTab }) {

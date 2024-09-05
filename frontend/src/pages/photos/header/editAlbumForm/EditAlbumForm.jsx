@@ -3,8 +3,7 @@ import "./editAlbumForm.css";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
-import requests from "../../../../serverRequests/methods/config";
-
+import requests from "../../../../serverRequests/requests";
 const { putAlbum } = requests.albums;
 
 function EditAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {

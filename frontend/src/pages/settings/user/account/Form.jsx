@@ -3,8 +3,8 @@ import "./form.css";
 import Loader from "../../../../components/loader/Loader";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
-import requests from "../../../../serverRequests/methods/config";
 
+import requests from "../../../../serverRequests/requests";
 const { putUser, deleteUser } = requests.users;
 
 function AccountForm() {
