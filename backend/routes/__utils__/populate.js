@@ -14,7 +14,7 @@ async function users(amount=19) {
     for (let i = 1; i < amount+1; i++) {
         const forum = await new Forum().save();
         const profile = await new Profile({ bio: "This is a bio...", forum }).save();
-        const user = await new User({ username: "username"+i, password: hashedPassword, profile }).save();
+        const user = await new User({ email: "email"+i+"@host.com", username: "username"+i, password: hashedPassword, profile }).save();
 
         const profileImg = await new Image({ name: "randomName"+i, url: "/uploads/default/profile-pic.jpg" }).save();
         const profilePic = await new Photo({ pointer: profileImg.name, user: user._id }).save();

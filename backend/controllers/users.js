@@ -221,6 +221,9 @@ function sanitizeInput(input) {
 }
 
 function validateInput(input) {
+    if (input.email && !isValidEmail(input.email)) {
+        return false;
+    }
     if (input.password &&
         (input.password.length < 8 || input.password.length > 25)) {
         return false;
@@ -237,6 +240,11 @@ function validateInput(input) {
     }
     if (input.coverPicture === "") return false;
     return true;
+
+    function isValidEmail(email) {
+        var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return re.test(email)
+    }
 
     function isValidImgName(imgName) {
         let isValid = false;

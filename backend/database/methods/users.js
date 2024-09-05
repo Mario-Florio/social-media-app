@@ -15,10 +15,12 @@ const { defaultImages } = require("../../globals/defaultImgs");
 const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
 
 async function registerUser(credentials) {
-    const { username, password } = credentials;
+    const { email, username, password } = credentials;
     const userExists = await User.findOne({ username }).exec();
-    if (userExists) {
-        return { status: 404, message: "Request Failed: User already exists", success: false };
+    const emailExists = await User.findOne({ email }).exec();
+    if (userExists || emailExists) {
+        const message = emailExists ? "Request Failed: User already exists with this email" : "Request Failed: User already exists";
+        return { status: 404, message, success: false };  
     } else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -26,6 +28,7 @@ async function registerUser(credentials) {
         const forum = await new Forum().save();
         const profile = await new Profile({ forum }).save();
         const user = await new User({
+            email,
             username,
             password: hashedPassword,
             profile
