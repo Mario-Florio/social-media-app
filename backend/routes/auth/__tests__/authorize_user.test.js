@@ -1,12 +1,12 @@
-const app = require("../../app");
+const app = require("../../../app");
 const request = require("supertest");
-const database = require("../__utils__/testDb");
-const populate = require("../__utils__/populate");
+const database = require("../../__utils__/testDb");
+const populate = require("../../__utils__/populate");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
 
-describe("/auth", () => {
+describe("/auth AUTHORIZE_USER", () => {
     describe("given username and password", () => {
         beforeEach(async () => await populate.users());
         afterEach(async () => await database.dropCollections());
@@ -30,7 +30,10 @@ describe("/auth", () => {
                 username: "username1",
                 password: "password"
             });
+            expect(response.body.user.email).toBeDefined();
+            expect(response.body.user.password).toBeFalsy();
             expect(response.body.user).toBeDefined();
+            expect(response.body.success).toBeTruthy();
             expect(response.body.message).toBeDefined();
             expect(response.body.token).toBeDefined();
         });

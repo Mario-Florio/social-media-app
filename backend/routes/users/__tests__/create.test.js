@@ -35,7 +35,7 @@ describe("/users CREATE", () => {
                 expect(response.body.message).toBeDefined();
             }
         });
-        test("response body has accurate user and email", async () => {
+        test("response body has accurate user and email, and password to be falsy", async () => {
             const bodyData = [
                 { credentials: { email: "1email@host.com", username: "1username", password: "password" } },
                 { credentials: { email: "2email@host.com", username: "2username", password: "password" } },
@@ -47,6 +47,7 @@ describe("/users CREATE", () => {
 
                 expect(response.body.user.username).toEqual(body.credentials.username);
                 expect(response.body.user.email).toEqual(body.credentials.email);
+                expect(response.body.user.password).toBeFalsy();
             }
         });
 

@@ -30,7 +30,7 @@ describe("/posts READ_ALL", () => {
                 expect(response.body.success).toBeTruthy();
                 expect(response.body.message).toBeDefined();
             });
-            test("response body has accurate post", async () => {
+            test("response body has accurate posts", async () => {
                 let numInPostText = 19;
                 for (let i = 0; i < 10; i++) {
                     expect(response.body.posts[i].text.includes(numInPostText.toString())).toBeTruthy();
@@ -39,6 +39,12 @@ describe("/posts READ_ALL", () => {
                 expect(response.body.posts).toBeDefined();
                 expect(Array.isArray(response.body.posts)).toBeTruthy();
                 expect(response.body.posts.length).toEqual(10); // default limit is 10
+            });
+            test("response body posts do not contain email and password", async () => {
+                for (const post of response.body.posts) {
+                    expect(post.user.email).toBeFalsy();
+                    expect(post.user.password).toBeFalsy();
+                }
             });
         });
 
@@ -72,6 +78,12 @@ describe("/posts READ_ALL", () => {
                     expect(Array.isArray(response.body.posts)).toBeTruthy();
                     expect(response.body.posts.length).toEqual(15);
                 });
+                test("response body posts do not contain email and password", async () => {
+                    for (const post of response.body.posts) {
+                        expect(post.user.email).toBeFalsy();
+                        expect(post.user.password).toBeFalsy();
+                    }
+                });
             });
     
             describe("page", () => {
@@ -102,6 +114,12 @@ describe("/posts READ_ALL", () => {
                     expect(response.body.posts).toBeDefined();
                     expect(Array.isArray(response.body.posts)).toBeTruthy();
                     expect(response.body.posts.length).toEqual(9);
+                });
+                test("response body posts do not contain email and password", async () => {
+                    for (const post of response.body.posts) {
+                        expect(post.user.email).toBeFalsy();
+                        expect(post.user.password).toBeFalsy();
+                    }
                 });
             });
     
@@ -136,6 +154,12 @@ describe("/posts READ_ALL", () => {
                         expect(Array.isArray(response.body.posts)).toBeTruthy();
                         expect(response.body.posts.length).toEqual(10); // default limit is 10
                     });
+                    test("response body posts do not contain email and password", async () => {
+                        for (const post of response.body.posts) {
+                            expect(post.user.email).toBeFalsy();
+                            expect(post.user.password).toBeFalsy();
+                        }
+                    });
                 });
     
                 describe("second user", () => {
@@ -167,6 +191,12 @@ describe("/posts READ_ALL", () => {
                         expect(response.body.posts).toBeDefined();
                         expect(Array.isArray(response.body.posts)).toBeTruthy();
                         expect(response.body.posts.length).toEqual(9); // default limit is 10
+                    });
+                    test("response body posts do not contain email and password", async () => {
+                        for (const post of response.body.posts) {
+                            expect(post.user.email).toBeFalsy();
+                            expect(post.user.password).toBeFalsy();
+                        }
                     });
                 });
             });
@@ -207,6 +237,12 @@ describe("/posts READ_ALL", () => {
                     expect(response.body.posts).toBeDefined();
                     expect(Array.isArray(response.body.posts)).toBeTruthy();
                     expect(response.body.posts.length).toEqual(10); // default limit is 10
+                });
+                test("response body posts do not contain email and password", async () => {
+                    for (const post of response.body.posts) {
+                        expect(post.user.email).toBeFalsy();
+                        expect(post.user.password).toBeFalsy();
+                    }
                 });
             });
         });

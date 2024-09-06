@@ -44,6 +44,22 @@ describe("/posts CREATE", () => {
                 expect(response.body.success).toBeDefined();
                 expect(response.body.message).toBeDefined();
             });
+            test("response body has accurate post", async () => {
+                const response = await request(app).post("/api/posts")
+                    .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
+                    .set("Authorization", `Bearer ${token}`);
+
+                expect(response.body.post).toBeDefined();
+                expect(response.body.post.text).toEqual("This is a new post");
+                expect(response.body.post.user).toBeDefined();
+            });
+            test("post user does not contain password", async () => {
+                const response = await request(app).post("/api/posts")
+                    .send({ forum: user.profile.forum, post: { user: user._id, text: "This is a new post" } })
+                    .set("Authorization", `Bearer ${token}`);
+
+                expect(response.body.post.user.password).toBeFalsy();
+            });
         });
 
         describe("missing user and/or text", () => {

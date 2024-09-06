@@ -50,7 +50,7 @@ describe("/posts UPDATE", () => {
             expect(response.body.success).toBeTruthy();
             expect(response.body.message).toBeDefined();
         });
-        test("response body should contain updated user", async () => {
+        test("response body should contain updated post", async () => {
             const bodyData = [
                 { text: "Updated post text 1" },
                 { text: "Updated post text 2" },
@@ -65,6 +65,15 @@ describe("/posts UPDATE", () => {
 
                 expect(response.body.post.text).toBe(data.text);
             }
+        });
+        test("response body post user should not contain email or password", async () => {
+            const response = await request(app)
+                .put(`/api/posts/${post._id}`)
+                .send({ text: "Updated post text." })
+                .set("Authorization", `Bearer ${token}`);
+
+            expect(response.body.post.user.email).toBeFalsy();
+            expect(response.body.post.user.password).toBeFalsy();
         });
 
         describe("input is invalid", () => {

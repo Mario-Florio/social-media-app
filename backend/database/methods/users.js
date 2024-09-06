@@ -34,6 +34,8 @@ async function registerUser(credentials) {
             profile
         }).save();
 
+        user.password = null;
+
         await new Album({ user: user._id, name: "All" }).save();
         await new Album({ user: user._id, name: "Profile Pictures" }).save();
         await new Album({ user: user._id, name: "Cover Photos" }).save();
@@ -46,6 +48,7 @@ async function authorizeUser(credentials) {
     const { username, password } = credentials;
     const user = await User.findOne({ username })
         .select("+password")
+        .select("+email")
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
 
@@ -106,8 +109,9 @@ async function getUsers(limit=10, page=0, search, populate) {
     return users;
 }
 
-async function getUserById(id) {
+async function getUserById(id, select = []) {
     const user = await User.findById(id)
+        .select(select.map(field => `+${field}`))
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
     
@@ -123,6 +127,7 @@ async function getUserById(id) {
 
 async function updateUser(id, update) {
     const user = await User.findById(id)
+        .select("+email")
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
 
@@ -151,6 +156,8 @@ async function updateUser(id, update) {
     }
 
     await user.save();
+
+    user.password = null;
 
     return { user, message: "Update Successful", success: true };
 }
@@ -230,7 +237,7 @@ async function deleteUser(id) {
 }
 
 async function updateProfile(userId, update) {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId).select("+email").exec();
 
     if (!user) {
         return { status: 400, message: "Request Failed: User does not exist", success: false };
@@ -262,7 +269,7 @@ async function updateProfile(userId, update) {
 }
 
 async function followProfile(userId, peerUserId, follow) {
-    const user = await User.findById(userId).populate("profile").exec();
+    const user = await User.findById(userId).select("+email").populate("profile").exec();
     const peerUser = await User.findById(peerUserId).populate("profile").exec();
 
     if (!user || !peerUser) {
@@ -331,7 +338,7 @@ async function followProfile(userId, peerUserId, follow) {
 }
 
 async function updateProfileDefaultImg(userId, update) {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId).select("+email").exec();
 
     if (!user) {
         return { status: 400, message: "Request Failed: User does not exist", success: false };

@@ -37,6 +37,10 @@ describe("/posts READ_ONE", () => {
             expect(response.body.post).toBeDefined();
             expect(response.body.post._id.toString()).toEqual(post._id.toString());
         });
+        test("response body post user does not contain emaail and password", async () => {
+            expect(response.body.post.user.email).toBeFalsy();
+            expect(response.body.post.user.password).toBeFalsy();
+        });
 
         describe("Post does not exist", () => {
             let response;

@@ -70,6 +70,20 @@ describe("/users UPDATE_PROFILE_DEFAULTIMG", () => {
                 ).toBeTruthy();
             }
         });
+        test("should contain email", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile/default-img`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ picture: "Default-profilePic" });
+            expect(response.body.user.email).toEqual(user.email);
+        });
+        test("user should not contain password", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile/default-img`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ picture: "Default-profilePic" });
+            expect(response.body.user.password).toBeFalsy();
+        });
 
         describe("input is invalid", () => {
             let response;

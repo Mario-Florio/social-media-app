@@ -44,6 +44,24 @@ describe("/users FOLLOW_PROFILE", () => {
             expect(response.body.clientUser).toBeDefined();
             expect(response.body.peerUser).toBeDefined();
         });
+        test("client user should contian email; peer user should not contain email", async () => {
+            const response = await request(app)
+                .put(`/api/users/${peerUser._id}/profile/follow`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ userId: clientUser._id, follow: true });
+
+            expect(response.body.clientUser.email).toEqual(clientUser.email);
+            expect(response.body.peerUser.email).toBeFalsy();
+        });
+        test("users should not contain passwords", async () => {
+            const response = await request(app)
+                .put(`/api/users/${peerUser._id}/profile/follow`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ userId: clientUser._id, follow: true });
+
+            expect(response.body.clientUser.password).toBeFalsy();
+            expect(response.body.peerUser.password).toBeFalsy();
+        });
         test("response body should follow and unfollow accurately", async () => {
             const bodyData = [
                 { userId: clientUser._id, follow: true },

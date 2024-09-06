@@ -67,6 +67,13 @@ describe("/comments CREATE", () => {
                     i++;
                 }
             });
+            test("response body comment user does not contain password", async () => {
+                const response = await request(app).post("/api/comments")
+                    .send({ postId: post._id, comment: { user: user._id, text: "Hello" } })
+                    .set("Authorization", `Bearer ${token}`);
+
+                expect(response.body.comment.user.password).toBeFalsy();
+            });
         });
 
         describe("missing postId, user and/or text", () => {

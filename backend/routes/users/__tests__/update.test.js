@@ -50,9 +50,9 @@ describe("/users UPDATE", () => {
         });
         test("response body should contain updated user", async () => {
             const bodyData = [
-                { username: "updated-username1", password: "password1" },
-                { username: "updated-username2", password: "password2" },
-                { username: "updated-username3", password: "password3" }
+                { email: "updated-email1@host.com", username: "updated-username1", password: "password1" },
+                { email: "updated-email2@host.com", username: "updated-username2", password: "password2" },
+                { email: "updated-email3@host.com", username: "updated-username3", password: "password3" }
             ];
 
             for (const data of bodyData) {
@@ -62,13 +62,25 @@ describe("/users UPDATE", () => {
                     .send(data);
 
                 expect(response.body.user.username).toBe(data.username);
+                expect(response.body.user.email).toBe(data.email);
             }
+        });
+        test("user does not contain password", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({
+                    username: "updated-username",
+                    password: "password"
+                });
+            expect(response.body.user.password).toBeFalsy();
         });
 
         describe("input is invalid", () => {
             const bodyData = [
                 { username: "username", password: "passwor" }, // password < 8
-                { username: "username", password: "passwordpasswordpasswordpasswordpassword" } // pasword > 25
+                { username: "username", password: "passwordpasswordpasswordpasswordpassword" }, // pasword > 25
+                { email: "email", username: "username", password: "password" } // invalid email
             ];
             test("should respond with status code 422", async () => {
                 for (const data of bodyData) {

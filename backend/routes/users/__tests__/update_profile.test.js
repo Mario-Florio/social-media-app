@@ -54,6 +54,20 @@ describe("/users UPDATE_PROFILE", () => {
                 expect(response.body.user.profile.bio).toBe(data.bio);
             }
         });
+        test("user contains email", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ bio: "Updated bio..." });
+            expect(response.body.user.email).toEqual(user.email);
+        });
+        test("user does not contain password", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ bio: "Updated bio..." });
+            expect(response.body.user.password).toBeFalsy();
+        });
 
         describe("input is invalid", () => {
             let response;

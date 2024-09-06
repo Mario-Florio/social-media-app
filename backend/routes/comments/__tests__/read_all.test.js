@@ -31,6 +31,12 @@ describe("/comments READ_ALL", () => {
             expect(Array.isArray(response.body.comments)).toBeTruthy();
             expect(response.body.comments.length).toEqual(19);
         });
+        test("response body comments users do not contain email or password", async () => {
+            for (const comment of response.body.comments) {
+                expect(comment.user.email).toBeFalsy();
+                expect(comment.user.password).toBeFalsy();
+            }
+        });
     });
 
     describe("database is empty", () => {

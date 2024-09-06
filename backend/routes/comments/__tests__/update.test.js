@@ -64,6 +64,14 @@ describe("/comments UPDATE", () => {
                     expect(response.body.comment.text).toEqual(data.text);
                 }
             });
+            test("response body comments users do not contain email or password", async () => {
+                const response = await request(app).put(`/api/comments/${comment._id}`)
+                    .send({ text: "Update text" })
+                    .set("Authorization", `Bearer ${token}`);
+
+                expect(response.body.comment.user.email).toBeFalsy();
+                expect(response.body.comment.user.password).toBeFalsy();
+            });
         });
 
         describe("missing text", () => {
