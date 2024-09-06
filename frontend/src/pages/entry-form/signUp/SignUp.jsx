@@ -14,6 +14,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
     const [isLoading, setIsLoading] = useState(false);
     const [formInput, setFormInput] = useState({
         username: "",
+        email: "",
         password: "",
         confirmPassword: ""
     });
@@ -27,6 +28,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
             { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
             { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
         ],
+        email: [],
         password: [
             { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
             { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
@@ -70,7 +72,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
         const postUserRes = await postUser({ credentials: formInput });
 
         if (postUserRes.success) {
-            const credentials = { username: postUserRes.user.username, password: formInput.password.trim() };
+            const credentials = { username: postUserRes.user.username, email: formInput.email, password: formInput.password.trim() };
             const postLoginRes = await postLogin(credentials);
 
             if (postLoginRes.success) {
@@ -78,6 +80,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
             }
             setFormInput({
                 username: "",
+                email: "",
                 password: "",
                 confirmPassword: ""
             });
@@ -97,6 +100,12 @@ function SignUp({ isSignIn, setIsSignIn }) {
                 <ul>
                     { errors.username.map((error, i) => 
                         error.status && isDirty.username && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
+                <label htmlFor="email">Email <i>optional</i></label><br/>
+                <input type="text" name="email" id="email" value={formInput.email} onChange={handleChange}/><br/>
+                <ul>
+                    { errors.email.map((error, i) => 
+                        error.status && isDirty.email && <li key={i}><span className="err-msg">{error.message}</span></li>) }
                 </ul>
                 <label htmlFor="password">Password</label><br/>
                 <input type="password" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>

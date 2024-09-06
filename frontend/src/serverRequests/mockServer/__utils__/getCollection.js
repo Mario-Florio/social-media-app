@@ -1,11 +1,18 @@
 
-function getCollection(collectionName, { showHidden } = {}) {
+function getCollection(collectionName, { showHidden=[] } = {}) {
     const collectionJSON = window.localStorage.getItem(collectionName);
     const collection = JSON.parse(collectionJSON);
 
-    if (collectionName === "Users" && showHidden !== "password") {
+    if (collectionName === "Users") {
+        let hideEmail = true;
+        let hidePassword = true;
+
+        if (showHidden.includes("email")) hideEmail = false;
+        if (showHidden.includes("password")) hidePassword = false;
+
         for (const user of collection) {
-            delete user.password;
+            hideEmail && delete user.email;
+            hidePassword && delete user.password;
         }
     }
 
