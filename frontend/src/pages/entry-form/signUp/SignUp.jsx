@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./signUp.css";
+import { useAuth } from "../../../hooks/useAuth";
+import isNotValidEmail from "../../__utils__/isNotValidEmail";
 import Loader from "../../../components/loader/Loader";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
-import { useAuth } from "../../../hooks/useAuth";
 
 import requests from "../../../serverRequests/requests";
 const { postUser } = requests.users;
@@ -20,6 +21,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
     });
     const [isDirty, setIsDirty] = useState({
         username: false,
+        email: false,
         password: false,
         confirmPassword: false
     });
@@ -28,7 +30,9 @@ function SignUp({ isSignIn, setIsSignIn }) {
             { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
             { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
         ],
-        email: [],
+        email: [
+            { status: isNotValidEmail(formInput.email) && formInput.email.length > 0, message: "Email must be in valid format" }
+        ],
         password: [
             { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
             { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "./form.css";
+import isNotValidEmail from "../../../__utils__/isNotValidEmail";
+import { useAuth } from "../../../../hooks/useAuth";
 import Loader from "../../../../components/loader/Loader";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
-import { useAuth } from "../../../../hooks/useAuth";
 
 import requests from "../../../../serverRequests/requests";
 const { putUser, deleteUser } = requests.users;
@@ -30,7 +31,9 @@ function AccountForm() {
             { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
             { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
         ],
-        email: [],
+        email: [
+            { status: isNotValidEmail(formInput.email) && formInput.email.length > 0, message: "Email must be in valid format" }
+        ],
         password: [
             { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
             { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
