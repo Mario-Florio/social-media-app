@@ -19,7 +19,7 @@ function EntryForm({ setUser }) {
         <div className="entryForm-bg">
             <div className="headings-container">
                 <h1>Social Media App</h1>
-                <p>Stay Connected</p>
+                <p>Stay Connected.</p>
             </div>
             { isSignIn ?
                 <SignIn setUser={setUser} isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> :
