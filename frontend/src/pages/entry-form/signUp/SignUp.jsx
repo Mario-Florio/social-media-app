@@ -96,7 +96,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
     }
 
     return(
-        <main className="entryForm-wrapper">
+        <section className="entryForm-wrapper">
             <h2>Sign Up</h2>
             <form action="/login" method="POST" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label><br/>
@@ -128,7 +128,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
             </form>
             <span>Already have an account? </span>
             <span className="link" onClick={handleClick}>Sign In</span>
-        </main>
+        </section>
     );
 }
 

@@ -1,9 +1,37 @@
 
+.entryForm-bg {
+    display: flex;
+    gap: 3rem;
+    padding: 6rem;
+    background-color: dodgerblue;
+    height: 100vh;
+}
+
+.entryForm-bg .headings-container {
+    padding: 4rem 0;
+}
+
+.entryForm-bg .headings-container h1 {
+    font-size: 5rem;
+    color: white;
+    margin: 0;
+}
+
+.entryForm-bg .headings-container p {
+    font-size: 1.5rem;
+    color: white;
+}
+
 .entryForm-wrapper {
     display: block;
+    background-color: white;
     margin: auto;
     padding: 1rem;
-    max-width: 700px;
+    height: fit-content;
+    width: calc(100% - 2rem);
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.453);
 }
 
 .entryForm-wrapper input {
@@ -35,4 +63,29 @@
 .entryForm-wrapper .link {
     color: dodgerblue;
     cursor: pointer;
+}
+
+@media all and (max-width: 1150px) {
+    .entryForm-bg {
+        display: block;
+        padding: 0;
+    }
+
+    .entryForm-bg .headings-container {
+        text-align: center;
+    }
+
+    .entryForm-bg p {
+        display: none;
+    }
+}
+
+@media all and (max-width: 700px) {
+    .entryForm-bg .headings-container h1 {
+        font-size: 3rem;
+    }
+
+    .entryForm-bg .headings-container {
+        padding: 2rem 0;
+    }
 }
