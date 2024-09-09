@@ -35,8 +35,8 @@ function AccountForm() {
             { status: isNotValidEmail(formInput.email) && formInput.email.length > 0, message: "Email must be in valid format" }
         ],
         password: [
-            { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
-            { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
+            { status: (passwordIsActive && formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
+            { status: (passwordIsActive && formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
         ],
         confirmPassword: [
             { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'} // matches password
@@ -72,7 +72,11 @@ function AccountForm() {
 
     async function handleSubmit() {
         try {
-            if (!isValid()) return alert('Form input invalid');
+            if (!isValid()) {
+                setResponsePopupData({ message: "Invalid form input", success: false });
+                setResponsePopupIsActive(true);
+                return;
+            }
             setIsLoading(true);
     
             const reqBody = { id: user._id, update: {}, token };
