@@ -15,9 +15,16 @@ function EntryForm({ setUser }) {
         return <Navigate to="/" />;
     }
 
-    return(isSignIn ?
-        <SignIn setUser={setUser} isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> :
-        <SignUp isSignIn={isSignIn} setIsSignIn={setIsSignIn}/>
+    return(
+        <div className="entryForm-bg">
+            <div className="headings-container">
+                <h1>Social Media App</h1>
+                <p>Stay Connected.</p>
+            </div>
+            { isSignIn ?
+                <SignIn setUser={setUser} isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> :
+                <SignUp isSignIn={isSignIn} setIsSignIn={setIsSignIn}/> }
+        </div>
     );
 }
 

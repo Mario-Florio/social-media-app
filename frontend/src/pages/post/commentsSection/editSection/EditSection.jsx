@@ -2,10 +2,10 @@ import { useState } from "react";
 import "./editSection.css";
 import Loader from "../../../../components/loader/Loader";
 import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper"
-import requests from "../../../../serverRequests/methods/config";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
+import requests from "../../../../serverRequests/requests";
 const { putComment } = requests.comments;
 
 function EditSection({ comment, setComments, editSectionIsActive, setEditSectionIsActive }) {

@@ -4,7 +4,7 @@ import SectionWrapper from "../../../../components/sectionWrapper/SectionWrapper
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
-import requests from "../../../../serverRequests/methods/config";
+import requests from "../../../../serverRequests/requests";
 
 function DeleteSection({ data, albums, setAlbums, selectedAlbum, setSelectedAlbum, setPhotos, sectionIsActive, setSectionIsActive }) {
     const [selectAlbums, setSelectAlbums] = useState([]);

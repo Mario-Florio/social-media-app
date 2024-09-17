@@ -1,10 +1,11 @@
 import { useState } from "react";
 import "./form.css";
+import isNotValidEmail from "../../../__utils__/isNotValidEmail";
+import { useAuth } from "../../../../hooks/useAuth";
 import Loader from "../../../../components/loader/Loader";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
-import { useAuth } from "../../../../hooks/useAuth";
-import requests from "../../../../serverRequests/methods/config";
 
+import requests from "../../../../serverRequests/requests";
 const { putUser, deleteUser } = requests.users;
 
 function AccountForm() {
@@ -15,26 +16,31 @@ function AccountForm() {
     const [passwordIsActive, setPasswordIsActive] = useState(false);
     const [formInput, setFormInput] = useState({
         username: user.username,
+        email: user.email || "",
         password: "",
         confirmPassword: ""
     });
     const [isDirty, setIsDirty] = useState({
         username: false,
+        email: false,
         password: false,
         confirmPassword: false
     });
     const errors = {
-        username: {
-            maxLength: { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' },
-            minLength: { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' }
-        },
-        password: {
-            maxLength: { status: (passwordIsActive && formInput.password.length > 25), message: 'Password cannot be over 25 characters' },
-            minLength: { status: (passwordIsActive && formInput.password.length < 8), message: 'Password must be atleast 8 characters' }
-        },
-        confirmPassword: {
-            isMatch: { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'}
-        }
+        username: [
+            { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
+            { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
+        ],
+        email: [
+            { status: isNotValidEmail(formInput.email) && formInput.email.length > 0, message: "Email must be in valid format" }
+        ],
+        password: [
+            { status: (passwordIsActive && formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
+            { status: (passwordIsActive && formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
+        ],
+        confirmPassword: [
+            { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'} // matches password
+        ]
     };
 
     function isValid() {
@@ -66,7 +72,11 @@ function AccountForm() {
 
     async function handleSubmit() {
         try {
-            if (!isValid()) return alert('Form input invalid');
+            if (!isValid()) {
+                setResponsePopupData({ message: "Invalid form input", success: false });
+                setResponsePopupIsActive(true);
+                return;
+            }
             setIsLoading(true);
     
             const reqBody = { id: user._id, update: {}, token };
@@ -86,7 +96,7 @@ function AccountForm() {
                 if (res.success) {
                     const user = res.user;
                     updateUser(user);
-                    setFormInput({ username: user.username, password: "", confirmPassword: "" });
+                    setFormInput({ username: user.username, email: user.email, password: "", confirmPassword: "" });
                 }
 
                 setResponsePopupData({ message: res.message, success: res.success });
@@ -115,25 +125,34 @@ function AccountForm() {
             <div className="form-field">
                 <label htmlFor="username">Username</label>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/>
-                <div className="err-container">
-                    {errors.username.minLength.status && isDirty.username && <><span className="err-msg">{errors.username.minLength.message}</span><br/></>}
-                    {errors.username.maxLength.status && isDirty.username && <><span className="err-msg">{errors.username.maxLength.message}</span><br/></>}
-                </div>
+                <ul className="err-container">
+                    { errors.username.map((error, i) => 
+                        error.status && isDirty.username && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
+            </div>
+            <div className="form-field">
+                <label htmlFor="email">Email</label>
+                <input type="text" name="email" id="email" value={formInput.email} onChange={handleChange}/>
+                <ul className="err-container">
+                    { errors.email.map((error, i) => 
+                        error.status && isDirty.email && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
             </div>
             <div className="form-field">
                 <label htmlFor="password">Password</label>
                 <input type="text" name="password" id="password" value={formInput.password} onChange={handleChange}/>
-                <div className="err-container">
-                    {errors.password.minLength.status && isDirty.password && <><span className="err-msg">{errors.password.minLength.message}</span><br/></>}
-                    {errors.password.maxLength.status && isDirty.password && <><span className="err-msg">{errors.password.maxLength.message}</span><br/></>}
-                </div>
+                <ul className="err-container">
+                    { errors.password.map((error, i) => 
+                        error.status && isDirty.password && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
             </div>
             { passwordIsActive && <div className="form-field">
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type="text" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/>
-                <div className="err-container">
-                    {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
-                </div>
+                <ul className="err-container">
+                    { errors.confirmPassword.map((error, i) => 
+                        error.status && isDirty.confirmPassword && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
             </div> }
             <div className="buttons_wrapper">
                 <button disabled={isLoading} onClick={handleSubmit}>

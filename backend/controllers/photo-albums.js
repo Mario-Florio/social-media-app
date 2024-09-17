@@ -1,5 +1,5 @@
 const photoAlbums_dbMethods = require("../database/methods/photo-albums");
-const { verifyToken } = require("../authenticate");
+const { verifyToken } = require("../globals/authenticate");
 
 async function read_all(req, res, next) {
 

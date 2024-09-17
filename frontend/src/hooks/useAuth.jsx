@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
-import requests from "../serverRequests/methods/config";
+import requests from "../serverRequests/requests";
 const { getSession } = requests.auth;
 
 const AuthContext = createContext();

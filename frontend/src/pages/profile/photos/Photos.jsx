@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "./photos.css";
 import { Link } from "react-router-dom";
+import ImgHandler from "../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import { useParams } from "react-router-dom";
 
-import requests from "../../../serverRequests/methods/config";
-
+import requests from "../../../serverRequests/requests";
 const { getAlbums } = requests.albums;
 
 function Photos() {
@@ -62,13 +63,13 @@ function AlbumLink({ album }) {
         <Link to={`./photos/${album._id}`}>
             <div className="album-preview">
                 { album.photos.length > 2 && <div className="img_wrapper photo-3">
-                    <img src={album.photos[2].url} alt={album.photos[2].name}/>
+                    <ImgHandler src={photoExists(album.photos[2])} type="photo"/>
                 </div> }
                 { album.photos.length > 1 && <div className="img_wrapper photo-2">
-                    <img src={album.photos[1].url} alt={album.photos[1].name}/>
+                    <ImgHandler src={photoExists(album.photos[1])} type="photo"/>
                 </div> }
                 { album.photos.length > 0 && <div className="img_wrapper photo-1">
-                    <img src={album.photos[0].url} alt={album.photos[0]}/>
+                    <ImgHandler src={photoExists(album.photos[0])} type="photo"/>
                 </div> }
             </div>
             <h4>{album.name}</h4>

@@ -3,8 +3,7 @@ import ResponsePopup from "../../../components/responsePopup/ResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 import "./uploadForm.css";
 
-import requests from "../../../serverRequests/methods/config";
-
+import requests from "../../../serverRequests/requests";
 const { postPhoto } = requests.albums;
 
 function UploadForm({ albums, setAlbums, setPhotos, selectedAlbum, userId }) {

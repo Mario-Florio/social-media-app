@@ -7,6 +7,15 @@
     color: rgb(193, 3, 3);
 }
 
+#settings .user-tab .account-form ul {
+    padding: 0;
+    margin: 0;
+}
+
+#settings .user-tab .account-form li {
+    list-style-type: none;
+}
+
 .user-tab .account-form .popup_mask {
     z-index: -1;
     position: fixed;

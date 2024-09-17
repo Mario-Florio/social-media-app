@@ -3,8 +3,7 @@ import "./picturePopup.css";
 import { useAuth } from "../../../../hooks/useAuth";
 import { useProfile } from "../../hooks/useProfile";
 
-import requests from "../../../../serverRequests/methods/config";
-
+import requests from "../../../../serverRequests/requests";
 const { putProfileDefaultImg } = requests.users;
 
 function PicturePopup({ name, setIsActive, setPicture, options }) {

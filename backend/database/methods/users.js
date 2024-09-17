@@ -10,15 +10,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const getPhotoUrl = require("./__utils__/getPhotoUrl");
-const { defaultImages } = require("../../defaultImgs");
+const { defaultImages } = require("../../globals/defaultImgs");
 
 const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString("hex");
 
 async function registerUser(credentials) {
-    const { username, password } = credentials;
+    const { email, username, password } = credentials;
     const userExists = await User.findOne({ username }).exec();
-    if (userExists) {
-        return { status: 404, message: "Request Failed: User already exists", success: false };
+    const emailExists = await User.findOne({ email }).exec();
+    if (userExists || emailExists) {
+        const message = emailExists ? "Request Failed: User already exists with this email" : "Request Failed: User already exists";
+        return { status: 404, message, success: false };  
     } else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -26,10 +28,13 @@ async function registerUser(credentials) {
         const forum = await new Forum().save();
         const profile = await new Profile({ forum }).save();
         const user = await new User({
+            email,
             username,
             password: hashedPassword,
             profile
         }).save();
+
+        user.password = null;
 
         await new Album({ user: user._id, name: "All" }).save();
         await new Album({ user: user._id, name: "Profile Pictures" }).save();
@@ -43,6 +48,7 @@ async function authorizeUser(credentials) {
     const { username, password } = credentials;
     const user = await User.findOne({ username })
         .select("+password")
+        .select("+email")
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
 
@@ -103,8 +109,9 @@ async function getUsers(limit=10, page=0, search, populate) {
     return users;
 }
 
-async function getUserById(id) {
+async function getUserById(id, select = []) {
     const user = await User.findById(id)
+        .select(select.map(field => `+${field}`))
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
     
@@ -120,6 +127,7 @@ async function getUserById(id) {
 
 async function updateUser(id, update) {
     const user = await User.findById(id)
+        .select("+email")
         .populate({ path: "profile", populate: { path: "picture coverPicture" } })
         .exec();
 
@@ -148,6 +156,8 @@ async function updateUser(id, update) {
     }
 
     await user.save();
+
+    user.password = null;
 
     return { user, message: "Update Successful", success: true };
 }
@@ -227,7 +237,7 @@ async function deleteUser(id) {
 }
 
 async function updateProfile(userId, update) {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId).select("+email").exec();
 
     if (!user) {
         return { status: 400, message: "Request Failed: User does not exist", success: false };
@@ -259,7 +269,7 @@ async function updateProfile(userId, update) {
 }
 
 async function followProfile(userId, peerUserId, follow) {
-    const user = await User.findById(userId).populate("profile").exec();
+    const user = await User.findById(userId).select("+email").populate("profile").exec();
     const peerUser = await User.findById(peerUserId).populate("profile").exec();
 
     if (!user || !peerUser) {
@@ -328,7 +338,7 @@ async function followProfile(userId, peerUserId, follow) {
 }
 
 async function updateProfileDefaultImg(userId, update) {
-    const user = await User.findById(userId).exec();
+    const user = await User.findById(userId).select("+email").exec();
 
     if (!user) {
         return { status: 400, message: "Request Failed: User does not exist", success: false };

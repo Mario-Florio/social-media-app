@@ -46,6 +46,16 @@ describe("/users READ_ALL", () => {
                 expect(response.body.users[8].username).toEqual("username17");
                 expect(response.body.users[9].username).toEqual("username18");
             });
+            test("users do not contain emails", async () => {
+                for (const user of response.body.users) {
+                    expect(user.email).toBeFalsy();
+                }
+            });
+            test("users do not contain passwords", async () => {
+                for (const user of response.body.users) {
+                    expect(user.password).toBeFalsy();
+                }
+            });
         });
 
         describe("query string used", () => {
@@ -90,6 +100,11 @@ describe("/users READ_ALL", () => {
                     expect(response.body.users[13].username).toEqual("username4");
                     expect(response.body.users[14].username).toEqual("username5");
                 });
+                test("users do not contain password", async () => {
+                    for (const user of response.body.users) {
+                        expect(user.password).toBeFalsy();
+                    }
+                });
             });
 
             describe("page", () => {
@@ -127,6 +142,11 @@ describe("/users READ_ALL", () => {
                     expect(response.body.users[7].username).toEqual("username8");
                     expect(response.body.users[8].username).toEqual("username9");
                 });
+                test("users do not contain password", async () => {
+                    for (const user of response.body.users) {
+                        expect(user.password).toBeFalsy();
+                    }
+                });
             });
 
             describe("search", () => {
@@ -157,6 +177,11 @@ describe("/users READ_ALL", () => {
                         expect(response.body.users.length).toEqual(2);
                         expect(response.body.users[0].username).toEqual("username19");
                         expect(response.body.users[1].username).toEqual("username9");
+                    });
+                    test("users do not contain password", async () => {
+                        for (const user of response.body.users) {
+                            expect(user.password).toBeFalsy();
+                        }
                     });
                 });
 
@@ -224,6 +249,11 @@ describe("/users READ_ALL", () => {
                         expect(response.body.users[0].username).toEqual("username2");
                         expect(response.body.users[1].username).toEqual("username3");
                     });
+                    test("users do not contain password", async () => {
+                        for (const user of response.body.users) {
+                            expect(user.password).toBeFalsy();
+                        }
+                    });
                 });
 
                 describe("post", () => {
@@ -258,6 +288,11 @@ describe("/users READ_ALL", () => {
                         expect(Array.isArray(response.body.users)).toBeTruthy();
                         expect(response.body.users.length).toEqual(1);
                         expect(response.body.users[0].username).toEqual("username1");
+                    });
+                    test("users do not contain password", async () => {
+                        for (const user of response.body.users) {
+                            expect(user.password).toBeFalsy();
+                        }
                     });
                 });
             });

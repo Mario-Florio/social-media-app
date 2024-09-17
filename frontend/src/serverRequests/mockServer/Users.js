@@ -82,9 +82,9 @@ async function getUserMock(reqBody) {
 async function postUserMock(reqBody) {
     await delay(ms);
 
-    const { username, password } = reqBody.credentials;
+    const { email, username, password } = reqBody.credentials;
 
-    const users = getCollection("Users", { showHidden: "password" });
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
     const forums = getCollection("Forums");
     const albums = getCollection("Albums");
 
@@ -92,12 +92,16 @@ async function postUserMock(reqBody) {
         if (user.username === username) {
             return { message: "Request Failed: User already exists", success: false };
         }
+        if (email.length > 0 && user.email === email) {
+            return { message: "Request Failed: User already exists with this email", success: false };
+        }
     }
 
     const _id = uid();
     const newForum = { _id, posts: [] };
     const newUser = {
         _id,
+        email,
         username,
         password,
         createdAt: new Date(),
@@ -139,6 +143,8 @@ async function postUserMock(reqBody) {
         createdAt: new Date(),
     }
 
+    email.length === 0 && delete newUser.email;
+
     users.push(newUser);
     window.localStorage.setItem("Users", JSON.stringify(users));
     forums.push(newForum);
@@ -159,8 +165,7 @@ async function putUserMock(reqBody) {
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
-    const users = getCollection("Users", { showHidden: "password" });
-    const images = getCollection("Images");
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
 
     let userFound = false;
     let index = 0;
@@ -200,7 +205,7 @@ async function deleteUserMock(reqBody) {
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
-    const users = getCollection("Users", { showHidden: "password" });
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
     const forums = getCollection("Forums");
     const posts = getCollection("Posts");
     const comments = getCollection("Comments");
@@ -313,7 +318,7 @@ async function putProfileMock(reqBody) {
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
-    const users = getCollection("Users", { showHidden: "password" });
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
     const photos = getCollection("Photos");
     const images = getCollection("Images");
 
@@ -375,7 +380,7 @@ async function putUserFollowMock(reqBody) {
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
-    const users = getCollection("Users", { showHidden: "password" });
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
 
     let profileUserFound = false;
     let profileUserIndex = null;
@@ -442,7 +447,7 @@ async function putProfileDefaultImgMock(reqBody) {
     const tokenIsValid = validateToken(token);
     if (!tokenIsValid) return { message: "Request Failed: Action is forbidden", success: false };
 
-    const users = getCollection("Users", { showHidden: "password" });
+    const users = getCollection("Users", { showHidden: ["email", "password"] });
     const images = getCollection("Images");
 
     let userFound = false;

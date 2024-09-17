@@ -37,6 +37,12 @@ describe("/users READ_ONE", () => {
             expect(response.body.user).toBeDefined();
             expect(response.body.user._id.toString()).toEqual(user._id.toString());
         });
+        test("user does not contain email", async () => {
+            expect(response.body.user.email).toBeFalsy();
+        });
+        test("user does not contain password", async () => {
+            expect(response.body.user.password).toBeFalsy();
+        });
 
         describe("User does not exist", () => {
             let response;

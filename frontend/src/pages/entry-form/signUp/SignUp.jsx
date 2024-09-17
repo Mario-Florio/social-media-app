@@ -1,8 +1,11 @@
 import { useState } from "react";
+import "./signUp.css";
+import { useAuth } from "../../../hooks/useAuth";
+import isNotValidEmail from "../../__utils__/isNotValidEmail";
 import Loader from "../../../components/loader/Loader";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
-import { useAuth } from "../../../hooks/useAuth";
-import requests from "../../../serverRequests/methods/config";
+
+import requests from "../../../serverRequests/requests";
 const { postUser } = requests.users;
 const { postLogin } = requests.auth;
 
@@ -12,26 +15,31 @@ function SignUp({ isSignIn, setIsSignIn }) {
     const [isLoading, setIsLoading] = useState(false);
     const [formInput, setFormInput] = useState({
         username: "",
+        email: "",
         password: "",
         confirmPassword: ""
     });
     const [isDirty, setIsDirty] = useState({
         username: false,
+        email: false,
         password: false,
         confirmPassword: false
     });
     const errors = {
-        username: {
-            maxLength: { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' },
-            minLength: { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' }
-        },
-        password: {
-            maxLength: { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' },
-            minLength: { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' }
-        },
-        confirmPassword: {
-            isMatch: { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'}
-        }
+        username: [
+            { status: (formInput.username.length > 25), message: 'Username cannot be over 25 characters' }, // max length
+            { status: (formInput.username.length < 8), message: 'Username must be atleast 8 characters' } // min length
+        ],
+        email: [
+            { status: isNotValidEmail(formInput.email) && formInput.email.length > 0, message: "Email must be in valid format" }
+        ],
+        password: [
+            { status: (formInput.password.length > 25), message: 'Password cannot be over 25 characters' }, // max length
+            { status: (formInput.password.length < 8), message: 'Password must be atleast 8 characters' } // min length
+        ],
+        confirmPassword: [
+            { status: (formInput.confirmPassword !== formInput.password), message: 'Password must match'} // matches password
+        ]
     };
 
     function handleClick() { // sign in link
@@ -68,7 +76,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
         const postUserRes = await postUser({ credentials: formInput });
 
         if (postUserRes.success) {
-            const credentials = { username: postUserRes.user.username, password: formInput.password.trim() };
+            const credentials = { username: postUserRes.user.username, email: formInput.email, password: formInput.password.trim() };
             const postLoginRes = await postLogin(credentials);
 
             if (postLoginRes.success) {
@@ -76,6 +84,7 @@ function SignUp({ isSignIn, setIsSignIn }) {
             }
             setFormInput({
                 username: "",
+                email: "",
                 password: "",
                 confirmPassword: ""
             });
@@ -87,26 +96,39 @@ function SignUp({ isSignIn, setIsSignIn }) {
     }
 
     return(
-        <main className="entryForm-wrapper">
+        <section className="entryForm-wrapper">
             <h2>Sign Up</h2>
             <form action="/login" method="POST" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label><br/>
                 <input type="text" name="username" id="username" value={formInput.username} onChange={handleChange}/><br/>
-                {errors.username.minLength.status && isDirty.username && <><span className="err-msg">{errors.username.minLength.message}</span><br/></>}
-                {errors.username.maxLength.status && isDirty.username && <><span className="err-msg">{errors.username.maxLength.message}</span><br/></>}
+                <ul>
+                    { errors.username.map((error, i) => 
+                        error.status && isDirty.username && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
+                <label htmlFor="email">Email <i>optional</i></label><br/>
+                <input type="text" name="email" id="email" value={formInput.email} onChange={handleChange}/><br/>
+                <ul>
+                    { errors.email.map((error, i) => 
+                        error.status && isDirty.email && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <label htmlFor="password">Password</label><br/>
                 <input type="password" name="password" id="password" value={formInput.password} onChange={handleChange}/><br/>
-                {errors.password.minLength.status && isDirty.password && <><span className="err-msg">{errors.password.minLength.message}</span><br/></>}
-                {errors.password.maxLength.status && isDirty.password && <><span className="err-msg">{errors.password.maxLength.message}</span><br/></>}
+                <ul>
+                    { errors.password.map((error, i) => 
+                        error.status && isDirty.password && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <label htmlFor="confirmPassword">Confirm Password</label><br/>
                 <input type="password" name="confirmPassword" id="confirmPassword" value={formInput.confirmPassword} onChange={handleChange}/><br/>
-                {errors.confirmPassword.isMatch.status && isDirty.confirmPassword && <><span className="err-msg">{errors.confirmPassword.isMatch.message}</span><br/></>}
+                <ul>
+                    { errors.confirmPassword.map((error, i) => 
+                        error.status && isDirty.confirmPassword && <li key={i}><span className="err-msg">{error.message}</span></li>) }
+                </ul>
                 <button>Submit</button>
                 {isLoading && <Loader/>}
             </form>
             <span>Already have an account? </span>
             <span className="link" onClick={handleClick}>Sign In</span>
-        </main>
+        </section>
     );
 }
 

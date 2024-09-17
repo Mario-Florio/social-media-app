@@ -1,6 +1,6 @@
 const express = require("express");
 const posts_controller = require("../../controllers/posts");
-const { getToken } = require("../../authenticate");
+const { getToken } = require("../../globals/authenticate");
 
 const router = express.Router();
 

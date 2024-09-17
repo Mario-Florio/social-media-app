@@ -3,7 +3,7 @@ import Loader from "../../../components/loader/Loader";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../serverRequests/requests";
 const { postLogin } = requests.auth;
 
 function SignIn({ isSignIn, setIsSignIn }) {
@@ -50,7 +50,7 @@ function SignIn({ isSignIn, setIsSignIn }) {
     }
 
     return(
-        <main className="entryForm-wrapper">
+        <section className="entryForm-wrapper">
             <h2>Sign In</h2>
             <form action="/login" method="POST" onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label><br/>
@@ -62,7 +62,7 @@ function SignIn({ isSignIn, setIsSignIn }) {
             </form>
             <span>Dont have an account? </span>
             <span className="link" onClick={handleClick}>Sign Up</span>
-        </main>
+        </section>
     );
 }
 

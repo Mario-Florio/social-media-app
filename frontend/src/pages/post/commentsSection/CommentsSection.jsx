@@ -1,14 +1,15 @@
 import {  useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import "./commentsSection.css";
+import { Link } from "react-router-dom";
+import ImgHandler from "../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../components/imgHandler/__utils__/photoExists";
 import Loader from "../../../components/loader/Loader";
 import OptionsSection from "./optionsSection/OptionsSection";
 import EditSection from "./editSection/EditSection";
 import { useResponsePopup } from "../../../hooks/useResponsePopup";
 import { useAuth } from "../../../hooks/useAuth";
-import { defaultProfilePic } from "../../../defaultImages/defaultImages";
 
-import requests from "../../../serverRequests/methods/config";
+import requests from "../../../serverRequests/requests";
 import { populateComments } from "../../../serverRequests/methods/comments";
 const { getPost } = requests.posts;
 const { postComment } = requests.comments;
@@ -76,7 +77,7 @@ function Comment({ comment, setComments }) {
         <article className="comment">
             <div className="flexbox">
                 <Link to={`/users/${comment.user._id}`} className="profile-pic_wrapper">
-                    <img src={comment.user.profile.picture ? (comment.user.profile.picture.url || defaultProfilePic.url) : defaultProfilePic.url } alt="user profile pic"/>
+                    <ImgHandler src={photoExists(comment.user.profile.picture)} type="profile"/>
                 </Link>
                 <div>
                     <Link to={`/users/${comment.user._id}`}>

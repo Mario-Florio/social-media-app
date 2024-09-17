@@ -11,6 +11,9 @@ const Image = require("../../models/photos/Image");
 
 const bcrypt = require("bcryptjs");
 
+const dotenv = require("dotenv");
+dotenv.config();
+
 const usersData = [
     {
         username: "Siddhartha Guatama",

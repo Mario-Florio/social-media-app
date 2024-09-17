@@ -3,8 +3,7 @@ import "./deleteAlbumForm.css";
 import { useResponsePopup } from "../../../../hooks/useResponsePopup";
 import { useAuth } from "../../../../hooks/useAuth";
 
-import requests from "../../../../serverRequests/methods/config";
-
+import requests from "../../../../serverRequests/requests";
 const { deleteAlbum } = requests.albums;
 
 function DeleteAlbumForm({ selectedAlbum, setSelectedAlbum, setAlbums }) {

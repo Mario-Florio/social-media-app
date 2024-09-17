@@ -2,13 +2,11 @@ const Album = require("../../models/photos/Album");
 const Photo = require("../../models/photos/Photo");
 const Image = require("../../models/photos/Image");
 const User = require("../../models/User");
-const getPhotoUrl = require("./__utils__/getPhotoUrl");
-const { defaultImages } = require("../../defaultImgs")
-const dotenv = require("dotenv");
 const path = require("path");
 const fs = require("fs");
-
-dotenv.config();
+const getPhotoUrl = require("./__utils__/getPhotoUrl");
+const { defaultImages } = require("../../globals/defaultImgs")
+const getUploadsDir = require("../../globals/getUploadsDir");
 
 async function getAlbums(userId) {
     const queryObj = {};
@@ -142,8 +140,8 @@ async function deletePhoto(id, albumId) {
 
         const image = await Image.findOneAndDelete({ name: photo.pointer }).exec();
         
-        if (fs.existsSync(process.env.ROOT+"/uploads/"+image.url)) {
-            fs.rmSync(process.env.ROOT+"/uploads/"+image.url);
+        if (fs.existsSync(path.join(getUploadsDir(), image.url))) {
+            fs.rmSync(path.join(getUploadsDir(), image.url));
         }
     }
 

@@ -1,13 +1,13 @@
 const users_dbMethods = require("../database/methods/users");
-const { verifyToken } = require("../authenticate");
+const { verifyToken } = require("../globals/authenticate");
 
 async function read_authData(req, res, next) {
     const responseBody = verifyToken(req.token);
     const { message, authData, success } = responseBody;
     if (!success) {
-        return res.json({ message, success });
+        return res.status(responseBody.status).json({ message, success });
     } else {
-        const { user } = await users_dbMethods.getUserById(authData.user._id);
+        const { user } = await users_dbMethods.getUserById(authData.user._id, select=["email"]);
         return res.json({ message, user, success, token: req.token });
     }
 }

@@ -33,18 +33,6 @@
     width: 100%;
 }
 
-.topbar .flexbox-left_wrapper form button {
-    background-color: transparent;
-    height: 15px;
-    border: none;
-    cursor: pointer;
-}
-
-.topbar .flexbox-left_wrapper .searchbar img {
-    height: 100%;
-    width: 100%;
-}
-
 .topbar .flexbox-left_wrapper form input {
     color: var(--primary-font-color);
     background-color: transparent;

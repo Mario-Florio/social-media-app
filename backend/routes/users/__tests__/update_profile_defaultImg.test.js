@@ -3,7 +3,7 @@ const request = require("supertest");
 const database = require("../../__utils__/testDb");
 const populate = require("../../__utils__/populate");
 const User = require("../../../models/User");
-const { defaultProfileImages, defaultCoverImages } = require("../../../defaultImgs");
+const { defaultProfileImages, defaultCoverImages } = require("../../../globals/defaultImgs");
 
 beforeAll(async () => await database.connect());
 afterAll(async () => await database.disconnect());
@@ -69,6 +69,20 @@ describe("/users UPDATE_PROFILE_DEFAULTIMG", () => {
                     response.body.user.profile.coverPicture && response.body.user.profile.coverPicture.url === data.exprectedUrlResponse
                 ).toBeTruthy();
             }
+        });
+        test("should contain email", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile/default-img`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ picture: "Default-profilePic" });
+            expect(response.body.user.email).toEqual(user.email);
+        });
+        test("user should not contain password", async () => {
+            const response = await request(app)
+                .put(`/api/users/${user._id}/profile/default-img`)
+                .set("Authorization", `Bearer ${token}`)
+                .send({ picture: "Default-profilePic" });
+            expect(response.body.user.password).toBeFalsy();
         });
 
         describe("input is invalid", () => {

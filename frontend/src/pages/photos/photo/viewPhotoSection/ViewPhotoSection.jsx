@@ -1,4 +1,6 @@
 import "./viewPhotoSection.css";
+import ImgHandler from "../../../../components/imgHandler/ImgHandler";
+import photoExists from "../../../../components/imgHandler/__utils__/photoExists";
 import SectionWrapper from "./sectionWrapper/SectionWrapper";
 
 function ViewPhotoSection({ photoData, sectionIsActive, setSectionIsActive, setDeleteSectionIsActive }) {
@@ -8,7 +10,7 @@ function ViewPhotoSection({ photoData, sectionIsActive, setSectionIsActive, setD
             setSectionIsActive={setSectionIsActive}
         >
             <div className="photo_wrapper">
-                <img src={photoData.url} alt={photoData.name}/>
+                <ImgHandler src={photoExists(photoData)} type="photo"/>
             </div>
             <h4>{photoData.name}</h4>
             <p>{photoData.caption}</p>
