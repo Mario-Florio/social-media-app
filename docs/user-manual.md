@@ -1,5 +1,5 @@
 # User Manual
-The following is a quick quide to demonstrate application features to users. With the exception of [uploading photos](#uploading-photos), all features are accessible to the demo version and don't require further setup. For details on setup, see the [setup guide](www.github.com/mario-florio/social-media-app/docs/setup.md).
+The following is a quick quide to demonstrate application features to users. With the exception of [uploading photos](#uploading-photos), all features are accessible to the demo version and don't require further setup. For details on setup, see the [setup guide](https://www.github.com/mario-florio/social-media-app/docs/setup.md).
 
 ## Contents:
 - [User Manual](#user-manual)
