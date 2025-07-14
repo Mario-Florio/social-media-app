@@ -7,7 +7,7 @@ Designed to explore RESTful APIs, user authentication, image uploads, and modula
 
 Try the frontend demo (no backend): [Live Demo](https://mario-florio.github.io/social-media-app/)
 
-> **Note:** Demo lacks database persistence; data resets on page refresh. For full functionality, see the [Setup Guide](./docs/setup-guide.md).
+> **Note:** Demo lacks database persistence; data resets on page refresh. For full functionality, see the [Setup Guide](./docs/setup.md).
 
 ## Features
 
@@ -26,4 +26,4 @@ Try the frontend demo (no backend): [Live Demo](https://mario-florio.github.io/s
 ## Documentation
 
 - [User Manual](./docs/user-manual.md) – Full app walkthrough  
-- [Setup Guide](./docs/setup-guide.md) – Environment and installation instructions
+- [Setup Guide](./docs/setup.md) – Environment and installation instructions
