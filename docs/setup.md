@@ -1,5 +1,5 @@
 # Setup
-The following is a guide for setting up the application on a local machine. For a guide on the use of the application, please see the [*User Manual*](https://www.github.com/mario-florio/social-media-app/docs/user-manual.md).
+The following is a guide for setting up the application on a local machine. For a guide on the use of the application, please see the [*User Manual*](./user-manual.md).
 
 - [Setup](#setup)
     - [Backend](#backend)
